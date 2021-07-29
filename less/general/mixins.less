@@ -1,0 +1,55 @@
+/* Font family */
+#fonts() {
+  1: 'Gilroy';
+  2: 'Eurofurence';
+}
+
+/* Colors */
+#colors() {
+  green: #82CDC9;
+  dark: #333333;
+  white: #ffffff;
+}
+
+/* Container width */
+@container: 1430px;
+
+/* Wrapper */
+.wrapper() {
+  max-width: @container;
+
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+/* 100% + reset spacings */
+.w100() {
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
+/* Reset button */
+.button_reset() {
+  padding: 0;
+  margin: 0;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  text-align: center;
+  vertical-align: middle;
+
+  outline: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

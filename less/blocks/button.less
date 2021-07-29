@@ -1,0 +1,35 @@
+.button {
+  .button_reset();
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  background-color: #colors[green];
+  border-radius: 98px;
+
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+
+  text-align: center;
+
+  text-transform: uppercase;
+
+  color: #colors[white];
+
+  transition: background-color 0.3s;
+
+  &:hover,
+  &:focus {
+    background-color: #colors[dark];
+
+    transition: background-color 0.3s;
+  }
+}

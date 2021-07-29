@@ -1,0 +1,22 @@
+.toggle {
+  display: flex;
+}
+
+.toggle__button {
+  .button_reset();
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  &.swiper-button-disabled {
+    opacity: 0.7;
+
+    pointer-events: none;
+  }
+}
+
+.toggle__icon {
+  transition: fill 0.3s;
+}

@@ -6,21 +6,17 @@
   justify-content: center;
   align-items: center;
 
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 20px;
 
-  background-color: #colors[green];
-  border-radius: 98px;
+  border-radius: 5px;
 
   font-family: #fonts[1];
   font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
 
   text-align: center;
-
-  text-transform: uppercase;
 
   color: #colors[white];
 
@@ -28,8 +24,53 @@
 
   &:hover,
   &:focus {
-    background-color: #colors[dark];
+    transition: background-color 0.3s;
+  }
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
 
     transition: background-color 0.3s;
+  }
+
+  &--blue {
+    background-color: #colors[accent];
+
+    &:hover,
+    &:focus {
+      background-color: #colors[accent_hover];
+    }
+
+    &:active {
+      background-color: #colors[accent_active];
+    }
+
+    &:disabled,
+    &.disabled {
+      color: #506C97;
+
+      background-color: #colors[accent_disabled];
+    }
+  }
+
+  &--red {
+    background-color: #colors[red];
+
+    &:hover,
+    &:focus {
+      background-color: #colors[red_hover];
+    }
+
+    &:active {
+      background-color: #colors[red_active];
+    }
+
+    &:disabled,
+    &.disabled {
+      color: #8F4B4B;
+
+      background-color: #colors[red_disabled];
+    }
   }
 }

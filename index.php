@@ -4,7 +4,6 @@
 
 <main class="page-main">
 
-
 </main>
 
 <?php

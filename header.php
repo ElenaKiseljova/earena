@@ -20,41 +20,136 @@
 
     <!-- Header -->
     <header class="page-header">
-      <div class="page-header__wrapper">
-        <div class="logo logo--header">
+      <div class="page-header__top">
+        <div class="page-header__wrapper">
+          <div class="logo logo--header">
+            <a href="<?php echo bloginfo( 'url' ); ?>">
+              <img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.svg" alt="<?php echo bloginfo( 'name' ); ?>">
+            </a>
+          </div>
+
+          <div class="languages">
+            <?php
+              // Для отображения нужной иконки текущего языка
+              $current_lang_slug = 'ru';
+
+              // Список с языками
+              $language_slugs = ['en', 'es', 'it', 'ch', 'cn'];
+            ?>
+            <div class="languages__current">
+              <svg class="languages__flag" width="28" height="20">
+                <use xlink:href="#icon-flag-<?= $current_lang_slug; ?>"></use>
+              </svg>
+            </div>
+
+            <ul class="languages__list">
+              <?php foreach ($language_slugs as $language_slug): ?>
+                <li class="languages__item">
+                  <a class="languages__link" href="#">
+                    <svg class="languages__flag" width="28" height="20">
+                      <use xlink:href="#icon-flag-<?= $language_slug; ?>"></use>
+                    </svg>
+
+                    <span class="languages__slug">
+                      <?= $language_slug; ?>
+                    </span>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+
+          <div class="time">
+            <time class="time__date">
+              22:45
+            </time>
+            <span class="time__format">
+              (UTC+0)
+            </span>
+          </div>
+
           <?php
-            if ( function_exists( 'the_custom_logo' ) ) {
-             the_custom_logo();
-            }
+            $loged = rand(0, 1);
           ?>
+          <?php if ($loged): ?>
+            <div class="page-header__right page-header__right--loged">
+              <a class="button button--signout" href="#">
+                <svg width="18" height="18">
+                  <use xlink:href="#icon-signout"></use>
+                </svg>
+              </a>
+            </div>
+          <?php else : ?>
+            <div class="page-header__right page-header__right--nologed">
+              <button class="button button--green openpopup" data-popup="login" type="button" name="signin">
+                <svg width="18" height="18">
+                  <use xlink:href="#icon-signin"></use>
+                </svg>
+
+                <span>
+                  <?php _e( 'Войти', 'earena_2' ); ?>
+                </span>
+              </button>
+
+              <button class="button button--blue openpopup" data-popup="login" type="button" name="signup">
+                <span>
+                  <?php _e( 'Регистрация', 'earena_2' ); ?>
+                </span>
+              </button>
+            </div>
+          <?php endif; ?>
         </div>
+      </div>
+      <div class="page-header__bottom">
+        <div class="page-header__wrapper">
+          <nav class="navigation navigation--header" role="menu">
+            <h5 class="visually-hidden">
+              <?php _e( 'Меню', 'earena_2' ); ?>
+            </h5>
 
-        <nav class="navigation navigation--header" role="menu">
-          <h5 class="navigation__title">Меню</h5>
-          <button class="navigation__close" type="button" name="close-menu">
-            <span class="visually-hidden">Закрыть меню</span>
-          </button>
+            <?php
+              $menu_items = [
+                'Главная',
+                'Матчи на деньги',
+                'Турниры',
+                'Команда Earena',
+                'Кибершкола',
+                'Магазин',
+                'Сотрудничество',
+                'Поддержка игроков',
+                'Новости киберспорта',
+                'Общий чат'
+              ];
+            ?>
 
-          <?php
-            wp_nav_menu(
-              array(
-                'theme_location'  => 'top_menu',
-                'container'       => null,
-                'menu_class'      => 'navigation__list navigation__list--header',
-                'depth'           => 0,
-              )
-            );
-          ?>
-        </nav>
-        <button class="navigation__toggle" type="button" name="open-menu" aria-label="Переключатель мобильного меню">
-          <svg width="33" height="22">
-            <use xlink:href="#icon-menu"></use>
-          </svg>
-          <span class="visually-hidden">Открыть меню</span>
-        </button>
+            <ul class="navigation__list">
+              <?php foreach ($menu_items as $menu_item): ?>
+                <li class="navigation__item">
+                  <a href="#">
+                    <div>
+                      <?php if ($menu_item === 'Главная'): ?>
+                        <svg width="18" height="18">
+                          <use xlink:href="#icon-home"></use>
+                        </svg>
+                      <?php elseif ($menu_item === 'Матчи на деньги') : ?>
+                        <svg width="22" height="22">
+                          <use xlink:href="#icon-gamepad"></use>
+                        </svg>
+                      <?php elseif ($menu_item === 'Турниры') : ?>
+                        <svg width="22" height="22">
+                          <use xlink:href="#icon-trophy"></use>
+                        </svg>
+                      <?php endif; ?>
+                    </div>
 
-        <button class="button openpopup" data-popup="call" type="button" name="button">
-          Бесплатная online-консультация
-        </button>
+                    <span>
+                      <?= $menu_item; ?>
+                    </span>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </nav>
+        </div>
       </div>
     </header>

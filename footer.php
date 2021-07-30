@@ -2,43 +2,72 @@
     <footer class="page-footer">
       <div class="page-footer__wrapper">
         <div class="logo logo--footer">
+          <a href="<?php echo bloginfo( 'url' ); ?>">
+            <img width="179" height="37.39" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-footer.svg" alt="<?php echo bloginfo( 'name' ); ?>">
+          </a>
+        </div>
+
+        <nav class="navigation navigation--footer" role="menu">
+          <h5 class="visually-hidden">
+            <?php _e( 'Меню', 'earena_2' ); ?>
+          </h5>
+
           <?php
-            if ( function_exists( 'the_custom_logo' ) ) {
-             the_custom_logo();
-            }
+            $menu_items = [
+              'Команда Earena',
+              'Кибершкола',
+              'Магазин',
+              'Сотрудничество',
+              'Поддержка игроков',
+              'Новости киберспорта'
+            ];
           ?>
-        </div>
 
-        <div class="page-footer__center">
-          <nav class="navigation navigation--footer" role="navigation">
-            <?php
-              wp_nav_menu(
-                array(
-                  'theme_location'  => 'bottom_menu',
-                  'container'       => null,
-                  'menu_class'      => 'navigation__list navigation__list--footer',
-                  'depth'           => 0,
-                )
-              );
-            ?>
-          </nav>
-        </div>
+          <ul class="navigation__list navigation__list--footer">
+            <?php foreach ($menu_items as $menu_item): ?>
+              <li class="navigation__item navigation__item--footer">
+                <a href="#">
+                  <span>
+                    <?= $menu_item; ?>
+                  </span>
+                </a>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        </nav>
 
-        <div class="page-footer__contact">
-          <a class="page-footer__phone" href="tel:+380682692525">+38 068 269 25 25</a>
-          <a class="button button--footer" href="<?php echo get_page_link( 12 ); ?>">Связаться с нами</a>
+        <button class="button button--chats-footer openpopup" data-popup="chats" type="button" name="chats">
+          <span>
+            <?php _e( 'Общий чат', 'earena_2' ); ?>
+          </span>
+        </button>
+
+        <div class="page-footer__bottom">
+          <p class="page-footer__copyright">
+            <span>
+              © 2021 — EArena.
+            </span>
+            <span>
+              <?php _e( 'Платформа киберспортивных игр', 'earena_2' ); ?>
+            </span>
+          </p>
+
+          <?php
+            $pay_methods = [
+              'visa',
+              'mastercard',
+              'skrill',
+              'payoneer'
+            ];
+          ?>
+          <ul class="pay-methods">
+            <?php foreach ($pay_methods as $pay_method): ?>
+              <li class="pay-methods__item">
+                <img width="90" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/pay-methods-<?= $pay_method; ?>.svg" alt="<?= $pay_method; ?>">
+              </li>
+            <?php endforeach; ?>
+          </ul>
         </div>
-      </div>
-      <div class="page-footer__wrapper">
-        <a class="subline subline--privacy" href="<?php echo get_privacy_policy_url(); ?>">
-          Политика конфиденциальности
-        </a>
-        <p class="page-footer__creater">
-          Сделано в <a href="https://webnauts.pro" target="_blank">Webnauts</a> c
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.99994 1.6419C7.37019 0.411655 9.48769 0.452488 10.8078 1.77491C12.1273 3.09791 12.1728 5.20491 10.9454 6.57924L5.99877 11.5329L1.05327 6.57924C-0.174064 5.20491 -0.127981 3.09441 1.19094 1.77491C2.51219 0.454238 4.6256 0.409905 5.99994 1.6419Z" fill="white"/>
-          </svg>
-        </p>
       </div>
     </footer>
 

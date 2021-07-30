@@ -18,6 +18,14 @@
   red_hover: #B63333;
   red_active: #952828;
   red_disabled: #552626;
+  green: #6BA614;
+  green_hover: #588B0B;
+  green_active: #3D6205;
+  green_disabled: #313E1E;
+  orange: #E37525;
+  orange_hover: #D06517;
+  orange_active: #B75005;
+  orange_disabled: #543824;
   bg: #1F2329;
   text: #CFD8E3;
   text_black: #7B8899;
@@ -64,4 +72,60 @@
   &:focus {
     outline: none;
   }
+}
+
+/* blue background hover */
+.blue_hover() {
+  .button_reset();
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background-color: #colors[dark_light];
+
+  svg {
+    fill: none;
+
+    path {
+      stroke: #colors[text_black];
+    }
+  }
+
+  &:hover,
+  &:focus {
+    background-color: #colors[dark_light_2];
+  }
+
+  &:active,
+  &.active {
+    background-color: #colors[accent];
+
+    svg {
+      fill: none;
+
+      path {
+        stroke: #colors[white];
+      }
+    }
+  }
+}
+
+/* text styles */
+
+.caption_2() {
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  /* identical to box height */
+
+  text-align: center;
 }

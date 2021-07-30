@@ -1,0 +1,76 @@
+.user,
+.user__avatar,
+.user__info,
+.user__name {
+  padding: 0;
+  margin: 0;
+}
+
+.user {
+  position: relative;
+
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  padding-left: 30px;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+    left: 0;
+
+    width: 1px;
+    height: 50%;
+
+    background-color: #colors[dark_light];
+
+    transform: translateY(-50%);
+  }
+}
+
+.user__avatar {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-right: 15px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+}
+
+.user__info {
+  margin-right: 30px;
+}
+
+.user__name {
+  margin-bottom: 6px;
+
+  h5 {
+    text-align: left;
+    letter-spacing: 0.01em;
+
+    color: #colors[text];
+  }
+}
+
+.user__money {
+  .w100();
+
+  color: #colors[dark_light];
+}
+
+.user__money-amount {
+  color: #colors[text];
+}
+
+.user__money-add {
+  color: #colors[link];
+}

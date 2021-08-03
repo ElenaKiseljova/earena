@@ -31,6 +31,16 @@
 
     transform: translateY(-50%);
   }
+
+  @media (max-width: @mobile) {
+    justify-content: flex-end;
+
+    padding: 0;
+
+    &::before {
+      display: none;
+    }
+  }
 }
 
 .user__avatar {
@@ -44,20 +54,39 @@
   border-radius: 50%;
 
   overflow: hidden;
+
+  @media (max-width: @mobile) {
+    order: 2;
+    width: 30px;
+
+    margin-right: 0;
+    margin-left: 8px;
+  }
 }
 
 .user__info {
   margin-right: 30px;
+
+  @media (max-width: @mobile) {
+    margin-right: 0;
+  }
 }
 
 .user__name {
   margin-bottom: 6px;
 
   h5 {
+    padding: 0;
+    margin: 0;
+
     text-align: left;
     letter-spacing: 0.01em;
 
     color: #colors[text];
+  }
+
+  @media (max-width: @mobile) {
+    display: none;
   }
 }
 
@@ -69,8 +98,16 @@
 
 .user__money-amount {
   color: #colors[text];
-}
 
-.user__money-add {
-  color: #colors[link];
+  &::after {
+    content: ' | ';
+
+    color: #colors[dark_light];
+  }
+
+  @media (max-width: @mobile) {
+    &::after {
+      display: none;
+    }
+  }
 }

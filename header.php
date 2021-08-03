@@ -21,68 +21,70 @@
     <!-- Header -->
     <header class="page-header">
       <div class="page-header__top">
-        <div class="page-header__wrapper">
+        <div class="page-header__wrapper page-header__wrapper--top">
           <div class="logo logo--header">
             <a href="<?php echo bloginfo( 'url' ); ?>">
               <img width="179" height="37.39" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.svg" alt="<?php echo bloginfo( 'name' ); ?>">
             </a>
           </div>
 
-          <div class="languages">
-            <?php
-              // Для отображения нужной иконки текущего языка
-              $current_lang_slug = 'ru';
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <div class="page-header__center">
+            <div class="languages">
+              <?php
+                // Для отображения нужной иконки текущего языка
+                $current_lang_slug = 'ru';
 
-              // Список с языками
-              $language_slugs = ['us', 'es', 'it', 'ch', 'cn'];
-            ?>
-            <button class="languages__select" type="button" name="languages">
-              <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $current_lang_slug; ?>.svg" alt="<?= $current_lang_slug; ?>">
+                // Список с языками
+                $language_slugs = ['us', 'es', 'it', 'ch', 'cn'];
+              ?>
+              <button class="languages__select" type="button" name="languages">
+                <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $current_lang_slug; ?>.svg" alt="<?= $current_lang_slug; ?>">
 
-              <span class="visually-hidden">
-                <?= $current_lang_slug; ?>
+                <span class="visually-hidden">
+                  <?= $current_lang_slug; ?>
+                </span>
+
+                <svg class="languages__toggle" width="18" height="22">
+                  <use xlink:href="#icon-chevron-bottom"></use>
+                </svg>
+              </button>
+
+              <!-- Для переключения состояния - добавляется active класс  -->
+              <ul class="languages__list">
+                <?php foreach ($language_slugs as $language_slug): ?>
+                  <li class="languages__item">
+                    <a class="languages__link" href="#">
+                      <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $language_slug; ?>.svg" alt="<?= $language_slug; ?>">
+
+                      <span class="languages__slug">
+                        <?= $language_slug; ?>
+                      </span>
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+
+            <div class="time">
+              <time class="time__date">
+                22:45
+              </time>
+              <span class="time__format">
+                (UTC+0)
               </span>
-
-              <svg class="languages__toggle" width="18" height="22">
-                <use xlink:href="#icon-chevron-bottom"></use>
-              </svg>
-            </button>
-
-            <ul class="languages__list active">
-              <?php foreach ($language_slugs as $language_slug): ?>
-                <li class="languages__item">
-                  <a class="languages__link" href="#">
-                    <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $language_slug; ?>.svg" alt="<?= $language_slug; ?>">
-
-                    <span class="languages__slug">
-                      <?= $language_slug; ?>
-                    </span>
-                  </a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-
-          <div class="separator separator--header">
-          </div>
-
-          <div class="time">
-            <time class="time__date">
-              22:45
-            </time>
-            <span class="time__format">
-              (UTC+0)
-            </span>
+            </div>
           </div>
 
           <?php
-            $loged = rand(0, 1);
+            // Для теста
+            $logged = rand(0, 1);
           ?>
-          <?php if ($loged): ?>
-            <div class="page-header__right page-header__right--loged">
-              <div class="user">
+          <?php if ($logged): ?>
+            <div class="page-header__right page-header__right--logged">
+              <div class="user user--info">
                 <a class="user__avatar" href="#">
-                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar.jpg" alt="Avatar">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-1.png" alt="Avatar">
                 </a>
                 <div class="user__info">
                   <a class="user__name" href="#">
@@ -95,14 +97,13 @@
                     <span class="user__money-amount">
                       $2 714
                     </span>
-                      |
-                    <a class="user__money-add" href="#">
+                    <a class="page-header__money-add page-header__money-add--desktop" href="#">
                       <?php _e( 'Пополнить', 'earena_2' ); ?>
                     </a>
                   </div>
                 </div>
 
-                <a class="page-header__signout" href="#">
+                <a class="page-header__signout page-header__signout--desktop" href="#">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -110,9 +111,9 @@
                   </svg>
                 </a>
               </div>
-              <div class="personal">
-                <ul class="personal__list">
-                  <li class="personal__item">
+              <div class="personal personal--header">
+                <ul class="personal__list personal__list--header">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11 19.25C15.5563 19.25 19.25 15.5563 19.25 11C19.25 6.44365 15.5563 2.75 11 2.75C6.44365 2.75 2.75 6.44365 2.75 11C2.75 15.5563 6.44365 19.25 11 19.25Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>
@@ -125,7 +126,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="personal__item">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13.0625 9.28125H15.8125" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -144,7 +145,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="personal__item">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M4.8125 4.8125V9.54732C4.8125 12.9591 7.54141 15.787 10.9531 15.8123C11.7696 15.8185 12.5792 15.663 13.3353 15.3549C14.0914 15.0467 14.7791 14.5919 15.3586 14.0168C15.9381 13.4416 16.3981 12.7574 16.712 12.0037C17.0259 11.2499 17.1875 10.4415 17.1875 9.625V4.8125C17.1875 4.63016 17.1151 4.4553 16.9861 4.32636C16.8572 4.19743 16.6823 4.125 16.5 4.125H5.5C5.31766 4.125 5.1428 4.19743 5.01386 4.32636C4.88493 4.4553 4.8125 4.63016 4.8125 4.8125Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -163,7 +164,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="personal__item">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3.90404 15.2107C2.87903 13.4828 2.52006 11.4401 2.89454 9.46627C3.26902 7.49241 4.35119 5.72316 5.93784 4.49073C7.52448 3.2583 9.50646 2.64747 11.5116 2.77294C13.5167 2.89842 15.4071 3.75157 16.8277 5.17219C18.2484 6.59281 19.1015 8.48317 19.227 10.4883C19.3525 12.4935 18.7417 14.4754 17.5093 16.0621C16.2768 17.6487 14.5076 18.7309 12.5337 19.1054C10.5599 19.4799 8.5172 19.1209 6.78928 18.0959L6.7893 18.0959L3.93991 18.91C3.82202 18.9436 3.69727 18.9452 3.57858 18.9144C3.45989 18.8837 3.35159 18.8217 3.26489 18.7351C3.1782 18.6484 3.11626 18.5401 3.08551 18.4214C3.05476 18.3027 3.0563 18.1779 3.08998 18.06L3.9041 15.2106L3.90404 15.2107Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -181,7 +182,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="personal__item">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.5625 13.75C10.0305 13.75 12.0312 11.7493 12.0312 9.28125C12.0312 6.81323 10.0305 4.8125 7.5625 4.8125C5.09448 4.8125 3.09375 6.81323 3.09375 9.28125C3.09375 11.7493 5.09448 13.75 7.5625 13.75Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>
@@ -200,7 +201,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="personal__item">
+                  <li class="personal__item personal__item--header">
                     <a class="personal__link" href="#">
                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.9375 6.875L8.9375 17.5071C8.9375 17.6202 8.90956 17.7317 8.85615 17.8315C8.80274 17.9313 8.72553 18.0163 8.63136 18.0791L7.68672 18.7089C7.59505 18.77 7.49004 18.8082 7.38053 18.8202C7.27101 18.8322 7.16021 18.8178 7.05745 18.7781C6.95469 18.7383 6.86299 18.6745 6.79006 18.5919C6.71713 18.5093 6.66511 18.4104 6.63839 18.3036L5.5 13.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -220,7 +221,7 @@
               </div>
             </div>
           <?php else : ?>
-            <div class="page-header__right page-header__right--nologed">
+            <div class="page-header__right page-header__right--nologged">
               <button class="page-header__signin openpopup" data-popup="login" type="button" name="signin">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip-signin)">
@@ -240,17 +241,32 @@
                 </span>
               </button>
 
-              <button class="button button--blue openpopup" data-popup="login" type="button" name="signup">
+              <button class="page-header__signup button button--blue openpopup" data-popup="login" type="button" name="signup">
                 <span>
                   <?php _e( 'Регистрация', 'earena_2' ); ?>
                 </span>
               </button>
             </div>
           <?php endif; ?>
+
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <button class="page-header__burger" type="button" name="menu-toggle">
+            <span class="visually-hidden">
+              <?php _e( 'Открыть/закрыть меню', 'earena_2' ); ?>
+            </span>
+          </button>
         </div>
       </div>
+
+      <!-- Для переключения состояния - добавляется active класс  -->
       <div class="page-header__bottom">
-        <div class="page-header__wrapper">
+        <div class="page-header__wrapper page-header__wrapper--bottom">
+          <?php if ($logged): ?>
+            <a class="page-header__money-add page-header__money-add--mobile" href="#">
+              <?php _e( 'Пополнить', 'earena_2' ); ?>
+            </a>
+          <?php endif; ?>
+
           <nav class="navigation navigation--header" role="menu">
             <h5 class="visually-hidden">
               <?php _e( 'Меню', 'earena_2' ); ?>
@@ -273,35 +289,37 @@
             <ul class="navigation__list navigation__list--header">
               <?php foreach ($menu_items as $menu_item): ?>
                 <li class="navigation__item navigation__item--header">
-                  <a href="#">
-                    <?php if ($menu_item === __('Главная', 'earena_2') ): ?>
-                      <div class="navigation__icon active">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M2.25 6.75L9 1.5L15.75 6.75V15C15.75 15.3978 15.592 15.7794 15.3107 16.0607C15.0294 16.342 14.6478 16.5 14.25 16.5H3.75C3.35218 16.5 2.97064 16.342 2.68934 16.0607C2.40804 15.7794 2.25 15.3978 2.25 15V6.75Z" stroke="#CFD8E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M6.75 16.5V9H11.25V16.5" stroke="#CFD8E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    <?php elseif ($menu_item === __('Матчи на деньги', 'earena_2') ) : ?>
-                      <div class="navigation__icon">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M13.0625 9.28125H15.8125" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M6.1875 9.28125H8.9375" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M7.5625 7.90625V10.6562" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M14.7829 4.79004L7.2192 4.8124C6.16854 4.81248 5.15149 5.18264 4.34658 5.85791C3.54166 6.53317 3.00033 7.47038 2.8176 8.50503L2.81834 8.50516L1.41202 15.7379C1.32319 16.2419 1.39734 16.761 1.62369 17.22C1.85004 17.679 2.2168 18.0538 2.67072 18.2901C3.12463 18.5264 3.64206 18.6119 4.14784 18.534C4.65363 18.4562 5.12144 18.2192 5.48333 17.8574L5.48319 17.8572L9.19875 13.7499L14.7829 13.7275C15.9681 13.7275 17.1047 13.2567 17.9428 12.4187C18.7808 11.5806 19.2516 10.444 19.2516 9.25879C19.2516 8.0736 18.7808 6.93696 17.9428 6.09891C17.1047 5.26085 15.9681 4.79004 14.7829 4.79004V4.79004Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M19.1837 8.48291L20.5888 15.738C20.6777 16.242 20.6035 16.7612 20.3772 17.2201C20.1508 17.6791 19.7841 18.0539 19.3302 18.2902C18.8762 18.5265 18.3588 18.612 17.853 18.5342C17.3472 18.4563 16.8794 18.2193 16.5175 17.8575L16.5177 17.8573L12.8047 13.7356" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    <?php elseif ($menu_item === __('Турниры', 'earena_2') ) : ?>
-                      <div class="navigation__icon">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M4.8125 4.8125V9.54732C4.8125 12.9591 7.54141 15.787 10.9531 15.8123C11.7696 15.8185 12.5792 15.663 13.3353 15.3549C14.0914 15.0467 14.7791 14.5919 15.3586 14.0168C15.9381 13.4416 16.3981 12.7574 16.712 12.0037C17.0259 11.2499 17.1875 10.4415 17.1875 9.625V4.8125C17.1875 4.63016 17.1151 4.4553 16.9861 4.32636C16.8572 4.19743 16.6823 4.125 16.5 4.125H5.5C5.31766 4.125 5.1428 4.19743 5.01386 4.32636C4.88493 4.4553 4.8125 4.63016 4.8125 4.8125Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M8.25 19.25H13.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M11 15.8125V19.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M17.6695 10.7356H17.7639C18.4933 10.7356 19.1927 10.4459 19.7085 9.93014C20.2242 9.41441 20.5139 8.71494 20.5139 7.9856V6.6106C20.5139 6.42826 20.4415 6.25339 20.3125 6.12446C20.1836 5.99553 20.0087 5.9231 19.8264 5.9231H17.5" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M4.98122 11H4.11401C3.38467 11 2.6852 10.7103 2.16947 10.1945C1.65375 9.67882 1.36401 8.97935 1.36401 8.25V6.875C1.36401 6.69266 1.43645 6.5178 1.56538 6.38886C1.69431 6.25993 1.86918 6.1875 2.05151 6.1875H4.80151" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    <?php endif; ?>
+                  <?php if ($menu_item === __('Главная', 'earena_2') ): ?>
+                    <!-- Для переключения состояния - добавляется active класс  -->
+                    <a class="navigation__link navigation__link--header navigation__link--blue-hover" href="#">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.25 6.75L9 1.5L15.75 6.75V15C15.75 15.3978 15.592 15.7794 15.3107 16.0607C15.0294 16.342 14.6478 16.5 14.25 16.5H3.75C3.35218 16.5 2.97064 16.342 2.68934 16.0607C2.40804 15.7794 2.25 15.3978 2.25 15V6.75Z" stroke="#CFD8E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.75 16.5V9H11.25V16.5" stroke="#CFD8E3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                  <?php elseif ($menu_item === __('Матчи на деньги', 'earena_2') ) : ?>
+                    <!-- Для переключения состояния - добавляется active класс  -->
+                    <a class="navigation__link navigation__link--header navigation__link--blue-hover" href="#">
+                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.0625 9.28125H15.8125" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.1875 9.28125H8.9375" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7.5625 7.90625V10.6562" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14.7829 4.79004L7.2192 4.8124C6.16854 4.81248 5.15149 5.18264 4.34658 5.85791C3.54166 6.53317 3.00033 7.47038 2.8176 8.50503L2.81834 8.50516L1.41202 15.7379C1.32319 16.2419 1.39734 16.761 1.62369 17.22C1.85004 17.679 2.2168 18.0538 2.67072 18.2901C3.12463 18.5264 3.64206 18.6119 4.14784 18.534C4.65363 18.4562 5.12144 18.2192 5.48333 17.8574L5.48319 17.8572L9.19875 13.7499L14.7829 13.7275C15.9681 13.7275 17.1047 13.2567 17.9428 12.4187C18.7808 11.5806 19.2516 10.444 19.2516 9.25879C19.2516 8.0736 18.7808 6.93696 17.9428 6.09891C17.1047 5.26085 15.9681 4.79004 14.7829 4.79004V4.79004Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.1837 8.48291L20.5888 15.738C20.6777 16.242 20.6035 16.7612 20.3772 17.2201C20.1508 17.6791 19.7841 18.0539 19.3302 18.2902C18.8762 18.5265 18.3588 18.612 17.853 18.5342C17.3472 18.4563 16.8794 18.2193 16.5175 17.8575L16.5177 17.8573L12.8047 13.7356" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                  <?php elseif ($menu_item === __('Турниры', 'earena_2') ) : ?>
+                    <!-- Для переключения состояния - добавляется active класс  -->
+                    <a class="navigation__link navigation__link--header navigation__link--blue-hover" href="#">
+                      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.8125 4.8125V9.54732C4.8125 12.9591 7.54141 15.787 10.9531 15.8123C11.7696 15.8185 12.5792 15.663 13.3353 15.3549C14.0914 15.0467 14.7791 14.5919 15.3586 14.0168C15.9381 13.4416 16.3981 12.7574 16.712 12.0037C17.0259 11.2499 17.1875 10.4415 17.1875 9.625V4.8125C17.1875 4.63016 17.1151 4.4553 16.9861 4.32636C16.8572 4.19743 16.6823 4.125 16.5 4.125H5.5C5.31766 4.125 5.1428 4.19743 5.01386 4.32636C4.88493 4.4553 4.8125 4.63016 4.8125 4.8125Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.25 19.25H13.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11 15.8125V19.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.6695 10.7356H17.7639C18.4933 10.7356 19.1927 10.4459 19.7085 9.93014C20.2242 9.41441 20.5139 8.71494 20.5139 7.9856V6.6106C20.5139 6.42826 20.4415 6.25339 20.3125 6.12446C20.1836 5.99553 20.0087 5.9231 19.8264 5.9231H17.5" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.98122 11H4.11401C3.38467 11 2.6852 10.7103 2.16947 10.1945C1.65375 9.67882 1.36401 8.97935 1.36401 8.25V6.875C1.36401 6.69266 1.43645 6.5178 1.56538 6.38886C1.69431 6.25993 1.86918 6.1875 2.05151 6.1875H4.80151" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                  <?php else : ?>
+                    <!-- Для переключения состояния - добавляется active класс  -->
+                    <a class="navigation__link navigation__link--header" href="#">
+                  <?php endif; ?>
                     <span>
                       <?= $menu_item; ?>
                     </span>
@@ -312,12 +330,12 @@
           </nav>
 
           <div class="page-header__right page-header__right--chats">
-            <button class="button button--chats-header openpopup" data-popup="chats" type="button" name="chats">
-              <svg width="20" height="20">
+            <button class="chats chats--header openpopup" data-popup="chats" type="button" name="chats">
+              <svg class="chats__icon chats__icon--arrow" width="20" height="20">
                 <use xlink:href="#icon-arrow-left"></use>
               </svg>
 
-              <svg width="22" height="22">
+              <svg class="chats__icon chats__icon--conversation" width="22" height="22">
                 <use xlink:href="#icon-chats"></use>
               </svg>
 
@@ -326,11 +344,25 @@
               </span>
             </button>
 
-            <a class="button button--signout" href="#">
-              <svg width="18" height="18">
-                <use xlink:href="#icon-signout"></use>
-              </svg>
-            </a>
+            <?php if ($logged): ?>
+              <a class="page-header__signout page-header__signout--mobile" href="#">
+                <span>
+                  <?php _e( 'Выйти', 'earena_2' ); ?>
+                </span>
+
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.75 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            <?php else : ?>
+              <button class="page-header__signup-mobile  button button--blue openpopup" data-popup="login" type="button" name="signup">
+                <span>
+                  <?php _e( 'Регистрация', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </div>

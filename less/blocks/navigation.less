@@ -1,8 +1,165 @@
 .navigation {
   padding: 0;
   margin: 0;
+
+  &--footer {
+    margin-right: 45px;
+  }
+
+  @media (max-width: @mobile) {
+    &--header {
+      width: 100%;
+    }
+
+    &--footer {
+      margin-right: 0;
+    }
+  }
 }
 
-.navigation__icon {
-  .blue_hover();
+.navigation__list {
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+
+  &--header {
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-left: -10px;
+  }
+
+  &--footer {
+    display: grid;
+
+    grid-template-columns: repeat(3, max-content);
+    grid-template-rows: 23px;
+    grid-column-gap: 45px;
+  }
+
+  @media (max-width: @mobile) {
+    &--header {
+      flex-direction: column;
+
+      align-items: flex-start;
+
+      margin-left: 0;
+    }
+
+    &--footer {
+      grid-template-columns: auto;
+      grid-template-rows: auto;
+      grid-column-gap: 0;
+      grid-row-gap: 14px;
+    }
+  }
+}
+
+.navigation__item {
+  padding: 0;
+  margin: 0;
+
+  &--footer {
+    text-align: left;
+  }
+
+  @media (max-width: @mobile) {
+    &--header {
+      width: 100%;
+
+      border-bottom: 1px solid #colors[dark_light];
+
+      text-align: left;
+    }
+
+    &--footer {
+      text-align: center;
+    }
+  }
+}
+
+.navigation__link {
+  &--header {
+    margin-left: 20px;
+
+    .menu();
+  }
+
+  &--footer {
+    .menu_footer();
+  }
+
+  &--blue-hover {
+    .blue_hover();
+
+    margin-left: 10px;
+
+    span {
+      display: none;
+    }
+  }
+
+  @media (max-width: @mobile) {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0;
+
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+    &--blue-hover {
+      width: auto;
+      height: auto;
+
+      background: none;
+
+      text-align: left;
+
+      svg {
+        display: none;
+      }
+
+      span {
+        display: block;
+      }
+
+      &:hover,
+      &:focus,
+      &:active,
+      &.active {
+        background: none;
+      }
+    }
+
+    &::before {
+      content: '';
+
+      position: absolute;
+
+      left: -24px;
+      top: 0;
+
+      width: 2px;
+      height: 100%;
+
+      background-color: #colors[accent];
+
+      opacity: 0;
+
+      transition: opacity 0.5s;
+    }
+
+    &.active {
+      &::before {
+        opacity: 1;
+
+        transition: opacity 0.5s;
+      }
+    }
+  }
 }

@@ -20,6 +20,27 @@
   }
 
   &--footer {
+    margin-right: 80 / 1156 * 100%;
+  }
 
+  @media (max-width: @mobile) {
+    &--header {
+      width: 140px;
+
+      margin-right: 0;
+    }
+
+    &--footer {
+      margin-bottom: 30px;
+
+      a {
+        justify-content: center;
+      }
+
+      img {
+        width: 200px;
+        height: auto;
+      }
+    }
   }
 }

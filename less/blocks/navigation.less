@@ -35,6 +35,9 @@
   &--footer {
     display: grid;
 
+    grid-template: "a c e"
+                   "b d f";
+
     grid-template-columns: repeat(3, max-content);
     grid-template-rows: 23px;
     grid-column-gap: 45px;
@@ -50,6 +53,7 @@
     }
 
     &--footer {
+      grid-template: none;
       grid-template-columns: auto;
       grid-template-rows: auto;
       grid-column-gap: 0;
@@ -64,6 +68,30 @@
 
   &--footer {
     text-align: left;
+
+    &:nth-of-type(1) {
+      grid-area: a;
+    }
+
+    &:nth-of-type(2) {
+      grid-area: b;
+    }
+
+    &:nth-of-type(3) {
+      grid-area: c;
+    }
+
+    &:nth-of-type(4) {
+      grid-area: d;
+    }
+
+    &:nth-of-type(5) {
+      grid-area: e;
+    }
+
+    &:nth-of-type(6) {
+      grid-area: f;
+    }
   }
 
   @media (max-width: @mobile) {
@@ -77,6 +105,15 @@
 
     &--footer {
       text-align: center;
+
+      &:nth-of-type(1),
+      &:nth-of-type(2),
+      &:nth-of-type(3),
+      &:nth-of-type(4),
+      &:nth-of-type(5),
+      &:nth-of-type(6) {
+        grid-area: auto;
+      }
     }
   }
 }
@@ -103,14 +140,42 @@
   }
 
   @media (max-width: @mobile) {
-    position: relative;
+    &--header {
+      position: relative;
 
-    display: inline-block;
+      display: inline-block;
 
-    margin: 0;
+      margin: 0;
 
-    padding-bottom: 10px;
-    padding-top: 10px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+
+      &::before {
+        content: '';
+
+        position: absolute;
+
+        left: -24px;
+        top: 0;
+
+        width: 2px;
+        height: 100%;
+
+        background-color: #colors[accent];
+
+        opacity: 0;
+
+        transition: opacity 0.5s;
+      }
+
+      &.active {
+        &::before {
+          opacity: 1;
+
+          transition: opacity 0.5s;
+        }
+      }
+    }
 
     &--blue-hover {
       width: auto;
@@ -133,32 +198,6 @@
       &:active,
       &.active {
         background: none;
-      }
-    }
-
-    &::before {
-      content: '';
-
-      position: absolute;
-
-      left: -24px;
-      top: 0;
-
-      width: 2px;
-      height: 100%;
-
-      background-color: #colors[accent];
-
-      opacity: 0;
-
-      transition: opacity 0.5s;
-    }
-
-    &.active {
-      &::before {
-        opacity: 1;
-
-        transition: opacity 0.5s;
       }
     }
   }

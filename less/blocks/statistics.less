@@ -1,0 +1,166 @@
+.statistics {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .w100();
+  min-height: 100%;
+
+  padding-left: 40px;
+
+  box-sizing: border-box;
+
+  @media (max-width: @mobile) {
+    padding: 0 15px;
+  }
+}
+
+.statistics__variation,
+.statistics__achives {
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+}
+
+.statistics__variation {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  width: calc(100% + 20px);
+
+  margin-right: -20px;
+
+  @media (max-width: @mobile) {
+    width: calc(100% + 18px);
+
+    margin-right: -18px;
+  }
+}
+
+.statistics__variation-item,
+.statistics__termin,
+.statistics__description {
+  padding: 0;
+  margin: 0;
+}
+
+.statistics__variation-item {
+  width: calc(33.33% - 20px);
+
+  padding-top: 129px;
+  padding-bottom: 38px;
+
+  margin-right: 20px;
+
+  background-repeat: no-repeat;
+  background-size: cover, auto;
+
+  .h3();
+
+  text-align: center;
+
+  color: #colors[link];
+
+  &--one {
+    background-position: center bottom, center 35px;
+    background-image: url('../img/statistics-rect.svg'), url('../img/statistics-one.svg');
+  }
+
+  &--two {
+    background-position: center bottom, center 35px;
+    background-image: url('../img/statistics-rect.svg'), url('../img/statistics-two.svg');
+  }
+
+  &--team {
+    background-position: center bottom, center 25px;
+    background-image: url('../img/statistics-rect.svg'), url('../img/statistics-team.svg');
+  }
+
+  @media (max-width: @mobile) {
+    width: calc(33.33% - 18px);
+
+    padding-top: (89 / 320) * 100vw;
+    margin-right: 18px;
+
+    .h3_mobile();
+
+    &--one {
+      background-position: center 27.52px;
+      background-size: 53 / 84.65 * 100%;
+      background-image: url('../img/statistics-one.svg');
+    }
+
+    &--two {
+      background-position: center 27.52px;
+      background-size: 100%;
+      background-image: url('../img/statistics-two.svg');
+    }
+
+    &--team {
+      background-position: center 21px;
+      background-size: 100%;
+      background-image: url('../img/statistics-team.svg');
+    }
+  }
+}
+
+.statistics__achives,
+.statistics__achives-termin,
+.statistics__achives-description {
+  padding: 0;
+  margin: 0;
+}
+
+.statistics__achives {
+  display: grid;
+
+  grid-template: "a c"
+                 "b d";
+
+  grid-template-columns: repeat(2, max-content);
+  grid-column-gap: 20px;
+  justify-items: start;
+
+  @media (max-width: @mobile) {
+    width: 100%;
+
+    grid-column-gap: unset;
+    justify-content: space-between;
+  }
+}
+
+.statistics__achives-termin {
+  .h2();
+
+  color: #colors[text];
+
+  &:nth-of-type(1) {
+    grid-area: a;
+  }
+
+  &:nth-of-type(2) {
+    grid-area: c;
+  }
+
+  @media (max-width: @mobile) {
+    .h2_mobile();
+  }
+}
+
+.statistics__achives-description {
+  color: #colors[text_black];
+
+  &:nth-of-type(1) {
+    grid-area: b;
+  }
+
+  &:nth-of-type(2) {
+    grid-area: d;
+  }
+}

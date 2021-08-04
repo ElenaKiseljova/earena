@@ -123,6 +123,7 @@
 
 /* text styles */
 .caption() {
+  /* caption text style */
   font-family: #fonts[1];
   font-style: normal;
   font-weight: normal;
@@ -132,6 +133,7 @@
 }
 
 .caption_2() {
+  /* caption_2 text style */
   font-family: #fonts[1];
   font-style: normal;
   font-weight: 500;
@@ -140,9 +142,16 @@
   /* identical to box height */
 
   text-align: center;
+
+  @media (max-width: @mobile) {
+    font-weight: 500;
+    font-size: 8.39865px;
+    line-height: 10px;
+  }
 }
 
 .menu() {
+  /* menu text style */
   font-family: #fonts[1];
   font-style: normal;
   font-weight: normal;
@@ -176,6 +185,7 @@
 }
 
 .menu_footer() {
+  /* menu_footer text style */
   font-family: #fonts[1];
   font-style: normal;
   font-weight: normal;
@@ -205,7 +215,75 @@
   }
 }
 
+.body() {
+  /* body text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+
+  letter-spacing: 0.01em;
+
+  @media (max-width: @mobile) {
+    font-size: 12px;
+    line-height: 150%;
+  }
+}
+
+.body_bold() {
+  /* body text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+
+  letter-spacing: 0.01em;
+}
+
+.h1() {
+  /* h1 text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 120%;
+  /* or 36px */
+
+  letter-spacing: 0.03em;
+}
+
+.h1_mobile() {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 140%;
+
+  letter-spacing: 0.01em
+}
+
+.h2() {
+  /* h2 text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 140%;
+  /* identical to box height, or 34px */
+
+  letter-spacing: 0.01em;
+}
+
+.h2_mobile() {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 140%;
+}
+
 .h3() {
+  /* h3 text style */
   font-family: #fonts[1];
   font-style: normal;
   font-weight: 500;
@@ -214,4 +292,61 @@
   /* or 25px */
 
   letter-spacing: 0.01em;
+}
+
+.h3_mobile() {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.button_text() {
+  /* button_text text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  text-align: center;
+}
+
+.time() {
+  /* time text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+
+  text-align: right;
+}
+
+.message() {
+  /* message text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height, or 143% */
+
+  letter-spacing: 0.01em;
+}
+
+.card_title() {
+  /* card_title text style */
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  /* or 22px */
+
+  @media (max-width: @mobile) {
+    font-weight: 500;
+    font-size: 13.7432px;
+    line-height: 140%;
+  }
 }

@@ -10,13 +10,7 @@
 
   border-radius: 5px;
 
-  font-family: #fonts[1];
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-
-  text-align: center;
+  .button_text();
 
   color: #colors[white];
 
@@ -111,6 +105,61 @@
       color: #815D44;
 
       background-color: #colors[orange_disabled];
+    }
+  }
+
+  &--gray {
+    background-color: #colors[dark_light];
+
+    border: 1px solid #434D5A;
+
+    &:hover,
+    &:focus {
+      background-color: #colors[dark_light_2];
+    }
+
+    &:active {
+      background-color: #colors[bg];
+    }
+
+    &:disabled,
+    &.disabled {
+      color: rgba(255, 255, 255, 0.3);
+
+      background-color: transparent;
+
+      border-color: #colors[dark_light_2];
+    }
+  }
+
+  &--more {
+    padding: 9px 20px;
+
+    background-color: #colors[dark_light];
+
+    border: 1px solid #434D5A;
+
+    &::after {
+      content: '';
+
+      width: 28px;
+      height: 16px;
+
+      margin-left: 14px;
+
+      background-image: url('../img/arrow-right.svg');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #colors[dark_light_2];
+    }
+
+    &:active {
+      background-color: #colors[bg];
     }
   }
 }

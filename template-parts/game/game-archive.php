@@ -12,8 +12,8 @@
 
 <div class="game">
   <?php if ( $game_index < $game_amounts ): ?>
-    <a class="game__link" href="#">
-      <div class="game__image">
+    <a class="game__link" href="/game">
+      <div class="game__image game__image--archive">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/archive/game-<?= $game_index; ?>.jpg" alt="<?= $games[$game_index]['name']; ?>">
       </div>
       <?php

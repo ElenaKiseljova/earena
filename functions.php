@@ -39,4 +39,20 @@
 
     //wp_localize_script( 'form-script', 'earena_2_ajax', $args);
   }
+
+  // Section functions
+
+  /*
+    Ф-я подключает нужный шаблон и регулирует отображение шапки секции
+  */
+
+  if (! function_exists( 'earena_2_get_section' )) {
+    function earena_2_get_section ( $section_slug, $section_filter = false ) {
+      global $filter_section;
+
+      $filter_section = $section_filter;
+
+      get_template_part( 'template-parts/section', $section_slug );
+    }
+  }
 ?>

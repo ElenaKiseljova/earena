@@ -1,0 +1,60 @@
+.players,
+.players__progress,
+.players__text {
+  .w100();
+}
+
+.players__text {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  .caption();
+
+  &::before {
+    content: '';
+
+    width: 16px;
+    height: 16px;
+
+    .bg_icon('../img/tournaments-players.svg');
+  }
+}
+
+.players__progress {
+  position: relative;
+
+  width: 100%;
+  height: 3px;
+
+  margin-bottom: 5px;
+
+  border-radius: 1.5px;
+
+  background-color: #colors[dark_light_2];
+
+  overflow: hidden;
+}
+
+.players__progress-bar {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  z-index: 1;
+
+  width: 71%;
+  height: 100%;
+
+  border-radius: 1.5px;
+
+  background-color: #colors[accent];
+
+  transition: width 0.3s;
+
+  &--past {
+    background-color: #colors[text];
+  }
+}

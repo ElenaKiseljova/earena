@@ -1,7 +1,23 @@
 .game,
 .game__link,
-.game__name {
+.game__name,
+.game__header,
+.game__title,
+.game__text,
+.game__text-item {
   .w100();
+}
+
+.game {
+  &--page {
+    position: relative;
+
+    padding-bottom: 50px;
+  }
+}
+
+.game__wrapper {
+  .wrapper();
 }
 
 .game__link {
@@ -69,20 +85,22 @@
     object-position: center;
   }
 
-  &::after {
-    content: '';
+  &--archive {
+    &::after {
+      content: '';
 
-    position: absolute;
+      position: absolute;
 
-    top: 0;
-    left: 0;
+      top: 0;
+      left: 0;
 
-    z-index: 1;
+      z-index: 1;
 
-    width: 100%;
-    height: 100%;
+      width: 100%;
+      height: 100%;
 
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+    }
   }
 }
 
@@ -121,6 +139,14 @@
 
   list-style: none;
 
+  &--page {
+    width: calc(100% + 12px);
+
+    margin-right: -12px;
+
+    margin-bottom: 10px;
+  }
+
   @media (max-width: @mobile) {
     width: calc(100% + (7.64 / 320) * 100vw);
 
@@ -139,6 +165,10 @@
 
   margin-right: 10px;
 
+  &--page {
+    margin-right: 12px;
+  }
+
   @media (max-width: @mobile) {
     margin-right: (7.64 / 320) * 100vw;
   }
@@ -149,4 +179,54 @@
     width: 22.91px;
     height: auto;
   }
+}
+
+.game__header {
+  position: relative;
+
+  padding: 40px 50px;
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+  @media (max-width: @mobile) {
+    width: 100vw;
+
+    padding: 40px 15px;
+
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+
+    border-radius: 0;
+  }
+}
+
+.game__description {
+  position: relative;
+
+  z-index: 1;
+
+  padding: 0;
+  margin: 0;
+}
+
+.game__text {
+  margin-bottom: 18px;
+
+  .body();
+
+  color: #colors[text];
+}
+
+.game__title {
+  margin-bottom: 10px;
+
+  .h1();
+
+  color: #colors[white];
+}
+
+.game__rules {
+  color: #colors[link];
 }

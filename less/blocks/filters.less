@@ -1,0 +1,169 @@
+.filters {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  .w100();
+
+  padding: 10px;
+
+  margin-bottom: 20px;
+
+  background: #colors[dark_light];
+  border-radius: 5px;
+}
+
+
+.filters__item {
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  background: #colors[dark];
+  border: 1px solid #434D5A;
+
+  border-radius: 5px;
+}
+
+.filters__button {
+  .button_reset();
+
+  &--search {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    z-index: 1;
+
+    transform: translateY(-50%);
+  }
+}
+
+.filters__field {
+  .field_reset();
+
+  padding: 10px 15px;
+
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  /* identical to box height, or 125% */
+
+  letter-spacing: 0.01em;
+
+  color: #colors[text];
+
+  &::placeholder {
+    color: #57616F;
+  }
+}
+
+.filters__icon {
+  fill: none;
+}
+
+.filters__checkbox {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  &--right {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
+
+.filters__label {
+  position: relative;
+
+  display: block;
+
+  cursor: pointer;
+
+  .caption();
+
+  color: #colors[text];
+
+  &::before,
+  &::after {
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+  }
+
+  &::before {
+    width: 18px;
+    height: 18px;
+
+    background-color: #colors[dark];
+
+    border: 1px solid #434D5A;
+
+    border-radius: 3px;
+  }
+
+  &::after {
+    width: 12px;
+    height: 12px;
+
+    .bg_icon('../img/check.svg');
+
+    opacity: 0;
+
+    transition: opacity 0.3s;
+  }
+
+  &--left {
+    padding-left: 28px;
+
+    &::before {
+      left: 0;
+    }
+  }
+
+  &--right {
+    padding-right: 28px;
+
+    &::before {
+      right: 0;
+    }
+
+    &::after {
+      right: 3px;
+    }
+  }
+}
+
+input[type="checkbox"]:checked + .filters__label {
+  &::before {
+    background-color: #colors[accent];
+    border-color: #colors[accent];
+  }
+
+  &::after {
+    opacity: 1;
+
+    transition: opacity 0.3s;
+  }
+}

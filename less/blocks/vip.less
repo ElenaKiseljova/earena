@@ -1,0 +1,35 @@
+.vip {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  z-index: 1;
+
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  text-transform: uppercase;
+
+  padding: 6px 10px;
+
+  background: #E37525;
+  border-radius: 5px;
+
+  .button_text();
+
+  color: #colors[white];
+
+  &::after {
+    content: '';
+
+    width: 20px;
+    height: 20px;
+
+    margin-left: 8px;
+
+    .bg_icon('../img/tournaments-crown.svg');
+  }
+}

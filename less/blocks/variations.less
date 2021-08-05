@@ -33,10 +33,24 @@
     }
   }
 
+  &--page {
+    width: calc(100% + 6px);
+
+    margin-right: -6px;
+    margin-bottom: 20px;
+  }
+
   @media (max-width: @mobile) {
     width: calc(100% + 1.53px);
 
     margin-right: -1.53px;
+
+    &--page {
+      width: calc(100% + 6px);
+
+      margin-right: -6px;
+      margin-bottom: 20px;
+    }
   }
 }
 
@@ -53,9 +67,21 @@
 
   color: #colors[text];
 
+  &--page {
+    padding: 3px 10px;
+
+    margin-right: 6px;
+  }
+
   @media (max-width: @mobile) {
     padding: 2.29px 4.59px;
 
     margin-right: 1.53px;
+
+    &--page {
+      padding: 3px 10px;
+
+      margin-right: 6px;
+    }
   }
 }

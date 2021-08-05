@@ -25,6 +25,10 @@
   border-radius: 5px;
 
   overflow: hidden;
+
+  &--my {
+    border: 2px solid #colors[link];
+  }
 }
 
 .match__image {
@@ -56,6 +60,15 @@
 
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.match__top {
+  flex-grow: 1;
+}
+
+.match__center {
+  margin-bottom: 20px;
+  margin-top: auto;
 }
 
 .match__top-left {
@@ -227,4 +240,31 @@
   .caption();
 
   color: #A9B3C1;
+}
+
+.match__my-chats {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 21px;
+  height: 21px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  background-color: #65A800;
+
+  .caption_2();
+
+  color: #colors[white];
 }

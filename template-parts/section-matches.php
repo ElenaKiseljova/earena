@@ -1,5 +1,6 @@
 <?php
   global $filter_section;
+  global $header_right_section;
 ?>
 <section class="section section--matches" id="matches">
   <div class="section__wrapper">
@@ -12,11 +13,16 @@
       </h2>
 
       <div class="section__header-right">
-        <a class="button button--more" href="?type=matches">
-          <span>
-            <?php _e( 'Все матчи', 'earena_2' ); ?>
-          </span>
-        </a>
+        <?php if ($header_right_section === 'all_button'): ?>
+          <a class="button button--more" href="?type=matches">
+            <span>
+              <?php _e( 'Все матчи', 'earena_2' ); ?>
+            </span>
+          </a>
+        <?php elseif ($header_right_section === 'tabs') : ?>
+          <!-- Табы игровых платформ -->
+          <?php get_template_part( 'template-parts/tabs' ); ?>
+        <?php endif; ?>
       </div>
     </header>
 
@@ -28,6 +34,13 @@
 
     <div class="section__content">
       <ul class="section__list">
+        <?php if ($header_right_section === 'tabs'): ?>
+          <!-- Кнопка создания матча -->
+          <li class="section__item section__item--col-4">
+            <?php get_template_part( 'template-parts/match/match-create' ); ?>
+          </li>
+        <?php endif; ?>
+
         <?php
           global $match_index;
 

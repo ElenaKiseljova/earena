@@ -17,13 +17,23 @@
 
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
-      earena_2_get_section( 'games' );
+      if (!$_GET['type']) {
+        earena_2_get_section( 'games' );
 
-      earena_2_get_section( 'matches' );
+        earena_2_get_section( 'matches' );
 
-      earena_2_get_section( 'tournaments' );
+        earena_2_get_section( 'tournaments' );
 
-      earena_2_get_section( 'partners' );
+        earena_2_get_section( 'partners' );
+      } elseif (isset($_GET['type']) && $_GET['type'] === 'matches') {
+        earena_2_get_section( 'matches', true, 'tabs' );
+
+        earena_2_get_section( 'partners' );
+      } elseif (isset($_GET['type']) && $_GET['type'] === 'tournaments') {
+        earena_2_get_section( 'tournaments', true, 'tabs' );
+
+        earena_2_get_section( 'partners' );
+      }
     }
   ?>
 </main>

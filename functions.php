@@ -30,29 +30,44 @@
     wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
-    //wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/form.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/form.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    //$args = array();
+    $args = array();
 
-    //$args['url'] = admin_url('admin-ajax.php');
+    $args['url'] = admin_url('admin-ajax.php');
 
-    //wp_localize_script( 'form-script', 'earena_2_ajax', $args);
+    wp_localize_script( 'form-script', 'earena_2_ajax', $args);
   }
 
   // Section functions
 
   /*
-    Ф-я подключает нужный шаблон и регулирует отображение шапки секции
+    Ф-я подключает нужный шаблон и регулирует отображение шапки/фильтров/табов секции
   */
-
   if (! function_exists( 'earena_2_get_section' )) {
-    function earena_2_get_section ( $section_slug, $section_filter = false ) {
+    function earena_2_get_section ( $section_slug, $section_filter = false, $section_header_right = 'all_button' ) {
       global $filter_section;
+      global $header_right_section;
 
       $filter_section = $section_filter;
+      $header_right_section = $section_header_right;
 
       get_template_part( 'template-parts/section', $section_slug );
+    }
+  }
+
+  /*
+    Ф-я выводит кнопку закрытия попапа с нужным модификатором
+  */
+  if (! function_exists( 'earena_2_get_popup_glose_button_html' )) {
+    function earena_2_get_popup_glose_button_html ( $popup_slug = '' ) {
+      global $slug_popup;
+
+      $slug_popup = $popup_slug;
+
+      get_template_part( 'template-parts/popup/button', 'close' );
     }
   }
 ?>

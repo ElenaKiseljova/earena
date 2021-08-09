@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   try {
     let ROOT_ELEMENT = document.documentElement;
-    let OVERLAY_POPUP = document.querySelector('.popup__overlay');
+    let OVERLAY_POPUP = document.querySelector('.overlay--popup');
 
     let onPopupEscPress = function (evt) {
       if (evt.keyCode === 27) {

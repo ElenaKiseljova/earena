@@ -1,0 +1,243 @@
+.wrapper-form {
+  .w100();
+}
+
+.form,
+.form__row,
+.form__checkbox,
+.form__checkbox-label,
+.form__error {
+  .w100();
+}
+
+.form {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.form__row {
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 10px;
+
+  &.invalid {
+    & .form__field {
+      color: #colors[red];
+
+      &:focus {
+        color: #colors[text];
+      }
+    }
+
+    & + .form__error {
+      height: auto;
+
+      margin-bottom: 10px;
+
+      opacity: 1;
+
+      transition: opacity 0.3s;
+    }
+  }
+}
+
+.form__field {
+  position: relative;
+
+  z-index: 1;
+
+  flex-grow: 1;
+
+  .field_reset();
+
+  padding: 13px 15px;
+
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+
+  color: #colors[text];
+
+  background: #colors[dark];
+  border: 1px solid #434D5A;
+
+  border-radius: 5px;
+
+  &::placeholder {
+    font-family: #fonts[1];
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+
+    color: #57616F;
+  }
+
+  &:focus {
+    background: #colors[dark];
+    border-color: #colors[accent];
+    color: #colors[text];
+  }
+
+  &:hover {
+    background: #colors[dark_light];
+  }
+
+  &--message {
+    resize: none;
+
+    height: 102px;
+
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  &--contact-page {
+    background-color: #ffffff;
+  }
+
+  @media only screen and (min-width: 768px) {
+
+    &:focus,
+    &:valid {
+
+    }
+  }
+
+  @media only screen and (min-width: 1920px) {
+    &:focus,
+    &:valid {
+
+    }
+  }
+}
+
+.form__error {
+  height: 0;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  .body();
+
+  color: #colors[red];
+}
+
+.form__checkbox {
+  display: inline-block;
+
+  min-height: 12px;
+
+  margin-bottom: 32px;
+
+  input {
+    &:checked + .form__checkbox-label {
+      &::before {
+
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+
+  }
+}
+
+.form__privacy {
+  .w100();
+
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  /* or 17px */
+
+  color: #colors[text_black];
+
+  a {
+    color: #colors[link];
+
+    text-decoration: none;
+  }
+}
+
+.form__checkbox-label {
+  position: relative;
+
+  padding-left: 20px;
+
+  color: #colors[text];
+
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: '';
+
+    position: absolute;
+  }
+
+  &::before {
+    left: 0;
+    top: 2px;
+
+    width: 12px;
+    height: 12px;
+
+    background-color: #F2F3F5;
+
+    border: 1px solid #colors[red];
+  }
+
+  &::after {
+    left: 3px;
+    top: 5px;
+
+    width: 6px;
+    height: 6px;
+
+    background-color: #colors[red];
+
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    &::before {
+
+    }
+
+    &::after {
+
+    }
+  }
+}
+
+.form__submit {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+// Сброс картинок календаря
+// input[type="date"]::-webkit-inner-spin-button,
+// input[type="date"]::-webkit-calendar-picker-indicator {
+//   display: none;
+//   -webkit-appearance: none;
+// }

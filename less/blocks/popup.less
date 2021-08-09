@@ -1,6 +1,9 @@
 .popup {
   position: fixed;
 
+  top: 50%;
+  left: 50%;
+
   z-index: 999;
 
   opacity: 0;
@@ -8,8 +11,18 @@
 
   transition: opacity 0.5s;
 
+  width: 350px;
+
   max-width: 100%;
   max-height: 100%;
+
+  background-color: #colors[bg];
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+
+  transform: translate(-50%, -50%);
+
+  overflow: hidden;
 
   &.active {
     opacity: 1;
@@ -21,14 +34,22 @@
 
   &--chats {
     top: 0;
+    left: 0;
+    bottom: 0;
     right: 0;
 
     width: 100%;
     height: 100%;
 
+    padding: 0;
+    margin: 0;
+
     padding-top: 79px;
 
     background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    transform: unset;
 
     &.active {
       pointer-events: none;
@@ -36,6 +57,21 @@
       .popup__content {
         pointer-events: all;
       }
+    }
+  }
+
+  &--login {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  @media (max-width: @mobile) {
+    &--chats {
+      padding-top: 150px;
     }
   }
 }
@@ -56,6 +92,17 @@
 }
 
 .popup__content {
+  padding: 30px;
+
+  &--login {
+    flex-grow: 1;
+
+    height: 20vh;
+    min-height: 424px;
+
+    overflow-y: scroll;
+  }
+
   &--chats {
     position: relative;
 
@@ -70,6 +117,9 @@
 
     max-width: 100%;
 
+    padding: 0;
+    margin: 0;
+
     background-color: #colors[bg];
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -83,14 +133,19 @@
 
   .w100();
 
-  .h3();
+  margin-bottom: 3px;
+
+  .h2();
 
   color: #colors[text];
 
+  text-align: left;
+
   &--chats {
+    margin: 0;
     padding: 12px 20px 13px;
 
-    text-align: left;
+    .h3();
 
     background-color: #colors[dark_light];
 
@@ -114,101 +169,11 @@
   }
 }
 
-.popup__conversation {
-  flex-grow: 1;
-
-  width: 100%;
-  height: 20vh;
-
-  padding: 0 20px;
-
-  overflow-y: scroll;
-}
-
-.popup__conversation-list,
-.popup__conversation-item {
-  padding: 0;
-  margin: 0;
-}
-
-.popup__conversation-item {
-  &:not(:last-of-type) {
-    margin-bottom: 14px;
-  }
-}
-
-.popup__message {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  .w100();
-
-  padding: 22px 20px 21px;
-}
-
-.popup__message-text {
-  flex-grow: 1;
-
-  height: 40px;
-
-  padding: 10px 15px;
-  margin-right: 12px;
-
-  border: 1px solid #434D5A;
-
-  background-color: #colors[dark];
-
-  border-radius: 5px;
-
-  resize: none;
-
-  .message();
-
-  color: #colors[white];
-
-  &::placeholder {
-    .message();
-
-    color: #57616F;
-  }
-}
-
-.popup__overlay {
-  position: fixed;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  z-index: 998;
-
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  transition: opacity 0.5s;
-
-  &.active {
-    pointer-events: all;
-
-    opacity: 1;
-
-    transition: opacity 0.5s;
-  }
-}
-
 .popup__close {
   position: absolute;
 
-  top: 0;
-  right: 0;
+  top: 20px;
+  right: 18px;
 
   z-index: 1000;
 
@@ -244,46 +209,31 @@
   }
 }
 
-.popup__smiles,
-.popup__send {
-  flex-shrink: 0;
+.popup__header {
+  .w100();
 
-  .button_reset();
+  padding: 15px 30px 17px;
 
+  background-color: #colors[dark_light];
+}
+
+.popup__information {
   display: flex;
 
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+
+  .w100();
+
+   color: #colors[text_black];
 }
 
-.popup__smiles {
-  margin-right: 20px;
+.popup__button {
+  .button_reset();
 
-  svg {
-    fill: #colors[text_black];
-  }
+  color: #colors[link];
 
-  &:hover,
-  &:focus {
-    svg {
-      fill: #colors[text];
-    }
-  }
-}
-
-.popup__send {
-  padding: 9px 13px;
-
-  background-color: #colors[accent];
-
-  border-radius: 5px;
-
-  svg {
-    fill: none;
-  }
-
-  &:hover,
-  &:focus {
-    background-color: #colors[link];
+  &--information {
+    margin-left: 5px;
   }
 }

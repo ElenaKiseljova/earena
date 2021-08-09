@@ -62,10 +62,10 @@
   <?php
     if ( isset($_GET['type']) && $_GET['type'] === 'matches' ) {
       // С блоком фильтров отображение
-      earena_2_get_section( 'matches', true );
+      earena_2_get_section( 'matches', true, false );
     } elseif ( isset($_GET['type']) && $_GET['type'] === 'tournaments' ) {
       // С блоком фильтров отображение
-      earena_2_get_section( 'tournaments', true );
+      earena_2_get_section( 'tournaments', true, false );
     } else {
       if ( function_exists( 'earena_2_get_section' ) ) {
         earena_2_get_section( 'matches' );

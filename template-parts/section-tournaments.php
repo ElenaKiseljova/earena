@@ -1,5 +1,6 @@
 <?php
   global $filter_section;
+  global $header_right_section;
 ?>
 <section class="section section--tournaments" id="tournaments">
   <div class="section__wrapper">
@@ -13,11 +14,16 @@
       </h2>
 
       <div class="section__header-right">
-        <a class="button button--more" href="?type=tournaments">
-          <span>
-            <?php _e( 'Все турниры', 'earena_2' ); ?>
-          </span>
-        </a>
+        <?php if ($header_right_section === 'all_button'): ?>
+          <a class="button button--more" href="?type=tournaments">
+            <span>
+              <?php _e( 'Все турниры', 'earena_2' ); ?>
+            </span>
+          </a>
+        <?php elseif ($header_right_section === 'tabs') : ?>
+          <!-- Табы игровых платформ -->
+          <?php get_template_part( 'template-parts/tabs' ); ?>
+        <?php endif; ?>
       </div>
     </header>
 

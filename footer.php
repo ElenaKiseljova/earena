@@ -190,67 +190,47 @@
             <h2 class="popup__title popup__title--chats">
               <?php _e( 'Общий чат игроков', 'earena_2' ); ?>
             </h2>
-            <div class="popup__conversation">
-              <div class="popup__conversation-list">
-                <?php
-                  for ($i=1; $i < 9; $i++) {
-                    ?>
-                    <div class="popup__conversation-item">
-                      <div class="user user--chats">
-                        <a class="user__avatar user__avatar--chats" href="#">
-                          <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
-                        </a>
-                        <div class="user__info user__info--chats">
-                          <a class="user__name user__name--chats" href="#">
-                            <h5>
-                              AnnetteBlack
-                            </h5>
-                          </a>
 
-                          <time class="user__time">
-                            17:21
-                          </time>
+            <?php get_template_part( 'template-parts/chat' ); ?>
 
-                          <div class="user__message">
-                            <p>
-                              Download ✌🏻✌🏻✌🏻 or copy themes in formats 😀
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <?php
-                  }
-                ?>
-              </div>
-            </div>
-            <div class="popup__message">
-              <textarea class="popup__message-text" name="message" placeholder="Сообщение...">
-              </textarea>
-
-              <button class="popup__smiles" type="button" name="smile">
-                <svg width="28" height="28">
-                  <use xlink:href="#icon-smile" />
-                </svg>
-              </button>
-              <button class="popup__send" type="button" name="send">
-                <svg width="22" height="22">
-                  <use xlink:href="#icon-message" />
-                </svg>
-              </button>
-            </div>
-            <button class="popup__close popup__close--chats" type="button" name="close">
-              <span class="visually-hidden">Закрыть</span>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
+            <?php
+              if ( function_exists( 'earena_2_get_popup_glose_button_html' ) ) {
+                earena_2_get_popup_glose_button_html( 'chats' );
+              }
+            ?>
           </div>
         </div>
       </div>
+
+      <div class="popup popup--login">
+        <div class="popup__header popup__header--login">
+          <h2 class="popup__title popup__title--login">
+            <?php _e( 'Регистрация', 'earena_2' ); ?>
+          </h2>
+
+          <div class="popup__information">
+            <span>
+              <?php _e( 'Уже есть аккаунт?', 'earena_2' ); ?>
+            </span>
+            <button class="popup__button popup__button--information" data-action="login" type="button" name="login">
+              <?php _e( 'Войти', 'earena_2' ); ?>
+            </button>
+          </div>
+        </div>
+
+        <div class="popup__content popup__content--login">
+          <?php get_template_part( 'template-parts/form' ); ?>
+        </div>
+        <?php
+          if ( function_exists( 'earena_2_get_popup_glose_button_html' ) ) {
+            earena_2_get_popup_glose_button_html( 'login' );
+          }
+        ?>
+      </div>
+
       <!-- Для переключения состояния - добавляется active класс  -->
-      <div class="popup__overlay"></div>
+      <div class="overlay overlay--popup"></div>
+      <div class="overlay overlay--navigation"></div>
     </div>
     <?php
       wp_footer();

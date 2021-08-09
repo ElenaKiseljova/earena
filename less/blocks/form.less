@@ -16,7 +16,7 @@
   flex-direction: column;
 
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
 }
 
 .form__row {
@@ -88,10 +88,18 @@
     background: #colors[dark];
     border-color: #colors[accent];
     color: #colors[text];
+
+    & + .form__arrow {
+      background-color: #colors[dark];
+    }
   }
 
   &:hover {
     background: #colors[dark_light];
+
+    & + .form__arrow {
+      background-color: #colors[dark_light];
+    }
   }
 
   &--message {
@@ -123,6 +131,29 @@
   }
 }
 
+.form__arrow {
+  position: absolute;
+
+  top: 50%;
+  right: 2px;
+
+  z-index: 1;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  background-color: #colors[dark];
+
+  width: 51px;
+  height: 38px;
+
+  .bg_icon('../img/icon-chevron-bottom.svg');
+
+  background-size: 31px auto;
+  background-position: right center;
+}
+
 .form__error {
   height: 0;
 
@@ -133,6 +164,26 @@
   .body();
 
   color: #colors[red];
+
+  &.no-old-enough {
+    height: auto;
+
+    opacity: 1;
+
+    margin-bottom: 10px;
+
+    .form__error-default {
+      display: none;
+    }
+
+    .form__error-old {
+      display: block;
+    }
+  }
+}
+
+.form__error-old {
+  display: none;
 }
 
 .form__checkbox {
@@ -233,6 +284,18 @@
 .form__submit {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.form__forgot {
+  align-self: flex-start;
+
+  margin-left: 0;
+}
+
+.form__popup-close {
+  width: 100%;
+
+  margin-top: 30px;
 }
 
 // Сброс картинок календаря

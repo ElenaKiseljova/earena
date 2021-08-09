@@ -2,15 +2,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
-    let form = (attr) => {
+    window.form = (attr) => {
       // ID формы
       var idForm = attr.idForm;
 
-      // Контейнер, где лежит форма. Содержимое будет очищаться при отправки и заменяться шаблонами
-      var selectorWrapperForm = attr.selectorWrapperForm;
+      // Содержимое будет очищаться при отправки и заменяться шаблонами
+      var selectorForTemplateReplace = attr.selectorForTemplateReplace;
 
-      // Класс для родителя враппера. Если стили надо поменять после/в начала/конце отправки формы. По умолчанию - false
-      var classForAddParentWrapperForm = attr.classForAddParentWrapperForm ? attr.classForAddParentWrapperForm : false;
+      // Элемент, в котором на каком-то уровне лежит форма.
+      var selectorClosestWrapperForm =  attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false;
+
+      // Класс для элемента, в котором на каком-то уровне лежит форма. Если стили надо поменять после/в начала/конце отправки формы. По умолчанию - false
+      var classForAddClosestWrapperForm = attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false;
 
       // Получение объекта формы
       let formCheck = document.querySelector(`#${idForm}`);
@@ -36,6 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
             allInputs.forEach((item, i) => {
               if (item.type !== 'radio' && item.type !== 'checkbox' && item.type !== 'submit') {
                 item.autocomplete = 'off';
+
+                if (item.type === 'date') {
+                  if (item.valueAsNumber) {
+                    var currentDate = new Date();
+                    var birthdayUser = new Date(item.valueAsNumber);
+
+                    if ((currentDate.getFullYear() - birthdayUser.getFullYear()) < 18) {
+                      console.log(birthdayUser.getFullYear(), 'Not old enough!');
+
+                      // Если проверка по возрасту не прошла
+                      item.parentNode.nextElementSibling.classList.add('no-old-enough');
+                    } else {
+                      // Если проверка по возрасту прошла
+                      item.parentNode.nextElementSibling.classList.remove('no-old-enough');
+                    }
+                  }
+                }
 
                 if (!item.validity.valid) {
                   notValid = true;
@@ -150,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   console.log(formData);
 
                   //let popupCall = document.querySelector('.popup--call');
-                  let wrapperFormNode = document.querySelector(selectorWrapperForm);
+                  let wrapperFormNode = document.querySelector(selectorForTemplateReplace);
 
                   // Обработчик старта отправки
                   var onBeforeSend = function (status) {
@@ -164,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
                       wrapperFormNode.appendChild(cloneTemplate);
 
                       // Проверяю - надо ди добавлять активный класс родителю
-                      if (classForAddParentWrapperForm) {
+                      if (classForAddClosestWrapperForm) {
                         // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                        wrapperFormNode.parentNode.classList.add(classForAddParentWrapperForm);
+                        wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
                         //popupCall.style.height = 'auto';
                       }
                     }
@@ -187,6 +207,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     console.log('Done: ', response);
+                  };
+
+                  // Обработчик успешной отправки при восстановлении пароля
+                  var onSuccessForgot = function (response) {
+                    let templateContentSuccess = document.querySelector(`#${idForm}-success-forgot`).content;
+
+                    if (wrapperFormNode) {
+                      wrapperFormNode.innerHTML = '';
+
+                      let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+                      wrapperFormNode.appendChild(cloneTemplate);
+                    }
+
+                    let formPopupClose = document.querySelector('.form__popup-close');
+
+                    if (formPopupClose) {
+                      formPopupClose.addEventListener('click', function () {
+                        window.closePopup();
+                      });
+                    }
+
+                    console.log('Done (forgot): ', response);
                   };
 
                   // Обработчик не успешной отправки
@@ -211,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   xhr.responseType = 'json';
 
                   // Открытие запроса
-                	xhr.open('POST', pohoronyinfo_ajax.url + '?action=sendmail', true);
+                	xhr.open('POST', earena_2_ajax.url + '?action=sendmail', true);
 
                   // Установка заголовков запроса
                   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -277,10 +320,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Login
-    form({
+    window.form({
       idForm: 'form-login',
-      selectorWrapperForm: '.wrapper-form--login', // контейнер, где лежит форма. Содержимое будет очищаться при отправке и заменяться шаблонами
-      //classForAddParentWrapperForm: 'sending', // по умолчанию - false
+      selectorForTemplateReplace: '.wrapper-form--login', // Содержимое будет очищаться при отправке и заменяться шаблонами
+      classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+      selectorClosestWrapperForm: '.popup--login', // по умолчанию - false
     });
 
   } catch (e) {

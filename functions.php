@@ -29,10 +29,10 @@
   function earena_2_scripts () {
     wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
-    wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/form.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     $args = array();
 
@@ -61,8 +61,8 @@
   /*
     Ф-я выводит кнопку закрытия попапа с нужным модификатором
   */
-  if (! function_exists( 'earena_2_get_popup_glose_button_html' )) {
-    function earena_2_get_popup_glose_button_html ( $popup_slug = '' ) {
+  if (! function_exists( 'earena_2_get_popup_close_button_html' )) {
+    function earena_2_get_popup_close_button_html ( $popup_slug = '' ) {
       global $slug_popup;
 
       $slug_popup = $popup_slug;

@@ -23,7 +23,7 @@
     </div>
   </header>
 
-  <div class="toggles__content">
+  <div class="toggles__content active">
     <div class="toggles__content-item toggles__content-item--col-2">
       <!-- Таблица Наград -->
       <?php
@@ -36,10 +36,18 @@
         get_template_part( 'template-parts/tables/table', 'timing' );
       ?>
     </div>
-    <div class="toggles__content-item toggles__content-item--col-1">
+    <div class="toggles__content-item toggles__content-item--rating toggles__content-item--col-1">
       <!-- Таблица Рейтинга -->
       <?php
         get_template_part( 'template-parts/tables/table', 'rating' );
+      ?>
+    </div>
+  </div>
+  <div class="toggles__content">
+    <div class="toggles__content-item toggles__content-item--col-1">
+      <!-- Аккордеон -->
+      <?php
+        get_template_part( 'template-parts/accordeon' );
       ?>
     </div>
   </div>

@@ -275,7 +275,7 @@
 
       <div class="match__button-wrapper">
         <button class="button button--gray openpopup" data-popup="chats" type="button" name="chats">
-          <span class="match__my-chats">
+          <span class="button__chat button__chat--left">
             24
           </span>
           <span>

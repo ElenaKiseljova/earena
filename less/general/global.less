@@ -44,27 +44,29 @@ body {
 
 /* Для скролла всех элементов */
 * {
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
+  @media (min-width: @laptop) {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
 
-  &::-webkit-scrollbar-track {
-    background-color: #colors[dark_light];
-    border: 3px solid transparent;
-    border-radius: 9px;
-    background-clip: content-box;
-  }
+    &::-webkit-scrollbar-track {
+      background-color: #colors[dark_light];
+      border: 3px solid transparent;
+      border-radius: 9px;
+      background-clip: content-box;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    width: 9px;
-    background-color: #colors[dark];
-    border-radius: 9px;
-    background-clip: content-box;
-  }
+    &::-webkit-scrollbar-thumb {
+      width: 9px;
+      background-color: #colors[dark];
+      border-radius: 9px;
+      background-clip: content-box;
+    }
 
-  /* For Mozilla scrollbar */
-  scrollbar-color: #colors[dark] #colors[dark_light];
-  scrollbar-width: thin;
+    /* For Mozilla scrollbar */
+    scrollbar-color: #colors[dark] #colors[dark_light];
+    scrollbar-width: thin;
+  }
 }
 
 img {

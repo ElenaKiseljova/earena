@@ -8,7 +8,8 @@
 .tournament__name,
 .tournament__game ,
 .tournament__header,
-.tournament__content {
+.tournament__content,
+.tournament__inner {
   .w100();
 }
 
@@ -29,6 +30,10 @@
   align-items: stretch;
   align-content: flex-start;
 
+  &--chat {
+    align-items: flex-start;
+  }
+
   @media (max-width: @mobile) {
     flex-direction: column;
 
@@ -41,12 +46,24 @@
 .tournament__right {
   padding: 0;
   margin: 0;
+
+  background-color: #colors[dark_light];
 }
 
 .tournament__left {
   position: relative;
 
   width: 706 / 1156 * 100%;
+
+  &--chat {
+    width: 568 / 1156 * 100%;
+
+    padding: 0;
+
+    border-radius: 5px;
+
+    overflow: hidden;
+  }
 
   @media (max-width: @mobile) {
     width: 100%;
@@ -58,9 +75,25 @@
 
   padding: 14px 25px 18px;
 
-  background-color: #colors[dark_light];
-
   border-radius: 0px 5px 0px 0px;
+
+  &--chat {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 568 / 1156 * 100%;
+    height: 100vh;
+
+    padding: 0;
+
+    border-radius: 5px;
+
+    overflow: hidden;
+  }
 
   @media (max-width: @mobile) {
     width: 100%;
@@ -77,6 +110,20 @@
   margin-bottom: 10px;
 
   border-bottom: 1px solid #colors[dark_light_2];
+
+  &--chat {
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 70px;
+
+    padding: 10px 16px 10px 10px;
+    margin: 0;
+
+    border: none;
+
+    background-color: #colors[dark];
+  }
 }
 
 .tournament__content {
@@ -110,6 +157,15 @@
         }
       }
     }
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
+  p + p {
+    margin-bottom: 10px;
   }
 }
 
@@ -174,6 +230,28 @@
   height: 170px;
 
   padding: 10px 0;
+
+  &--chat {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-start;
+
+    height: auto;
+
+    padding: 0;
+    padding-bottom: 13px;
+    margin-bottom: 15px;
+
+    .caption();
+
+    color: #colors[text];
+
+    border-bottom: 1px solid #colors[dark_light_2];
+  }
 }
 
 .tournament__image {
@@ -370,6 +448,17 @@
 
     color: #colors[white];
   }
+
+  &--chat {
+    width: 328 / 508 * 100%;
+    min-height: auto;
+
+    margin-bottom: 2px;
+
+    .card_title();
+
+    color: #colors[link];
+  }
 }
 
 .tournament__status,
@@ -556,4 +645,41 @@
 .tournament__button {
   width: 200px;
   max-width: 50%;
+}
+
+.tournament__rules {
+  flex-shrink: 0;
+
+  margin-right: 9px;
+
+  .body();
+
+  color: #colors[link];
+}
+
+.tournament__chat {
+  padding: 0;
+  margin: 0;
+
+  .h3();
+
+  color: #colors[text];
+}
+
+.tournament__complaint {
+  width: 160px;
+}
+
+.tournament__inner {
+  padding: 10px 30px 30px;
+}
+
+.tournament__type {
+  width: 328 / 508 * 100%;
+}
+
+.tournament__round {
+  margin-bottom: 2px;
+
+  .card_title();
 }

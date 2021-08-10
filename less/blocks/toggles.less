@@ -17,6 +17,13 @@
   margin-bottom: 30px;
 
   background-color: #colors[dark];
+
+  @media (max-width: @mobile) {
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 }
 
 .toggles__list {
@@ -29,6 +36,17 @@
   margin: 0;
 
   list-style: none;
+}
+
+.toggles__right {
+  padding: 0;
+  margin: 0;
+
+  @media (max-width: @mobile) {
+    align-self: flex-end;
+
+    padding: 10px 0;
+  }
 }
 
 .toggles__item {
@@ -87,7 +105,7 @@
 }
 
 .toggles__content {
-  display: flex;
+  display: none;
 
   flex-wrap: wrap;
 
@@ -99,9 +117,18 @@
 
   margin-right: -20px;
   margin-bottom: -20px;
+
+  &.active {
+    display: flex;
+  }
 }
 
 .toggles__content-item {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: stretch;
+
   padding: 0;
   margin: 0;
 
@@ -114,5 +141,18 @@
 
   &--col-2 {
     width: calc(50% - 20px);
+  }
+
+  &--rating {
+    // Минимальный размер таблицы рейтинга - 768px
+    @media (max-width: 798px) {
+      overflow-x: scroll;
+    }
+  }
+
+  @media (max-width: @mobile) {
+    &--col-2 {
+      width: calc(100% - 20px);
+    }
   }
 }

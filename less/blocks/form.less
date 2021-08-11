@@ -281,9 +281,25 @@
   }
 }
 
+.form__buttons {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  .w100();
+
+  margin-top: 30px;
+}
+
 .form__submit {
   margin-top: 20px;
   margin-bottom: 20px;
+
+  &--tournaments {
+    min-width: 135 / 291 * 100%;
+    margin: 0;
+  }
 }
 
 .form__forgot {
@@ -296,6 +312,14 @@
   width: 100%;
 
   margin-top: 30px;
+}
+
+.form__text {
+  .w100();
+
+  .caption();
+
+  color: #colors[text];
 }
 
 // Сброс картинок календаря

@@ -1,0 +1,44 @@
+.preview {
+  .w100();
+
+  .caption();
+
+  color: #colors[text];
+
+  ul {
+    .w100();
+
+    list-style: none;
+
+    li {
+      display: flex;
+
+      justify-content: flex-start;
+      align-items: center;
+
+      padding: 4px 6px 4px 10px;
+      margin-top: 5px;
+
+      border-radius: 5px;
+
+      background-color: #colors[dark];
+
+      &::after {
+        content: '';
+
+        width: 16px;
+        height: 16px;
+
+        margin-left: 10px;
+
+        .bg_icon('../img/close.svg');
+      }
+    }
+  }
+
+  p {
+    .w100();
+
+    word-break: break-word;
+  }
+}

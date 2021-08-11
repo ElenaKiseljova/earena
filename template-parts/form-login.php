@@ -152,7 +152,7 @@
 
 <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
 <template id="form-login-success">
-  <h2 class="popup__title popup__title--login-template">
+  <h2 class="popup__title popup__title--template">
     Alexeyshkitin,
     <br>
     <?php _e( 'добро пожаловать!', 'earena_2' ); ?>
@@ -167,7 +167,7 @@
   </a>
 </template>
 <template id="form-login-beforesend">
-  <h2 class="popup__title popup__title--login-template">
+  <h2 class="popup__title popup__title--template">
     <?php _e( 'Пожалуйста <br> подождите', 'earena_2' ); ?>
   </h2>
 
@@ -176,7 +176,7 @@
   </div>
 </template>
 <template id="form-login-error">
-  <h2 class="popup__title popup__title--login-template">
+  <h2 class="popup__title popup__title--template">
     <?php _e( 'Что-то пошло <br> не так', 'earena_2' ); ?>
   </h2>
 
@@ -187,7 +187,7 @@
 
 <!-- Успешная форма восстановления пароля -->
 <template id="form-login-success-forgot">
-  <h2 class="popup__title popup__title--login-template">
+  <h2 class="popup__title popup__title--template">
     <?php _e( 'Восстановить пароль', 'earena_2' ); ?>
   </h2>
 

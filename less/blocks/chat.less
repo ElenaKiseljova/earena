@@ -40,6 +40,10 @@
   padding: 0 20px;
 
   overflow-y: scroll;
+
+  @media (min-width: @laptop) {
+    padding: 0 16px 0 20px;
+  }
 }
 
 .chat__conversation-list,
@@ -63,6 +67,10 @@
   .w100();
 
   padding: 22px 20px 21px;
+
+  @media (max-width: @mobile) {
+    flex-wrap: wrap;
+  }
 }
 
 .chat__message-text {
@@ -89,6 +97,13 @@
     .message();
 
     color: #57616F;
+  }
+
+  @media (max-width: @mobile) {
+    width: 100%;
+
+    margin-bottom: 10px;
+    margin-right: 0;
   }
 }
 

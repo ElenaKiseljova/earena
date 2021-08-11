@@ -1,3 +1,6 @@
+<?php
+  global $is_chat_page;
+?>
 <div class="chat">
   <div class="chat__conversation">
     <div class="chat__conversation-list">
@@ -16,11 +19,11 @@
                   </h5>
                 </a>
 
-                <time class="user__time">
+                <time class="user__time <?php echo $is_chat_page ? 'user__time--chat-page' : ''; ?>">
                   17:21
                 </time>
 
-                <div class="user__message">
+                <div class="user__message <?php echo $is_chat_page ? 'user__message--chat-page' : ''; ?>">
                   <p>
                     Download ✌🏻✌🏻✌🏻 or copy themes in formats 😀
                   </p>

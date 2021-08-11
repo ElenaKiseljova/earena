@@ -19,11 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
       let formCheck = document.querySelector(`#${idForm}`);
 
       if (formCheck) {
+        // Обертка для собержимого шаблонов
+        let wrapperFormNode = document.querySelector(selectorForTemplateReplace);
+
         // Получение кнопки для отправки
         let buttonSubmit = formCheck.querySelector('button[type="submit"]');
 
         let inputEventListenerFlag = false;
 
+        // Ф-я закрытия попапа по клику на кнопку
+        let additionButtonClosePopup = function () {
+          let formPopupClose = document.querySelector('.form__popup-close');
+
+          if (formPopupClose) {
+            formPopupClose.addEventListener('click', function () {
+              window.closePopup();
+            });
+          }
+        };
+
+        // Валидация формы
         let validateForm = function () {
           // Validate flag
           let notValid = false;
@@ -46,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var birthdayUser = new Date(item.valueAsNumber);
 
                     if ((currentDate.getFullYear() - birthdayUser.getFullYear()) < 18) {
-                      console.log(birthdayUser.getFullYear(), 'Not old enough!');
+                      //console.log(birthdayUser.getFullYear(), 'Not old enough!');
 
                       // Если проверка по возрасту не прошла
                       item.parentNode.nextElementSibling.classList.add('no-old-enough');
@@ -169,9 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   */
                   console.log(formData);
 
-                  //let popupCall = document.querySelector('.popup--call');
-                  let wrapperFormNode = document.querySelector(selectorForTemplateReplace);
-
                   // Обработчик старта отправки
                   var onBeforeSend = function (status) {
                     let templateContentBeforeSend = document.querySelector(`#${idForm}-beforesend`).content;
@@ -183,11 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                       wrapperFormNode.appendChild(cloneTemplate);
 
-                      // Проверяю - надо ди добавлять активный класс родителю
+                      // Проверяю - надо ли добавлять активный класс родителю
                       if (classForAddClosestWrapperForm) {
                         // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
                         wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
-                        //popupCall.style.height = 'auto';
                       }
                     }
 
@@ -206,6 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
                       wrapperFormNode.appendChild(cloneTemplate);
                     }
 
+                    // Ф-я закрытия попапа по клику на кнопку
+                    additionButtonClosePopup();
+
                     console.log('Done: ', response);
                   };
 
@@ -221,13 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
                       wrapperFormNode.appendChild(cloneTemplate);
                     }
 
-                    let formPopupClose = document.querySelector('.form__popup-close');
-
-                    if (formPopupClose) {
-                      formPopupClose.addEventListener('click', function () {
-                        window.closePopup();
-                      });
-                    }
+                    // Ф-я закрытия попапа по клику на кнопку
+                    additionButtonClosePopup();
 
                     console.log('Done (forgot): ', response);
                   };
@@ -245,6 +254,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     console.log('Error: ', error);
+
+                    // Ф-я закрытия попапа по клику на кнопку
+                    additionButtonClosePopup();
+                  };
+
+                  // Обработчик не успешной отправки при недостаточном возрасте
+                  var onErrorNoOldEnough = function (error) {
+                    let templateContentNoOldEnough = document.querySelector(`#${idForm}-no-old-enough`).content;
+
+                    if (wrapperFormNode) {
+                      wrapperFormNode.innerHTML = '';
+
+                      let cloneTemplate = templateContentNoOldEnough.cloneNode(true);
+
+                      wrapperFormNode.appendChild(cloneTemplate);
+                    }
+
+                    console.log('Error: ', error);
+
+                    // Ф-я закрытия попапа по клику на кнопку
+                    additionButtonClosePopup();
                   };
 
                   // Создание запроса
@@ -313,8 +343,42 @@ document.addEventListener('DOMContentLoaded', () => {
           inputEventListenerFlag = true;
         };
 
+        // Кнопка отмены
+        var cancelButton = formCheck.querySelector('button[name*="cancel"]');
+
+        if (cancelButton && wrapperFormNode) {
+          // Отмена регистрации на турнир
+          var onCancel = function () {
+            let templateContentCancel = document.querySelector(`#${idForm}-cancel`).content;
+
+            if (wrapperFormNode) {
+              wrapperFormNode.innerHTML = '';
+
+              let cloneTemplate = templateContentCancel.cloneNode(true);
+
+              wrapperFormNode.appendChild(cloneTemplate);
+
+              // Проверяю - надо ли добавлять активный класс родителю
+              if (classForAddClosestWrapperForm) {
+                // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
+                wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
+              }
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+            }
+
+            console.log('Canceled!');
+          };
+
+          // Добавляю обработчик клика
+          cancelButton.addEventListener('click', onCancel);
+        }
+
         formCheck.addEventListener('click', function (evt) {
-          validateForm();
+          if (!evt.target.name || evt.target.name.indexOf('cancel') === -1) {
+            validateForm();
+          }
         });
       }
     };
@@ -327,6 +391,13 @@ document.addEventListener('DOMContentLoaded', () => {
       selectorClosestWrapperForm: '.popup--login', // по умолчанию - false
     });
 
+    // Tournament (initialization in popup.js file)
+    // window.form({
+    //   idForm: 'form-tournament',
+    //   selectorForTemplateReplace: '.wrapper-form--tournament', // Содержимое будет очищаться при отправке и заменяться шаблонами
+    //   classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+    //   selectorClosestWrapperForm: '.popup--tournament', // по умолчанию - false
+    // });
   } catch (e) {
     console.log(e);
   }

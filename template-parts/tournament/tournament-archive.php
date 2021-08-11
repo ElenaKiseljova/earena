@@ -11,7 +11,7 @@
 <?php if ($tournament_index === 0) : ?>
   <!-- Future -->
   <div class="tournament">
-    <a class="tournament__link" href="">
+    <a class="tournament__link" href="/tournament">
       <div class="tournament__top">
         <div class="tournament__image">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/tournaments/game-<?= $tournament_index; ?>.jpg" alt="Game">
@@ -57,8 +57,8 @@
           </ul>
         </div>
 
-        <div class="tournament__platform">
-          <svg class="tournament__platform-icon" width="40" height="40">
+        <div class="platform">
+          <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-xbox"></use>
           </svg>
         </div>
@@ -76,7 +76,7 @@
 <?php elseif ($tournament_index === 1) : ?>
   <!-- Present . VIP -->
   <div class="tournament">
-    <a class="tournament__link" href="">
+    <a class="tournament__link" href="/tournament">
       <div class="tournament__top">
         <div class="tournament__image">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/tournaments/game-<?= $tournament_index; ?>.jpg" alt="Game">
@@ -126,8 +126,8 @@
           </ul>
         </div>
 
-        <div class="tournament__platform">
-          <svg class="tournament__platform-icon" width="40" height="40">
+        <div class="platform">
+          <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-xbox"></use>
           </svg>
         </div>
@@ -202,8 +202,8 @@
           </ul>
         </div>
 
-        <div class="tournament__platform">
-          <svg class="tournament__platform-icon" width="40" height="40">
+        <div class="platform">
+          <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-desktop"></use>
           </svg>
         </div>
@@ -268,8 +268,8 @@
           </ul>
         </div>
 
-        <div class="tournament__platform">
-          <svg class="tournament__platform-icon" width="40" height="40">
+        <div class="platform">
+          <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-playstation"></use>
           </svg>
         </div>
@@ -286,7 +286,7 @@
   </div>
 <?php else : ?>
   <div class="tournament">
-    <a class="tournament__link" href="">
+    <a class="tournament__link" href="/tournament">
       <div class="tournament__top">
         <div class="tournament__image">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/tournaments/game-<?= $tournament_index; ?>.jpg" alt="Game">
@@ -332,8 +332,8 @@
           </ul>
         </div>
 
-        <div class="tournament__platform">
-          <svg class="tournament__platform-icon" width="40" height="40">
+        <div class="platform">
+          <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-xbox"></use>
           </svg>
         </div>

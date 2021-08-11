@@ -35,26 +35,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
-          <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-1.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
+          <img width="80" height="80" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-1.png" alt="Avatar">
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image match__user-image--loader">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="#">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -103,32 +107,36 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <button class="match__stream" type="button" name="button">
-          <svg class="match__stream-icon" width="16" height="13">
+      <div class="user user--match">
+        <button class="user__stream" type="button" name="button">
+          <svg class="user__stream-icon" width="16" height="13">
             <use xlink:href="#icon-play"></use>
           </svg>
         </button>
-
-        <div class="match__user-image">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-1.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
+
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -177,26 +185,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-1.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--end">
         <span>
           1 : 0
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -245,26 +257,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-3.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Albert Flores
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -274,14 +290,14 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--gray openpopup" data-popup="chats" type="button" name="chats">
+        <a class="button button--gray" href="/chat?type=tournament">
           <span class="button__chat button__chat--left">
             24
           </span>
           <span>
             <?php _e( 'В чат', 'earena_2' ); ?>
           </span>
-        </button>
+        </a>
 
         <div class="match__id">
           ID 30204874239
@@ -316,26 +332,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-3.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Ronald Richards
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image match__user-image--loader">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="#">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -384,26 +404,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Darrell Steward
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image match__user-image--loader">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="#">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -452,26 +476,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Darrell Steward
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image match__user-image--loader">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="#">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 
@@ -520,26 +548,30 @@
     </div>
 
     <div class="match__center">
-      <div class="match__user">
-        <div class="match__user-image">
-          <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-4.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Guy Hawkins
-        </h5>
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
+          <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
       <div class="match__vs match__vs--start">
         <span>
           vs
         </span>
       </div>
-      <div class="match__user">
-        <div class="match__user-image">
+      <div class="user user--match">
+        <a class="user__avatar user__avatar--match" href="#">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
-        </div>
-        <h5 class="match__user-name">
-          Bessie_Cooper
-        </h5>
+        </a>
+        <a class="user__name user__name--match" href="#">
+          <h5>
+            AnnetteBlack
+          </h5>
+        </a>
       </div>
     </div>
 

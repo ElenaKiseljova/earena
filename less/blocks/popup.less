@@ -68,17 +68,6 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    &.sending {
-      .popup__header--login {
-        display: none;
-      }
-
-      .popup__content--login {
-        height: auto;
-        min-height: auto;
-      }
-    }
-
     &.scroll-content {
       height: 99vh;
 
@@ -89,6 +78,27 @@
 
         overflow-y: scroll;
       }
+
+      &.sending {
+        height: auto;
+
+        .popup__content {
+          height: auto;
+
+          overflow: auto;
+        }
+      }
+    }
+  }
+
+  &.sending {
+    .popup__header {
+      display: none;
+    }
+
+    .popup__content {
+      height: auto;
+      min-height: auto;
     }
   }
 
@@ -144,6 +154,10 @@
 
     overflow: hidden;
   }
+
+  &--tournament {
+    padding: 20px 30px 30px;
+  }
 }
 
 .popup__title {
@@ -168,7 +182,7 @@
     background-color: #colors[dark_light];
   }
 
-  &--login-template {
+  &--template {
     margin-bottom: 20px;
   }
 }
@@ -211,6 +225,10 @@
     top: 11px;
     right: 11px;
   }
+
+  &--tournament {
+    display: none;
+  }
 }
 
 .popup__header {
@@ -220,6 +238,13 @@
   margin-bottom: 15px;
 
   background-color: #colors[dark_light];
+
+  &--tournament {
+    padding: 0;
+    margin: 0;
+
+    background-color: transparent;
+  }
 }
 
 .popup__information {
@@ -243,6 +268,7 @@
   }
 }
 
-.popup__add-button {
+.popup__add-button,
+.popup__go-to-button {
   margin-top: 30px;
 }

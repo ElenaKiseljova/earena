@@ -64,7 +64,7 @@
             </h5>
           </a>
 
-          <a class="accordeon__chat button button--gray" href="?type=chat">
+          <a class="accordeon__chat button button--gray" href="/chat?type=tournament">
             <span class="button__chat button__chat--right">
               24
             </span>

@@ -1,0 +1,52 @@
+.pay {
+  .w100();
+
+  padding: 20px 30px 0;
+
+  color: #colors[white];
+}
+
+.pay__table,
+.pay__body,
+.pay__row,
+.pay__text {
+  .w100();
+}
+
+.pay__table {
+  margin-bottom: 20px;
+}
+
+.pay__row {
+  &:not(:last-of-type) {
+    td {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.pay__column {
+  padding: 0;
+
+  &--right {
+    text-align: right;
+  }
+
+  &--red {
+    color: #colors[red];
+  }
+}
+
+.pay__text {
+  margin-bottom: 10px;
+
+  .caption();
+
+  &--red {
+    color: #colors[red];
+  }
+}
+
+.pay__button {
+  width: 100%;
+}

@@ -60,6 +60,29 @@ document.addEventListener("DOMContentLoaded", function () {
       document.removeEventListener('keydown', onPopupEscPress, true);
     }
 
+    // Ф-я сброса формы регистрации на турнир в дефолтное состояние
+    var formRegistrationTournamentDefault = function () {
+      let wrapper = document.querySelector('.wrapper-form--tournament');
+      let template = document.querySelector('#form-tournament-default');
+
+      if (wrapper && template) {
+
+        wrapper.innerHTML = '';
+
+        let cloneTemplate = template.content.cloneNode(true);
+
+        wrapper.appendChild(cloneTemplate);
+
+        // Запуск валидации формы
+        window.form({
+          idForm: 'form-tournament',
+          selectorForTemplateReplace: '.wrapper-form--tournament', // Содержимое будет очищаться при отправке и заменяться шаблонами
+          classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+          selectorClosestWrapperForm: '.popup--tournament', // по умолчанию - false
+        });
+      }
+    };
+
     // Ф-я подмены содержимого шапки и формы в попапе
     let popupContentCreator = function (popup, button, informPopupButtonSelector) {
       // Анализируем имя кнопки, чтобы вставить нужный шаблон в шапку и форму
@@ -133,6 +156,11 @@ document.addEventListener("DOMContentLoaded", function () {
           item.addEventListener('click', function () {
             if (sufixPopupName === 'login') {
               popupContentCreator(popupItem, item, '.popup__button--information');
+            }
+
+            if (sufixPopupName === 'tournament') {
+              // Форма Регистрации на Турнир в дефолтное состояние
+              formRegistrationTournamentDefault();
             }
 
             openPopup(popupItem, sufixPopupName);

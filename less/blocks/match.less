@@ -2,8 +2,7 @@
 .match__top,
 .match__center,
 .match__bottom,
-.match__game,
-.match__user-name {
+.match__game {
   .w100();
 }
 
@@ -101,74 +100,6 @@
 
   justify-content: center;
   align-items: center;
-}
-
-.match__user {
-  position: relative;
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.match__stream {
-  .button_reset();
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  z-index: 3;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  width: 30px;
-  height: 30px;
-
-  border-radius: 50%;
-
-  background-color: #colors[accent];
-}
-
-.match__user-image {
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  width: 80px;
-  height: 80px;
-
-  border-radius: 50%;
-
-  background-color: #colors[dark];
-
-  overflow: hidden;
-
-  &--loader {
-    border: 1px solid #colors[dark_light];
-  }
-}
-
-.match__user-name {
-  margin-top: 5px;
-
-  font-family: #fonts[1];
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 140%;
-  /* identical to box height, or 17px */
-
-
-  color: #80D600;
 }
 
 .match__vs {

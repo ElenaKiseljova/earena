@@ -32,6 +32,27 @@
   &--create {
     padding: 0;
   }
+
+  &--popup {
+    position: relative;
+
+    // Для сокрытия крестика
+    z-index: 1001;
+
+    flex-direction: row;
+
+    flex-wrap: wrap;
+
+    .w100();
+    min-height: unset;
+
+    padding: 15px 30px 17px;
+    margin-bottom: 5px;
+
+    background-color: #colors[dark_light];
+    box-shadow: none;
+    border-radius: 0;
+  }
 }
 
 .match__image {
@@ -93,13 +114,6 @@
   .card_title();
 
   color: #colors[white];
-}
-
-.match__platform {
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
 }
 
 .match__vs {

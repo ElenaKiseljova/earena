@@ -198,6 +198,16 @@
         get_template_part( 'template-parts/popup/tournament' );
       ?>
 
+      <?php
+        // Попап с жалобой судье
+        get_template_part( 'template-parts/popup/complaint' );
+      ?>
+
+      <?php
+        // Попап Матчем
+        get_template_part( 'template-parts/popup/match' );
+      ?>
+
       <!-- Для переключения состояния - добавляется active класс  -->
       <div class="overlay overlay--popup"></div>
       <div class="overlay overlay--navigation"></div>

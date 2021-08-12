@@ -61,44 +61,35 @@
   }
 
   &--login {
-    display: flex;
 
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    &.scroll-content {
-      height: 99vh;
-
-      .popup__content {
-        flex-grow: 1;
-
-        height: 20vh;
-
-        overflow-y: scroll;
-      }
-
-      &.sending {
-        height: auto;
-
-        .popup__content {
-          height: auto;
-
-          overflow: auto;
-        }
-      }
-    }
   }
 
   &.sending {
-    .popup__header {
-      display: none;
-    }
-
     .popup__content {
       height: auto;
       min-height: auto;
+    }
+  }
+
+  &.scroll-content {
+    height: 99vh;
+
+    .popup__content {
+      flex-grow: 1;
+
+      height: 20vh;
+
+      overflow-y: scroll;
+    }
+
+    &.sending {
+      height: auto;
+
+      .popup__content {
+        height: auto;
+
+        overflow: auto;
+      }
     }
   }
 
@@ -107,6 +98,19 @@
     //   padding-top: 150px;
     // }
   }
+}
+
+.popup__template {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  height: 100%;
+
+  .w100();
 }
 
 .popup__wrapper {
@@ -125,11 +129,8 @@
 }
 
 .popup__content {
+  width: 100%;
   padding: 15px 30px 30px;
-
-  &--login {
-    width: 100%;
-  }
 
   &--chats {
     position: relative;
@@ -226,7 +227,8 @@
     right: 11px;
   }
 
-  &--tournament {
+  &--tournament,
+  &--complaint {
     display: none;
   }
 }

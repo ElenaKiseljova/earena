@@ -102,7 +102,7 @@
 
       <div class="section__header-right">
         <!-- Табы игровых платформ -->
-        <?php get_template_part( 'template-parts/tabs' ); ?>
+        <?php get_template_part( 'template-parts/tabs/tabs', 'platform' ); ?>
       </div>
     </header>
 

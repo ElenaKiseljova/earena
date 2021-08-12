@@ -27,8 +27,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-xbox"></use>
         </svg>
       </div>
@@ -68,7 +68,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--blue openpopup" data-popup="add" type="button" name="add">
+        <button class="button button--blue openpopup" data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>
@@ -99,8 +99,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-xbox"></use>
         </svg>
       </div>
@@ -146,7 +146,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--blue openpopup" disabled data-popup="add" type="button" name="add">
+        <button class="button button--blue openpopup" disabled data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Проходит', 'earena_2' ); ?>
           </span>
@@ -177,8 +177,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-xbox"></use>
         </svg>
       </div>
@@ -218,7 +218,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--gray openpopup" disabled data-popup="add" type="button" name="add">
+        <button class="button button--gray openpopup" disabled data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Завершен', 'earena_2' ); ?>
           </span>
@@ -249,8 +249,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-desktop"></use>
         </svg>
       </div>
@@ -290,7 +290,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <a class="button button--gray" href="/chat?type=tournament">
+        <a class="button button--gray" href="/chat?type=match">
           <span class="button__chat button__chat--left">
             24
           </span>
@@ -324,8 +324,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-playstation"></use>
         </svg>
       </div>
@@ -365,7 +365,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--blue openpopup" data-popup="add" type="button" name="add">
+        <button class="button button--blue openpopup" data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>
@@ -396,8 +396,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-desktop"></use>
         </svg>
       </div>
@@ -437,7 +437,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--red openpopup" data-popup="delete" type="button" name="delete">
+        <button class="button button--red openpopup" data-popup="match" type="button" name="delete">
           <span>
             <?php _e( 'Удалить', 'earena_2' ); ?>
           </span>
@@ -468,8 +468,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-desktop"></use>
         </svg>
       </div>
@@ -509,7 +509,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--blue openpopup" data-popup="add" type="button" name="add">
+        <button class="button button--blue openpopup" data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>
@@ -540,8 +540,8 @@
         </ul>
       </div>
 
-      <div class="match__platform">
-        <svg class="match__platform-icon" width="40" height="40">
+      <div class="platform">
+        <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-mobile"></use>
         </svg>
       </div>
@@ -581,7 +581,7 @@
       </div>
 
       <div class="match__button-wrapper">
-        <button class="button button--blue openpopup" data-popup="add" type="button" name="add">
+        <button class="button button--blue openpopup" data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>

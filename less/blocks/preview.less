@@ -41,4 +41,22 @@
 
     word-break: break-word;
   }
+
+  a {
+    color: #colors[link];
+  }
+
+  &--change {
+    ul {
+      li {
+        background-color: transparent;
+
+        text-align: center;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
 }

@@ -97,7 +97,7 @@
           </div>
         </div>
         <!-- Future -->
-        <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="registration">
+        <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="tournament">
           <span>
             <?php _e( 'Регистрация', 'earena_2' ); ?> ($1 500)
           </span>

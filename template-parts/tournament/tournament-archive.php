@@ -145,7 +145,7 @@
 <?php elseif ($tournament_index === 2) : ?>
   <!-- Past -->
   <div class="tournament">
-    <a class="tournament__link tournament__link--past" href="">
+    <a class="tournament__link tournament__link--past" href="/tournament">
       <div class="tournament__top">
         <div class="tournament__image">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/tournaments/game-<?= $tournament_index; ?>.jpg" alt="Game">
@@ -221,7 +221,7 @@
 <?php elseif ($tournament_index === 3) : ?>
   <!-- My -->
   <div class="tournament">
-    <a class="tournament__link tournament__link--my" href="">
+    <a class="tournament__link tournament__link--my" href="/tournament">
       <div class="tournament__top">
         <div class="tournament__image">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/tournaments/game-<?= $tournament_index; ?>.jpg" alt="Game">

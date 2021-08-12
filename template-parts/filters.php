@@ -32,9 +32,9 @@
     <div class="filters__element filters__element--checkboxes">
       <?php if ($matches_page): ?>
         <!-- Приватный матч -->
-        <div class="filters__checkbox filters__checkbox--top">
+        <div class="checkbox checkbox--top">
           <input class="visually-hidden" type="checkbox" name="privat-match" value="" id="privat-match">
-          <label class="filters__label filters__label--checkbox filters__label--right" for="privat-match">
+          <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="privat-match">
             <?php _e( 'Приватный матч', 'earena_2' ); ?>
           </label>
         </div>
@@ -42,17 +42,17 @@
 
       <?php if ($tournaments_page): ?>
         <!-- Приватный турнир -->
-        <div class="filters__checkbox filters__checkbox--top">
+        <div class="checkbox checkbox--top">
           <input class="visually-hidden" type="checkbox" name="privat-tournament" value="" id="privat-tournament">
-          <label class="filters__label filters__label--checkbox filters__label--right" for="privat-tournament">
+          <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="privat-tournament">
             <?php _e( 'Приватный турнир', 'earena_2' ); ?>
           </label>
         </div>
 
         <!-- VIP турнир -->
-        <div class="filters__checkbox filters__checkbox--top">
+        <div class="checkbox checkbox--top">
           <input class="visually-hidden" type="checkbox" name="vip" value="" id="vip">
-          <label class="filters__label filters__label--checkbox filters__label--right" for="vip">
+          <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="vip">
             <?php _e( 'VIP', 'earena_2' ); ?>
           </label>
         </div>
@@ -77,17 +77,17 @@
             <!-- Для переключения состояния - добавляется active класс  -->
             <ul class="filters__list filters__list--checkbox">
               <li class="filters__item filters__item--checkbox">
-                <div class="filters__checkbox filters__checkbox--left">
+                <div class="checkbox checkbox--left">
                   <input class="visually-hidden" type="checkbox" name="game" value="Modern Warfare" id="modern-warfare">
-                  <label class="filters__label filters__label--checkbox filters__label--left" for="modern-warfare">
+                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="modern-warfare">
                     Modern Warfare
                   </label>
                 </div>
               </li>
               <li class="filters__item filters__item--checkbox">
-                <div class="filters__checkbox filters__checkbox--left">
+                <div class="checkbox checkbox--left">
                   <input class="visually-hidden" type="checkbox" name="game" value="Dota 2" id="dota-2">
-                  <label class="filters__label filters__label--checkbox filters__label--left" for="dota-2">
+                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="dota-2">
                     Dota 2
                   </label>
                 </div>
@@ -96,15 +96,15 @@
 
             <ul class="filters__list filters__list--result">
               <li class="filters__item filters__item--result">
-                <div class="filters__checkbox filters__checkbox--left">
-                  <label class="filters__label filters__label--result filters__label--right" for="modern-warfare">
+                <div class="checkbox checkbox--left">
+                  <label class="checkbox__label checkbox__label--result checkbox__label--right" for="modern-warfare">
                     Modern Warfare
                   </label>
                 </div>
               </li>
               <li class="filters__item filters__item--result">
-                <div class="filters__checkbox filters__checkbox--left">
-                  <label class="filters__label filters__label--result filters__label--right" for="dota-2">
+                <div class="checkbox checkbox--left">
+                  <label class="checkbox__label checkbox__label--result checkbox__label--right" for="dota-2">
                     Dota 2
                   </label>
                 </div>
@@ -125,33 +125,33 @@
       <!-- Для переключения состояния - добавляется active класс  -->
       <ul class="filters__list filters__list--checkbox active">
         <li class="filters__item filters__item--checkbox">
-          <div class="filters__checkbox filters__checkbox--left">
+          <div class="checkbox checkbox--left">
             <input class="visually-hidden" type="checkbox" name="platform" value="xbox" id="platform-xbox">
-            <label class="filters__label filters__label--checkbox filters__label--left" for="platform-xbox">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-xbox">
               XBOX
             </label>
           </div>
         </li>
         <li class="filters__item filters__item--checkbox">
-          <div class="filters__checkbox filters__checkbox--left">
+          <div class="checkbox checkbox--left">
             <input class="visually-hidden" type="checkbox" name="platform" value="pc" id="platform-pc">
-            <label class="filters__label filters__label--checkbox filters__label--left" for="platform-pc">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-pc">
               PC
             </label>
           </div>
         </li>
         <li class="filters__item filters__item--checkbox">
-          <div class="filters__checkbox filters__checkbox--left">
+          <div class="checkbox checkbox--left">
             <input class="visually-hidden" type="checkbox" name="platform" value="mobile" id="platform-mobile">
-            <label class="filters__label filters__label--checkbox filters__label--left" for="platform-mobile">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-mobile">
               Mobile
             </label>
           </div>
         </li>
         <li class="filters__item filters__item--checkbox">
-          <div class="filters__checkbox filters__checkbox--left">
+          <div class="checkbox checkbox--left">
             <input class="visually-hidden" type="checkbox" name="platform" value="playstation" id="platform-playstation">
-            <label class="filters__label filters__label--checkbox filters__label--left" for="platform-playstation">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-playstation">
               PlayStation
             </label>
           </div>

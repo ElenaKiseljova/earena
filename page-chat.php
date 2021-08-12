@@ -1,4 +1,10 @@
 <?php
+  /*
+    Чат
+  */
+?>
+
+<?php
   get_header(  );
 ?>
 
@@ -45,23 +51,26 @@
             <?php _e( 'Правила игры', 'earena_2' ); ?>
           </a>
         </header>
-        <div class="chat-page__inner">
-          <div class="chat-page__top">
-            <h2 class="chat-page__name">
-              Championship 2020 Season 2 Premium
-            </h2>
+        <div class="chat-page__inner <?php echo $match_chat_page ? 'chat-page__inner--match' : '';  ?>">
+          <?php if ($tournament_chat_page): ?>
+            <div class="chat-page__top">
+              <h2 class="chat-page__name">
+                Championship 2020 Season 2 Premium
+              </h2>
 
-            <div class="chat-page__round">
-              3 <?php _e( 'тур', 'earena_2' ); ?>
+              <div class="chat-page__round">
+                3 <?php _e( 'тур', 'earena_2' ); ?>
+              </div>
+              <div class="chat-page__type">
+                <?php _e( 'Турнир', 'earena_2' ); ?>
+              </div>
+              <div class="chat-page__date">
+                <?php _e( 'Сыграть до', 'earena_2' ); ?> <time>15.11.2020</time>
+              </div>
             </div>
-            <div class="chat-page__type">
-              <?php _e( 'Турнир', 'earena_2' ); ?>
-            </div>
-            <div class="chat-page__date">
-              <?php _e( 'Сыграть до', 'earena_2' ); ?> <time>15.11.2020</time>
-            </div>
-          </div>
-          <form class="chat-page__form" action="index.html" method="post">
+          <?php endif; ?>
+
+          <form class="chat-page__form" id="form-chat-page" action="index.html" method="post">
             <div class="chat-page__form-left">
               <div class="user user--form">
                 <a class="user__avatar user__avatar--form" href="#">
@@ -74,13 +83,22 @@
                 </a>
               </div>
 
-              <label class="visually-hidden" for="chat-page-result-user-1">
+              <!-- Send -->
+              <!-- <label class="visually-hidden" for="chat-page-result-user-1">
                 <?php _e( 'Результат первого участника', 'earena_2' ) ?>
               </label>
               <input class="chat-page__form-input" readonly type="text" id="chat-page-result-user-1" name="chat-page-result-user-1" value="0">
+
+              <div class="chat-page__broadcasting checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="broadcasting" id="broadcasting">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="broadcasting">
+                  <?php _e( 'Трансляция', 'earena_2' ); ?>
+                </label>
+              </div> -->
             </div>
             <div class="chat-page__form-center">
-              <span class="chat-page__form-vs">
+              <!-- Send -->
+              <!-- <span class="chat-page__form-vs">
                 vs
               </span>
               <label class="chat-page__form-field-label" for="chat-page-result-files">
@@ -89,6 +107,51 @@
               <input class="chat-page__form-field-input visually-hidden" type="file" id="chat-page-result-files" name="chat-page-result-files" accept=".png, .jpg, .jpeg" multiple>
 
               <div class="preview">
+              </div> -->
+
+              <!-- Change -->
+              <!-- <span class="chat-page__form-vs chat-page__form-vs--change">
+                1 : 5
+              </span>
+              <div class="preview preview--change">
+                <ul>
+                  <li>
+                    <p>
+                      about-medium
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      about-medium@2x
+                    </p>
+                  </li>
+              </div> -->
+
+              <!-- Accept -->
+              <span class="chat-page__form-vs chat-page__form-vs--change">
+                1 : 5
+              </span>
+              <label class="chat-page__form-field-label" for="chat-page-result-files">
+                <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
+              </label>
+              <input class="chat-page__form-field-input visually-hidden" type="file" id="chat-page-result-files" name="chat-page-result-files" accept=".png, .jpg, .jpeg" multiple>
+
+              <!-- Сюда попадают скрины, что загрузил игрок подтверждающий результат матча, что ввел его сопертник -->
+              <div class="preview">
+              </div>
+              <!-- Сюда попадают скрины, что загрузил игрок, который отправил счет матча -->
+              <div class="preview preview--change">
+                <ul>
+                  <li>
+                    <p>
+                      <a href="#">about-medium</a>
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <a href="#">about-medium@2x</a>
+                    </p>
+                  </li>
               </div>
             </div>
             <div class="chat-page__form-right">
@@ -108,15 +171,31 @@
                 </a>
               </div>
 
-              <label class="visually-hidden" for="chat-page-result-user-2">
+              <!-- Send -->
+              <!-- <label class="visually-hidden" for="chat-page-result-user-2">
                 <?php _e( 'Результат второго участника', 'earena_2' ) ?>
               </label>
-              <input class="chat-page__form-input" readonly type="text" id="chat-page-result-user-2" name="chat-page-result-user-2" value="0">
+              <input class="chat-page__form-input" readonly type="text" id="chat-page-result-user-2" name="chat-page-result-user-2" value="0"> -->
             </div>
 
-            <button class="chat-page__form-submit button button--blue" disabled type="submit" name="chat-page-result-submit">
+            <!-- Send -->
+            <!-- <button class="chat-page__form-submit button button--blue" disabled type="submit" name="chat-page-result-submit">
               <span>
                 <?php _e( 'Отправить результат', 'earena_2' ); ?>
+              </span>
+            </button> -->
+
+            <!-- Change -->
+            <!-- <button class="chat-page__form-submit button button--gray" type="submit" name="chat-page-result-submit">
+              <span>
+                <?php _e( 'Изменить результат', 'earena_2' ); ?>
+              </span>
+            </button> -->
+
+            <!-- Accept -->
+            <button class="chat-page__form-submit button button--blue" type="submit" name="chat-page-result-submit">
+              <span>
+                <?php _e( 'Подтвердить результат', 'earena_2' ); ?>
               </span>
             </button>
           </form>

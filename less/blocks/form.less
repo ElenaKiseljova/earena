@@ -1,11 +1,5 @@
-.wrapper-form {
-  .w100();
-}
-
 .form,
 .form__row,
-.form__checkbox,
-.form__checkbox-label,
 .form__error {
   .w100();
 }
@@ -31,6 +25,7 @@
 
   &.invalid {
     & .form__field {
+      border-color: #colors[red];
       color: #colors[red];
 
       &:focus {
@@ -102,32 +97,19 @@
     }
   }
 
+  &:disabled {
+    opacity: 0.4;
+
+    pointer-events: none;
+  }
+
   &--message {
-    resize: none;
+    resize: vertical;
 
-    height: 102px;
+    padding-top: 12px;
+    padding-bottom: 12px;
 
-    font-size: 18px;
-    line-height: 24px;
-  }
-
-  &--contact-page {
-    background-color: #ffffff;
-  }
-
-  @media only screen and (min-width: 768px) {
-
-    &:focus,
-    &:valid {
-
-    }
-  }
-
-  @media only screen and (min-width: 1920px) {
-    &:focus,
-    &:valid {
-
-    }
+    height: 40px;
   }
 }
 
@@ -186,30 +168,6 @@
   display: none;
 }
 
-.form__checkbox {
-  display: inline-block;
-
-  min-height: 12px;
-
-  margin-bottom: 32px;
-
-  input {
-    &:checked + .form__checkbox-label {
-      &::before {
-
-      }
-
-      &::after {
-        opacity: 1;
-      }
-    }
-  }
-
-  @media only screen and (min-width: 768px) {
-
-  }
-}
-
 .form__privacy {
   .w100();
 
@@ -229,58 +187,6 @@
   }
 }
 
-.form__checkbox-label {
-  position: relative;
-
-  padding-left: 20px;
-
-  color: #colors[text];
-
-  cursor: pointer;
-
-  &::before,
-  &::after {
-    content: '';
-
-    position: absolute;
-  }
-
-  &::before {
-    left: 0;
-    top: 2px;
-
-    width: 12px;
-    height: 12px;
-
-    background-color: #F2F3F5;
-
-    border: 1px solid #colors[red];
-  }
-
-  &::after {
-    left: 3px;
-    top: 5px;
-
-    width: 6px;
-    height: 6px;
-
-    background-color: #colors[red];
-
-    opacity: 0;
-  }
-
-  &:hover,
-  &:focus {
-    &::before {
-
-    }
-
-    &::after {
-
-    }
-  }
-}
-
 .form__buttons {
   display: flex;
 
@@ -296,9 +202,14 @@
   margin-top: 20px;
   margin-bottom: 20px;
 
-  &--tournaments {
-    min-width: 135 / 291 * 100%;
+  &--buttons {
+    width: 135 / 291 * 100%;
+
     margin: 0;
+  }
+
+  &--accept {
+    margin-top: 30px;
   }
 }
 
@@ -312,6 +223,58 @@
   width: 100%;
 
   margin-top: 30px;
+
+  &--cross {
+    position: absolute;
+
+    top: 20px;
+    right: 18px;
+
+    z-index: 1000;
+
+    .button_reset();
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: auto;
+
+    svg {
+      path {
+        stroke: #colors[white];
+
+        transition: fill 0.5s;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      svg {
+        path {
+          stroke: #colors[link];
+
+          transition: fill 0.5s;
+        }
+      }
+    }
+
+    &--chats {
+      top: 11px;
+      right: 11px;
+    }
+
+    &--tournament {
+      display: none;
+    }
+  }
+
+  &--buttons {
+    width: 135 / 291 * 100%;
+
+    margin: 0;
+  }
 }
 
 .form__text {
@@ -319,7 +282,34 @@
 
   .caption();
 
-  color: #colors[text];
+  color: #colors[text_black];
+
+  &--match {
+    margin-bottom: 20px;
+  }
+
+  &--star {
+    margin-top: 10px;
+
+    &::before {
+      content: '*';
+
+      margin-right: 5px;
+
+      color: #colors[red];
+    }
+  }
+}
+
+.form__checkbox {
+  &--free {
+    margin-bottom: 10px;
+  }
+
+  &--private {
+    margin-bottom: 10px;
+    margin-bottom: 15px;
+  }
 }
 
 // Сброс картинок календаря

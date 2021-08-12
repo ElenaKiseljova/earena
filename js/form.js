@@ -2,6 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
+    let deviceHeight = window.innerHeight && document.documentElement.clientHeight ?
+                      Math.min(window.innerHeight, document.documentElement.clientHeight) :
+                      window.innerHeight ||
+                      document.documentElement.clientHeight ||
+                      document.getElementsByTagName('body')[0].clientHeight;
+
     window.form = (attr) => {
       // ID формы
       var idForm = attr.idForm;
@@ -27,13 +33,300 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let inputEventListenerFlag = false;
 
+        // Ф-я отключения полей формы при выбранном/отключенном чекбоксе
+        let checkboxControlField = (checkboxControl, fieldChange, toggle = 'off') => {
+          checkboxControl.addEventListener('change', function () {
+            if (checkboxControl.checked === true) {
+              if (toggle === 'off') {
+                fieldChange.disabled = true;
+              }
+
+              if (toggle === 'on') {
+                fieldChange.disabled = false;
+              }
+            }
+
+            if (checkboxControl.checked === false) {
+              if (toggle === 'off') {
+                fieldChange.disabled = false;
+              }
+
+              if (toggle === 'on') {
+                fieldChange.disabled = true;
+              }
+            }
+          });
+        };
+
+        // Ф-я отправки формы
+        let formSubmitFunction = function (inputs, textareas) {
+          formCheck.addEventListener('submit', function (evt) {
+            // Прерываем стандартное действие кнопки для XMLHttpRequest
+            evt.preventDefault();
+
+            // Объект для отправки на сервер
+            let formData = {};
+
+            // Собираем значения из инпутов
+            if (inputs) {
+              inputs.forEach(inputField => {
+                let nameInput = inputField.name;
+                let valueInput = inputField.value;
+
+                if (nameInput && valueInput) {
+                  formData[`${nameInput}`] = valueInput;
+                }
+              });
+            }
+
+            // Собираем значения из  многострочных полей ввода
+            if (textareas) {
+              textareas.forEach((textareaField, i) => {
+                let nameTextarea = textareaField.name;
+                let valueTextarea = textareaField.value;
+
+                if (nameTextarea && valueTextarea) {
+                  formData[`${nameTextarea}`] = valueTextarea;
+                }
+              });
+            }
+
+            formData = JSON.stringify(formData);
+
+            /*
+              * На сервере будут приняты только поля с атрибутом
+              * name = 'name', 'phone', 'message', 'email'
+              * Если их не достаточно - надо поправить ф-ю 'sendmail' в
+              * functions.php под то, что требуется
+            */
+            console.log(formData);
+
+            // Обработчик старта отправки
+            var onBeforeSend = function (status) {
+              let templateContentBeforeSend = document.querySelector(`#${idForm}-beforesend`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentBeforeSend.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+
+                // Проверяю - надо ли добавлять активный класс родителю
+                if (classForAddClosestWrapperForm) {
+                  // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
+                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
+                }
+              }
+
+              console.log('Send: ', status);
+            };
+
+            // Обработчик успешной отправки
+            var onSuccess = function (response) {
+              let templateContentSuccess = document.querySelector(`#${idForm}-success`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+              }
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+
+              console.log('Done: ', response);
+            };
+
+            // Обработчик успешной отправки при восстановлении пароля
+            var onSuccessForgot = function (response) {
+              let templateContentSuccess = document.querySelector(`#${idForm}-success-forgot`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+              }
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+
+              console.log('Done (forgot): ', response);
+            };
+
+            // Обработчик успешной отправки при переходе на следующий шаг
+            // регистрации матча
+            var onSuccessNext = function (response) {
+              let templateContentSuccess = document.querySelector(`#${idForm}-success-next`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+
+                // Перезапуск/запуск валидации формы
+                window.form({
+                  idForm: idForm,
+                  selectorForTemplateReplace: selectorForTemplateReplace, // Содержимое будет очищаться при отправке и заменяться шаблонами
+                  classForAddClosestWrapperForm: classForAddClosestWrapperForm, // по умолчанию - false
+                  selectorClosestWrapperForm: selectorClosestWrapperForm, // по умолчанию - false
+                });
+              }
+
+              if (selectorClosestWrapperForm) {
+                // Регулировка высоты попапа
+                if (wrapperFormNode.closest(selectorClosestWrapperForm).offsetHeight >= deviceHeight) {
+                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.add('scroll-content');
+                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.remove('sending');
+                } else {
+                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.remove('scroll-content');
+                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.add('sending');
+                }
+              }
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+
+              console.log('Done (next): ', response);
+            };
+
+            var onSuccessCreate = function (response) {
+              let templateContentSuccess = document.querySelector(`#${idForm}-success-create`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+              }
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+
+              console.log('Done (next): ', response);
+            };
+
+            // Обработчик успешной отправки при недостаточном возрасте
+            var onSuccessNoOldEnough = function (response) {
+              let templateContentNoOldEnough = document.querySelector(`#${idForm}-success-no-old-enough`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentNoOldEnough.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+              }
+
+              console.log('Done: ', response);
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+            };
+
+            // Обработчик не успешной отправки
+            var onError = function (error) {
+              let templateContentError = document.querySelector(`#${idForm}-error`).content;
+
+              if (wrapperFormNode) {
+                wrapperFormNode.innerHTML = '';
+
+                let cloneTemplate = templateContentError.cloneNode(true);
+
+                wrapperFormNode.appendChild(cloneTemplate);
+              }
+
+              console.log('Error: ', error);
+
+              // Ф-я закрытия попапа по клику на кнопку
+              additionButtonClosePopup();
+            };
+
+            // Создание запроса
+            var xhr = new XMLHttpRequest();
+
+            // Тип передаваемых данных
+            xhr.responseType = 'json';
+
+            // Открытие запроса
+            xhr.open('POST', earena_2_ajax.url + '?action=sendmail', true);
+
+            // Установка заголовков запроса
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+            // Обработка запроса
+            xhr.addEventListener('load', function () {
+              var error;
+
+              switch (xhr.status) {
+                case 200:
+                  onSuccess(xhr.response);
+
+                  break;
+                case 400:
+                  error = 'Неверный запрос';
+                  break;
+                case 401:
+                  error = 'Пользователь не авторизован';
+                  break;
+                case 404:
+                  error = 'Ничего не найдено';
+                  break;
+                default:
+                  error = 'Статус ответа: ' + xhr.status + ' ' + xhr.statusText;
+              }
+
+              if (error) {
+                //onError(error);
+                /*Test ---> */
+                onSuccess(error);
+                //onSuccessNext(error);
+                //onSuccess(error);
+                //onSuccessForgot(error);
+                //onSuccessCreate(error);
+                //onSuccessNoOldEnough(error);
+                /* --- end test ; */
+              }
+            });
+
+            // Ошибка соединения (нет интернета)
+            xhr.addEventListener('error', function () {
+              onError('Произошла ошибка соединения');
+            });
+
+            // Превышен таймаут
+            xhr.addEventListener('timeout', function () {
+              onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
+            });
+
+            // Установка таймаута
+            xhr.timeout = 10000; // 10 с
+
+            // Отправка запроса
+            xhr.send(formData);
+
+            // Выполнение действий при старте отправки формы
+            onBeforeSend(xhr.readyState);
+            //onBeforeSend('good');
+          });
+        };
+
         // Ф-я закрытия попапа по клику на кнопку
         let additionButtonClosePopup = function () {
-          let formPopupClose = document.querySelector('.form__popup-close');
+          let formClosePopups = document.querySelectorAll('.form__popup-close');
 
-          if (formPopupClose) {
-            formPopupClose.addEventListener('click', function () {
-              window.closePopup();
+          if (formClosePopups) {
+            formClosePopups.forEach((formClosePopup, i) => {
+              formClosePopup.addEventListener('click', function () {
+                window.closePopup();
+              });
             });
           }
         };
@@ -55,6 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
               if (item.type !== 'radio' && item.type !== 'checkbox' && item.type !== 'submit') {
                 item.autocomplete = 'off';
 
+                // Проверка по возрасту
                 if (item.type === 'date') {
                   if (item.valueAsNumber) {
                     var currentDate = new Date();
@@ -138,212 +432,20 @@ document.addEventListener('DOMContentLoaded', () => {
               buttonSubmit.disabled = false;
             } else {
               buttonSubmit.disabled = true;
+            }
 
-              // Проверка на то, был ли уже повешен обработчик клика на кнопку ранее
-              if (inputEventListenerFlag === false) {
+            // Проверка на то, был ли уже повешен обработчик клика на кнопку ранее
+            if (inputEventListenerFlag === false) {
 
-                // Если - нет - тогда вешаем
-                formCheck.addEventListener('submit', function (evt) {
-                  // Прерываем стандартное действие кнопки для XMLHttpRequest
-                  evt.preventDefault();
-
-                  // Объект для отправки на сервер
-                  let formData = {};
-
-                  // Собираем значения из инпутов
-                  if (allInputs) {
-                    allInputs.forEach(inputField => {
-                      let nameInput = inputField.name;
-                      let valueInput = inputField.value;
-
-                      if (nameInput && valueInput) {
-                        formData[`${nameInput}`] = valueInput;
-                      }
-                    });
-                  }
-
-                  // Собираем значения из  многострочных полей ввода
-                  if (allTextarea) {
-                    allTextarea.forEach((textareaField, i) => {
-                      let nameTextarea = textareaField.name;
-                      let valueTextarea = textareaField.value;
-
-                      if (nameTextarea && valueTextarea) {
-                        formData[`${nameTextarea}`] = valueTextarea;
-                      }
-                    });
-                  }
-
-                  formData = JSON.stringify(formData);
-
-                  /*
-                    * На сервере будут приняты только поля с атрибутом
-                    * name = 'name', 'phone', 'message', 'email'
-                    * Если их не достаточно - надо поправить ф-ю 'sendmail' в
-                    * functions.php под то, что требуется
-                  */
-                  console.log(formData);
-
-                  // Обработчик старта отправки
-                  var onBeforeSend = function (status) {
-                    let templateContentBeforeSend = document.querySelector(`#${idForm}-beforesend`).content;
-
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = '';
-
-                      let cloneTemplate = templateContentBeforeSend.cloneNode(true);
-
-                      wrapperFormNode.appendChild(cloneTemplate);
-
-                      // Проверяю - надо ли добавлять активный класс родителю
-                      if (classForAddClosestWrapperForm) {
-                        // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                        wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
-                      }
-                    }
-
-                    console.log('Send: ', status);
-                  };
-
-                  // Обработчик успешной отправки
-                  var onSuccess = function (response) {
-                    let templateContentSuccess = document.querySelector(`#${idForm}-success`).content;
-
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = '';
-
-                      let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                      wrapperFormNode.appendChild(cloneTemplate);
-                    }
-
-                    // Ф-я закрытия попапа по клику на кнопку
-                    additionButtonClosePopup();
-
-                    console.log('Done: ', response);
-                  };
-
-                  // Обработчик успешной отправки при восстановлении пароля
-                  var onSuccessForgot = function (response) {
-                    let templateContentSuccess = document.querySelector(`#${idForm}-success-forgot`).content;
-
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = '';
-
-                      let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                      wrapperFormNode.appendChild(cloneTemplate);
-                    }
-
-                    // Ф-я закрытия попапа по клику на кнопку
-                    additionButtonClosePopup();
-
-                    console.log('Done (forgot): ', response);
-                  };
-
-                  // Обработчик не успешной отправки
-                  var onError = function (error) {
-                    let templateContentError = document.querySelector(`#${idForm}-error`).content;
-
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = '';
-
-                      let cloneTemplate = templateContentError.cloneNode(true);
-
-                      wrapperFormNode.appendChild(cloneTemplate);
-                    }
-
-                    console.log('Error: ', error);
-
-                    // Ф-я закрытия попапа по клику на кнопку
-                    additionButtonClosePopup();
-                  };
-
-                  // Обработчик не успешной отправки при недостаточном возрасте
-                  var onErrorNoOldEnough = function (error) {
-                    let templateContentNoOldEnough = document.querySelector(`#${idForm}-no-old-enough`).content;
-
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = '';
-
-                      let cloneTemplate = templateContentNoOldEnough.cloneNode(true);
-
-                      wrapperFormNode.appendChild(cloneTemplate);
-                    }
-
-                    console.log('Error: ', error);
-
-                    // Ф-я закрытия попапа по клику на кнопку
-                    additionButtonClosePopup();
-                  };
-
-                  // Создание запроса
-                  var xhr = new XMLHttpRequest();
-
-                  // Тип передаваемых данных
-                  xhr.responseType = 'json';
-
-                  // Открытие запроса
-                	xhr.open('POST', earena_2_ajax.url + '?action=sendmail', true);
-
-                  // Установка заголовков запроса
-                  xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-
-                  // Обработка запроса
-                	xhr.addEventListener('load', function () {
-                    var error;
-
-                    switch (xhr.status) {
-                      case 200:
-                        onSuccess(xhr.response);
-
-                        break;
-                      case 400:
-                        error = 'Неверный запрос';
-                        break;
-                      case 401:
-                        error = 'Пользователь не авторизован';
-                        break;
-                      case 404:
-                        error = 'Ничего не найдено';
-                        break;
-                      default:
-                        error = 'Статус ответа: ' + xhr.status + ' ' + xhr.statusText;
-                    }
-
-                    if (error) {
-                      onError(error);
-                    }
-                	});
-
-                  // Ошибка соединения (нет интернета)
-                  xhr.addEventListener('error', function () {
-                    onError('Произошла ошибка соединения');
-                  });
-
-                  // Превышен таймаут
-                  xhr.addEventListener('timeout', function () {
-                    onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
-                  });
-
-                  // Установка таймаута
-                  xhr.timeout = 10000; // 10 с
-
-                  // Отправка запроса
-                	xhr.send(formData);
-
-                  // Выполнение действий при старте отправки формы
-                  onBeforeSend(xhr.readyState);
-                  //onBeforeSend('good');
-                });
-              }
+              // Если - нет - тогда вешаем
+              formSubmitFunction(allInputs, allTextarea);
             }
           }
 
           inputEventListenerFlag = true;
         };
 
-        // Кнопка отмены
+        // Кнопка отмены с заменой шаблона
         var cancelButton = formCheck.querySelector('button[name*="cancel"]');
 
         if (cancelButton && wrapperFormNode) {
@@ -351,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
           var onCancel = function () {
             let templateContentCancel = document.querySelector(`#${idForm}-cancel`).content;
 
-            if (wrapperFormNode) {
+            if (wrapperFormNode && templateContentCancel) {
               wrapperFormNode.innerHTML = '';
 
               let cloneTemplate = templateContentCancel.cloneNode(true);
@@ -375,29 +477,31 @@ document.addEventListener('DOMContentLoaded', () => {
           cancelButton.addEventListener('click', onCancel);
         }
 
+        // Вызов ф-и закрытия попапа по клику на кнопку
+        additionButtonClosePopup();
+
+        // Поиск зависимых чекбоксов в форме
+        let checkboxes = formCheck.querySelectorAll('input[type="checkbox"]');
+
+        if (checkboxes) {
+          checkboxes.forEach((checkboxItem, i) => {
+            if (checkboxItem.dataset.controlFieldId) {
+              let fieldControl = formCheck.querySelector(`#${checkboxItem.dataset.controlFieldId}`);
+
+              if (fieldControl) {
+                // Вызов ф-и изменения связанных полей
+                checkboxControlField(checkboxItem, fieldControl, checkboxItem.dataset.controlToggle);
+              }
+            }
+          });
+        }
+
+        // Запуск валидации по клику на форму
         formCheck.addEventListener('click', function (evt) {
-          if (!evt.target.name || evt.target.name.indexOf('cancel') === -1) {
-            validateForm();
-          }
+          validateForm();
         });
       }
     };
-
-    // Login
-    window.form({
-      idForm: 'form-login',
-      selectorForTemplateReplace: '.wrapper-form--login', // Содержимое будет очищаться при отправке и заменяться шаблонами
-      classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-      selectorClosestWrapperForm: '.popup--login', // по умолчанию - false
-    });
-
-    // Tournament (initialization in popup.js file)
-    // window.form({
-    //   idForm: 'form-tournament',
-    //   selectorForTemplateReplace: '.wrapper-form--tournament', // Содержимое будет очищаться при отправке и заменяться шаблонами
-    //   classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-    //   selectorClosestWrapperForm: '.popup--tournament', // по умолчанию - false
-    // });
   } catch (e) {
     console.log(e);
   }

@@ -8,6 +8,10 @@
   margin: 0;
 
   color: #colors[text];
+
+  &--purse {
+    width: 100%;
+  }
 }
 
 .tabs__button {
@@ -47,15 +51,31 @@
 
   &:active,
   &.active {
+    color: #colors[white];
     background-color: #colors[accent];
     border-color: #colors[accent];
 
     transition: border-color 0.3s, background-color 0.3s;
+
+    svg {
+      fill: #colors[white];
+    }
+  }
+
+  &--purse {
+    min-width: 25%;
+
+    padding-top: 9px;
+    padding-bottom: 10px;
   }
 
   @media (max-width: @mobile) {
     padding: 5px 14px;
   }
+}
+
+.tabs__icon {
+  fill: #A9B3C1;
 }
 
 .tabs__text {

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         OVERLAY_POPUP.classList.add('active');
       }
 
-      // Если при отправке формы аякс добавлялся класс, который влияет на отображение элементов, то его ужалить при новом открытии попапа
+      // Если при отправке формы аякс добавлялся класс, который влияет на отображение элементов, то его удалить при новом открытии попапа
       if (popup.classList.contains('sending')) {
         popup.classList.remove('sending');
       }
@@ -60,77 +60,47 @@ document.addEventListener("DOMContentLoaded", function () {
       document.removeEventListener('keydown', onPopupEscPress, true);
     }
 
-    // Ф-я сброса формы регистрации на турнир в дефолтное состояние
-    var formRegistrationTournamentDefault = function () {
-      let wrapper = document.querySelector('.wrapper-form--tournament');
-      let template = document.querySelector('#form-tournament-default');
-
-      if (wrapper && template) {
-
-        wrapper.innerHTML = '';
-
-        let cloneTemplate = template.content.cloneNode(true);
-
-        wrapper.appendChild(cloneTemplate);
-
-        // Запуск валидации формы
-        window.form({
-          idForm: 'form-tournament',
-          selectorForTemplateReplace: '.wrapper-form--tournament', // Содержимое будет очищаться при отправке и заменяться шаблонами
-          classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-          selectorClosestWrapperForm: '.popup--tournament', // по умолчанию - false
-        });
-      }
-    };
-
-    // Ф-я подмены содержимого шапки и формы в попапе
-    let popupContentCreator = function (popup, button, informPopupButtonSelector) {
+    // Ф-я подмены содержимого попапа
+    let popupContentCreator = function (prefix, popup, button, innerPopupButtonSelector = false) {
       // Анализируем имя кнопки, чтобы вставить нужный шаблон в шапку и форму
-      let typeLoginPopup = button.name;
+      let typePopup = button.name;
 
-      // Получаем элементы шапки
-      let popupLoginHeader = popup.querySelector('.popup__header--login');
+      // Получаем контейнер для шаблона
+      let popupTemplateContainer = popup.querySelector(`#${prefix}-popup`);
 
-      // Получаем враппер формы
-      let wrapperForm = popup.querySelector('.wrapper-form--login');
+      // Получаем нужный шаблон шапки
+      let popupCurrentTemplate = popup.querySelector(`#popup-${prefix}-${typePopup}`);
 
-      if (popupLoginHeader && wrapperForm) {
-        // Очищаем шапку
-        popupLoginHeader.innerHTML = '';
+      if (popupTemplateContainer && popupCurrentTemplate) {
+        // Очищаем контейнер
+        popupTemplateContainer.innerHTML = '';
 
-        // Очищаем враппер формы
-        wrapperForm.innerHTML = '';
+        // Получаем контент нужного шаблона
+        let popupCurrentTemplateContent = popupCurrentTemplate.content;
+        let cloneCurrentTemplateContent = popupCurrentTemplateContent.cloneNode(true);
 
-        // Получаем нужный шаблон шапки
-        let popupLoginHeaderTemplate = popup.querySelector(`#popup-login-header-${typeLoginPopup}`).content;
-        let cloneLoginHeaderTemplate = popupLoginHeaderTemplate.cloneNode(true);
-
-        // Получаем нужный шаблон формы
-        let wrapperFormTemplate = popup.querySelector(`#form-login-${typeLoginPopup}`).content;
-        let cloneWrapperFormTemplate = wrapperFormTemplate.cloneNode(true);
-
-        // Заменяем содержимое шапки
-        popupLoginHeader.appendChild(cloneLoginHeaderTemplate);
-
-        // Заменяем содержимое формы
-        wrapperForm.appendChild(cloneWrapperFormTemplate);
+        // Заменяем содержимое контейнера
+        popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
       }
 
-      // Смена шаблонов по клику на кнопки типа: забыл пароль/войти/зарегистрироваться
-      let popupInformButtons = popup.querySelectorAll(informPopupButtonSelector);
+      // Проверка : Заданы ли внутренние кнопки
+      if (innerPopupButtonSelector) {
+        // Смена шаблонов по клику на кнопки типа: забыл пароль/войти/зарегистрироваться
+        let innerPopupButtons = popup.querySelectorAll(innerPopupButtonSelector);
 
-      popupInformButtons.forEach((popupInformButton, i) => {
-        popupInformButton.addEventListener('click', function () {
-          popupContentCreator(popup, popupInformButton, informPopupButtonSelector);
+        innerPopupButtons.forEach((innerPopupButton, i) => {
+          innerPopupButton.addEventListener('click', function () {
+            popupContentCreator(prefix, popup, innerPopupButton, innerPopupButtonSelector);
+          });
         });
-      });
+      }
 
-      // Перезапуск валидации формы
+      // Перезапуск/запуск валидации формы
       window.form({
-        idForm: 'form-login',
-        selectorForTemplateReplace: '.wrapper-form--login', // Содержимое будет очищаться при отправке и заменяться шаблонами
+        idForm: `form-${prefix}`,
+        selectorForTemplateReplace: `#${prefix}-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
         classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-        selectorClosestWrapperForm: '.popup--login', // по умолчанию - false
+        selectorClosestWrapperForm: `.popup--${prefix}`, // по умолчанию - false
       });
 
       // Регулировка высоты попапа
@@ -155,14 +125,22 @@ document.addEventListener("DOMContentLoaded", function () {
         if (popupItem) {
           item.addEventListener('click', function () {
             if (sufixPopupName === 'login') {
-              popupContentCreator(popupItem, item, '.popup__button--information');
+              popupContentCreator(sufixPopupName, popupItem, item, '.popup__button--information');
+            }
+
+            if (sufixPopupName === 'complaint') {
+              popupContentCreator(sufixPopupName, popupItem, item);
             }
 
             if (sufixPopupName === 'tournament') {
-              // Форма Регистрации на Турнир в дефолтное состояние
-              formRegistrationTournamentDefault();
+              popupContentCreator(sufixPopupName, popupItem, item);
             }
 
+            if (sufixPopupName === 'match') {
+              popupContentCreator(sufixPopupName, popupItem, item);
+            }
+
+            // Дефолтное поведение
             openPopup(popupItem, sufixPopupName);
           });
 

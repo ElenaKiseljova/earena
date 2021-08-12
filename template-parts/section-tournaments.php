@@ -22,7 +22,7 @@
           </a>
         <?php elseif ($header_right_section === 'tabs') : ?>
           <!-- Табы игровых платформ -->
-          <?php get_template_part( 'template-parts/tabs' ); ?>
+          <?php get_template_part( 'template-parts/tabs/tabs', 'platform' ); ?>
         <?php endif; ?>
       </div>
     </header>

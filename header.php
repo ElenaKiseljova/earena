@@ -86,11 +86,11 @@
             <?php if ($logged): ?>
               <div class="page-header__right page-header__right--logged">
                 <div class="user user--header">
-                  <a class="user__avatar user__avatar--header" href="#">
+                  <a class="user__avatar user__avatar--header" href="account">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-1.png" alt="Avatar">
                   </a>
                   <div class="user__info user__info--header">
-                    <a class="user__name user__name--header" href="#">
+                    <a class="user__name user__name--header" href="account">
                       <h5>
                         AnnetteBlack
                       </h5>
@@ -117,7 +117,7 @@
                 <div class="personal personal--header">
                   <ul class="personal__list personal__list--header">
                     <li class="personal__item personal__item--header">
-                      <a class="personal__link" href="#">
+                      <a class="personal__link" href="account">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M11 19.25C15.5563 19.25 19.25 15.5563 19.25 11C19.25 6.44365 15.5563 2.75 11 2.75C6.44365 2.75 2.75 6.44365 2.75 11C2.75 15.5563 6.44365 19.25 11 19.25Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>
                           <path d="M11 13.75C12.8985 13.75 14.4375 12.211 14.4375 10.3125C14.4375 8.41402 12.8985 6.875 11 6.875C9.10152 6.875 7.5625 8.41402 7.5625 10.3125C7.5625 12.211 9.10152 13.75 11 13.75Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>

@@ -208,9 +208,15 @@
         get_template_part( 'template-parts/popup/match' );
       ?>
 
+      <?php
+        // Попап Кошелёк
+        get_template_part( 'template-parts/popup/purse' );
+      ?>
+
       <!-- Для переключения состояния - добавляется active класс  -->
       <div class="overlay overlay--popup"></div>
       <div class="overlay overlay--navigation"></div>
+      <div class="overlay overlay--purse"></div>
     </div>
     <?php
       wp_footer();

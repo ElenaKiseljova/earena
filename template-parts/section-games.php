@@ -106,20 +106,36 @@
       </div>
     </header>
 
-    <div class="section__content">
-      <ul class="section__list">
-        <?php
-          global $game_index;
-
-          for ($game_index=0; $game_index < 18; $game_index++) {
-            ?>
-              <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
-              </li>
-            <?php
-          }
-        ?>
-      </ul>
+    <div class="section__content" id="content-platform">
+      <!-- Подстановка содержимого из шаблона -->
     </div>
   </div>
+
+  <template id="platform-all">
+    <ul class="section__list">
+      <?php
+        global $game_index;
+
+        for ($game_index=0; $game_index < 18; $game_index++) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+            </li>
+          <?php
+        }
+      ?>
+    </ul>
+  </template>
+  <template id="platform-desktop">
+    <p>Пока ничего нет т.к. это для теста табов добавлено (desktop)</p>
+  </template>
+  <template id="platform-mobile">
+    <p>Пока ничего нет т.к. это для теста табов добавлено (mobile)</p>
+  </template>
+  <template id="platform-xbox">
+    <p>Пока ничего нет т.к. это для теста табов добавлено (xbox)</p>
+  </template>
+  <template id="platform-playstation">
+    <p>Пока ничего нет т.к. это для теста табов добавлено (playstation)</p>
+  </template>
 </section>

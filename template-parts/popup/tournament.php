@@ -162,11 +162,11 @@
   <template id="form-tournament-beforesend">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Пожалуйста <br> подождите', 'earena_2' ); ?>
+        <?php _e( 'Пожалуйста подождите', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Ваша заявка <br> отправляется...', 'earena_2' ); ?>
+        <?php _e( 'Ваша заявка отправляется...', 'earena_2' ); ?>
       </div>
     </div>
   </template>

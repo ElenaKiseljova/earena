@@ -1,0 +1,173 @@
+.purse,
+.purse__title,
+.purse__content,
+.purse__table-wrapper,
+.purse__table,
+.purse__table-head,
+.purse__table-row,
+.purse__table-body,
+.purse__empty-history {
+  .w100();
+}
+
+.purse {
+  background-color: #colors[dark_light];
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+}
+
+.purse__title {
+  padding: 15px 20px 16px;
+
+  .h3();
+
+  background-color: #colors[dark];
+}
+
+.purse__content {
+  padding: 20px;
+}
+
+.purse__table-wrapper {
+  @media (max-width: @mobile) {
+    overflow-x: scroll;
+  }
+}
+
+.purse__table {
+  border-spacing: 0;
+
+  min-width: max-content;
+}
+
+.purse__table-head,
+.purse__table-body {
+  display: block;
+
+  border: none;
+}
+
+.purse__table-head {
+  padding: 10px 18px 13px 29px;
+
+  background-color: #colors[dark_light_2];
+}
+
+.purse__table-body {
+  padding: 7px 18px 7px 29px;
+}
+
+.purse__table-row {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  &:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
+
+  &--history {
+    &:not(:last-of-type) {
+      margin-bottom: 19px;
+    }
+  }
+}
+
+.purse__table-col {
+  padding: 0;
+  margin: 0;
+
+  text-align: left;
+
+  &--th {
+    .caption();
+
+    color: #colors[text_black];
+  }
+
+  &--1 {
+    width: ( 12 + 169 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--2 {
+    width: ( 38 + 680 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--3 {
+    width: ( 28 + 160 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--4 {
+    width: 26 / ( 1156 - 29 - 18 ) * 100%;
+
+    text-align: right;
+  }
+
+  &--1-history {
+    width: ( 12 + 161 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--2-history {
+    width: ( 56 + 161 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--3-history {
+    width: ( 38 + 132 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--4-history {
+    width: ( 76 + 351 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  &--5-history {
+    width: ( 28 + 96 ) / ( 1156 - 29 - 18 ) * 100%;
+  }
+
+  @media (max-width: @mobile) {
+    &--1 {
+      width: 30%;
+    }
+
+    &--2 {
+      width: 30%;
+    }
+
+    &--3 {
+      width: 30%;
+    }
+
+    &--4 {
+      width: 10%;
+    }
+  }
+}
+
+.purse__delete {
+  .button_reset();
+
+  &:hover,
+  &:focus {
+    svg {
+      path {
+        stroke: #colors[link];
+      }
+    }
+  }
+}
+
+.purse__empty-history {
+  padding: 26px 15px 37px;
+
+  .body();
+
+  color: #colors[text_black];
+
+  text-align: center;
+}

@@ -11,13 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let ROOT_ELEMENT = document.documentElement;
     let OVERLAY_POPUP = document.querySelector('.overlay--popup');
 
+    // Все попапы
+    let allPopup = document.querySelectorAll('.popup');
+
     let onPopupEscPress = function (evt) {
       if (evt.keyCode === 27) {
         closePopup();
       }
     }
-
-    let allPopup = document.querySelectorAll('.popup');
 
     let openPopup = function (popup, sufix) {
       if (allPopup) {
@@ -117,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (popupButtons) {
       // Перебираем все кнопки, которые открывают попапы
       popupButtons.forEach(function (item) {
-        let sufixPopupName = item.getAttribute('data-popup');
+        let sufixPopupName = item.dataset.popup;
         let popupName = '.popup--' + sufixPopupName;
 
         let popupItem = document.querySelector(popupName);
@@ -167,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    // Все кнопки закрытия попапов
     let closePopupButtons = document.querySelectorAll('.popup__close');
 
     if (closePopupButtons) {
@@ -197,17 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   } catch (e) {
     console.log(e);
-  }
-
-  // Cookie
-  var cookie = document.querySelector('.cookie');
-
-  if (cookie) {
-    var cookieButoonClose = cookie.querySelector('.button--cookie');
-
-    cookieButoonClose.addEventListener('click',  function () {
-      cookie.classList.add('accepted');
-    });
   }
 });
 

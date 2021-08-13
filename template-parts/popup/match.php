@@ -190,7 +190,7 @@
         <?php _e( 'Для того, чтобы начать игру, перейдите в чат матча, и договоритесь с соперником об игре.', 'earena_2' ); ?>
       </div>
 
-      <a class="form__submit form__submit--accept button button--blue" href="#">
+      <a class="form__submit form__submit--accept button button--blue" href="chat/?type=match">
         <?php _e( 'Начать диалог', 'earena_2' ); ?>
       </a>
     </div>
@@ -314,11 +314,11 @@
   <template id="form-match-beforesend">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Пожалуйста <br> подождите', 'earena_2' ); ?>
+        <?php _e( 'Пожалуйста подождите', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Ваша заявка <br> отправляется...', 'earena_2' ); ?>
+        <?php _e( 'Ваша заявка отправляется...', 'earena_2' ); ?>
       </div>
     </div>
   </template>

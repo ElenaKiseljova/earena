@@ -1,0 +1,229 @@
+.account,
+.account__header {
+  .w100();
+}
+
+.account__wrapper {
+  .wrapper();
+}
+
+.account__header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: stretch;
+
+  padding: 10px 20px 20px;
+
+  border-radius: 5px 5px 0 0;
+
+  background-color: #colors[dark];
+}
+
+.account__left {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 339 / ( 1156 - 20 - 20 ) * 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
+.account__image-wrapper {
+  flex-shrink: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  margin-right: 20px;
+
+  &--verified {
+    position: relative;
+
+    &::before {
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+      left: 50%;
+
+      z-index: 3;
+
+      transform: translate(-50%, -50%);
+
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+
+      background-color: #colors[dark_light];
+
+      .bg_icon('../img/check-gray.svg');
+      background-size: 14px;
+    }
+  }
+}
+
+.account__image {
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  img {
+    position: relative;
+
+    z-index: 1;
+  }
+}
+
+.account__image-label {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  z-index: 2;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+
+  background-color: rgba(0, 0, 0, 0.6);
+
+  .bg_icon('../img/camera.svg');
+  background-size: 32px;
+
+  opacity: 0;
+
+  transition: opacity 0.3s;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+
+    transition: opacity 0.3s;
+  }
+}
+
+.account__image-input {
+  display: none;
+}
+
+.account__information {
+  flex-grow: 1;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+  align-items: center;
+  align-content: flex-start;
+
+  padding: 0;
+  margin: 0;
+}
+
+.account__title {
+  width: 147 / ( 147 + 15 + 28 ) * 100%;
+  padding: 0;
+  margin: 0;
+
+  margin-right: 15px;
+  margin-bottom: 1px;
+
+  .h2();
+
+  color: #colors[white];
+}
+
+.account__country {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  margin-bottom: 1px;
+}
+
+.account__status {
+  position: relative;
+
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  .w100();
+
+  padding-left: 18px;
+  margin-bottom: 13px;
+
+  .body();
+
+  color: #colors[text_black];
+
+  &::before {
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+    left: 0;
+
+    transform: translateY(-50%);
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background-color: #colors[red];
+  }
+
+  &--online {
+    &::before {
+      background-color: #colors[link];
+    }
+  }
+}
+
+.account__money,
+.account__rating {
+  padding: 6px 16px;
+
+  font-family: #fonts[1];
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 140%;
+  /* identical to box height, or 20px */
+
+  color: #colors[text];
+
+  background-color: #colors[dark_light];
+
+  border-radius: 30px;
+
+  span {
+    color: #colors[text_black]
+  }
+}

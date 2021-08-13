@@ -1,25 +1,44 @@
 <?php
   /*
-    Шаблон переключателей на стр Турнира
+    Шаблон переключателей на стр Аккаунта
   */
 ?>
+<?php
+  global $private;
+?>
 
-<div class="toggles toggles--tournament">
+<div class="toggles toggles--account">
   <header class="toggles__header">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
       <button class="toggles__item active" type="button" name="toggle">
-        <?php _e( 'Сведения', 'earena_2' ); ?>
+        <?php _e( 'Профиль', 'earena_2' ); ?>
       </button>
       <button class="toggles__item" type="button" name="toggle">
-        <?php _e( 'Туры', 'earena_2' ); ?>
+        <?php _e( 'Матчи (14)', 'earena_2' ); ?>
       </button>
-    </div>
+      <button class="toggles__item" type="button" name="toggle">
+        <?php _e( 'Турниры (8)', 'earena_2' ); ?>
+      </button>
 
-    <div class="toggles__right">
-      <a class="toggles__rules" href="#">
-        <?php _e( 'Правила и настройки игр', 'earena_2' ); ?>
-      </a>
+      <?php if ($private): ?>
+        <button class="toggles__item" type="button" name="toggle">
+          <?php _e( 'Сообщения (1)', 'earena_2' ); ?>
+        </button>
+      <?php endif; ?>
+
+      <button class="toggles__item" type="button" name="toggle">
+        <?php _e( 'Друзья (25)', 'earena_2' ); ?>
+      </button>
+
+      <?php if ($private): ?>
+        <button class="toggles__item" type="button" name="toggle">
+          <?php _e( 'Приглашенные (4)', 'earena_2' ); ?>
+        </button>
+        <button class="toggles__item" type="button" name="toggle">
+          <?php _e( 'Уведомления (3)', 'earena_2' ); ?>
+        </button>
+      <?php endif; ?>
     </div>
   </header>
 
@@ -50,5 +69,11 @@
         get_template_part( 'template-parts/accordeon' );
       ?>
     </div>
+  </div>
+  <div class="toggles__content">
+    пусто
+  </div>
+  <div class="toggles__content">
+    пусто
   </div>
 </div>

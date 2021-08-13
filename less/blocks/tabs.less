@@ -12,6 +12,12 @@
   &--purse {
     width: 100%;
   }
+
+  @media (max-width: @mobile) {
+    &--purse {
+      flex-wrap: wrap;
+    }
+  }
 }
 
 .tabs__button {
@@ -71,6 +77,15 @@
 
   @media (max-width: @mobile) {
     padding: 5px 14px;
+
+    &--purse {
+      width: 50%;
+
+      &:first-of-type,
+      &:last-of-type {
+        border-radius: 0;
+      }
+    }
   }
 }
 

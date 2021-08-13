@@ -103,11 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Обработчик старта отправки
             var onBeforeSend = function (status) {
-              let templateContentBeforeSend = document.querySelector(`#${idForm}-beforesend`).content;
+              let templateBeforeSend = document.querySelector(`#${idForm}-beforesend`);
 
-              if (wrapperFormNode) {
+              if (wrapperFormNode && templateBeforeSend) {
                 wrapperFormNode.innerHTML = '';
 
+                let templateContentBeforeSend = templateBeforeSend.content;
                 let cloneTemplate = templateContentBeforeSend.cloneNode(true);
 
                 wrapperFormNode.appendChild(cloneTemplate);
@@ -122,64 +123,62 @@ document.addEventListener('DOMContentLoaded', () => {
               console.log('Send: ', status);
             };
 
+            /*
+              *** Префиксы ***
+              ****************
+
+              // Обработчик успешной отправки при восстановлении пароля
+              forgot
+
+              // Обработчик успешной отправки при переходе на следующий шаг создания матча
+              next
+
+              // Обработчик успешного создания матча
+              create
+
+              // Обработчик успешной отправки при недостаточном возрасте
+              no-old-enough
+
+              // Purse
+              transaction
+              withdrawal
+            */
             // Обработчик успешной отправки
-            var onSuccess = function (response) {
-              let templateContentSuccess = document.querySelector(`#${idForm}-success`).content;
-
-              if (wrapperFormNode) {
-                wrapperFormNode.innerHTML = '';
-
-                let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
+            var onSuccess = function (response, prefix = false) {
+              // Создаю префикс или заменяю его на ''
+              if (prefix) {
+                prefix = `-${prefix}`;
+              } else {
+                prefix = '';
               }
 
-              // Ф-я закрытия попапа по клику на кнопку
-              additionButtonClosePopup();
+              // Получаю шаблон
+              let templateSuccess = document.querySelector(`#${idForm}-success${prefix}`);
 
-              console.log('Done: ', response);
-            };
-
-            // Обработчик успешной отправки при восстановлении пароля
-            var onSuccessForgot = function (response) {
-              let templateContentSuccess = document.querySelector(`#${idForm}-success-forgot`).content;
-
-              if (wrapperFormNode) {
+              if (wrapperFormNode && templateSuccess) {
                 wrapperFormNode.innerHTML = '';
 
-                let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-              }
-
-              // Ф-я закрытия попапа по клику на кнопку
-              additionButtonClosePopup();
-
-              console.log('Done (forgot): ', response);
-            };
-
-            // Обработчик успешной отправки при переходе на следующий шаг
-            // регистрации матча
-            var onSuccessNext = function (response) {
-              let templateContentSuccess = document.querySelector(`#${idForm}-success-next`).content;
-
-              if (wrapperFormNode) {
-                wrapperFormNode.innerHTML = '';
-
+                let templateContentSuccess = templateSuccess.content;
                 let cloneTemplate = templateContentSuccess.cloneNode(true);
 
                 wrapperFormNode.appendChild(cloneTemplate);
 
-                // Перезапуск/запуск валидации формы
-                window.form({
-                  idForm: idForm,
-                  selectorForTemplateReplace: selectorForTemplateReplace, // Содержимое будет очищаться при отправке и заменяться шаблонами
-                  classForAddClosestWrapperForm: classForAddClosestWrapperForm, // по умолчанию - false
-                  selectorClosestWrapperForm: selectorClosestWrapperForm, // по умолчанию - false
-                });
+                // Обработчик успешной отправки при переходе на следующий шаг
+                // регистрации матча
+                if (prefix.indexOf('next') > -1) {
+                  // Перезапуск/запуск валидации формы
+                  window.form({
+                    idForm: idForm,
+                    selectorForTemplateReplace: selectorForTemplateReplace, // Содержимое будет очищаться при отправке и заменяться шаблонами
+                    classForAddClosestWrapperForm: classForAddClosestWrapperForm, // по умолчанию - false
+                    selectorClosestWrapperForm: selectorClosestWrapperForm, // по умолчанию - false
+                  });
+                }
               }
 
-              if (selectorClosestWrapperForm) {
+              // Обработчик успешной отправки при переходе на следующий шаг
+              // регистрации матча
+              if (prefix.indexOf('next') > -1 && selectorClosestWrapperForm) {
                 // Регулировка высоты попапа
                 if (wrapperFormNode.closest(selectorClosestWrapperForm).offsetHeight >= deviceHeight) {
                   wrapperFormNode.closest(selectorClosestWrapperForm).classList.add('scroll-content');
@@ -193,51 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
               // Ф-я закрытия попапа по клику на кнопку
               additionButtonClosePopup();
 
-              console.log('Done (next): ', response);
-            };
-
-            var onSuccessCreate = function (response) {
-              let templateContentSuccess = document.querySelector(`#${idForm}-success-create`).content;
-
-              if (wrapperFormNode) {
-                wrapperFormNode.innerHTML = '';
-
-                let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-              }
-
-              // Ф-я закрытия попапа по клику на кнопку
-              additionButtonClosePopup();
-
-              console.log('Done (next): ', response);
-            };
-
-            // Обработчик успешной отправки при недостаточном возрасте
-            var onSuccessNoOldEnough = function (response) {
-              let templateContentNoOldEnough = document.querySelector(`#${idForm}-success-no-old-enough`).content;
-
-              if (wrapperFormNode) {
-                wrapperFormNode.innerHTML = '';
-
-                let cloneTemplate = templateContentNoOldEnough.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-              }
-
-              console.log('Done: ', response);
-
-              // Ф-я закрытия попапа по клику на кнопку
-              additionButtonClosePopup();
+              console.log(`Done (${prefix}) : ${response}`);
             };
 
             // Обработчик не успешной отправки
             var onError = function (error) {
-              let templateContentError = document.querySelector(`#${idForm}-error`).content;
+              let templateError = document.querySelector(`#${idForm}-error`);
 
-              if (wrapperFormNode) {
+              if (wrapperFormNode && templateError) {
                 wrapperFormNode.innerHTML = '';
 
+                let templateContentError = templateError.content;
                 let cloneTemplate = templateContentError.cloneNode(true);
 
                 wrapperFormNode.appendChild(cloneTemplate);
@@ -285,13 +250,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
               if (error) {
                 //onError(error);
+                /*
+                  // Обработчик успешной отправки при восстановлении пароля
+                  forgot
+
+                  // Обработчик успешной отправки при переходе на следующий шаг создания матча
+                  next
+
+                  // Обработчик успешного создания матча
+                  create
+
+                  // Обработчик успешной отправки при недостаточном возрасте
+                  no-old-enough
+
+                  // Purse
+                  transaction
+                  withdrawal
+                */
                 /*Test ---> */
-                onSuccess(error);
-                //onSuccessNext(error);
-                //onSuccess(error);
-                //onSuccessForgot(error);
-                //onSuccessCreate(error);
-                //onSuccessNoOldEnough(error);
+
+                onSuccess(error, 'withdrawal');
+
                 /* --- end test ; */
               }
             });
@@ -314,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Выполнение действий при старте отправки формы
             onBeforeSend(xhr.readyState);
-            //onBeforeSend('good');
           });
         };
 
@@ -370,15 +348,18 @@ document.addEventListener('DOMContentLoaded', () => {
                   notValid = true;
 
                   if (!item.closest('.invalid')) {
-                    // Попап формы
+                    // Проверка наличия обертки
                     if (item.closest('.form__row')) {
+                      // Поле в фокус невалидное
+                      item.focus();
+
                       item.closest('.form__row').classList.add('invalid');
                       item.closest('.form__row').classList.remove('valid');
                     }
                   }
                 } else {
                   if (item.closest('.invalid')) {
-                    // Попап формы
+                    // Проверка наличия обертки
                     if (item.closest('.form__row')) {
                       item.closest('.form__row').classList.remove('invalid');
                       item.closest('.form__row').classList.add('valid');
@@ -387,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (inputEventListenerFlag === false) {
+                  // Перезапуск при вводе значений
                   item.addEventListener('input', () => {
                     validateForm();
                   });
@@ -401,14 +383,17 @@ document.addEventListener('DOMContentLoaded', () => {
               if (!item.validity.valid) {
                 notValid = true;
 
-                // Попап формы
+                // Проверка наличия обертки
                 if (item.closest('.form__row')) {
+                  // Поле в фокус невалидное
+                  item.focus();
+
                   item.closest('.form__row').classList.add('invalid');
                   item.closest('.form__row').classList.remove('valid');
                 }
               } else {
                 if (item.closest('.invalid')) {
-                  // Попап формы
+                  // Проверка наличия обертки
                   if (item.closest('.form__row')) {
                     item.closest('.form__row').classList.remove('invalid');
                     item.closest('.form__row').classList.add('valid');

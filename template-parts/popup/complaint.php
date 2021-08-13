@@ -57,7 +57,7 @@
   <template id="form-complaint-beforesend">
     <div class="popup__content popup__content--complaint">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Пожалуйста <br> подождите', 'earena_2' ); ?>
+        <?php _e( 'Пожалуйста подождите', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">

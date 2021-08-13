@@ -29,7 +29,7 @@
     <div class="popup__content popup__content--login">
       <form class="form form--popup" id="form-login" action="/" method="post">
         <div class="form__row">
-          <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[a-zA-Zа-яА-Я ]{2,}">
+          <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[0-9a-zA-Zа-яА-Я ]{2,}">
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -69,7 +69,7 @@
     <div class="popup__content popup__content--login">
       <form class="form form--popup" id="form-login" action="/" method="post">
         <div class="form__row">
-          <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[a-zA-Zа-яА-Я ]{2,}">
+          <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[0-9a-zA-Zа-яА-Я ]{2,}">
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -189,11 +189,11 @@
   <template id="form-login-beforesend">
     <div class="popup__content popup__content--login">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Пожалуйста <br> подождите', 'earena_2' ); ?>
+        <?php _e( 'Пожалуйста подождите', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Ваша заявка <br> отправляется...', 'earena_2' ); ?>
+        <?php _e( 'Ваша заявка отправляется...', 'earena_2' ); ?>
       </div>
     </div>
   </template>

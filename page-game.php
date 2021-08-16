@@ -28,10 +28,10 @@
 
         // Турниры
         earena_2_get_section( 'tournaments' );
-
-        // Партнеры
-        earena_2_get_section( 'partners' );
       }
+
+      // Партнеры
+      get_template_part( 'template-parts/partners' );
     }
   ?>
 </main>

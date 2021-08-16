@@ -29,19 +29,15 @@
         earena_2_get_section( 'matches' );
 
         earena_2_get_section( 'tournaments' );
-
-        earena_2_get_section( 'partners' );
       } elseif (isset($_GET['type']) && $_GET['type'] === 'matches') {
         earena_2_get_section( 'matches', true, 'tabs' );
-
-        earena_2_get_section( 'partners' );
       } elseif (isset($_GET['type']) && $_GET['type'] === 'tournaments') {
         earena_2_get_section( 'tournaments', true, 'tabs' );
-
-        earena_2_get_section( 'partners' );
       }
     }
   ?>
+  <!-- Партнеры -->
+  <?php get_template_part( 'template-parts/partners' ); ?>
 </main>
 
 <?php

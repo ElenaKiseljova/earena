@@ -84,10 +84,16 @@
     }
   }
 
+  &--games-account {
+    svg {
+      margin-right: 15px;
+
+      fill: #A9B3C1;
+    }
+  }
+
   @media (max-width: @mobile) {
     .h1_mobile();
-
-    margin-bottom: 20px;
 
     &--matches,
     &--tournaments {
@@ -215,4 +221,19 @@
   .card_title();
 
   color: #colors[link];
+}
+
+.section__add-game {
+  &::after {
+    content: '';
+
+    width: 18px;
+    height: 18px;
+
+    margin-left: 14px;
+
+    .bg_icon('../img/close.svg');
+
+    transform: rotate(45deg);
+  }
 }

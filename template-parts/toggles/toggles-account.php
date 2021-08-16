@@ -4,11 +4,15 @@
   */
 ?>
 <?php
+  // Страница Акаунта
+  global $is_account_page;
+
+  // Приватный режим
   global $private;
 ?>
 
 <div class="toggles toggles--account">
-  <header class="toggles__header">
+  <header class="toggles__header <?php if ($is_account_page) echo 'toggles__header--account'; ?>">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
       <button class="toggles__item active" type="button" name="toggle">
@@ -42,33 +46,32 @@
     </div>
   </header>
 
+  <!-- Профиль  -->
   <div class="toggles__content active">
-    <div class="toggles__content-item toggles__content-item--col-2">
-      <!-- Таблица Наград -->
+    <div class="toggles__content-item toggles__content-item--col-1">
       <?php
-        get_template_part( 'template-parts/tables/table', 'awards' );
+        if ( function_exists( 'earena_2_get_section' ) ) {
+          // Игры
+          earena_2_get_section( 'games' );
+        }
+      ?>
+    </div>
+
+    <div class="toggles__content-item toggles__content-item--col-2">
+      <!-- Статистика игр -->
+      <?php
+        get_template_part( 'template-parts/statistics/page', 'account-games' );
       ?>
     </div>
     <div class="toggles__content-item toggles__content-item--col-2">
-      <!-- Таблица Сроков для игр -->
+      <!-- Статистика друзей -->
       <?php
-        get_template_part( 'template-parts/tables/table', 'timing' );
-      ?>
-    </div>
-    <div class="toggles__content-item toggles__content-item--rating toggles__content-item--col-1">
-      <!-- Таблица Рейтинга -->
-      <?php
-        get_template_part( 'template-parts/tables/table', 'rating' );
+        get_template_part( 'template-parts/statistics/page', 'account-friends' );
       ?>
     </div>
   </div>
   <div class="toggles__content">
-    <div class="toggles__content-item toggles__content-item--col-1">
-      <!-- Аккордеон -->
-      <?php
-        get_template_part( 'template-parts/accordeon' );
-      ?>
-    </div>
+
   </div>
   <div class="toggles__content">
     пусто

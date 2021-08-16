@@ -1,17 +1,38 @@
 .players,
 .players__progress,
-.players__text {
+.players__text,
+.players__title {
   .w100();
-
-  color: #colors[text];
 }
 
 .players {
+  color: #colors[text];
+
   &--page {
     padding-bottom: 10px;
     margin-bottom: 10px;
 
     border-bottom: 1px solid #colors[dark_light_2];
+  }
+
+  &--account {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-start;
+
+    padding: 10px 21px 12px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+
+    border-radius: 5px;
+
+    background-color: #colors[bg];
   }
 }
 
@@ -31,6 +52,16 @@
 
     .bg_icon('../img/tournaments-players.svg');
   }
+
+  &--account {
+    justify-content: flex-end;
+
+    width: 35 / ( 547 - 21 - 21 ) * 100%;
+
+    &::before {
+      display: none;
+    }
+  }
 }
 
 .players__progress {
@@ -46,6 +77,16 @@
   background-color: #colors[dark_light_2];
 
   overflow: hidden;
+
+  &--account {
+    width: 430 / ( 547 - 21 - 21 ) * 100%;
+
+    background-color: transparent;
+
+    &:not(:last-of-type) {
+      margin-bottom: 5px;
+    }
+  }
 }
 
 .players__progress-bar {
@@ -56,7 +97,6 @@
 
   z-index: 1;
 
-  width: 71%;
   height: 100%;
 
   border-radius: 1.5px;
@@ -67,5 +107,27 @@
 
   &--past {
     background-color: #colors[text];
+  }
+
+  &--green {
+    background-color: #colors[link];
+  }
+
+  &--gray {
+    background-color: #colors[dark_light_2];
+  }
+
+  &--red {
+    background-color: #colors[red];
+  }
+}
+
+.players__title {
+  .h3();
+
+  color: #colors[text_black];
+
+  &--account {
+    margin-bottom: 10px;
   }
 }

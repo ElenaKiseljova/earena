@@ -15,11 +15,7 @@
   ?>
 
   <!-- Партнеры -->
-  <?php
-    if ( function_exists( 'earena_2_get_section' ) ) {
-      earena_2_get_section( 'partners' );
-    }
-  ?>
+  <?php get_template_part( 'template-parts/partners' ); ?>
 </main>
 
 <?php

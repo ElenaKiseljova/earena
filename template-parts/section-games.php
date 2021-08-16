@@ -6,7 +6,7 @@
     0 => [
       'name' => 'WARZONE',
       'variations' => [1],
-      'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
+      'platforms' => [ 'playstation' ]
     ],
     1 => [
       'name' => 'Dota 2',
@@ -84,58 +84,492 @@
       'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
     ],
   ];
-  // Количество игр
-  global $game_amounts;
 
+  // Типы игр по платформам
+  $games_desktop = [];
+  $games_mobile =  [];
+  $games_xbox = [];
+  $games_playstation = [];
+
+  for ($k=0; $k < count($games); $k++) {
+    if (isset($games[$k]['platforms']) && in_array('desktop', $games[$k]['platforms'])) {
+      array_push($games_desktop, $games[$k]);
+    }
+
+    if (isset($games[$k]['platforms']) && in_array('mobile', $games[$k]['platforms'])) {
+      array_push($games_mobile, $games[$k]);
+    }
+
+    if (isset($games[$k]['platforms']) && in_array('xbox', $games[$k]['platforms'])) {
+      array_push($games_xbox, $games[$k]);
+    }
+
+    if (isset($games[$k]['platforms']) && in_array('playstation', $games[$k]['platforms'])) {
+      array_push($games_playstation, $games[$k]);
+    }
+  }
+
+  // Количество игр
   $game_amounts = count($games);
+
+  // Страница Акаунта
+  global $is_account_page;
+
+  // Приватный режим
+  global $private;
 ?>
 
-<section class="section section--games" id="games">
-  <div class="section__wrapper">
+<?php if ($is_account_page): ?>
+  <div class="section section--games" id="games-desktop">
     <header class="section__header">
-      <h2 class="section__title section__title--games">
-        <?php _e( 'Игры', 'earena_2' ); ?>
-        <span class="section__amount">
-          <?= $game_amounts; ?>
-        </span>
+      <h2 class="section__title section__title--games-account">
+        <svg width="40" height="40">
+          <use xlink:href="#icon-platform-desktop"></use>
+        </svg>
+
+        <?php _e( 'Desktop', 'earena_2' ); ?>
       </h2>
 
       <div class="section__header-right">
-        <!-- Табы игровых платформ -->
-        <?php get_template_part( 'template-parts/tabs/tabs', 'platform' ); ?>
+        <?php if ($private): ?>
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить игру', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php endif; ?>
       </div>
     </header>
 
-    <div class="section__content" id="content-platform">
-      <!-- Подстановка содержимого из шаблона -->
-    </div>
-  </div>
-
-  <template id="platform-all">
     <ul class="section__list">
       <?php
+        global $games;
         global $game_index;
 
-        for ($game_index=0; $game_index < 18; $game_index++) {
+        $game_index = 0;
+        $games = $games_desktop;
+
+        $row_index = 1;
+
+        // Перебираем игры десктопные
+        foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
               <?php get_template_part( 'template-parts/game/game-archive' ); ?>
             </li>
           <?php
+          if ($row_index % 6 === 0) {
+            $row_index = 1;
+          } else {
+            $row_index++;
+          }
+
+          $game_index++;
+        }
+
+        // Оставшееся (до 6 шт) заполняется пустыми карточками
+        while ( $row_index <= 6 && $row_index > 1 ) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+            </li>
+          <?php
+          $row_index++;
         }
       ?>
     </ul>
-  </template>
-  <template id="platform-desktop">
-    <p>Пока ничего нет т.к. это для теста табов добавлено (desktop)</p>
-  </template>
-  <template id="platform-mobile">
-    <p>Пока ничего нет т.к. это для теста табов добавлено (mobile)</p>
-  </template>
-  <template id="platform-xbox">
-    <p>Пока ничего нет т.к. это для теста табов добавлено (xbox)</p>
-  </template>
-  <template id="platform-playstation">
-    <p>Пока ничего нет т.к. это для теста табов добавлено (playstation)</p>
-  </template>
-</section>
+  </div>
+  <div class="section section--games" id="games-mobile">
+    <header class="section__header">
+      <h2 class="section__title section__title--games-account">
+        <svg width="40" height="40">
+          <use xlink:href="#icon-platform-mobile"></use>
+        </svg>
+
+        <?php _e( 'Mobile', 'earena_2' ); ?>
+      </h2>
+
+      <div class="section__header-right">
+        <?php if ($private): ?>
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить игру', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php endif; ?>
+      </div>
+    </header>
+
+    <ul class="section__list">
+      <?php
+        global $games;
+        global $game_index;
+
+        $game_index = 0;
+        $games = $games_mobile;
+
+        $row_index = 1;
+
+        // Перебираем игры десктопные
+        foreach ($games as $game) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+            </li>
+          <?php
+          if ($row_index % 6 === 0) {
+            $row_index = 1;
+          } else {
+            $row_index++;
+          }
+
+          $game_index++;
+        }
+
+        // Оставшееся (до 6 шт) заполняется пустыми карточками
+        while ( $row_index <= 6 && $row_index > 1 ) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+            </li>
+          <?php
+          $row_index++;
+        }
+      ?>
+    </ul>
+  </div>
+  <div class="section section--games" id="games-xbox">
+    <header class="section__header">
+      <h2 class="section__title section__title--games-account">
+        <svg width="40" height="40">
+          <use xlink:href="#icon-platform-xbox"></use>
+        </svg>
+
+        <?php _e( 'XBOX', 'earena_2' ); ?>
+      </h2>
+
+      <div class="section__header-right">
+        <?php if ($private): ?>
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить игру', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php endif; ?>
+      </div>
+    </header>
+
+    <ul class="section__list">
+      <?php
+        global $games;
+        global $game_index;
+
+        $game_index = 0;
+        $games = $games_xbox;
+
+        $row_index = 1;
+
+        // Перебираем игры десктопные
+        foreach ($games as $game) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+            </li>
+          <?php
+          if ($row_index % 6 === 0) {
+            $row_index = 1;
+          } else {
+            $row_index++;
+          }
+
+          $game_index++;
+        }
+
+        // Оставшееся (до 6 шт) заполняется пустыми карточками
+        while ( $row_index <= 6 && $row_index > 1 ) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+            </li>
+          <?php
+          $row_index++;
+        }
+      ?>
+    </ul>
+  </div>
+  <div class="section section--games" id="games-playstation">
+    <header class="section__header">
+      <h2 class="section__title section__title--games-account">
+        <svg width="40" height="40">
+          <use xlink:href="#icon-platform-playstation"></use>
+        </svg>
+
+        <?php _e( 'Playstation', 'earena_2' ); ?>
+      </h2>
+
+      <div class="section__header-right">
+        <?php if ($private): ?>
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить игру', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php endif; ?>
+      </div>
+    </header>
+
+    <ul class="section__list">
+      <?php
+        global $games;
+        global $game_index;
+
+        $game_index = 0;
+        $games = $games_playstation;
+
+        $row_index = 1;
+
+        // Перебираем игры десктопные
+        foreach ($games as $game) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+            </li>
+          <?php
+          if ($row_index % 6 === 0) {
+            $row_index = 1;
+          } else {
+            $row_index++;
+          }
+
+          $game_index++;
+        }
+
+        // Оставшееся (до 6 шт) заполняется пустыми карточками
+        while ( $row_index <= 6 && $row_index > 1 ) {
+          ?>
+            <li class="section__item section__item--col-6">
+              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+            </li>
+          <?php
+          $row_index++;
+        }
+      ?>
+    </ul>
+  </div>
+<?php else : ?>
+  <section class="section section--games" id="games">
+    <div class="section__wrapper">
+      <header class="section__header">
+        <h2 class="section__title section__title--games">
+          <?php _e( 'Игры', 'earena_2' ); ?>
+          <span class="section__amount">
+            <?= $game_amounts; ?>
+          </span>
+        </h2>
+
+        <div class="section__header-right">
+          <!-- Табы игровых платформ -->
+          <?php get_template_part( 'template-parts/tabs/tabs', 'platform' ); ?>
+        </div>
+      </header>
+
+      <div class="section__content" id="content-platform">
+        <!-- Подстановка содержимого из шаблона -->
+      </div>
+    </div>
+
+    <template id="platform-all">
+      <ul class="section__list">
+        <?php
+          global $games;
+          global $game_index;
+
+          $game_index = 0;
+          $row_index = 1;
+
+          // Перебираем игры десктопные
+          foreach ($games as $game) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              </li>
+            <?php
+            if ($row_index % 6 === 0) {
+              $row_index = 1;
+            } else {
+              $row_index++;
+            }
+
+            $game_index++;
+          }
+
+          // Оставшееся (до 6 шт) заполняется пустыми карточками
+          while ( $row_index <= 6 && $row_index > 1 ) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              </li>
+            <?php
+            $row_index++;
+          }
+        ?>
+      </ul>
+    </template>
+    <template id="platform-desktop">
+      <ul class="section__list">
+        <?php
+          global $games;
+          global $game_index;
+
+          $game_index = 0;
+          $games = $games_desktop;
+
+          $row_index = 1;
+
+          // Перебираем игры десктопные
+          foreach ($games as $game) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              </li>
+            <?php
+            if ($row_index % 6 === 0) {
+              $row_index = 1;
+            } else {
+              $row_index++;
+            }
+
+            $game_index++;
+          }
+
+          // Оставшееся (до 6 шт) заполняется пустыми карточками
+          while ( $row_index <= 6 && $row_index > 1 ) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              </li>
+            <?php
+            $row_index++;
+          }
+        ?>
+      </ul>
+    </template>
+    <template id="platform-mobile">
+      <ul class="section__list">
+        <?php
+          global $games;
+          global $game_index;
+
+          $game_index = 0;
+          $games = $games_mobile;
+
+          $row_index = 1;
+
+          // Перебираем игры десктопные
+          foreach ($games as $game) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              </li>
+            <?php
+            if ($row_index % 6 === 0) {
+              $row_index = 1;
+            } else {
+              $row_index++;
+            }
+
+            $game_index++;
+          }
+
+          // Оставшееся (до 6 шт) заполняется пустыми карточками
+          while ( $row_index <= 6 && $row_index > 1 ) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              </li>
+            <?php
+            $row_index++;
+          }
+        ?>
+      </ul>
+    </template>
+    <template id="platform-xbox">
+      <ul class="section__list">
+        <?php
+          global $games;
+          global $game_index;
+
+          $game_index = 0;
+          $games = $games_xbox;
+
+          $row_index = 1;
+
+          // Перебираем игры десктопные
+          foreach ($games as $game) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              </li>
+            <?php
+            if ($row_index % 6 === 0) {
+              $row_index = 1;
+            } else {
+              $row_index++;
+            }
+
+            $game_index++;
+          }
+
+          // Оставшееся (до 6 шт) заполняется пустыми карточками
+          while ( $row_index <= 6 && $row_index > 1 ) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              </li>
+            <?php
+            $row_index++;
+          }
+        ?>
+      </ul>
+    </template>
+    <template id="platform-playstation">
+      <ul class="section__list">
+        <?php
+          global $games;
+          global $game_index;
+
+          $game_index = 0;
+          $games = $games_playstation;
+
+          $row_index = 1;
+
+          // Перебираем игры десктопные
+          foreach ($games as $game) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              </li>
+            <?php
+            if ($row_index % 6 === 0) {
+              $row_index = 1;
+            } else {
+              $row_index++;
+            }
+
+            $game_index++;
+          }
+
+          // Оставшееся (до 6 шт) заполняется пустыми карточками
+          while ( $row_index <= 6 && $row_index > 1 ) {
+            ?>
+              <li class="section__item section__item--col-6">
+                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              </li>
+            <?php
+            $row_index++;
+          }
+        ?>
+      </ul>
+    </template>
+  </section>
+<?php endif; ?>

@@ -16,11 +16,10 @@
 
       // VIP
       earena_2_get_section( 'vip' );
-
-      // Партнеры
-      earena_2_get_section( 'partners' );
     }
   ?>
+  <!-- Партнеры -->
+  <?php get_template_part( 'template-parts/partners' ); ?>
 </main>
 
 <?php

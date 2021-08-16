@@ -18,11 +18,17 @@
 
   background-color: #colors[dark];
 
+  &--account {
+    margin-bottom: 50px;
+  }
+
   @media (max-width: @mobile) {
     flex-direction: column;
 
     justify-content: flex-start;
     align-items: flex-start;
+
+    overflow-x: scroll;
   }
 }
 
@@ -36,6 +42,10 @@
   margin: 0;
 
   list-style: none;
+
+  @media (max-width: @mobile) {
+    min-width: max-content;
+  }
 }
 
 .toggles__right {
@@ -136,6 +146,8 @@
   margin-bottom: 20px;
 
   &--col-1 {
+    display: block;
+
     width: calc(100% - 20px);
   }
 

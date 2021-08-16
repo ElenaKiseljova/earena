@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>Gray Arena</title>
     <?php
       wp_head();
     ?>
@@ -100,7 +100,7 @@
                       <span class="user__money-amount">
                         $2 714
                       </span>
-                      <a class="page-header__money-add page-header__money-add--desktop" href="#">
+                      <a class="page-header__money-add page-header__money-add--desktop" href="purse">
                         <?php _e( 'Пополнить', 'earena_2' ); ?>
                       </a>
                     </div>

@@ -12,6 +12,10 @@
 
   .w100();
 
+  min-height: 100vh;
+
+  background-color: #colors[dark_light];
+
   &::after {
     content: '';
 
@@ -149,4 +153,21 @@
   &:focus {
     background-color: #colors[link];
   }
+}
+
+.chat__separator {
+  .w100();
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #colors[text_black];
 }

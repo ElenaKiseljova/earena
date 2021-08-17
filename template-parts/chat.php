@@ -32,6 +32,13 @@
             </div>
           </div>
           <?php
+          if ($i === 7) {
+            ?>
+              <div class="chat__separator">
+                <time>20 August 2021</time>
+              </div>
+            <?php
+          }
         }
       ?>
     </div>

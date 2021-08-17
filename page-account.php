@@ -18,16 +18,17 @@
   global $private;
 
   $private = rand(0, 1);
+  $vip = rand(0, 1);
+  $verified = rand(0, 1);
 ?>
 
 <main class="page-main">
   <section class="account">
     <div class="account__wrapper">
-      <header class="account__header">
+      <header class="account__header <?php if ($vip) echo 'account__header--vip'; ?>">
         <div class="account__left">
           <div class="user user--account">
-            <!-- --verified / --not-verified -->
-            <div class="user__image-wrapper user__image-wrapper--verified">
+            <div class="user__image-wrapper <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
               <?php if ($private): ?>
                 <div class="user__avatar user__avatar--account">
                   <input class="user__avatar-input visually-hidden" type="file" name="account-image" id="account-image">
@@ -109,18 +110,39 @@
           </ul>
 
           <div class="account__buttons">
-            <!-- Удалить из друзей / Добавить в друзья -->
-            <button class="button button--gray" type="button" name="ended">
-              <span>
-                <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
-              </span>
-            </button>
+            <?php if ($private): ?>
+              <!-- Пополнить счет -->
+              <a class="button button--green" href="purse">
+                <span>
+                  <?php _e( 'Пополнить счет', 'earena_2' ); ?>
+                </span>
+              </a>
 
-            <button class="account__message button button--blue openpopup" data-popup="add" type="button" name="add">
-              <span>
-                <?php _e( 'Сообщение', 'earena_2' ); ?>
-              </span>
-            </button>
+              <button class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange openpopup" data-popup="vip" type="button" name="vip">
+                <?php if ($vip): ?>
+                  <span>
+                    <?php _e( 'VIP статус до', 'earena_2' ); ?> <time>21.07.21</time>
+                  </span>
+                <?php else : ?>
+                  <span>
+                    <?php _e( 'VIP статус', 'earena_2' ); ?>
+                  </span>
+                <?php endif; ?>
+              </button>
+            <?php else : ?>
+              <!-- Удалить из друзей / Добавить в друзья -->
+              <button class="button button--gray" type="button" name="ended">
+                <span>
+                  <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
+                </span>
+              </button>
+
+              <button class="account__message button button--blue openpopup" data-popup="add" type="button" name="add">
+                <span>
+                  <?php _e( 'Сообщение', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </header>

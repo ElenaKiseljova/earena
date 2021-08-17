@@ -17,11 +17,15 @@
   justify-content: space-between;
   align-items: stretch;
 
-  padding: 10px 20px 20px;
+  padding: 16px 20px 20px;
 
   border-radius: 5px 5px 0 0;
 
   background-color: #colors[dark];
+
+  &--vip {
+    background-color: #4F1265;
+  }
 
   @media (max-width: @mobile) {
     flex-direction: column;
@@ -121,8 +125,53 @@ input[type="radio"]:checked + .account__emoji-label {
 
   padding: 0;
   margin: 0;
+
+  @media (max-width: @mobile) {
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: stretch;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .account__message {
   margin-left: 15px;
+
+  @media (max-width: @mobile) {
+    margin-left: 0;
+    margin-top: 15px;
+  }
+}
+
+.account__vip {
+  margin-left: 15px;
+
+  &::after {
+    content: '';
+
+    width: 20px;
+    height: 20px;
+
+    margin-left: 10px;
+
+    .bg_icon('../img/tournaments-crown.svg');
+  }
+
+  &--active {
+    &::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: @mobile) {
+    margin-left: 0;
+    margin-top: 15px;
+  }
 }

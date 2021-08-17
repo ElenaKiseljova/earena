@@ -1,36 +1,33 @@
 <?php
-  /*
-    Статистика друзей на странице аккаунта
-  */
+  // Приглашенные (вкладка)
 ?>
-<?php
-  // Приватный режим
-  global $private;
-?>
-<div class="statistics statistics--account">
-  <header class="statistics__header">
-    <h3 class="statistics__title statistics__title--account">
-      <?php _e( 'Друзья', 'earena_2' ); ?> (25)
-    </h3>
 
-    <button class="statistics__all togglechecker" data-toggle-index="<?php if ($private) echo '4'; else echo '3'; ?>" type="button" name="friends">
-      <?php _e( 'Все друзья', 'earena_2' ); ?>
-    </button>
+<div class="section section--invited" id="invited">
+  <header class="section__header">
+    <h2 class="section__title section__title--games-account">
+      <?php _e( 'Приглашенные', 'earena_2' ); ?> (4)
+    </h2>
+
+    <div class="section__header-right">
+      <button class="section__copy updateclipboard" type="button" name="copy">
+        https://earena.bet/?hl=ru&tab=TT&sl=auto&tl
+      </button>
+    </div>
   </header>
 
-  <div class="statistics__content statistics__content--account">
-    <ul class="statistics__list">
-      <?php
-        for ($i=1; $i < 9; $i++) {
-          ?>
-            <li class="statistics__item">
-              <div class="user user--friends">
-                <?php
-                  $avatar = rand(0, 1);
-                  $verified = rand(0, 1);
-                ?>
+  <ul class="section__list section__list--friends">
+    <?php
+      for ($l=0; $l < 10; $l++) {
+        ?>
+          <li class="section__item section__item--col-2 section__item--friends">
+            <div class="user user--invited">
+              <?php
+                $avatar = rand(0, 1);
+                $verified = rand(0, 1);
+              ?>
+              <div class="user__left">
                 <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
-                  <div class="user__avatar user__avatar--friends account__image--public">
+                  <div class="user__avatar user__avatar--friends">
                     <?php if ($avatar): ?>
                       <img width="70" height="70" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar.png" alt="<?php the_title(  ); ?>">
                     <?php else : ?>
@@ -76,10 +73,15 @@
                   </div>
                 </div>
               </div>
-            </li>
-          <?php
-        }
-      ?>
-    </ul>
-  </div>
+              <div class="user__right">
+                <div class="user__money user__money--invited">
+                  $2.84
+                </div>
+              </div>
+            </div>
+          </li>
+        <?php
+      }
+    ?>
+  </ul>
 </div>

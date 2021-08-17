@@ -47,12 +47,17 @@
   </header>
 
   <!-- Профиль  -->
-  <div class="toggles__content active">
-    <div class="toggles__content-item toggles__content-item--col-1">
+  <div class="toggles__content toggles__content--account active">
+    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
           // Игры
           earena_2_get_section( 'games' );
+        }
+
+        if ($private) {
+          // Стрим
+          get_template_part( 'template-parts/stream' );
         }
       ?>
     </div>
@@ -71,12 +76,61 @@
     </div>
   </div>
   <div class="toggles__content">
+    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
 
+    </div>
   </div>
   <div class="toggles__content">
-    пусто
+    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
+
+    </div>
   </div>
+
+  <?php if ($private): ?>
+    <div class="toggles__content">
+      <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
+        <?php
+          if ( function_exists( 'earena_2_get_section' ) ) {
+            // Сообщения
+            earena_2_get_section( 'messages' );
+          }
+        ?>
+      </div>
+    </div>
+  <?php endif; ?>
+
   <div class="toggles__content">
-    пусто
+    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
+      <?php
+        if ( function_exists( 'earena_2_get_section' ) ) {
+          // Друзья
+          earena_2_get_section( 'friends' );
+        }
+      ?>
+    </div>
   </div>
+
+  <?php if ($private): ?>
+    <div class="toggles__content">
+      <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
+        <?php
+          if ( function_exists( 'earena_2_get_section' ) ) {
+            // Приглашенные
+            earena_2_get_section( 'invited' );
+          }
+        ?>
+      </div>
+    </div>
+
+    <div class="toggles__content">
+      <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
+        <?php
+          if ( function_exists( 'earena_2_get_section' ) ) {
+            // Уведомления
+            earena_2_get_section( 'requests' );
+          }
+        ?>
+      </div>
+    </div>
+  <?php endif; ?>
 </div>

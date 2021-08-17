@@ -56,13 +56,25 @@
     align-items: center;
   }
 
-  &--account {
+  &--account,
+  &--friends,
+  &--friends-page,
+  &--invited  {
     display: flex;
 
     justify-content: flex-start;
     align-items: center;
 
     width: 100%;
+  }
+
+  &--friends-page,
+  &--invited {
+    justify-content: space-between;
+  }
+
+  &--invited {
+    align-items: flex-start;
   }
 
   @media (max-width: @mobile) {
@@ -79,6 +91,109 @@
     &--form {
       margin-bottom: 10px;
     }
+
+    &--friends-page,
+    &--invited,
+    &--messages {
+      flex-direction: column;
+
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+  }
+}
+
+.user__left,
+.user__right,
+.user__center {
+  padding: 0;
+  margin: 0;
+}
+
+.user__center {
+  &--messages {
+    flex-grow: 1;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    width: 800 / ( 1156 - 40 ) * 100%;
+
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  @media (max-width: @mobile) {
+    &--messages {
+      width: 100%;
+
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.user__left {
+  flex-shrink: 0;
+
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 290 / ( 568 - 40 ) * 100%;
+
+  &--messages {
+    width: 260 / ( 1156 - 40 ) * 100%;
+  }
+
+  @media (max-width: @mobile) {
+    width: 100%;
+
+    margin-bottom: 20px;
+  }
+}
+
+.user__right {
+  flex-shrink: 0;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+  align-items: center;
+  align-content: flex-start;
+
+  width: 100px;
+
+  &--new-request {
+    width: 228 / ( 568 - 40 ) * 100%;
+  }
+
+  &--messages {
+    flex-direction: column;
+
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  @media (max-width: @mobile) {
+    width: 100%;
+
+    justify-content: space-between;
+
+    &--messages {
+      flex-direction: row;
+
+      justify-content: space-between;
+    }
   }
 }
 
@@ -94,6 +209,8 @@
   margin: 0;
 
   margin-right: 20px;
+
+  border-radius: 50%;
 
   &--account {
     width: 100px;
@@ -143,12 +260,18 @@
   }
 
   &--verified {
+    border: 3px solid #E37525;
+
     &::before {
       background-color: #colors[accent];
 
       .bg_icon('../img/check.svg');
       background-size: 14 / 24 * 100%;
     }
+  }
+
+  &--admin {
+    border: 3px solid #colors[red];
   }
 
   @media (max-width: @mobile) {
@@ -183,10 +306,11 @@
     margin-bottom: 8px;
   }
 
-  &--chats {
+  &--chats,
+  &--my {
     width: 40px;
 
-    margin-right: 11px;
+    margin-right: 10px;
   }
 
   &--match {
@@ -200,7 +324,8 @@
     border: 1px solid #colors[dark_light];
   }
 
-  &--account {
+  &--account,
+  &--friends {
     position: relative;
 
     display: flex;
@@ -415,6 +540,14 @@
     }
   }
 
+  &--invited {
+    .card_title();
+
+    color: #colors[text];
+
+    text-align: right;
+  }
+
   @media (max-width: @mobile) {
     &--account {
       margin-bottom: 10px;
@@ -491,6 +624,22 @@
 
     margin-right: 0;
   }
+
+  &--messages {
+    width: 100%;
+
+    margin: 0;
+  }
+
+  &--my {
+    width: calc(100% - 50px);
+
+    background-color: #303E58;
+  }
+
+  &--new {
+    background-color: #303E58;
+  }
 }
 
 .user__time {
@@ -500,6 +649,16 @@
 
   &--chat-page {
     margin-right: 0;
+  }
+
+  &--messages {
+    width: 100%;
+
+    margin: 0;
+    margin-bottom: 24px;
+    margin-top: 2px;
+
+    text-align: right;
   }
 }
 
@@ -595,4 +754,74 @@
       margin-top: 10px;
     }
   }
+}
+
+.user__button {
+  &--friends {
+    width: 100%;
+    min-width: 100px;
+
+    padding: 5px 10px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &--new-request {
+    width: auto;
+  }
+
+  @media (max-width: @mobile) {
+    &--new-request {
+      width: 48%;
+
+      &:not(:last-of-type) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.user__request {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 6.5px 20px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+
+  background: #2A374F;
+  border-radius: 80px;
+
+  .caption();
+
+  color: #colors[white];
+
+  @media (max-width: @mobile) {
+    width: 80%;
+
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+.user__messages-count {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 21px;
+  height: 21px;
+
+  .caption_2();
+
+  color: #colors[white];
+
+  border-radius: 50%;
+
+  background-color: #colors[accent];
 }

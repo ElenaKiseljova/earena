@@ -3,6 +3,8 @@
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
     try {
+      let toggleCheckersFlag = false;
+
       /* Ф-я переключения активного класса по клику */
       let toggleActive = {
         single: function (buttonSelector, elementToggleSelectors = [], overlaySelector = false) {
@@ -143,6 +145,27 @@
                 }
               });
             });
+
+            // Если в разметке присущи кнопки, переключающие табы, но они - не табы.
+            // Им добавлен класс "togglechecker"
+            // Проверка: подвешено ли уже событие на кнопку
+            if (!toggleCheckersFlag) {
+              let toggleCheckers = document.querySelectorAll('.togglechecker');
+
+              if (toggleCheckers) {
+                toggleCheckers.forEach((toggleChecker, i) => {
+                  toggleChecker.addEventListener('click', function () {
+                    if (toggleChecker.dataset.toggleIndex) {
+                      // Переход ко вкладке с индексом в дата-атрибуту кнопки тогл-чекера
+                      buttons[toggleChecker.dataset.toggleIndex].click();
+                    }
+                  });
+
+                  toggleCheckersFlag = true;
+                });
+
+              }
+            }
           }
         }
       };

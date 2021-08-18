@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Получаем контейнер для шаблона
       let popupTemplateContainer = popup.querySelector(`#${prefix}-popup`);
 
-      // Получаем нужный шаблон шапки
+      // Получаем нужный шаблон
       let popupCurrentTemplate = popup.querySelector(`#popup-${prefix}-${typePopup}`);
 
       if (popupTemplateContainer && popupCurrentTemplate) {
@@ -105,10 +105,55 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Регулировка высоты попапа
-      if (popup.offsetHeight >= deviceHeight) {
-        popup.classList.add('scroll-content');
-      } else {
-        popup.classList.remove('scroll-content');
+      let scrollContorllFunction = function () {
+        console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
+        if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
+          popup.classList.add('scroll-content');
+        } else {
+          if (prefix !== 'game') {
+            popup.classList.remove('scroll-content');
+          }
+        }
+      };
+
+      scrollContorllFunction();
+
+      if (prefix === 'game') {
+        let gameLinks = popup.querySelectorAll('.game__link');
+
+        if (gameLinks) {
+          gameLinks.forEach((gameLink, i) => {
+            gameLink.addEventListener('click', function (evt) {
+              evt.preventDefault();
+
+              // Убираю класс скролла
+              popup.classList.remove('scroll-content');
+
+              let formGame = popup.querySelector('#form-game');
+              let gameList = popup.querySelector('.popup__list--game');
+
+               if (formGame && gameList) {
+                 formGame.classList.add('active');
+                 gameList.classList.add('active');
+
+                 // Получаем заголовок попапа
+                 let popupTitle = popup.querySelector('.popup__title--game');
+
+                 // Получаем название Игры
+                 let gameTitle = gameLink.querySelector('.game__name');
+
+                 // Получаем иконку платформы
+                 let popupPlatform = popup.querySelector('.platform');
+
+                 if (popupTitle && gameTitle && popupPlatform) {
+                   popupTitle.textContent = gameTitle.textContent;
+
+                   popupPlatform.classList.add('active');
+                 }
+               }
+            });
+          });
+        }
       }
     };
 
@@ -138,6 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (sufixPopupName === 'match') {
+              popupContentCreator(sufixPopupName, popupItem, item);
+            }
+
+            if (sufixPopupName === 'game') {
+              popupContentCreator(sufixPopupName, popupItem, item);
+            }
+
+            if (sufixPopupName === 'stream') {
               popupContentCreator(sufixPopupName, popupItem, item);
             }
 

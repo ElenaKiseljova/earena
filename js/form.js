@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
 
               if (error) {
-                //onError(error);
+                onError(error);
                 /*
                   // Обработчик успешной отправки при восстановлении пароля
                   forgot
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 */
                 /*Test ---> */
 
-                onSuccess(error, 'withdrawal');
+                //onSuccess(error, 'withdrawal');
 
                 /* --- end test ; */
               }
@@ -487,6 +487,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     };
+
+    // Запуск валидации форм, которые есть в разметке при загрузке страницы.
+    // Формы, которые подставляются из шаблонов - активируются при открытии попапа.
+    // Инициализация проходит в файле popup.js
+    window.form({
+      idForm: 'form-delete-friends',
+      selectorForTemplateReplace: `#friends-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
+      classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+      selectorClosestWrapperForm: '.popup--friends', // по умолчанию - false
+    });
+
+    window.form({
+      idForm: 'form-delete-history',
+      selectorForTemplateReplace: `#history-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
+      classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+      selectorClosestWrapperForm: '.popup--history', // по умолчанию - false
+    });
   } catch (e) {
     console.log(e);
   }

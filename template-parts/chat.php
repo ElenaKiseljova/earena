@@ -6,12 +6,16 @@
     <div class="chat__conversation-list">
       <?php
         for ($i=1; $i < 9; $i++) {
+          $is_online = rand(0, 1);
           ?>
           <div class="chat__conversation-item">
             <div class="user user--chats">
-              <a class="user__avatar user__avatar--chats" href="#">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
-              </a>
+              <div class="user__image-wrapper user__image-wrapper--chat <?php if ($is_online) echo 'user__image-wrapper--online'; ?>">
+                <a class="user__avatar user__avatar--chats" href="#">
+                  <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
+                </a>
+              </div>
+
               <div class="user__info user__info--chats">
                 <a class="user__name user__name--chats" href="#">
                   <h5>
@@ -36,6 +40,33 @@
             ?>
               <div class="chat__separator">
                 <time>20 August 2021</time>
+              </div>
+              <div class="chat__conversation-item">
+                <div class="user user--chats">
+                  <div class="user__image-wrapper user__image-wrapper--chat <?php if ($is_online) echo 'user__image-wrapper--online'; ?> user__image-wrapper--admin">
+                    <a class="user__avatar user__avatar--chats" href="#">
+                      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
+                    </a>
+                  </div>
+
+                  <div class="user__info user__info--chats">
+                    <a class="user__name user__name--chats user__name--admin" href="#">
+                      <h5>
+                        Administrator
+                      </h5>
+                    </a>
+
+                    <time class="user__time <?php echo $is_chat_page ? 'user__time--chat-page' : ''; ?>">
+                      17:21
+                    </time>
+
+                    <div class="user__message <?php echo $is_chat_page ? 'user__message--chat-page' : ''; ?>">
+                      <p>
+                        Download ✌🏻✌🏻✌🏻 or copy themes in formats 😀
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             <?php
           }

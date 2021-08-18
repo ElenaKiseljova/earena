@@ -173,12 +173,14 @@
                     12.11.2020 в 15:50
                   </time>
                   <?php if ($my): ?>
-                    <div class="user__avatar user__avatar--my">
-                      <?php if ($avatar): ?>
-                        <img width="40" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar.png" alt="<?php the_title(  ); ?>">
-                      <?php else : ?>
-                        <img width="40" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-default.svg" alt="<?php the_title(  ); ?>">
-                      <?php endif; ?>
+                    <div class="user__image-wrapper user__image-wrapper--my">
+                      <div class="user__avatar user__avatar--my">
+                        <?php if ($avatar): ?>
+                          <img width="40" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar.png" alt="<?php the_title(  ); ?>">
+                        <?php else : ?>
+                          <img width="40" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-default.svg" alt="<?php the_title(  ); ?>">
+                        <?php endif; ?>
+                      </div>
                     </div>
                   <?php endif; ?>
 
@@ -189,7 +191,7 @@
                   </div>
                 </a>
                 <div class="user__right user__right--messages">
-                  <button class="section__close" type="button" name="close">
+                  <button class="section__close openpopup" data-popup="history" type="button" name="close">
                     <span class="visually-hidden">
                       <?php _e( 'Удалить', 'earena_2' ); ?>
                     </span>

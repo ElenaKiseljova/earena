@@ -10,7 +10,7 @@
     }
   ?>
 
-  <!-- Шаблоны попапов вход/регистрация/восстановление -->
+  <!-- Шаблоны попапов создания / подтверждения / удаления -->
   <template id="popup-match-create">
     <div class="popup__header popup__header--match">
       <h2 class="popup__title popup__title--match">

@@ -2,7 +2,8 @@
   // Игры
   global $games;
 
-  $games = [
+  global $games_all;
+  $games_all = [
     0 => [
       'name' => 'WARZONE',
       'variations' => [1],
@@ -85,7 +86,15 @@
     ],
   ];
 
+  // Записываю все игры в глобальную переменную
+  $games = $games_all;
+
   // Типы игр по платформам
+  global $games_desktop;
+  global $games_mobile;
+  global $games_xbox;
+  global $games_playstation;
+
   $games_desktop = [];
   $games_mobile =  [];
   $games_xbox = [];
@@ -127,12 +136,12 @@
           <use xlink:href="#icon-platform-desktop"></use>
         </svg>
 
-        <?php _e( 'Desktop', 'earena_2' ); ?>
+        Desktop
       </h2>
 
       <div class="section__header-right">
         <?php if ($private): ?>
-          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-desktop">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
             </span>
@@ -155,7 +164,7 @@
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -186,12 +195,12 @@
           <use xlink:href="#icon-platform-mobile"></use>
         </svg>
 
-        <?php _e( 'Mobile', 'earena_2' ); ?>
+        Mobile
       </h2>
 
       <div class="section__header-right">
         <?php if ($private): ?>
-          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-mobile">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
             </span>
@@ -210,11 +219,11 @@
 
         $row_index = 1;
 
-        // Перебираем игры десктопные
+        // Перебираем игры mobile
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -245,12 +254,12 @@
           <use xlink:href="#icon-platform-xbox"></use>
         </svg>
 
-        <?php _e( 'XBOX', 'earena_2' ); ?>
+        XBOX
       </h2>
 
       <div class="section__header-right">
         <?php if ($private): ?>
-          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-xbox">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
             </span>
@@ -269,11 +278,11 @@
 
         $row_index = 1;
 
-        // Перебираем игры десктопные
+        // Перебираем игры xbox
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -304,12 +313,12 @@
           <use xlink:href="#icon-platform-playstation"></use>
         </svg>
 
-        <?php _e( 'Playstation', 'earena_2' ); ?>
+        PlayStation
       </h2>
 
       <div class="section__header-right">
         <?php if ($private): ?>
-          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add">
+          <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-playstation">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
             </span>
@@ -328,11 +337,11 @@
 
         $row_index = 1;
 
-        // Перебираем игры десктопные
+        // Перебираем игры playstation
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -387,7 +396,7 @@
           $game_index = 0;
           $row_index = 1;
 
-          // Перебираем игры десктопные
+          // Перебираем игры все
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
@@ -465,7 +474,7 @@
 
           $row_index = 1;
 
-          // Перебираем игры десктопные
+          // Перебираем игры мобильные
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
@@ -504,7 +513,7 @@
 
           $row_index = 1;
 
-          // Перебираем игры десктопные
+          // Перебираем игры xbox
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
@@ -543,7 +552,7 @@
 
           $row_index = 1;
 
-          // Перебираем игры десктопные
+          // Перебираем игры playstation
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">

@@ -31,19 +31,11 @@
           </div>
 
           <div class="user__info user__info--friends">
-            <a class="user__name user__name--friends" href="#">
+            <a class="user__name user__name--friends user__name--admin" href="#">
               <h5>
                 Administrator
               </h5>
             </a>
-
-            <?php
-              // Все флаги из макета загружены в папку flags. Для подстановки нужного - менятеся слаг
-              $user_countries_slug = 'ru';
-            ?>
-            <div class="user__country user__country--friends">
-              <img width="28" height="20" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $user_countries_slug; ?>.svg" alt="">
-            </div>
 
             <?php
               $online = rand(0, 1);
@@ -59,12 +51,6 @@
                 ?>
               </div>
             <?php endif; ?>
-
-            <div class="user__rating user__rating--friends">
-              <span>
-                <?php _e( 'Рейтинг', 'earena_2' ); ?>
-              </span>: 518
-            </div>
           </div>
         </div>
       </div>
@@ -72,7 +58,7 @@
     <li class="section__item section__item--col-2 section__item--chat">
       <div class="section__item-top">
         <h2 class="section__item-title">
-          <?php _e( 'Диалог с', 'earena_2' ); ?> StacyBloom
+          <?php _e( 'Диалог с Администратором', 'earena_2' ); ?>
         </h2>
 
         <button class="section__close" type="button" name="close">

@@ -25,7 +25,7 @@
 <main class="page-main">
   <section class="account">
     <div class="account__wrapper">
-      <header class="account__header <?php if ($vip) echo 'account__header--vip'; ?>">
+      <header class="account__header <?php if ($vip && $private) echo 'account__header--vip'; ?>">
         <div class="account__left">
           <div class="user user--account">
             <div class="user__image-wrapper <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">

@@ -8,7 +8,7 @@
       <?php _e( 'Моя трансляция', 'earena_2' ); ?>
     </h2>
 
-    <button class="button button--gray openpopup" data-popup="stream" type="button" name="sourse">
+    <button class="button button--gray openpopup" data-popup="stream" type="button" name="source">
       <span>
         <?php _e( 'Указать источник', 'earena_2' ); ?>
       </span>

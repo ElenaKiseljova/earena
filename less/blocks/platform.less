@@ -15,6 +15,27 @@
     margin-right: 10px;
   }
 
+  &--game-popup {
+    position: absolute;
+
+    right: 20px;
+    top: 20px;
+
+    z-index: 1;
+
+    width: auto;
+
+    background-color: #colors[dark_light];
+
+    opacity: 0;
+
+    &.active {
+      opacity: 1;
+
+      z-index: 1001;
+    }
+  }
+
   &--page {
     justify-content: flex-start;
     align-items: center;

@@ -212,6 +212,35 @@
 
   border-radius: 50%;
 
+  &--online {
+    position: relative;
+
+    &::after {
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+      right: 0;
+
+      z-index: 1;
+
+      transform: translate(-50%, -50%);
+
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background-color: #colors[link];
+    }
+  }
+
+  &--chat,
+  &--my {
+    margin-right: 10px;
+  }
+
   &--account {
     width: 100px;
   }
@@ -309,8 +338,6 @@
   &--chats,
   &--my {
     width: 40px;
-
-    margin-right: 10px;
   }
 
   &--match {
@@ -502,6 +529,12 @@
 
     h5 {
       color: #colors[link];
+    }
+  }
+
+  &--admin {
+    h5 {
+      color: #colors[red];
     }
   }
 
@@ -789,7 +822,7 @@
   justify-content: center;
   align-items: center;
 
-  padding: 6.5px 20px;
+  padding: 6.5px 19px;
   margin-bottom: 10px;
   margin-right: 10px;
 

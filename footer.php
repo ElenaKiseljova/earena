@@ -209,8 +209,28 @@
       ?>
 
       <?php
+        // Попап Игры
+        get_template_part( 'template-parts/popup/game' );
+      ?>
+
+      <?php
         // Попап Кошелёк
         get_template_part( 'template-parts/popup/purse' );
+      ?>
+
+      <?php
+        // Попап Удалить друга
+        get_template_part( 'template-parts/popup/friends' );
+      ?>
+
+      <?php
+        // Попап Удалить историю переписки
+        get_template_part( 'template-parts/popup/history' );
+      ?>
+
+      <?php
+        // Попап Стрим
+        get_template_part( 'template-parts/popup/stream' );
       ?>
 
       <!-- Для переключения состояния - добавляется active класс  -->

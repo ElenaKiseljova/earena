@@ -156,11 +156,11 @@
             </div>
             <div class="chat-page__form-right">
               <div class="user user--form">
-                <button class="user__stream user__stream--right" type="button" name="button">
+                <a class="user__stream user__stream--right" href="https://youtube.com">
                   <svg class="user__stream-icon" width="16" height="13">
                     <use xlink:href="#icon-play"></use>
                   </svg>
-                </button>
+                </a>
                 <a class="user__avatar user__avatar--form" href="#">
                   <img width="80" height="80" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-2.png" alt="Avatar">
                 </a>

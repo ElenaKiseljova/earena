@@ -332,19 +332,9 @@
         <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
       </div>
 
-      <a class="popup__go-to-button button button--gray" href="#">
+      <a class="popup__go-to-button button button--gray" href="/account">
         <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
-
-      <button class="form__popup-close form__popup-close--cross">
-        <span class="visually-hidden">
-          <?php _e( 'Закрыть', 'earena_2' ); ?>
-        </span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
     </div>
   </template>
 </div>

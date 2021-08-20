@@ -196,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Обработчик не успешной отправки
-            var onError = function (error) {
-              let templateError = document.querySelector(`#${idForm}-error`);
+            var onError = function (error, prefix='') {
+              let templateError = document.querySelector(`#${idForm}-error${prefix}`);
 
               if (wrapperFormNode && templateError) {
                 wrapperFormNode.innerHTML = '';
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrapperFormNode.appendChild(cloneTemplate);
               }
 
-              console.log('Error: ', error);
+              console.log(`Error${prefix}: `, error);
 
               // Ф-я закрытия попапа по клику на кнопку
               additionButtonClosePopup();
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (formClosePopups) {
             formClosePopups.forEach((formClosePopup, i) => {
               formClosePopup.addEventListener('click', function () {
-                window.closePopup();
+                window.popup.closePopup();
               });
             });
           }

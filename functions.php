@@ -31,6 +31,7 @@
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/form.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/filter.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('files-script', get_template_directory_uri() . '/assets/js/files.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -47,22 +48,39 @@
   // Section functions
 
   /*
-    Ф-я подключает нужный шаблон и регулирует отображение шапки/фильтров/табов секции
+    *** Ф-я подключает нужный шаблон и регулирует отображение шапки/фильтров/табов секции
+    * $section_header_right --- принимаемые значения:
+    *                             'all_button' - ссфлка на все матчи /  турниры,
+    *                             'tabs' - табы платформ
+    *                             'filters' - фильтры (на стр Аккаунта например)
+    * $section_filter --- отображать ли секцию с фильтрами
+    * $section_slug --- слаг однотипных секций с классом .section
   */
   if (! function_exists( 'earena_2_get_section' )) {
-    function earena_2_get_section ( $section_slug, $section_filter = false, $section_header_right = 'all_button' ) {
+    function earena_2_get_section ( $section_slug, $section_filter = false, $section_header_right = 'all_button', $is_tab = '' ) {
       global $filter_section;
       global $header_right_section;
+      global $is_tab_global;
 
       $filter_section = $section_filter;
       $header_right_section = $section_header_right;
+      $is_tab_global = $is_tab;
 
-      get_template_part( 'template-parts/section', $section_slug );
+      get_template_part( 'template-parts/sections/' . $section_slug );
     }
   }
 
   /*
-    Ф-я выводит кнопку закрытия попапа с нужным модификатором
+    *** Ф-я подключает нужный шаблон popup
+  */
+  if (! function_exists( 'earena_2_get_popup' ) ) {
+    function earena_2_get_popup ( $popup_slug = '' ) {
+      get_template_part( 'template-parts/popups/' . $popup_slug );
+    }
+  }
+
+  /*
+    *** Ф-я выводит кнопку закрытия попапа с нужным модификатором
   */
   if (! function_exists( 'earena_2_get_popup_close_button_html' )) {
     function earena_2_get_popup_close_button_html ( $popup_slug = '' ) {
@@ -70,7 +88,7 @@
 
       $slug_popup = $popup_slug;
 
-      get_template_part( 'template-parts/popup/button', 'close' );
+      get_template_part( 'template-parts/popups/button', 'close' );
     }
   }
 ?>

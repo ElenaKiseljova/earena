@@ -40,6 +40,7 @@
             });
 
             if (elementToggleSelectors.length > 0) {
+              // Переключение по клику на document
               document.addEventListener('click', function (evt) {
                 if (button.classList.contains('active') && evt.target !== button) {
                   button.classList.toggle('active');
@@ -100,9 +101,16 @@
                   classForAddClosestWrapperForm: false, // по умолчанию - false
                   selectorClosestWrapperForm: false, // по умолчанию - false
                 });
+              }
 
-                /* Кошелек */
-                toggleActive.single('.form__submit--purse', ['.popup--purse'], '.overlay--purse');
+              // Получаем кнопки открытия попапов
+              let popupOpenButtons = container.querySelectorAll('.openpopup');
+
+              if (popupOpenButtons) {
+                popupOpenButtons.forEach((popupOpenButton, i) => {
+                  // Активация попапа по клику на указанную кнопку
+                  window.popup.activatePopup(popupOpenButton);
+                });
               }
             }
           };
@@ -138,7 +146,7 @@
                   elements[i].classList.toggle('active');
                 }
 
-                // Если есть дата-атрибуты
+                // Если есть дата-атрибуты переключения Шаблонов
                 if (button.dataset.contentId && button.dataset.containerId) {
                   // Ф-я подстановки шаблона в контейнер
                   templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
@@ -149,6 +157,7 @@
             // Если в разметке присущи кнопки, переключающие табы, но они - не табы.
             // Им добавлен класс "togglechecker"
             // Проверка: подвешено ли уже событие на кнопку
+            // Пример: кнопка 'Все друзья' на стр Аккаунта
             if (!toggleCheckersFlag) {
               let toggleCheckers = document.querySelectorAll('.togglechecker');
 

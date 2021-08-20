@@ -184,53 +184,40 @@
       </footer>
 
       <?php
-        // Попап с Чатом
-        get_template_part( 'template-parts/popup/chat' );
-      ?>
+        /*
+          Ф-я подключает нужный шаблон popup
+        */
+        if ( function_exists( 'earena_2_get_popup' ) ) {
+          // Попап с Чатом
+          earena_2_get_popup( 'chat' );
 
-      <?php
-        // Попап с Регистрацией/Входом
-        get_template_part( 'template-parts/popup/login' );
-      ?>
+          // Попап с Регистрацией/Входом
+          earena_2_get_popup( 'login' );
 
-      <?php
-        // Попап с формой управлеия Турниром
-        get_template_part( 'template-parts/popup/tournament' );
-      ?>
+          // Попап с формой управлеия Турниром
+          earena_2_get_popup( 'tournament' );
 
-      <?php
-        // Попап с жалобой судье
-        get_template_part( 'template-parts/popup/complaint' );
-      ?>
+          // Попап с жалобой судье
+          earena_2_get_popup( 'complaint' );
 
-      <?php
-        // Попап Матчем
-        get_template_part( 'template-parts/popup/match' );
-      ?>
+          // Попап Матча
+          earena_2_get_popup( 'match' );
 
-      <?php
-        // Попап Игры
-        get_template_part( 'template-parts/popup/game' );
-      ?>
+          // Попап Игры
+          earena_2_get_popup( 'game' );
 
-      <?php
-        // Попап Кошелёк
-        get_template_part( 'template-parts/popup/purse' );
-      ?>
+          // Попап Кошелёк
+          earena_2_get_popup( 'purse' );
 
-      <?php
-        // Попап Удалить друга
-        get_template_part( 'template-parts/popup/friends' );
-      ?>
+          // Попап Удалить друга
+          earena_2_get_popup( 'friends' );
 
-      <?php
-        // Попап Удалить историю переписки
-        get_template_part( 'template-parts/popup/history' );
-      ?>
+          // Попап Удалить историю переписки
+          earena_2_get_popup( 'history' );
 
-      <?php
-        // Попап Стрим
-        get_template_part( 'template-parts/popup/stream' );
+          // Попап Стрим
+          earena_2_get_popup( 'stream' );
+        }
       ?>
 
       <!-- Для переключения состояния - добавляется active класс  -->

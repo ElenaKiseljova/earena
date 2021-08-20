@@ -50,7 +50,7 @@
           foreach ($games as $game) {
             ?>
               <li class="popup__item popup__item--col-2">
-                <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
               </li>
             <?php
             $game_index++;
@@ -109,7 +109,7 @@
           foreach ($games as $game) {
             ?>
               <li class="popup__item popup__item--col-2">
-                <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
               </li>
             <?php
             $game_index++;
@@ -168,7 +168,7 @@
           foreach ($games as $game) {
             ?>
               <li class="popup__item popup__item--col-2">
-                <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
               </li>
             <?php
             $game_index++;
@@ -227,7 +227,7 @@
           foreach ($games as $game) {
             ?>
               <li class="popup__item popup__item--col-2">
-                <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
               </li>
             <?php
             $game_index++;

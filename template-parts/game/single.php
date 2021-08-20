@@ -35,8 +35,8 @@
             $platforms = ['desktop', 'xbox', 'playstation'];
           ?>
           <?php foreach ($platforms as $platform): ?>
-            <li class="game__platform game__platform--page">
-              <svg class="game__platform-icon" width="30" height="30">
+            <li class="platform platform--page">
+              <svg class="platform__icon" width="30" height="30">
                 <use xlink:href="#icon-platform-<?= $platform; ?>"></use>
               </svg>
             </li>

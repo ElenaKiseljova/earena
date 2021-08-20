@@ -1,19 +1,24 @@
-.filters {
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: flex-start;
-  align-items: flex-start;
-
+.filters,
+.filters__form {
   .w100();
+}
 
+.filters {
   padding: 10px 10px 13px;
 
   margin-bottom: 20px;
 
   background: #colors[dark_light];
   border-radius: 5px;
+}
+
+.filters__form {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .filters__container {
@@ -199,19 +204,21 @@
 
   list-style: none;
 
-  &.active {
-    display: block;
-  }
-
   &--checkbox {
     padding: 9px 14px;
 
     background: #colors[dark];
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+
+    &.active {
+      display: block;
+    }
   }
 
   &--result {
+    display: block;
+
     background: transparent;
   }
 }

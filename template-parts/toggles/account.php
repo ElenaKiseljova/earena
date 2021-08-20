@@ -77,12 +77,22 @@
   </div>
   <div class="toggles__content">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-
+      <?php
+        if ( function_exists( 'earena_2_get_section' ) ) {
+          // Матчи
+          earena_2_get_section( 'matches', false, 'filters', 'matches' );
+        }
+      ?>
     </div>
   </div>
   <div class="toggles__content">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-
+      <?php
+        if ( function_exists( 'earena_2_get_section' ) ) {
+          // Турниры
+          earena_2_get_section( 'tournaments', false, 'filters', 'tournaments' );
+        }
+      ?>
     </div>
   </div>
 

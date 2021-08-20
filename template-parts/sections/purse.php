@@ -37,7 +37,7 @@
             <?php _e( 'Укажите сумму для пополнения.<br>Вы сможете вывести свои внесенные средства в любой момент.', 'earena_2' ); ?>
           </p>
 
-          <button class="form__submit form__submit--purse button button--green" type="submit" disabled name="purse-refill-submit">
+          <button class="form__submit form__submit--purse button button--green openpopup" data-popup="purse" type="submit" disabled name="purse-refill-submit">
             <span>
               <?php _e( 'Пополнить счет', 'earena_2' ); ?>
             </span>
@@ -67,7 +67,7 @@
             <?php _e( 'Минимальная сумма для вывода $50 <br>При выводе средств, комиссия взымается в соответствии с тарифами платёжной системы.', 'earena_2' ); ?>
           </p>
 
-          <button class="form__submit form__submit--purse button button--green" type="submit" disabled name="withdrawal">
+          <button class="form__submit form__submit--purse button button--green openpopup" data-popup="purse" type="submit" disabled name="withdrawal">
             <span>
               <?php _e( 'Вывести средства', 'earena_2' ); ?>
             </span>
@@ -182,7 +182,7 @@
             </p>
           </div>
 
-          <button class="form__submit form__submit--purse button button--green" type="submit" disabled name="transaction">
+          <button class="form__submit form__submit--purse button button--green openpopup" data-popup="purse" type="submit" disabled name="transaction">
             <span>
               <?php _e( 'Перевести', 'earena_2' ); ?>
             </span>

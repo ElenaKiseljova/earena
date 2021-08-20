@@ -11,7 +11,7 @@
 <main class="page-main">
   <!-- Секция турнира -->
   <?php
-    get_template_part( 'template-parts/tournament/tournament', 'single' );
+    get_template_part( 'template-parts/tournament/single' );
   ?>
 
   <!-- Партнеры -->

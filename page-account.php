@@ -148,7 +148,7 @@
       </header>
       <!-- Переключатели -->
       <?php
-        get_template_part( 'template-parts/toggles/toggles', 'account' );
+        get_template_part( 'template-parts/toggles/account' );
       ?>
     </div>
   </section>

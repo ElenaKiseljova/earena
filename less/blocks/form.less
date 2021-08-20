@@ -143,8 +143,11 @@
 
       transition: opacity 0.3s;
 
-      &--purse {
-        margin-top: 10px;
+
+      @media (max-width: @mobile) {
+        &--purse {
+          margin-top: 10px;
+        }
       }
     }
   }

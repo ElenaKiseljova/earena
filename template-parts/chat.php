@@ -1,7 +1,8 @@
 <?php
   global $is_chat_page;
+  global $is_account_page;
 ?>
-<div class="chat">
+<div class="chat <?php if ($is_account_page || $is_chat_page) echo 'chat--chat-page'; ?>">
   <div class="chat__conversation">
     <div class="chat__conversation-list">
       <?php

@@ -24,7 +24,7 @@
         ?>
       </div>
 
-      <button class="form__popup-purse button button--gray">
+      <button class="form__popup-close button button--gray">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -46,7 +46,7 @@
         ?>
       </div>
 
-      <button class="form__popup-purse button button--gray">
+      <button class="form__popup-close button button--gray">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -72,7 +72,7 @@
         <?php _e( 'Попробуйте повторить позже', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-purse button button--gray">
+      <button class="form__popup-close button button--gray">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -87,7 +87,7 @@
         <?php _e( 'Попробуйте повторить позже', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-purse button button--gray">
+      <button class="form__popup-close button button--gray">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

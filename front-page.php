@@ -23,6 +23,7 @@
 
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
+      // Главная
       if (!$_GET['type']) {
         earena_2_get_section( 'games' );
 
@@ -30,8 +31,12 @@
 
         earena_2_get_section( 'tournaments' );
       } elseif (isset($_GET['type']) && $_GET['type'] === 'matches') {
+
+        // Старница всех матчей
         earena_2_get_section( 'matches', true, 'tabs' );
       } elseif (isset($_GET['type']) && $_GET['type'] === 'tournaments') {
+
+        // Страница всех турниров
         earena_2_get_section( 'tournaments', true, 'tabs' );
       }
     }

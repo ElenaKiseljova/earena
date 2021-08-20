@@ -120,7 +120,7 @@
 
     <!-- Переключатели -->
     <?php
-      get_template_part( 'template-parts/toggles/toggles', 'tournament' );
+      get_template_part( 'template-parts/toggles/tournament' );
     ?>
   </div>
 </section>

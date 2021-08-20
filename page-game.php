@@ -11,7 +11,7 @@
 <main class="page-main">
   <!-- Секция Игры -->
   <?php
-    get_template_part( 'template-parts/game/game', 'single' );
+    get_template_part( 'template-parts/game/single' );
   ?>
 
   <?php

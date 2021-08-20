@@ -119,7 +119,7 @@
   }
 
   // Количество игр
-  $game_amounts = count($games);
+  $games_amount = count($games);
 
   // Страница Акаунта
   global $is_account_page;
@@ -164,7 +164,7 @@
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -180,7 +180,7 @@
         while ( $row_index <= 6 && $row_index > 1 ) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
             </li>
           <?php
           $row_index++;
@@ -223,7 +223,7 @@
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -239,7 +239,7 @@
         while ( $row_index <= 6 && $row_index > 1 ) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
             </li>
           <?php
           $row_index++;
@@ -282,7 +282,7 @@
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -298,7 +298,7 @@
         while ( $row_index <= 6 && $row_index > 1 ) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
             </li>
           <?php
           $row_index++;
@@ -341,7 +341,7 @@
         foreach ($games as $game) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'account' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
             </li>
           <?php
           if ($row_index % 6 === 0) {
@@ -357,7 +357,7 @@
         while ( $row_index <= 6 && $row_index > 1 ) {
           ?>
             <li class="section__item section__item--col-6">
-              <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+              <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
             </li>
           <?php
           $row_index++;
@@ -372,13 +372,13 @@
         <h2 class="section__title section__title--games">
           <?php _e( 'Игры', 'earena_2' ); ?>
           <span class="section__amount">
-            <?= $game_amounts; ?>
+            <?= $games_amount; ?>
           </span>
         </h2>
 
         <div class="section__header-right">
           <!-- Табы игровых платформ -->
-          <?php get_template_part( 'template-parts/tabs/tabs', 'platform' ); ?>
+          <?php get_template_part( 'template-parts/tabs/platform' ); ?>
         </div>
       </header>
 
@@ -400,7 +400,7 @@
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+                <?php get_template_part( 'template-parts/game/archive' ); ?>
               </li>
             <?php
             if ($row_index % 6 === 0) {
@@ -416,7 +416,7 @@
           while ( $row_index <= 6 && $row_index > 1 ) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
               </li>
             <?php
             $row_index++;
@@ -439,7 +439,7 @@
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+                <?php get_template_part( 'template-parts/game/archive' ); ?>
               </li>
             <?php
             if ($row_index % 6 === 0) {
@@ -455,7 +455,7 @@
           while ( $row_index <= 6 && $row_index > 1 ) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
               </li>
             <?php
             $row_index++;
@@ -478,7 +478,7 @@
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+                <?php get_template_part( 'template-parts/game/archive' ); ?>
               </li>
             <?php
             if ($row_index % 6 === 0) {
@@ -494,7 +494,7 @@
           while ( $row_index <= 6 && $row_index > 1 ) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
               </li>
             <?php
             $row_index++;
@@ -517,7 +517,7 @@
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+                <?php get_template_part( 'template-parts/game/archive' ); ?>
               </li>
             <?php
             if ($row_index % 6 === 0) {
@@ -533,7 +533,7 @@
           while ( $row_index <= 6 && $row_index > 1 ) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
               </li>
             <?php
             $row_index++;
@@ -556,7 +556,7 @@
           foreach ($games as $game) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive' ); ?>
+                <?php get_template_part( 'template-parts/game/archive' ); ?>
               </li>
             <?php
             if ($row_index % 6 === 0) {
@@ -572,7 +572,7 @@
           while ( $row_index <= 6 && $row_index > 1 ) {
             ?>
               <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/game-archive', 'empty' ); ?>
+                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
               </li>
             <?php
             $row_index++;

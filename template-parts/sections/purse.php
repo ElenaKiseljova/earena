@@ -7,7 +7,7 @@
 
       <div class="section__header-right section__header-right--purse">
         <!-- Табы действий с Кошельком -->
-        <?php get_template_part( 'template-parts/tabs/tabs', 'purse' ); ?>
+        <?php get_template_part( 'template-parts/tabs/purse' ); ?>
       </div>
     </header>
 

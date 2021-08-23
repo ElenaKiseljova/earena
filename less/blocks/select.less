@@ -1,0 +1,137 @@
+.select,
+.select__list,
+.select__item,
+.select__label {
+  .w100();
+}
+
+.select {
+  position: relative;
+}
+
+.select__button {
+  .button_reset();
+
+  width: 100%;
+
+  padding: 9px 15px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height, or 143% */
+
+  letter-spacing: 0.01em;
+
+  color: #colors[text];
+
+  text-align: left;
+
+  background-color: #colors[dark];
+  border: 1px solid #434D5A;
+  box-sizing: border-box;
+  border-radius: 5px;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+    right: 5px;
+
+    transform: translateY(-50%);
+
+    z-index: 2;
+
+    width: 31px;
+    height: 31px;
+
+    .bg_icon('../img/icon-chevron-bottom.svg');
+  }
+
+  &:focus,
+  &.active {
+    background: #colors[dark];
+    border-color: #colors[accent];
+  }
+
+  &:hover {
+    background: #colors[dark_light];
+  }
+
+  &--login {
+    color: #colors[text_black];
+  }
+
+  &.selected {
+    color: #colors[text];
+  }
+}
+
+.select__list {
+  position: absolute;
+
+  top: calc(100% + 5px);
+  left: 0;
+
+  z-index: 3;
+
+  padding-top: 4px;
+  padding-bottom: 6px;
+
+  background-color: #colors[dark];
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translateY(50px);
+
+  list-style: none;
+
+  &.loaded {
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  &.active {
+    transform: translateY(0px);
+
+    pointer-events: all;
+
+    opacity: 1;
+
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+}
+
+.select__label {
+  display: block;
+
+  padding: 6px 14px;
+
+  .caption();
+
+  color: #colors[text];
+
+  text-align: left;
+
+  background-color: #colors[dark];
+
+  transition: background-color 0.3s;
+
+  &:hover,
+  &:focus {
+    background-color: #colors[dark_light];
+
+    transition: background-color 0.3s;
+  }
+}
+
+input[type="radio"]:checked + .select__label {
+  background-color: #colors[dark_light_2];
+
+  transition: background-color 0.3s;
+}

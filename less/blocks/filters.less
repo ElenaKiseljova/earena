@@ -10,6 +10,13 @@
 
   background: #colors[dark_light];
   border-radius: 5px;
+
+  &--account-tabs {
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: none;
+  }
 }
 
 .filters__form {
@@ -30,9 +37,9 @@
 
   align-content: flex-start;
 
-  width: calc(100% + 9px);
+  width: calc(100% + 10px);
 
-  margin-right: -9px;
+  margin-right: -10px;
 
   &--top {
     align-items: center;
@@ -40,6 +47,11 @@
 
   &--bottom {
     align-items: flex-start;
+  }
+
+  &--account-tabs {
+    justify-content: flex-end;
+    margin-bottom: -10px;
   }
 }
 
@@ -57,7 +69,7 @@
   padding: 0;
   margin: 0;
 
-  margin-right: 9px;
+  margin-right: 10px;
   margin-bottom: 10px;
 
   &--search {
@@ -73,15 +85,24 @@
     align-items: center;
   }
 
+  &--col-1 {
+    width: calc(100% - 10px);
+  }
+
+  &--col-2 {
+    width: calc(50% - 10px);
+  }
+
   &--col-5 {
-    width: calc(20% - 9px);
+    width: calc(20% - 10px);
   }
 
   @media (max-width: @mobile) {
     &--search,
     &--checkboxes,
+    &--col-2,
     &--col-5 {
-      width: calc(100% - 9px);
+      width: calc(100% - 10px);
     }
   }
 }
@@ -111,7 +132,7 @@
 
   width: 100%;
 
-  padding: 13px 15px;
+  padding: 8px 15px;
 
   font-family: #fonts[1];
   font-style: normal;
@@ -165,6 +186,11 @@
     border-color: #colors[red];
 
     transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  &--input {
+    padding-top: 10.6px;
+    padding-bottom: 10.6px;
   }
 
   &--select {

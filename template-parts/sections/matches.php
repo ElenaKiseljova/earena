@@ -8,6 +8,8 @@
     $is_matches_tab = true;
   }
 
+  global $is_account_page;
+
   // Матчи
   global $matches;
 
@@ -26,7 +28,7 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link
@@ -42,7 +44,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
@@ -58,7 +60,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -74,7 +76,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -106,7 +108,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -122,7 +124,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -154,7 +156,7 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link
@@ -170,7 +172,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
@@ -186,7 +188,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -202,7 +204,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => 5, // 1 etc.
       'result_user_2' => 7, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -234,7 +236,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -250,7 +252,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -282,7 +284,7 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link
@@ -298,7 +300,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
@@ -314,7 +316,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -330,7 +332,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -362,7 +364,7 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -378,7 +380,7 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
       'stream' => null, // null or link example: 'https://youtube.com'
@@ -439,7 +441,9 @@
   $matches_amount = count($matches);
 ?>
 <section class="section section--matches" id="matches">
-  <div class="section__wrapper">
+  <?php if (! $is_account_page): ?>
+    <div class="section__wrapper">
+  <?php endif; ?>
     <header class="section__header">
       <h2 class="section__title section__title--matches <?php if ( is_page(  ) && ! is_front_page() ) echo 'section__title--page'; ?>">
         <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
@@ -448,7 +452,7 @@
         </span>
       </h2>
 
-      <div class="section__header-right">
+      <div class="section__header-right <?php if($is_tab_global) echo 'section__header-right--account-tabs'; ?>">
         <?php if ($header_right_section === 'all_button'): ?>
           <a class="button button--more" href="?type=matches">
             <span>
@@ -840,5 +844,7 @@
         <?php
       }
     ?>
-  </div>
+  <?php if (! $is_account_page): ?>
+    </div>
+  <?php endif; ?>
 </section>

@@ -24,6 +24,12 @@
 
   margin-bottom: 30px;
 
+  &--tournaments-account-chat {
+    justify-content: flex-start;
+
+    margin-bottom: 40px;
+  }
+
   @media (max-width: @mobile) {
     flex-direction: column;
 
@@ -79,6 +85,13 @@
     }
   }
 
+  &--tournaments-account-chat {
+    margin-left: 20px;
+
+    .h2();
+    color: #colors[link];
+  }
+
   &--page {
     &::before {
       display: none;
@@ -114,6 +127,10 @@
         background-image: url('../img/blue-gamepad.svg');
       }
     }
+
+    &--tournaments-account-chat {
+      margin-left: 0;
+    }
   }
 }
 
@@ -147,6 +164,10 @@
 
   &--purse {
     width: 586 / 1156 * 100%;
+  }
+
+  &--account-tabs {
+    width: 510 / 1156 * 100%;
   }
 
   @media (max-width: @mobile) {
@@ -216,15 +237,26 @@
     width: calc(( 100% / 6 ) - 20px);
   }
 
+  // 3/4
+  &--col-3-4 {
+    width: calc(75% - 20px);
+  }
+
   &--friends,
   &--messages {
-    padding: 20px;
-
     margin-bottom: 10px;
 
     background-color: #colors[dark_light];
 
     border-radius: 5px;
+  }
+
+  &--friends {
+    padding: 20px;
+  }
+
+  &--messages {
+    padding: 14px 15px 14px 20px;
   }
 
   &--new-request {
@@ -244,7 +276,8 @@
 
     &--col-2,
     &--col-4,
-    &--col-3 {
+    &--col-3,
+    &--col-3-4 {
       width: calc(100% - (7.65 / 320 * 100%));
     }
 
@@ -334,5 +367,17 @@
     path {
       stroke: #colors[link];
     }
+  }
+}
+
+.section__back {
+  flex-shrink: 0;
+
+  width: 274 / 1156 * 100%;
+
+  @media (max-width: @mobile) {
+    width: 100%;
+
+    margin-bottom: 20px;
   }
 }

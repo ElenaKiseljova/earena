@@ -95,7 +95,16 @@
 
   <div class="match__bottom">
     <div class="match__bet">
-      <?= $matches[$match_index]['bet']; ?>
+      <?php
+        if ($matches[$match_index]['bet'] !== 'Free') {
+          echo '$';
+          if (function_exists( 'earena_2_nice_money' )) {
+            earena_2_nice_money($matches[$match_index]['bet']);
+          }
+        } else {
+          echo $matches[$match_index]['bet'];
+        }
+      ?>
     </div>
 
     <div class="match__button-wrapper">

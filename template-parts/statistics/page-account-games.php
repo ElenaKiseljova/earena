@@ -11,19 +11,10 @@
   </header>
 
   <div class="statistics__content statistics__content--account">
-    <div class="form">
-      <div class="form__row">
-        <input class="form__field form__field--popup" list="game-account-list" id="game-account" name="game" value="League of Legends" />
-        <span class="form__arrow"></span>
-
-        <datalist id="game-account-list">
-            <option value="Mortal Combat 11 Ultimate">
-            <option value="WARZONE">
-            <option value="League of Legends">
-            <option value="Dota 2">
-        </datalist>
-      </div>
-    </div>
+    <?php
+      // Фильтры статистики Игр
+      get_template_part( 'template-parts/filters', 'statistics' );
+    ?>
 
     <div class="players players--account">
       <h4 class="players__title players__title--account">

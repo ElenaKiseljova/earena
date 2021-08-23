@@ -7,10 +7,13 @@
 <?php
   // Стр Аккаунта (таб Турниров)
   global $is_tab_global;
+  $sufix_input = '';
   if ($is_tab_global === 'tournaments') {
     $is_tournaments_tab = true;
+    $sufix_input = 'tournaments';
   } else if ($is_tab_global === 'matches') {
     $is_matches_tab = true;
+    $sufix_input = 'matches';
   }
 ?>
 
@@ -18,7 +21,7 @@
   <form class="filters__form" action="" method="post" id="filters-account">
     <div class="filters__container filters__container--account-tabs">
       <div class="filters__element filters__element--col-2 filters__element--account-tabs">
-        <div class="select">
+        <div class="select select--account-tabs">
           <!-- Для переключения состояния - добавляется active класс  -->
           <button class="select__button" type="button" name="button">
             <?php if ($is_matches_tab): ?>
@@ -33,20 +36,20 @@
           <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="select__list">
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-status" value="future" id="select-status-future">
-              <label class="select__label" for="select-status-future">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="future" id="select-<?= $sufix_input; ?>-status-future">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-status-future">
                 <?php _e( 'Будет', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-status" value="past" id="select-status-past">
-              <label class="select__label" for="select-status-past">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="past" id="select-<?= $sufix_input; ?>-status-past">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-status-past">
                 <?php _e( 'Прошел', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-status" value="present" id="select-status-present">
-              <label class="select__label" for="select-status-present">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="present" id="select-<?= $sufix_input; ?>-status-present">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-status-present">
                 <?php _e( 'Проходит сейчас', 'earena_2' ); ?>
               </label>
             </li>
@@ -54,7 +57,7 @@
         </div>
       </div>
       <div class="filters__element filters__element--col-2 filters__element--account-tabs">
-        <div class="select">
+        <div class="select select--account-tabs">
           <!-- Для переключения состояния - добавляется active класс  -->
           <button class="select__button" type="button" name="button">
             <?php _e( 'Период', 'earena_2' ); ?>
@@ -63,20 +66,20 @@
           <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="select__list">
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-period" value="month" id="select-period-month">
-              <label class="select__label" for="select-period-month">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="month" id="select-<?= $sufix_input; ?>-period-month">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-period-month">
                 <?php _e( 'За месяц', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-period" value="year" id="select-period-year">
-              <label class="select__label" for="select-period-year">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="year" id="select-<?= $sufix_input; ?>-period-year">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-period-year">
                 <?php _e( 'За год', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-period" value="day" id="select-period-day">
-              <label class="select__label" for="select-period-day">
+              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="day" id="select-<?= $sufix_input; ?>-period-day">
+              <label class="select__label" for="select-<?= $sufix_input; ?>-period-day">
                 <?php _e( 'За сегодня', 'earena_2' ); ?>
               </label>
             </li>

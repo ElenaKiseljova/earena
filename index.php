@@ -36,6 +36,13 @@
         <?php _e( 'Завершен', 'earena_2' ); ?>
       </span>
     </button>
+
+    <h2>Кнопка верификации. Т.к. не нашла: где она в макете и что попап вызвать должно?</h2>
+    <button class="button button--green openpopup" data-popup="verification" type="button" name="verification">
+      <span>
+        <?php _e( 'Верификация', 'earena_2' ); ?>
+      </span>
+    </button>
   </div>
 </main>
 

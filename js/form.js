@@ -94,10 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData = JSON.stringify(formData);
 
             /*
-              * На сервере будут приняты только поля с атрибутом
-              * name = 'name', 'phone', 'message', 'email'
-              * Если их не достаточно - надо поправить ф-ю 'sendmail' в
-              * functions.php под то, что требуется
+              *
             */
             console.log(formData);
 
@@ -269,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 */
                 /*Test ---> */
 
-                //onSuccess(error, 'withdrawal');
+                //onSuccess(error);
 
                 /* --- end test ; */
               }
@@ -323,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Проверка инпутов
           if (allInputs) {
             allInputs.forEach((item, i) => {
-              if (item.type !== 'radio' && item.type !== 'checkbox' && item.type !== 'submit') {
+              if (item.type !== 'submit') {
                 item.autocomplete = 'off';
 
                 // Проверка по возрасту
@@ -480,6 +477,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
         }
+
+        // Поиск Селектов
+        window.select(formCheck);
 
         // Запуск валидации по клику на форму
         formCheck.addEventListener('click', function (evt) {

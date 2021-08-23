@@ -5,61 +5,47 @@
     try {
       let toggleCheckersFlag = false;
 
-      /* Ф-я переключения активного класса по клику */
-      let toggleActive = {
-        single: function (buttonSelector, elementToggleSelectors = [], overlaySelector = false) {
-          let button = document.querySelector(buttonSelector);
+      /*
+        *
+        *** Ф-я переключения активного класса по клику
+        * Экспортируется в select.js
+        */
+      window.toggleActive = {
+        single: function (button, elements = [], overlay = false) {
+          button.addEventListener('click', function () {
+            button.classList.toggle('active');
 
-          // Фон
-          let overlay;
-          if (overlaySelector) {
-            overlay = document.querySelector(overlaySelector);
-          }
+            // Перебираем все элементы, что должны по клику переключиться
+            elements.forEach((element, i) => {
+              element.classList.toggle('active');
 
-          if (button) {
-            button.addEventListener('click', function () {
-              button.classList.toggle('active');
-
-              // Перебираем все элементы, что должны по клику переключиться
-              elementToggleSelectors.forEach((elementToggleSelector, i) => {
-                let element = document.querySelector(elementToggleSelector);
-
-                if (element) {
-                  element.classList.toggle('active');
-
-                  // Класс для транзишн
-                  if (!element.classList.contains('loaded')) {
-                    element.classList.add('loaded');
-                  }
-                }
-              });
-
-              if (overlay) {
-                overlay.classList.toggle('active');
+              // Класс для транзишн
+              if (!element.classList.contains('loaded')) {
+                element.classList.add('loaded');
               }
             });
 
-            if (elementToggleSelectors.length > 0) {
-              // Переключение по клику на document
-              document.addEventListener('click', function (evt) {
-                if (button.classList.contains('active') && evt.target !== button) {
-                  button.classList.toggle('active');
-
-                  // Перебираем все элементы, что должны по клику переключиться
-                  elementToggleSelectors.forEach((elementToggleSelector, i) => {
-                    let element = document.querySelector(elementToggleSelector);
-
-                    if (element) {
-                      element.classList.toggle('active');
-                    }
-                  });
-
-                  if (overlay) {
-                    overlay.classList.toggle('active');
-                  }
-                }
-              });
+            if (overlay) {
+              overlay.classList.toggle('active');
             }
+          });
+
+          if (elements.length > 0) {
+            // Переключение по клику на document
+            document.addEventListener('click', function (evt) {
+              if (button.classList.contains('active') && evt.target !== button) {
+                button.classList.toggle('active');
+
+                // Перебираем все элементы, что должны по клику переключиться
+                elements.forEach((element, i) => {
+                  element.classList.toggle('active');
+                });
+
+                if (overlay) {
+                  overlay.classList.toggle('active');
+                }
+              }
+            });
           }
         },
         nextElementToggle: function (buttonSelector) {
@@ -133,14 +119,14 @@
 
               button.addEventListener('click', function () {
                 // Удаляю активные классы других кнопок/контента
-                removeActiveClassElements(buttons);
+                window.removeActiveClassElements(buttons);
 
                 // Переключение класса тогла
                 button.classList.toggle('active');
 
                 // Если есть элкменты, полученные из класса связанного контента
                 if (elements) {
-                  removeActiveClassElements(elements);
+                  window.removeActiveClassElements(elements);
 
                   // Переключение класса контента
                   elements[i].classList.toggle('active');
@@ -179,23 +165,44 @@
         }
       };
 
-      /* Языки */
-      toggleActive.single('.languages__select', ['.languages__list']);
-
-      /* Меню */
-      toggleActive.single('.page-header__burger', ['.page-header__bottom', '.page-header__center'], '.overlay--navigation');
 
       /* Фильтры */
-      toggleActive.nextElementToggle('.filters__field--select');
+      window.toggleActive.nextElementToggle('.filters__field--select');
 
       /* Аккордеон */
-      toggleActive.nextElementToggle('.accordeon__button');
+      window.toggleActive.nextElementToggle('.accordeon__button');
 
       /* Тогглы */
-      toggleActive.multiple('.toggles__item', '.toggles__content');
+      window.toggleActive.multiple('.toggles__item', '.toggles__content');
 
       /* Табы */
-      toggleActive.multiple('.tabs__button');
+      window.toggleActive.multiple('.tabs__button');
+
+      /* Языки */
+      let languages = document.querySelectorAll('.languages');
+
+      if (languages) {
+        languages.forEach((language, i) => {
+          let button = language.querySelector('.languages__select');
+          let list = language.querySelector('.languages__list');
+
+          if (button && list) {
+            // Вызов ф-и переключения активного класса для каждого Селекта
+            window.toggleActive.single(button, [list]);
+          }
+        });
+      }
+
+      /* Меню */
+      let menuMobile = document.querySelector('.page-header__burger');
+      let menuMobileElement1 = document.querySelector('.page-header__bottom');
+      let menuMobileElement2 = document.querySelector('.page-header__center');
+      let menuMobileOverlay = document.querySelector('.overlay--navigation');
+
+      if (menuMobile && menuMobileElement1 && menuMobileElement2 && menuMobileOverlay) {
+        // Вызов ф-и переключения активного класса для каждого связанного эл меню
+        window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2], menuMobileOverlay);
+      }
     } catch (e) {
       console.log(e);
     }

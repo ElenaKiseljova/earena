@@ -61,7 +61,7 @@
           <?php _e( 'Диалог с Администратором', 'earena_2' ); ?>
         </h2>
 
-        <button class="section__close" type="button" name="close">
+        <a class="section__close"  href="<?php echo bloginfo( 'url' ); ?>/account?requests">
           <span class="visually-hidden">
             <?php _e( 'Удалить', 'earena_2' ); ?>
           </span>
@@ -69,7 +69,7 @@
             <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </button>
+        </a>
       </div>
       <!-- Чат -->
       <?php

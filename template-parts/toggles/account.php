@@ -15,31 +15,31 @@
   <header class="toggles__header <?php if ($is_account_page) echo 'toggles__header--account'; ?>">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
-      <button class="toggles__item active" type="button" name="toggle">
+      <button class="toggles__item <?php if (! $_GET) echo 'active'; ?>" type="button" name="toggle">
         <?php _e( 'Профиль', 'earena_2' ); ?>
       </button>
-      <button class="toggles__item" type="button" name="toggle">
+      <button class="toggles__item <?php if ($_GET['matches'] !== null) echo 'active'; ?>" type="button" name="toggle">
         <?php _e( 'Матчи (14)', 'earena_2' ); ?>
       </button>
-      <button class="toggles__item" type="button" name="toggle">
+      <button class="toggles__item <?php if ($_GET['tournaments'] !== null) echo 'active'; ?>" type="button" name="toggle">
         <?php _e( 'Турниры (8)', 'earena_2' ); ?>
       </button>
 
       <?php if ($private): ?>
-        <button class="toggles__item" type="button" name="toggle">
+        <button class="toggles__item <?php if ($_GET['messages'] !== null) echo 'active'; ?>" type="button" name="toggle">
           <?php _e( 'Сообщения (1)', 'earena_2' ); ?>
         </button>
       <?php endif; ?>
 
-      <button class="toggles__item" type="button" name="toggle">
+      <button class="toggles__item <?php if ($_GET['friends'] !== null) echo 'active'; ?>" type="button" name="toggle">
         <?php _e( 'Друзья (25)', 'earena_2' ); ?>
       </button>
 
       <?php if ($private): ?>
-        <button class="toggles__item" type="button" name="toggle">
+        <button class="toggles__item <?php if ($_GET['invited'] !== null) echo 'active'; ?>" type="button" name="toggle">
           <?php _e( 'Приглашенные (4)', 'earena_2' ); ?>
         </button>
-        <button class="toggles__item" type="button" name="toggle">
+        <button class="toggles__item <?php if ($_GET['requests'] !== null) echo 'active'; ?>" type="button" name="toggle">
           <?php _e( 'Уведомления (3)', 'earena_2' ); ?>
         </button>
       <?php endif; ?>
@@ -47,7 +47,7 @@
   </header>
 
   <!-- Профиль  -->
-  <div class="toggles__content toggles__content--account active">
+  <div class="toggles__content toggles__content--account <?php if (! $_GET) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
@@ -75,7 +75,7 @@
       ?>
     </div>
   </div>
-  <div class="toggles__content">
+  <div class="toggles__content toggles__content--account <?php if ($_GET['matches'] !== null) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
@@ -85,7 +85,7 @@
       ?>
     </div>
   </div>
-  <div class="toggles__content">
+  <div class="toggles__content toggles__content--account <?php if ($_GET['tournaments'] !== null) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
@@ -97,7 +97,7 @@
   </div>
 
   <?php if ($private): ?>
-    <div class="toggles__content">
+    <div class="toggles__content toggles__content--account <?php if ($_GET['messages'] !== null) echo 'active'; ?>">
       <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
         <?php
           if ( function_exists( 'earena_2_get_section' ) ) {
@@ -109,7 +109,7 @@
     </div>
   <?php endif; ?>
 
-  <div class="toggles__content">
+  <div class="toggles__content toggles__content--account <?php if ($_GET['friends'] !== null) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
@@ -121,7 +121,7 @@
   </div>
 
   <?php if ($private): ?>
-    <div class="toggles__content">
+    <div class="toggles__content toggles__content--account <?php if ($_GET['invited'] !== null) echo 'active'; ?>">
       <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
         <?php
           if ( function_exists( 'earena_2_get_section' ) ) {
@@ -132,7 +132,7 @@
       </div>
     </div>
 
-    <div class="toggles__content">
+    <div class="toggles__content toggles__content--account <?php if ($_GET['requests'] !== null) echo 'active'; ?>">
       <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
         <?php
           if ( function_exists( 'earena_2_get_section' ) ) {

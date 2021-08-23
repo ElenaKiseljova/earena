@@ -6,6 +6,10 @@
   global $games_mobile;
   global $games_xbox;
   global $games_playstation;
+
+  // Сокрытие никнейма в попапе
+  global $no_nickname;
+  $no_nickname = true;
 ?>
 
 <!-- Для переключения состояния - добавляется active класс  -->

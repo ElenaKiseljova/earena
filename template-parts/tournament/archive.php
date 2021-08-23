@@ -8,9 +8,20 @@
 
   // Индекс турнира
   global $tournament_index;
+
+  global $is_account_page;
 ?>
 
 <div class="tournament ">
+  <?php if ($tournaments[$tournament_index]['status'] === 'present' && $is_account_page): ?>
+    <a class="tournament__gotochat" href="<?php echo bloginfo( 'url' ); ?>/account?tournaments=chat&tournament_index=<?= $tournament_index;?>">
+      <span class="visually-hidden">
+        <?php _e( 'В чате турнира сообщений', 'earena_2' ); ?>
+      </span>
+      1
+    </a>
+  <?php endif; ?>
+
   <a class="tournament__link <?php if ($tournaments[$tournament_index]['status'] === 'past') echo 'tournament__link--past'; if ($tournaments[$tournament_index]['my'] === true)  echo 'tournament__link--my'; ?>" href="/tournament">
     <div class="tournament__top">
       <div class="tournament__image">
@@ -38,7 +49,12 @@
           </div>
         <?php endif; ?>
         <div class="tournament__trophy">
-          <?= $tournaments[$tournament_index]['trophy']; ?>
+          <?php
+            echo '$';
+            if (function_exists( 'earena_2_nice_money' )) {
+              earena_2_nice_money($tournaments[$tournament_index]['trophy']);
+            }
+          ?>
         </div>
       </div>
     </div>
@@ -111,7 +127,16 @@
       </div>
 
       <div class="tournament__bet">
-        <?= $tournaments[$tournament_index]['bet']; ?>
+        <?php
+          if ($tournaments[$tournament_index]['bet'] !== 'Free') {
+            echo '$';
+            if (function_exists( 'earena_2_nice_money' )) {
+              earena_2_nice_money($tournaments[$tournament_index]['bet']);
+            }
+          } else {
+            echo $tournaments[$tournament_index]['bet'];
+          }
+        ?>
       </div>
     </div>
   </a>

@@ -12,7 +12,7 @@
 <div class="game">
   <a class="game__link" href="/game">
     <div class="game__image game__image--archive">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/archive/game-<?= $game_index; ?>.jpg" alt="<?= $games[$game_index]['name']; ?>">
+      <img src="<?= $games[$game_index]['img']; ?>" alt="<?= $games[$game_index]['name']; ?>">
     </div>
     <?php
       // Варианты игры

@@ -6,81 +6,97 @@
   $games_all = [
     0 => [
       'name' => 'WARZONE',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-0.jpg',
       'variations' => [1],
       'platforms' => [ 'playstation' ]
     ],
     1 => [
       'name' => 'Dota 2',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-1.jpg',
       'variations' => [1, 5],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     2 => [
       'name' => 'CS:GO',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-2.jpg',
       'variations' => [1, 2, 5],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     3 => [
       'name' => 'Mortal Combat 11 Ultimate',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-3.jpg',
       'variations' => [1],
       'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
     ],
     4 => [
       'name' => 'League of Legends',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-4.jpg',
       'variations' => [1, 2, 5],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     5 => [
       'name' => 'Heroes III',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-5.jpg',
       'variations' => [1, 2],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     6 => [
       'name' => 'Warcraft III',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-6.jpg',
       'variations' => [1, 2],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     7 => [
       'name' => 'Starcraft II',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-7.jpg',
       'variations' => [1, 2],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     8 => [
       'name' => 'Playerunknown\'s Battlegrounds',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-8.jpg',
       'variations' => [1, 2],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     9 => [
       'name' => 'Heartstone',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-9.jpg',
       'variations' => [1, 2, 5],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     10 => [
       'name' => 'TEKKEN 7',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-10.jpg',
       'variations' => [1],
       'platforms' => [ 'desktop', 'xbox', 'playstation' ]
     ],
     11 => [
       'name' => 'World Of Tanks',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-11.jpg',
       'variations' => [1, 3, 7],
       'platforms' => [ 'desktop', 'mobile' ]
     ],
     12 => [
       'name' => 'World Of Tanks Blitz',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-12.jpg',
       'variations' => [1, 3, 7],
       'platforms' => [ 'mobile' ]
     ],
     13 => [
       'name' => 'PES 21',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-13.jpg',
       'variations' => [1, 2, 3],
       'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
     ],
     14 => [
       'name' => 'FIFA 21',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-14.jpg',
       'variations' => [1, 2],
       'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
     ],
     15 => [
       'name' => 'FIFA ONLINE 4',
+      'img' => get_template_directory_uri() . '/assets/img/games/archive/game-15.jpg',
       'variations' => [1],
       'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
     ],
@@ -382,13 +398,15 @@
         </div>
       </header>
 
-      <div class="section__content" id="content-platform">
-        <!-- Подстановка содержимого из шаблона -->
+      <div class="section__content">
+        <ul class="section__list" id="content-platform">
+          <!-- Подстановка содержимого из шаблона -->
+        </ul>
       </div>
     </div>
 
     <template id="platform-all">
-      <ul class="section__list">
+      <!-- <ul class="section__list"> -->
         <?php
           global $games;
           global $game_index;
@@ -422,7 +440,7 @@
             $row_index++;
           }
         ?>
-      </ul>
+      <!-- </ul> -->
     </template>
     <template id="platform-desktop">
       <ul class="section__list">
@@ -461,10 +479,10 @@
             $row_index++;
           }
         ?>
-      </ul>
+      <!-- </ul> -->
     </template>
     <template id="platform-mobile">
-      <ul class="section__list">
+      <!-- <ul class="section__list"> -->
         <?php
           global $games;
           global $game_index;
@@ -500,10 +518,10 @@
             $row_index++;
           }
         ?>
-      </ul>
+      <!-- </ul> -->
     </template>
     <template id="platform-xbox">
-      <ul class="section__list">
+      <!-- <ul class="section__list"> -->
         <?php
           global $games;
           global $game_index;
@@ -539,10 +557,10 @@
             $row_index++;
           }
         ?>
-      </ul>
+      <!-- </ul> -->
     </template>
     <template id="platform-playstation">
-      <ul class="section__list">
+      <!-- <ul class="section__list"> -->
         <?php
           global $games;
           global $game_index;
@@ -578,7 +596,7 @@
             $row_index++;
           }
         ?>
-      </ul>
+      <!-- </ul> -->
     </template>
   </section>
 <?php endif; ?>

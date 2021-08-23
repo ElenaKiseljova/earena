@@ -15,6 +15,8 @@
 }
 
 .tournament {
+  position: relative;
+
   &--page {
     padding-bottom: 50px;
   }
@@ -189,6 +191,12 @@
       height: 100%;
 
       background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  @media (max-width: @mobile) {
+    &--disabled {
+      display: none;
     }
   }
 }
@@ -584,4 +592,31 @@
 .tournament__button {
   width: 200px;
   max-width: 50%;
+}
+
+.tournament__gotochat {
+  position: absolute;
+
+  top: 12px;
+  left: 12px;
+
+  z-index: 2;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 31px;
+  height: 31px;
+
+  .h3();
+
+  color: #colors[white];
+
+  border: 3px solid #colors[red];
+
+  border-radius: 50%;
+
+  background-color: #colors[red];
 }

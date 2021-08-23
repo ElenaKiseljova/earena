@@ -100,6 +100,10 @@
                 popupContentCreator(sufixPopupName, popupItem, popupButton);
               }
 
+              if (sufixPopupName === 'verification') {
+                popupContentCreator(sufixPopupName, popupItem, popupButton);
+              }
+
               // Дефолтное поведение
               window.popup.openPopup(popupItem, sufixPopupName);
             });
@@ -249,6 +253,10 @@
               });
             });
           }
+        }
+
+        if (prefix === 'verification') {
+          window.files(popup);
         }
       };
 

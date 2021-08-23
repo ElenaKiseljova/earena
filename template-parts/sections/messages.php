@@ -3,7 +3,9 @@
 ?>
 
 <?php
-  $privat_chat = $_GET['message'] ? true : false;
+  global $is_account_page;
+
+  $privat_chat = $_GET['messages'] ? true : false;
 ?>
 
 <?php if ($privat_chat): ?>
@@ -80,15 +82,15 @@
             <?php _e( 'Диалог с', 'earena_2' ); ?> StacyBloom
           </h2>
 
-          <button class="section__close" type="button" name="close">
+          <a class="section__close" href="<?php echo bloginfo( 'url' ); ?>/account?messages">
             <span class="visually-hidden">
-              <?php _e( 'Удалить', 'earena_2' ); ?>
+              <?php _e( 'Назад', 'earena_2' ); ?>
             </span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-          </button>
+          </a>
         </div>
         <!-- Чат -->
         <?php
@@ -132,7 +134,7 @@
                   </div>
 
                   <div class="user__info user__info--friends">
-                    <a class="user__name user__name--friends" href="#">
+                    <a class="user__name user__name--friends <?php if ($is_account_page || $is_chat_page) echo 'user__name--disabled'; ?>" href="#">
                       <h5>
                         KiaraHills
                       </h5>
@@ -168,7 +170,7 @@
                     </div>
                   </div>
                 </div>
-                <a class="user__center user__center--messages" href="?message=privat">
+                <a class="user__center user__center--messages" href="<?php echo bloginfo( 'url' ); ?>/account?messages=privat">
                   <time class="user__time user__time--messages">
                     12.11.2020 в 15:50
                   </time>

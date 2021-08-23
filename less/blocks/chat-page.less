@@ -11,6 +11,11 @@
 
 .chat-page {
   padding-bottom: 50px;
+
+  &--popup-verification {
+    padding: 0;
+    margin-top: 20px;
+  }
 }
 
 .chat-page__wrapper {
@@ -195,6 +200,10 @@
   align-items: flex-start;
   align-content: flex-start;
 
+  &--popup-verification {
+    width: 148 / 290 * 100%;
+  }
+
   @media (max-width: @mobile) {
     justify-content: space-between;
   }
@@ -351,6 +360,10 @@
     margin-right: 6px;
 
     .bg_icon('../img/paperclip.svg');
+  }
+
+  &--popup-verification {
+    margin: 0;
   }
 }
 

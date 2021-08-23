@@ -93,7 +93,7 @@
         </span>
 
         <div class="form__row">
-          <input class="form__field form__field--popup" list="country-list" id="country" name="country" required placeholder="<?php _e( 'Страна', 'earena_2' ); ?>" />
+          <!-- <input class="form__field form__field--popup" list="country-list" id="country" name="country" required placeholder="<?php _e( 'Страна', 'earena_2' ); ?>" />
           <span class="form__arrow"></span>
 
           <datalist id="country-list">
@@ -102,7 +102,35 @@
               <option value="Mint">
               <option value="Strawberry">
               <option value="Vanilla">
-          </datalist>
+          </datalist> -->
+          <div class="select select--login">
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <button class="select__button select__button--login" type="button" name="button">
+              <?php _e( 'Страна', 'earena_2' ); ?>
+            </button>
+
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <ul class="select__list">
+              <li class="select__item">
+                <input class="visually-hidden" type="radio" name="select-country" value="ru" id="select-ru" required>
+                <label class="select__label" for="select-ru">
+                  <?php _e( 'РФ', 'earena_2' ); ?>
+                </label>
+              </li>
+              <li class="select__item">
+                <input class="visually-hidden" type="radio" name="select-country" value="ua" id="select-ua" required>
+                <label class="select__label" for="select-ua">
+                  <?php _e( 'Украина', 'earena_2' ); ?>
+                </label>
+              </li>
+              <li class="select__item">
+                <input class="visually-hidden" type="radio" name="select-country" value="by" id="select-by" required>
+                <label class="select__label" for="select-by">
+                  <?php _e( 'Беларусь', 'earena_2' ); ?>
+                </label>
+              </li>
+            </ul>
+          </div>
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 

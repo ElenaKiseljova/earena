@@ -37,6 +37,7 @@
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('progress-script', get_template_directory_uri() . '/assets/js/progress.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('update-clipboard-script', get_template_directory_uri() . '/assets/js/update-clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('select-script', get_template_directory_uri() . '/assets/js/select.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     $args = array();
 
@@ -89,6 +90,62 @@
       $slug_popup = $popup_slug;
 
       get_template_part( 'template-parts/popups/button', 'close' );
+    }
+  }
+
+  /*
+    *** Ф-я определения текущей страницы
+  */
+  if (! function_exists( 'earena_2_current_page' )) {
+    function earena_2_current_page ( $page_slug = false ) {
+      if ($page_slug) {
+        // Проверяем наличие слага с URI
+        $is_current = strpos($_SERVER['REQUEST_URI'], $page_slug);
+
+        // Если есть - добавляем активный класс
+        if ($is_current) {
+          echo 'active';
+        }
+      }
+    }
+  }
+
+  /*
+    *** Ф-я вывода шаблона меню залогиненного пользователя
+  */
+  if (! function_exists( 'earena_2_menu_loged_user' )) {
+    function earena_2_menu_loged_user ( $personal_place ) {
+      global $place_personal;
+
+      $place_personal = $personal_place;
+
+      get_template_part( 'template-parts/personal' );
+    }
+  }
+
+  /*
+    *** Ф-я добавления пробела к суммам на сайте
+  */
+  if (! function_exists( 'earena_2_nice_money' )) {
+    function earena_2_nice_money ( $money_value = 0 ) {
+      // Получаю дробную часть
+      $money_value_decimal = $money_value - floor($money_value);
+
+      // Перевожу в целое
+      $money_value = floor($money_value);
+
+      // Отделяю тысячи пробелом
+      if ($money_value >= 1000) {
+        $money_value  = substr($money_value, 0, -3) . ' ' . substr($money_value, -3);
+      }
+
+      // Добавляю дробную часть
+      if ($money_value_decimal) {
+        // Два знака после запятой выводим
+        $money_value .= '.' . substr(round($money_value_decimal, 2), 2);
+      }
+
+      echo $money_value;
     }
   }
 ?>

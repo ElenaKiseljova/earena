@@ -8,6 +8,8 @@
     $is_tournaments_tab = true;
   }
 
+  global $is_account_page;
+
 
   // Турниры
   global $tournaments;
@@ -22,7 +24,7 @@
       'status' => 'future', // present, past, future
       'my' => false, // true or false
       'bet' => 'Free', // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'trophy' => 1256.11, // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -43,9 +45,9 @@
       'variations' => '5', // 2, 3, 4, 5 ... or 'Ultimate Team'
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'present', // present, past, future
-      'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'my' => true, // true or false
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -67,8 +69,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => true, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -92,8 +94,8 @@
       'platforms' => ['playstation'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => true, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -115,8 +117,8 @@
       'platforms' => ['mobile'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -138,8 +140,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -163,8 +165,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -186,8 +188,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -209,8 +211,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -235,7 +237,7 @@
       'status' => 'future', // present, past, future
       'my' => false, // true or false
       'bet' => 'Free', // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -257,8 +259,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'present', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -280,8 +282,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -305,8 +307,8 @@
       'platforms' => ['playstation'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => true, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -328,8 +330,8 @@
       'platforms' => ['mobile'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -351,8 +353,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -376,8 +378,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -399,8 +401,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -422,8 +424,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => '$' . mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => '$' . mt_rand(5, 2000), // anything
+      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'trophy' => mt_rand(5, 2000), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -479,32 +481,51 @@
   $tournaments_amount = count($tournaments);
 ?>
 <section class="section section--tournaments" id="tournaments">
-  <div class="section__wrapper">
-    <header class="section__header">
-      <h2 class="section__title section__title--tournaments <?php if ( is_page(  ) && ! is_front_page() ) echo 'section__title--page'; ?>">
-        <?php _e( 'Турниры', 'earena_2' ); ?>
+  <?php if (! $is_account_page): ?>
+    <div class="section__wrapper">
+  <?php endif; ?>
 
-        <span class="section__amount">
-          <?= $tournaments_amount; ?>
-        </span>
-      </h2>
+    <?php if ($_GET['tournaments'] === 'chat'): ?>
+      <header class="section__header section__header--tournaments-account-chat">
+        <a class="section__back button button--gray" href="<?php echo bloginfo( 'url' ); ?>/account?tournaments">
+          <span>
+            <?php _e( 'Назад к турнирам', 'earena_2' ); ?>
+          </span>
+        </a>
 
-      <div class="section__header-right">
-        <?php if ($header_right_section === 'all_button'): ?>
-          <a class="button button--more" href="?type=tournaments">
-            <span>
-              <?php _e( 'Все турниры', 'earena_2' ); ?>
-            </span>
-          </a>
-        <?php elseif ($header_right_section === 'tabs') : ?>
-          <!-- Табы игровых платформ -->
-          <?php get_template_part( 'template-parts/tabs/platform' ); ?>
-        <?php elseif ($header_right_section === 'filters') : ?>
-          <!-- Фильтры ( стр Аккаунта ) -->
-          <?php get_template_part( 'template-parts/filters', 'account' ); ?>
-        <?php endif; ?>
-      </div>
-    </header>
+        <div class="section__header-right section__header-right--tournaments-account-chat">
+          <h3 class="section__title section__title--tournaments-account-chat">
+            Myanmar Championship 2020 Season 2 Premium
+          </h3>
+        </div>
+      </header>
+    <?php else: ?>
+      <header class="section__header">
+        <h2 class="section__title section__title--tournaments <?php if ( is_page(  ) && ! is_front_page() ) echo 'section__title--page'; ?>">
+          <?php _e( 'Турниры', 'earena_2' ); ?>
+
+          <span class="section__amount">
+            <?= $tournaments_amount; ?>
+          </span>
+        </h2>
+
+        <div class="section__header-right <?php if ($is_tournaments_tab) echo 'section__header-right--account-tabs'; ?>">
+          <?php if ($header_right_section === 'all_button'): ?>
+            <a class="button button--more" href="<?php echo bloginfo( 'url' ); ?>/?type=tournaments">
+              <span>
+                <?php _e( 'Все турниры', 'earena_2' ); ?>
+              </span>
+            </a>
+          <?php elseif ($header_right_section === 'tabs') : ?>
+            <!-- Табы игровых платформ -->
+            <?php get_template_part( 'template-parts/tabs/platform' ); ?>
+          <?php elseif ($header_right_section === 'filters') : ?>
+            <!-- Фильтры ( стр Аккаунта ) -->
+            <?php get_template_part( 'template-parts/filters', 'account' ); ?>
+          <?php endif; ?>
+        </div>
+      </header>
+    <?php endif; ?>
 
     <?php
       if ($filter_section) {
@@ -814,17 +835,31 @@
 
                 // Таб с турнирами
                 if ($is_tournaments_tab) {
-                  for ($tournament_index=0; $tournament_index < count($tournaments); $tournament_index++) {
-                    if ($tournaments[$tournament_index]['my'] === true) {
-                      ?>
-                        <li class="section__item section__item--col-4">
-                          <?php get_template_part( 'template-parts/tournament/archive' ); ?>
-                        </li>
+                  if ($_GET['tournaments'] === 'chat') {
+                    $tournament_index = $_GET['tournament_index'];
+                    ?>
+                    <li class="section__item section__item--col-4">
+                      <?php get_template_part( 'template-parts/tournament/archive' ); ?>
+                    </li>
+                    <li class="section__item section__item--col-3-4">
                       <?php
-                      if ($row_index % 4 === 0) {
-                        $row_index = 1;
-                      } else {
-                        $row_index++;
+                        get_template_part( 'template-parts/accordeon', 'tournaments-account-chat' );
+                      ?>
+                    </li>
+                    <?php
+                  } else {
+                    for ($tournament_index=0; $tournament_index < count($tournaments); $tournament_index++) {
+                      if ($tournaments[$tournament_index]['my'] === true) {
+                        ?>
+                          <li class="section__item section__item--col-4">
+                            <?php get_template_part( 'template-parts/tournament/archive' ); ?>
+                          </li>
+                        <?php
+                        if ($row_index % 4 === 0) {
+                          $row_index = 1;
+                        } else {
+                          $row_index++;
+                        }
                       }
                     }
                   }
@@ -861,5 +896,8 @@
         <?php
       }
     ?>
-  </div>
+
+  <?php if (! $is_account_page): ?>
+    </div>
+  <?php endif; ?>
 </section>

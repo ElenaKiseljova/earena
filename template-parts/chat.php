@@ -12,13 +12,13 @@
           <div class="chat__conversation-item">
             <div class="user user--chats">
               <div class="user__image-wrapper user__image-wrapper--chat <?php if ($is_online) echo 'user__image-wrapper--online'; ?>">
-                <a class="user__avatar user__avatar--chats" href="#">
+                <a class="user__avatar user__avatar--chats <?php if ($is_account_page || $is_chat_page) echo 'user__avatar--disabled'; ?>" href="#">
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
                 </a>
               </div>
 
               <div class="user__info user__info--chats">
-                <a class="user__name user__name--chats" href="#">
+                <a class="user__name user__name--chats <?php if ($is_account_page || $is_chat_page) echo 'user__name--disabled'; ?>" href="#">
                   <h5>
                     AnnetteBlack
                   </h5>
@@ -45,13 +45,13 @@
               <div class="chat__conversation-item">
                 <div class="user user--chats">
                   <div class="user__image-wrapper user__image-wrapper--chat <?php if ($is_online) echo 'user__image-wrapper--online'; ?> user__image-wrapper--admin">
-                    <a class="user__avatar user__avatar--chats" href="#">
+                    <a class="user__avatar user__avatar--chats <?php if ($is_account_page || $is_chat_page) echo 'user__avatar--disabled'; ?>" href="#">
                       <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-<?= $i; ?>.png" alt="Avatar">
                     </a>
                   </div>
 
                   <div class="user__info user__info--chats">
-                    <a class="user__name user__name--chats user__name--admin" href="#">
+                    <a class="user__name user__name--chats user__name--admin <?php if ($is_account_page || $is_chat_page) echo 'user__name--disabled'; ?>" href="#">
                       <h5>
                         Administrator
                       </h5>

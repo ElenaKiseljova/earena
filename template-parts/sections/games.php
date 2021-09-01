@@ -102,6 +102,12 @@
     ],
   ];
 
+  ?>
+    <script type="text/javascript">
+      var games = <?php echo json_encode( $games_all ) ?>;
+    </script>
+  <?php
+
   // Записываю все игры в глобальную переменную
   $games = $games_all;
 
@@ -399,7 +405,7 @@
       </header>
 
       <div class="section__content">
-        <ul class="section__list" id="content-platform">
+        <ul class="section__list" id="content-platform-games">
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>

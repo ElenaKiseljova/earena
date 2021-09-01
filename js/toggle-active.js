@@ -11,6 +11,7 @@
         * Экспортируется в select.js
         */
       window.toggleActive = {
+        // Для переключения одного/нескольких элементов по клику на один
         single: function (button, elements = [], overlay = false) {
           button.addEventListener('click', function () {
             button.classList.toggle('active');
@@ -48,6 +49,8 @@
             });
           }
         },
+
+        // Для переключения следующего эл-та по клику на предыдущий
         nextElementToggle: function (buttonSelector) {
           let buttons = document.querySelectorAll(buttonSelector);
 
@@ -63,6 +66,8 @@
             });
           }
         },
+
+        // Переключение состояния всех связанных элементов по клику на 1 из них
         multiple: function (buttonSelector, elementSelector = false) {
           // Ф-я подстановки шаблона в контейнер
           let templateReplaseFunction = (containerID, contentID) => {
@@ -124,7 +129,7 @@
                 // Переключение класса тогла
                 button.classList.toggle('active');
 
-                // Если есть элкменты, полученные из класса связанного контента
+                // Если есть элементы, полученные из класса связанного контента
                 if (elements) {
                   window.removeActiveClassElements(elements);
 
@@ -140,7 +145,7 @@
               });
             });
 
-            // Если в разметке присущи кнопки, переключающие табы, но они - не табы.
+            // Если в разметке присущи кнопки, переключающие табы, но они - вне тфбов.
             // Им добавлен класс "togglechecker"
             // Проверка: подвешено ли уже событие на кнопку
             // Пример: кнопка 'Все друзья' на стр Аккаунта
@@ -162,9 +167,42 @@
               }
             }
           }
+        },
+
+        // Возможность выбора нескольких табов или таба "Все"
+        several: function (buttonSelector) {
+          let buttons = document.querySelectorAll(buttonSelector);
+
+          if (buttons) {
+            // Индекс кнопки "Все"
+            let allButtonIndex = 0;
+
+            buttons.forEach((button, i) => {
+              button.addEventListener('click', function () {
+                if (button.dataset.tabType === 'all') {
+                  // Переприсваиваем значение индекса (если кнопка "Все" - не под 0 индексом)
+                  allButtonIndex = i;
+
+                  // Удаляю активные классы других кнопок/контента
+                  window.removeActiveClassElements(buttons);
+                } if (buttons[allButtonIndex].classList.contains('active')) {
+                  buttons[allButtonIndex].classList.remove('active');
+                }
+
+                // Переключение класса тогла
+                button.classList.toggle('active');
+
+                // Импортируется из файла platforms.js
+                window.platforms.getSelected('games');
+              });
+            });
+          }
         }
       };
 
+      //                       //
+      // --- ИНИЦИАЛИЗАЦИЯ --- //
+      //                       //
 
       /* Фильтры */
       window.toggleActive.nextElementToggle('.filters__field--select');
@@ -175,8 +213,11 @@
       /* Тогглы */
       window.toggleActive.multiple('.toggles__item', '.toggles__content');
 
-      /* Табы */
-      window.toggleActive.multiple('.tabs__button');
+      /* Табы ( кошелёк ) */
+      window.toggleActive.multiple('.tabs__button--purse');
+
+      /* Табы ( платформы ) */
+      window.toggleActive.several('.tabs__button--platform');
 
       /* Языки */
       let languages = document.querySelectorAll('.languages');

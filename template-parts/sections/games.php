@@ -104,7 +104,8 @@
 
   ?>
     <script type="text/javascript">
-      var games = <?php echo json_encode( $games_all ) ?>;
+      var data = {};
+        data['games'] = <?php echo json_encode( $games_all ) ?>;
     </script>
   <?php
 

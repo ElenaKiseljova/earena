@@ -405,6 +405,12 @@
     ],
   ];
 
+  ?>
+    <script type="text/javascript">
+      data['matches'] = <?php echo json_encode( $matches_all ) ?>;
+    </script>
+  <?php
+
   // Записываю все матчи в глобальную переменную
   $matches = $matches_all;
 
@@ -738,40 +744,9 @@
       } else if ( is_front_page() && $header_right_section !== 'tabs' ) {
         // Если front-page.php
         ?>
-          <div class="section__content">
-            <ul class="section__list">
-              <?php
-                // Записываю все матчи в глобальную переменную
-                $matches = $matches_all;
-                global $match_index;
-
-                $row_index = 1;
-
-                for ($match_index=0; $match_index < 8; $match_index++) {
-                  ?>
-                    <li class="section__item section__item--col-4">
-                      <?php get_template_part( 'template-parts/match/archive' ); ?>
-                    </li>
-                  <?php
-                  if ($row_index % 4 === 0) {
-                    $row_index = 1;
-                  } else {
-                    $row_index++;
-                  }
-                }
-
-                // Оставшееся (до 4 шт) заполняется пустыми карточками
-                while ( $row_index <= 4 && $row_index > 1 ) {
-                  ?>
-                    <li class="section__item section__item--col-4">
-                      <?php get_template_part( 'template-parts/match/archive', 'empty' ); ?>
-                    </li>
-                  <?php
-                  $row_index++;
-                }
-              ?>
-            </ul>
-          </div>
+          <ul class="section__list" id="content-platform-matches">
+            <!-- Подстановка содержимого из шаблона -->
+          </ul>
         <?php
       } else {
         // Если другие варианты есть

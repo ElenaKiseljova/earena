@@ -34,9 +34,10 @@
     wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/filter.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('files-script', get_template_directory_uri() . '/assets/js/files.min.js', $deps = array(), $ver = null, $in_footer = true );
-    wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
-    wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('progress-script', get_template_directory_uri() . '/assets/js/progress.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_set_script_translations('platforms-script', 'earena_2');
+    wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('update-clipboard-script', get_template_directory_uri() . '/assets/js/update-clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('select-script', get_template_directory_uri() . '/assets/js/select.min.js', $deps = array(), $ver = null, $in_footer = true );
 
@@ -129,9 +130,9 @@
   */
   if (! function_exists( 'earena_2_nice_money' )) {
     function earena_2_nice_money ( $money_value = 0 ) {
-      /*// Получаю дробную часть
+      // Получаю дробную часть
       $money_value_decimal = $money_value - floor($money_value);
-
+      /*
       // Перевожу в целое
       $money_value = floor($money_value);
 
@@ -146,11 +147,13 @@
         $money_value .= '.' . substr(round($money_value_decimal, 2), 2);
       }*/
 
-      if ( $money_value > 0 ) {
+      if ( $money_value > 0 && $money_value_decimal > 0 ) {
         $money_value = number_format( $money_value, 2, '.', ',' );
+      } else if ($money_value > 0) {
+        $money_value = number_format( $money_value, 0, '', ',' );
       }
 
-      echo $money_value;
+      return $money_value;
     }
   }
 ?>

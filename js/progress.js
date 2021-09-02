@@ -1,19 +1,23 @@
 'use strict';
 
 (function () {
-  document.addEventListener('DOMContentLoaded', () => {
+  try {
     // Отрисовка полос прогресса
-    let drawProgressLine = function (elementSelector) {
+    window.progress = function (elementSelector) {
       let progressBars = document.querySelectorAll(elementSelector);
 
-      if (progressBars) {
+      if (progressBars && progressBars.length > 0) {
         progressBars.forEach((progressBar, i) => {
           progressBar.style.width = progressBar.dataset.width + '%';
         });
       }
     };
 
-    // Вызов ф-и
-    drawProgressLine('.players__progress-bar');
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+      // Вызов ф-и
+      window.progress('.players__progress-bar');
+    });
+  } catch (e) {
+    console.log(e);
+  }
 })();

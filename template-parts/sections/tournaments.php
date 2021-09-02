@@ -24,7 +24,7 @@
       'status' => 'future', // present, past, future
       'my' => false, // true or false
       'bet' => 'Free', // anything or 'Free'
-      'trophy' => 1256.11, // anything
+      'trophy' => earena_2_nice_money(1256.11), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -46,8 +46,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'present', // present, past, future
       'my' => true, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -69,8 +69,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => true, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -94,8 +94,8 @@
       'platforms' => ['playstation'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => true, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -117,8 +117,8 @@
       'platforms' => ['mobile'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -140,8 +140,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -165,8 +165,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -188,8 +188,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -211,8 +211,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -237,7 +237,7 @@
       'status' => 'future', // present, past, future
       'my' => false, // true or false
       'bet' => 'Free', // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -259,8 +259,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'present', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -282,8 +282,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -307,8 +307,8 @@
       'platforms' => ['playstation'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => true, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => true, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -330,8 +330,8 @@
       'platforms' => ['mobile'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -353,8 +353,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -378,8 +378,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -401,8 +401,8 @@
       'platforms' => ['xbox'], // xbox, desktop, mobile, playstation
       'status' => 'future', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -424,8 +424,8 @@
       'platforms' => ['desktop'], // xbox, desktop, mobile, playstation
       'status' => 'past', // present, past, future
       'my' => false, // true or false
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
-      'trophy' => mt_rand(5, 2000), // anything
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
+      'trophy' => earena_2_nice_money(mt_rand(5, 2000)), // anything
       'lock' => false, // false or true
       'id' => '30204874239',
       'tournament' => [
@@ -444,6 +444,12 @@
       ]
     ],
   ];
+
+  ?>
+    <script type="text/javascript">
+      data['tournaments'] = <?php echo json_encode( $tournaments_all ) ?>;
+    </script>
+  <?php
 
   // Записываю все Турниры в глобальную переменную
   $tournaments = $tournaments_all;
@@ -782,39 +788,8 @@
         // Если front-page.php
         ?>
           <div class="section__content">
-            <ul class="section__list">
-              <?php
-                global $tournaments;
-                global $tournament_index;
-
-                // Записываю все турниры в глобальную переменную
-                $tournaments = $tournaments_all;
-
-                $row_index = 1;
-
-                for ($tournament_index=0; $tournament_index < 8; $tournament_index++) {
-                  ?>
-                    <li class="section__item section__item--col-4">
-                      <?php get_template_part( 'template-parts/tournament/archive' ); ?>
-                    </li>
-                  <?php
-                  if ($row_index % 4 === 0) {
-                    $row_index = 1;
-                  } else {
-                    $row_index++;
-                  }
-                }
-
-                // Оставшееся (до 4 шт) заполняется пустыми карточками
-                while ( $row_index <= 4 && $row_index > 1 ) {
-                  ?>
-                    <li class="section__item section__item--col-4">
-                      <?php get_template_part( 'template-parts/tournament/archive', 'empty' ); ?>
-                    </li>
-                  <?php
-                  $row_index++;
-                }
-              ?>
+            <ul class="section__list" id="content-platform-tournaments">
+              <!-- Подстановка содержимого из шаблона -->
             </ul>
           </div>
         <?php

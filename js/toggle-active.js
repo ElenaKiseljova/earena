@@ -194,6 +194,8 @@
 
                 // Импортируется из файла platforms.js
                 window.platforms.getSelected('games');
+                window.platforms.getSelected('matches');
+                window.platforms.getSelected('tournaments');
               });
             });
           }

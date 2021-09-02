@@ -282,8 +282,244 @@
                   `;
         }
       },
-      matches : function (name, img, url, game, platforms, variations, id, bet, lock, status, members = { user1 : { name : false, url: false, img : false, stream : false, result : false}, user1 : { name : false, url: false, img : false, stream : false, result : false} }) {
+      matches : function (match, empty = false) {
+        if (match && !empty) {
+          let img = match['game_img'],
+            url = '/match',//match[''],
+            game = match['game_name'],
+            platforms = match['platforms'],
+            variation = match['variations'],
+            id = match['id'],
+            bet = match['bet'],
+            lock = match['lock'] ? 'variations--lock' : '',
+            status = match['status'],
+            my = match['my'],
+            members = {
+              0 : {
+                name : 'Bessie Cooper',//test
+                url: '/account',//test
+                img : match['user_avatar_1'],
+                stream : match['stream_1'],
+                result : match['result_user_1'],
+              },
+              1 : {
+                name : 'Bessie Cooper',//test
+                url: '/account',//test
+                img : match['user_avatar_2'],
+                stream : match['stream_2'],
+                result : match['result_user_2'],
+              }
+            };
 
+          // Вариация
+          let variationTemplate = '';
+          if (variation) {
+            if (variation !== 'Ultimate Team') {
+              variation = `
+                      <li class="variations__item">
+                        ${variation} vs ${variation}
+                      </li>
+                     `;
+            } else {
+              variation = `
+                      <li class="variations__item">
+                        ${variation}
+                      </li>
+                     `;
+            }
+
+            variationTemplate = '<ul class="variations ' + lock + '">' + variation + '</ul>';
+          }
+
+          // Стрим
+          let streamTemplate = function (user_number) {
+            if (members[user_number].stream !== undefined && members[user_number].stream !== null) {
+              return `
+                        <a class="user__stream" href="${members[user_number].stream}">
+                          <svg class="user__stream-icon" width="16" height="13">
+                            <use xlink:href="#icon-play"></use>
+                          </svg>
+                        </a>
+                      `;
+            } else {
+              return '';
+            }
+          };
+
+          // Avatar
+          let avatarTemplate = function (user_number) {
+            if (members[user_number].img !== null && members[user_number].img !== undefined) {
+              return `
+                      <a class="user__avatar user__avatar--match" href="${members[user_number].url}">
+                        <img width="80" height="80" src="${members[user_number].img}" alt="${members[user_number].name}">
+                      </a>
+                    `;
+            } else {
+              return `
+                      <a class="user__avatar user__avatar--match user__avatar--loader" href="${members[user_number].url}">
+                        <img width="24" height="24" src="${templateURL}/assets/img/loader.svg" alt="${members[user_number].name}">
+                      </a>
+                    `;
+            }
+          };
+
+          // Статус
+          let resultTemplate = `
+                                <div class="match__vs match__vs--start">
+                                  <span>
+                                    vs
+                                  </span>
+                                </div>
+                               `;
+          if (status === 'past') {
+            resultTemplate = `
+                              <div class="match__vs match__vs--end">
+                                <span>
+                                  ${members[0].result} : ${members[1].result}
+                                </span>
+                              </div>
+                             `;
+          }
+
+          // Шаблон ставки в зависимости от Free или не Free
+          let betTemplate = '';
+          if (bet !== 'Free') {
+            betTemplate = '$' + bet;
+          } else {
+            betTemplate = bet;
+          }
+
+          // Действие
+          let actionTemplate = function () {
+            switch (status) {
+              case 'future':
+                if (my === true) {
+                  return `
+                    <button class="button button--red openpopup" data-popup="match" type="button" name="delete">
+                      <span>
+                        ${__( 'Удалить', 'earena_2' )}
+                      </span>
+                    </button>
+                    `;
+                } else {
+                  return `
+                    <button class="button button--blue openpopup" data-popup="match" type="button" name="accept">
+                      <span>
+                        ${__( 'Принять', 'earena_2' )}
+                      </span>
+                    </button>
+                    `;
+                }
+
+                break;
+              case 'present':
+                if (my === true) {
+                  return `
+                      <a class="button button--gray" href="/chat?type=match">
+                        <span class="button__chat button__chat--left">
+                          24
+                        </span>
+                        <span>
+                          ${__( 'В чат', 'earena_2' )}
+                        </span>
+                      </a>
+                    `;
+                } else {
+                  return `
+                      <button class="button button--blue openpopup" disabled data-popup="match" type="button" name="accept">
+                        <span>
+                          ${__( 'Проходит', 'earena_2' )}
+                        </span>
+                      </button>
+                    `;
+                }
+
+                break;
+              case 'past':
+                return `
+                    <button class="button button--gray openpopup" disabled data-popup="match" type="button" name="accept">
+                      <span>
+                        ${__( 'Завершен', 'earena_2' )}
+                      </span>
+                    </button>
+                  `;
+
+                break;
+              default:
+              console.log('Нет шаблона!');
+            }
+          };
+
+          return `
+          <div class="match <?php if ($matches[$match_index]['my'] === true) echo 'match--my'; if ($matches[$match_index]['past'] === true) echo 'match--past'; ?>">
+            <div class="match__image">
+              <img src="${img}" alt="${game}">
+            </div>
+
+            <div class="match__top">
+              <div class="match__top-left">
+                <h3 class="match__game">
+                  ${game}
+                </h3>
+                ${variationTemplate}
+              </div>
+
+              <div class="platform platform--match">
+                <svg class="platform__icon" width="40" height="40">
+                  <use xlink:href="#icon-platform-${platforms[0]}"></use>
+                </svg>
+              </div>
+            </div>
+
+            <div class="match__center">
+              <div class="user user--match">
+                ${streamTemplate(0)}
+                ${avatarTemplate(0)}
+
+                <a class="user__name user__name--match" href="${members[0].url}">
+                  <h5>
+                    ${members[0].name}
+                  </h5>
+                </a>
+              </div>
+
+              ${resultTemplate}
+
+              <div class="user user--match">
+                ${streamTemplate(1)}
+                ${avatarTemplate(1)}
+
+                <a class="user__name user__name--match" href="${members[1].url}">
+                  <h5>
+                    ${members[1].name}
+                  </h5>
+                </a>
+              </div>
+            </div>
+
+            <div class="match__bottom">
+              <div class="match__bet">
+                ${betTemplate}
+              </div>
+
+              <div class="match__button-wrapper">
+                ${actionTemplate()}
+
+                <div class="match__id">
+                  ID ${id}
+                </div>
+              </div>
+            </div>
+          </div>
+          `;
+        }
+
+        if (!match && empty) {
+          return `
+                  <div class="match match--empty">
+                  </div>
+                  `;
+        }
       },
     };
 
@@ -372,6 +608,16 @@
 
               // Заменяем содержимое контейнера полученными результатами
               container.innerHTML = dataTemplate;
+
+              // Получаем кнопки открытия попапов
+              let popupOpenButtons = container.querySelectorAll('.openpopup');
+
+              if (popupOpenButtons) {
+                popupOpenButtons.forEach((popupOpenButton, i) => {
+                  // Активация попапа по клику на указанную кнопку
+                  window.popup.activatePopup(popupOpenButton);
+                });
+              }
 
               // Отрисовка полос прогресса
               window.progress('.players__progress-bar');

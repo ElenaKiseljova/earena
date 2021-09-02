@@ -39,8 +39,8 @@
 
   <div class="match__center">
     <div class="user user--match">
-      <?php if ( $matches[$match_index]['stream'] ): ?>
-        <a class="user__stream" href="<?= $matches[$match_index]['stream']; ?>">
+      <?php if ( $matches[$match_index]['stream_1'] ): ?>
+        <a class="user__stream" href="<?= $matches[$match_index]['stream_1']; ?>">
           <svg class="user__stream-icon" width="16" height="13">
             <use xlink:href="#icon-play"></use>
           </svg>
@@ -76,6 +76,13 @@
     <?php endif; ?>
 
     <div class="user user--match">
+      <?php if ( $matches[$match_index]['stream_2'] ): ?>
+        <a class="user__stream" href="<?= $matches[$match_index]['stream_2']; ?>">
+          <svg class="user__stream-icon" width="16" height="13">
+            <use xlink:href="#icon-play"></use>
+          </svg>
+        </a>
+      <?php endif; ?>
       <?php if ($matches[$match_index]['user_avatar_2']): ?>
         <a class="user__avatar user__avatar--match" href="/account">
           <img width="80" height="80" src="<?= $matches[$match_index]['user_avatar_2']; ?>" alt="Avatar">

@@ -28,10 +28,11 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -44,10 +45,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
+      'stream_1' => 'https://youtube.com', // null or link example: 'https://youtube.com'
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -60,10 +62,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -76,10 +79,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239', 'chat' => true, // false or true
     ],
@@ -95,7 +99,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -108,10 +113,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -124,10 +130,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -143,7 +150,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -156,10 +164,11 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -172,10 +181,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -188,10 +198,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -204,10 +215,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => 5, // 1 etc.
       'result_user_2' => 7, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239', 'chat' => true, // false or true
     ],
@@ -223,7 +235,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -236,10 +249,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -252,10 +266,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -271,7 +286,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -284,10 +300,11 @@
       'my' => false, // true or false
       'user_avatar_1' => null, // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -300,10 +317,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => 'https://youtube.com', // null or link example: 'https://youtube.com'
+      'stream_1' => 'https://youtube.com', // null or link example: 'https://youtube.com'
+      'stream_2' => 'https://youtube.com', // null or link example: 'https://youtube.com'
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -316,10 +334,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => 3, // 1 etc.
       'result_user_2' => 10, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -332,10 +351,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239', 'chat' => true, // false or true
     ],
@@ -351,7 +371,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -364,10 +385,11 @@
       'my' => true, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -380,10 +402,11 @@
       'my' => false, // true or false
       'user_avatar_1' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
       'user_avatar_2' => get_template_directory_uri() . '/assets/img/avatar-' . mt_rand(1, 8) . '.png', // URL or null
-      'bet' => mt_rand(5, 2000), // anything or 'Free'
+      'bet' => earena_2_nice_money(mt_rand(5, 2000)), // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => true, // false or true
       'id' => '30204874239',
     ],
@@ -399,7 +422,8 @@
       'bet' => 'Free', // anything or 'Free'
       'result_user_1' => null, // 1 etc.
       'result_user_2' => null, // 1 etc.
-      'stream' => null, // null or link example: 'https://youtube.com'
+      'stream_1' => null, // null or link
+      'stream_2' => null, // null or link
       'lock' => false, // false or true
       'id' => '30204874239',
     ],
@@ -407,6 +431,9 @@
 
   ?>
     <script type="text/javascript">
+      // Для получения картинок, если не задан аватар
+      var templateURL = '<?php echo get_template_directory_uri(); ?>'
+
       data['matches'] = <?php echo json_encode( $matches_all ) ?>;
     </script>
   <?php

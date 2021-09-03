@@ -226,8 +226,8 @@
 
       if (languages) {
         languages.forEach((language, i) => {
-          let button = language.querySelector('.languages__select');
-          let list = language.querySelector('.languages__list');
+          let button = language.querySelector('.wpml-ls-item-toggle');
+          let list = language.querySelector('.wpml-ls-sub-menu');
 
           if (button && list) {
             // Вызов ф-и переключения активного класса для каждого Селекта

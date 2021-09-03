@@ -20,6 +20,9 @@
   ?>
   <!-- Партнеры -->
   <?php get_template_part( 'template-parts/partners' ); ?>
+  <?php
+    the_content( $more_link_text = null, $strip_teaser = false );
+  ?>
 </main>
 
 <?php

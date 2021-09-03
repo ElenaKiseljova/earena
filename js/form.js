@@ -193,7 +193,7 @@
               };
 
               // Ф-я логирования
-              formData['action'] = 'earena_2_ajax_login';
+              formData['action'] = 'ajax_login';
               // Nonce
               formData['login_security'] = earena_2_ajax.nonce;
 

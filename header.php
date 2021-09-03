@@ -27,7 +27,13 @@
           <div class="page-header__wrapper page-header__wrapper--top">
             <div class="logo logo--header">
               <a href="<?php echo bloginfo( 'url' ); ?>">
-                <img width="179" height="37.39" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.svg" alt="<?php echo bloginfo( 'name' ); ?>">
+                <?php
+                  $logo_header = get_theme_mod( 'header_logo_settings' );
+
+                  $logo_header = $logo_header ? $logo_header : '';
+                ?>
+
+                <img width="179" height="37.39" src="<?= $logo_header; ?>" alt="<?php echo bloginfo( 'name' ); ?>">
               </a>
             </div>
 
@@ -35,70 +41,35 @@
             <div class="page-header__center">
               <div class="languages">
                 <?php
-                  // Для отображения нужной иконки текущего языка
-                  $current_lang_slug = 'ru';
-
-                  // Список с языками
-                  $language_slugs = ['us', 'es', 'it', 'ch', 'cn'];
+                  do_action('wpml_add_language_selector');
                 ?>
-                <button class="languages__select" type="button" name="languages">
-                  <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $current_lang_slug; ?>.svg" alt="<?= $current_lang_slug; ?>">
-
-                  <span class="visually-hidden">
-                    <?= $current_lang_slug; ?>
-                  </span>
-
-                  <svg class="languages__toggle" width="18" height="22">
-                    <use xlink:href="#icon-chevron-bottom"></use>
-                  </svg>
-                </button>
-
-                <!-- Для переключения состояния - добавляется active класс  -->
-                <ul class="languages__list">
-                  <?php foreach ($language_slugs as $language_slug): ?>
-                    <li class="languages__item">
-                      <a class="languages__link" href="#">
-                        <img class="languages__flag" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $language_slug; ?>.svg" alt="<?= $language_slug; ?>">
-
-                        <span class="languages__slug">
-                          <?= $language_slug; ?>
-                        </span>
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
               </div>
 
               <div class="time">
-                <time class="time__date">
-                  22:45
-                </time>
-                <span class="time__format">
-                  (UTC+0)
-                </span>
+                <span><?= ea_header_time(); ?></span>
               </div>
             </div>
 
-            <?php
-              // Для теста
-              $logged = rand(0, 1);
-            ?>
-            <?php if ($logged): ?>
+            <?php if (is_user_logged_in()): ?>
+              <?php
+                $earana_2_user = wp_get_current_user();
+              ?>
               <div class="page-header__right page-header__right--logged">
                 <div class="user user--header">
                   <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/account">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-1.png" alt="Avatar">
+                    <?= bp_core_fetch_avatar('item_id=' . $earana_2_user->ID); ?>
                   </a>
+
                   <div class="user__info user__info--header">
                     <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/account">
                       <h5>
-                        AnnetteBlack
+                        <?= $earana_2_user->nickname; ?>
                       </h5>
                     </a>
 
                     <div class="user__money">
                       <span class="user__money-amount">
-                        $2 714
+                        $<span><?= balance(); ?></span>
                       </span>
                       <a class="page-header__money-add page-header__money-add--desktop" href="purse">
                         <?php _e( 'Пополнить', 'earena_2' ); ?>
@@ -106,7 +77,7 @@
                     </div>
                   </div>
 
-                  <a class="page-header__signout page-header__signout--desktop" href="#">
+                  <a class="page-header__signout page-header__signout--desktop" href="<?php echo wp_logout_url(home_url()); ?>">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -162,7 +133,7 @@
         <!-- Для переключения состояния - добавляется active класс  -->
         <div class="page-header__bottom">
           <div class="page-header__wrapper page-header__wrapper--bottom">
-            <?php if ($logged): ?>
+            <?php if (is_user_logged_in()): ?>
               <a class="page-header__money-add page-header__money-add--mobile" href="<?php echo bloginfo( 'url' ); ?>/purse">
                 <?php _e( 'Пополнить', 'earena_2' ); ?>
               </a>
@@ -245,7 +216,7 @@
                 </span>
               </button>
 
-              <?php if ($logged): ?>
+              <?php if (is_user_logged_in()): ?>
                 <a class="page-header__signout page-header__signout--mobile" href="#">
                   <span>
                     <?php _e( 'Выйти', 'earena_2' ); ?>

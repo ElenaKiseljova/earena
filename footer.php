@@ -4,7 +4,13 @@
           <div class="page-footer__wrapper page-footer__wrapper--top">
             <div class="logo logo--footer">
               <a href="<?php echo bloginfo( 'url' ); ?>">
-                <img width="179" height="37.39" src="<?php echo get_template_directory_uri(); ?>/assets/img/logo-footer.svg" alt="<?php echo bloginfo( 'name' ); ?>">
+                <?php
+                  $logo_footer = get_theme_mod( 'footer_logo_settings' );
+
+                  $logo_footer = $logo_footer ? $logo_footer : '';
+                ?>
+
+                <img width="179" height="37.39" src="<?= $logo_footer; ?>" alt="<?php echo bloginfo( 'name' ); ?>">
               </a>
             </div>
 

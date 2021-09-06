@@ -11,32 +11,32 @@
 
       window.form = (attr) => {
         // ID формы
-        var idForm = attr.idForm;
+        let ID_FORM = attr.idForm;
 
         // Содержимое будет очищаться при отправки и заменяться шаблонами
-        var selectorForTemplateReplace = attr.selectorForTemplateReplace;
+        let SELECTOR_FOR_TEMPLATE_REPLACE = attr.selectorForTemplateReplace;
 
         // Элемент, в котором на каком-то уровне лежит форма.
-        var selectorClosestWrapperForm =  attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false;
+        let SELECTOR_CLOSEST_WRAPPER_FORM =  attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false;
 
         // Класс для элемента, в котором на каком-то уровне лежит форма. Если стили надо поменять после/в начала/конце отправки формы. По умолчанию - false
-        var classForAddClosestWrapperForm = attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false;
+        let CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM = attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false;
 
         // Получение объекта формы
-        let formCheck = document.querySelector(`#${idForm}`);
+        let FORM_CHECK = document.querySelector(`#${ID_FORM}`);
 
-        if (formCheck) {
+        if (FORM_CHECK) {
           // Обертка для собержимого шаблонов
-          let wrapperFormNode = document.querySelector(selectorForTemplateReplace);
+          let wrapperFormNode = document.querySelector(SELECTOR_FOR_TEMPLATE_REPLACE);
 
           // Получение кнопки для отправки
-          let buttonSubmit = formCheck.querySelector('button[type="submit"]');
+          let buttonSubmit = FORM_CHECK.querySelector('button[type="submit"]');
 
           let inputEventListenerFlag = false;
 
           // Ф-я отключения полей формы при выбранном/отключенном чекбоксе
           let checkboxControlField = (checkboxControl, fieldChange, toggle = 'off') => {
-            checkboxControl.addEventListener('change', function () {
+            checkboxControl.addEventListener('change', () => {
               if (checkboxControl.checked === true) {
                 if (toggle === 'off') {
                   fieldChange.disabled = true;
@@ -60,8 +60,8 @@
           };
 
           // Ф-я отправки формы
-          let formSubmitFunction = function (inputs, textareas) {
-            formCheck.addEventListener('submit', function (evt) {
+          let formSubmitFunction = (inputs, textareas) => {
+            FORM_CHECK.addEventListener('submit', (evt) => {
               // Прерываем стандартное действие кнопки для XMLHttpRequest
               evt.preventDefault();
 
@@ -100,8 +100,8 @@
               */
 
               // Обработчик старта отправки
-              var onBeforeSend = function (status) {
-                let templateBeforeSend = document.querySelector(`#${idForm}-beforesend`);
+              var onBeforeSend = (status) => {
+                let templateBeforeSend = document.querySelector(`#${ID_FORM}-beforesend`);
 
                 if (wrapperFormNode && templateBeforeSend) {
                   wrapperFormNode.innerHTML = '';
@@ -112,9 +112,9 @@
                   wrapperFormNode.appendChild(cloneTemplate);
 
                   // Проверяю - надо ли добавлять активный класс родителю
-                  if (classForAddClosestWrapperForm) {
+                  if (CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM) {
                     // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                    wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
+                    wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add(CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM);
                   }
                 }
 
@@ -122,7 +122,7 @@
               };
 
               // Обработчик успешной отправки
-              var onSuccess = function (response, prefix = false) {
+              var onSuccess = (response, prefix = false) => {
                 // Создаю префикс или заменяю его на ''
                 if (prefix) {
                   prefix = `-${prefix}`;
@@ -131,7 +131,7 @@
                 }
 
                 // Получаю шаблон
-                let templateSuccess = document.querySelector(`#${idForm}-success${prefix}`);
+                let templateSuccess = document.querySelector(`#${ID_FORM}-success${prefix}`);
 
                 if (wrapperFormNode && templateSuccess) {
                   wrapperFormNode.innerHTML = '';
@@ -146,24 +146,24 @@
                   if (prefix.indexOf('next') > -1) {
                     // Перезапуск/запуск валидации формы
                     window.form({
-                      idForm: idForm,
-                      selectorForTemplateReplace: selectorForTemplateReplace, // Содержимое будет очищаться при отправке и заменяться шаблонами
-                      classForAddClosestWrapperForm: classForAddClosestWrapperForm, // по умолчанию - false
-                      selectorClosestWrapperForm: selectorClosestWrapperForm, // по умолчанию - false
+                      idForm: ID_FORM,
+                      selectorForTemplateReplace: SELECTOR_FOR_TEMPLATE_REPLACE, // Содержимое будет очищаться при отправке и заменяться шаблонами
+                      classForAddClosestWrapperForm: CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM, // по умолчанию - false
+                      selectorClosestWrapperForm: SELECTOR_CLOSEST_WRAPPER_FORM, // по умолчанию - false
                     });
                   }
                 }
 
                 // Обработчик успешной отправки при переходе на следующий шаг
                 // регистрации матча
-                if (prefix.indexOf('next') > -1 && selectorClosestWrapperForm) {
+                if (prefix.indexOf('next') > -1 && SELECTOR_CLOSEST_WRAPPER_FORM) {
                   // Регулировка высоты попапа
-                  if (wrapperFormNode.closest(selectorClosestWrapperForm).offsetHeight >= deviceHeight) {
-                    wrapperFormNode.closest(selectorClosestWrapperForm).classList.add('scroll-content');
-                    wrapperFormNode.closest(selectorClosestWrapperForm).classList.remove('sending');
+                  if (wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).offsetHeight >= deviceHeight) {
+                    wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('scroll-content');
+                    wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('sending');
                   } else {
-                    wrapperFormNode.closest(selectorClosestWrapperForm).classList.remove('scroll-content');
-                    wrapperFormNode.closest(selectorClosestWrapperForm).classList.add('sending');
+                    wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('scroll-content');
+                    wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('sending');
                   }
                 }
 
@@ -174,8 +174,8 @@
               };
 
               // Обработчик не успешной отправки
-              var onError = function (error, prefix='') {
-                let templateError = document.querySelector(`#${idForm}-error${prefix}`);
+              var onError = (error, prefix='') => {
+                let templateError = document.querySelector(`#${ID_FORM}-error${prefix}`);
 
                 if (wrapperFormNode && templateError) {
                   wrapperFormNode.innerHTML = '';
@@ -203,13 +203,13 @@
                 url: earena_2_ajax.url,
                 data: formData,
                 type: 'POST',
-                beforeSend: function (response) {
+                beforeSend: (response) => {
                   onBeforeSend(response.readyState);
                 },
-                success: function(response) {
+                success: (response) => {
                   onSuccess(response);
                 },
-                error: function (response) {
+                error: (response) => {
                   onError(response);
                 }
               });
@@ -217,28 +217,28 @@
           };
 
           // Ф-я закрытия попапа по клику на кнопку
-          let additionButtonClosePopup = function () {
+          let additionButtonClosePopup = () => {
             let formClosePopups = document.querySelectorAll('.form__popup-close');
 
             if (formClosePopups) {
               formClosePopups.forEach((formClosePopup, i) => {
-                formClosePopup.addEventListener('click', function () {
+                formClosePopup.addEventListener('click', () => {
                   window.popup.closePopup();
                 });
               });
             }
           };
 
-          // Валидация формы
-          let validateForm = function () {
+          // Ф-я валидации формы
+          let validateForm = () => {
             // Validate flag
             let notValid = false;
 
             // Получение всех инпутов
-            let allInputs = formCheck.querySelectorAll('input');
+            let allInputs = FORM_CHECK.querySelectorAll('input');
 
             // Полечение всех текстовых обрастей формы
-            let allTextarea = formCheck.querySelectorAll('textarea');
+            let allTextarea = FORM_CHECK.querySelectorAll('textarea');
 
             // Проверка инпутов
             if (allInputs) {
@@ -252,7 +252,11 @@
                       var currentDate = new Date();
                       var birthdayUser = new Date(item.valueAsNumber);
 
-                      if ((currentDate.getFullYear() - birthdayUser.getFullYear()) < 18) {
+                      var goodYear = (currentDate.getFullYear() - birthdayUser.getFullYear()) < 18;
+                      var googMonth = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() < birthdayUser.getMonth();
+                      var goodDay = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() === birthdayUser.getMonth() && currentDate.getDate() < birthdayUser.getDate();
+
+                      if ( goodYear || googMonth || goodDay) {
                         //console.log(birthdayUser.getFullYear(), 'Not old enough!');
 
                         // Если проверка по возрасту не прошла
@@ -335,8 +339,10 @@
             if (buttonSubmit) {
               if (!notValid) {
                 buttonSubmit.disabled = false;
+                buttonSubmit.classList.remove('disabled');
               } else {
                 buttonSubmit.disabled = true;
+                buttonSubmit.classList.add('disabled');
               }
 
               // Проверка на то, был ли уже повешен обработчик клика на кнопку ранее
@@ -351,12 +357,12 @@
           };
 
           // Кнопка отмены с заменой шаблона
-          var cancelButton = formCheck.querySelector('button[name*="cancel"]');
+          var cancelButton = FORM_CHECK.querySelector('button[name*="cancel"]');
 
           if (cancelButton && wrapperFormNode) {
             // Отмена регистрации на турнир
-            var onCancel = function () {
-              let templateContentCancel = document.querySelector(`#${idForm}-cancel`).content;
+            var onCancel = () => {
+              let templateContentCancel = document.querySelector(`#${ID_FORM}-cancel`).content;
 
               if (wrapperFormNode && templateContentCancel) {
                 wrapperFormNode.innerHTML = '';
@@ -366,9 +372,9 @@
                 wrapperFormNode.appendChild(cloneTemplate);
 
                 // Проверяю - надо ли добавлять активный класс родителю
-                if (classForAddClosestWrapperForm) {
+                if (CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM) {
                   // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                  wrapperFormNode.closest(selectorClosestWrapperForm).classList.add(classForAddClosestWrapperForm);
+                  wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add(CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM);
                 }
 
                 // Ф-я закрытия попапа по клику на кнопку
@@ -386,12 +392,12 @@
           additionButtonClosePopup();
 
           // Поиск зависимых чекбоксов в форме
-          let checkboxes = formCheck.querySelectorAll('input[type="checkbox"]');
+          let checkboxes = FORM_CHECK.querySelectorAll('input[type="checkbox"]');
 
           if (checkboxes) {
             checkboxes.forEach((checkboxItem, i) => {
               if (checkboxItem.dataset.controlFieldId) {
-                let fieldControl = formCheck.querySelector(`#${checkboxItem.dataset.controlFieldId}`);
+                let fieldControl = FORM_CHECK.querySelector(`#${checkboxItem.dataset.controlFieldId}`);
 
                 if (fieldControl) {
                   // Вызов ф-и изменения связанных полей
@@ -402,10 +408,10 @@
           }
 
           // Поиск Селектов
-          window.select(formCheck);
+          window.select(FORM_CHECK);
 
           // Запуск валидации по клику на форму
-          formCheck.addEventListener('click', function (evt) {
+          FORM_CHECK.addEventListener('click', (evt) => {
             validateForm();
           });
         }
@@ -414,6 +420,7 @@
       // Запуск валидации форм, которые есть в разметке при загрузке страницы.
       // Формы, которые подставляются из шаблонов - активируются при открытии попапа.
       // Инициализация проходит в файле popup.js
+      // Либо по смене табов toggle-active.js
       window.form({
         idForm: 'form-delete-friends',
         selectorForTemplateReplace: `#friends-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
@@ -430,5 +437,5 @@
     } catch (e) {
       console.log(e);
     }
-  })
+  });
 })(jQuery);

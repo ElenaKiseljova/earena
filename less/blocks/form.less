@@ -125,29 +125,31 @@
   margin-bottom: 10px;
 
   &.invalid {
-    & .form__field,
-    & .select__button {
-      border-color: #colors[red];
-      color: #colors[red];
+    &:not(.focus) {
+      & .form__field,
+      & .select__button {
+        border-color: #colors[red];
+        color: #colors[red];
 
-      &:focus {
-        color: #colors[text];
+        &:focus {
+          color: #colors[text];
+        }
       }
-    }
 
-    & + .form__error {
-      height: auto;
+      & + .form__error {
+        height: auto;
 
-      margin-bottom: 10px;
+        margin-bottom: 10px;
 
-      opacity: 1;
+        opacity: 1;
 
-      transition: opacity 0.3s;
+        transition: opacity 0.3s;
 
 
-      @media (max-width: @mobile) {
-        &--purse {
-          margin-top: 10px;
+        @media (max-width: @mobile) {
+          &--purse {
+            margin-top: 10px;
+          }
         }
       }
     }
@@ -336,6 +338,11 @@
 .form__submit {
   margin-top: 20px;
   margin-bottom: 20px;
+
+  &.disabled {
+    cursor: default;
+    pointer-events: all;
+  }
 
   &--buttons {
     width: 135 / 291 * 100%;

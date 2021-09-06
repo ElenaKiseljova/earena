@@ -31,7 +31,7 @@
                 button.classList.add('selected');
                 button.textContent = radioInput.nextElementSibling.textContent;
               }
-              console.log(radioInput.checked, button.textContent);
+              //console.log(radioInput.checked, button.textContent);
             });
           });
         }

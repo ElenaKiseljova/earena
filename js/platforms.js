@@ -567,7 +567,7 @@
             // Фильтрация (возможно уже будет сразу получен тужный массив отфильтрованный)
             let dataFiltered = data[what].filter(isPlatform);
 
-            console.log(dataFiltered);
+            //console.log(dataFiltered);
 
             // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
             let amount = dataFiltered.length;

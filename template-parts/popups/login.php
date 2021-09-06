@@ -42,7 +42,7 @@
           <?php _e( 'Я забыл пароль', 'earena_2' ); ?>
         </button>
 
-        <button class="form__submit button button--blue" type="submit" disabled name="call-submit">
+        <button class="form__submit button button--blue disabled" type="submit" name="call-submit">
           <span>
             <?php _e( 'Войти', 'earena_2' ); ?>
           </span>
@@ -134,7 +134,7 @@
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-        <button class="form__submit button button--blue" type="submit" disabled name="call-submit">
+        <button class="form__submit button button--blue disabled" type="submit" name="call-submit">
           <span>
             <?php _e( 'Создать аккаунт', 'earena_2' ); ?>
           </span>
@@ -171,7 +171,7 @@
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-        <button class="form__submit button button--blue" type="submit" disabled name="call-submit">
+        <button class="form__submit button button--blue disabled" type="submit" name="call-submit">
           <span>
             <?php _e( 'Восстановить пароль', 'earena_2' ); ?>
           </span>

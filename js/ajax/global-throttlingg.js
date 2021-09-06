@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
                     run = setInterval(getDataFunction, baseInterval)
                 }
                 if (resp) {
-                  console.log(resp);
+                  //console.log(resp);
                     if (0 in resp) {
                         const respData = resp[0]
                         for (const [key, value] of Object.entries(respData)) {

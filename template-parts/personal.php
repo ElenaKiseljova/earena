@@ -3,13 +3,10 @@
     Меню залогиненного пользователя
   */
 ?>
-<?php
-  global $place_personal;
-?>
 
-<div class="personal personal--<?= $place_personal; ?>">
-  <ul class="personal__list personal__list--<?= $place_personal; ?>">
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+<div class="personal">
+  <ul class="personal__list">
+    <li class="personal__item">
       <a class="personal__link <?php if (! $_GET && function_exists('earena_2_current_page')) earena_2_current_page('account'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M11 19.25C15.5563 19.25 19.25 15.5563 19.25 11C19.25 6.44365 15.5563 2.75 11 2.75C6.44365 2.75 2.75 6.44365 2.75 11C2.75 15.5563 6.44365 19.25 11 19.25Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>
@@ -22,7 +19,7 @@
         </span>
       </a>
     </li>
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+    <li class="personal__item">
       <a class="personal__link <?php if (! is_front_page() && function_exists('earena_2_current_page')) earena_2_current_page('matches'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account?matches">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M13.0625 9.28125H15.8125" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -37,11 +34,15 @@
         </span>
 
         <span class="personal__link-count">
-          14
+          <?php if (is_ea_admin()): ?>
+            <?= count_admin_matches_moderate() + count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3) + ea_count_verification_requests(); ?>
+          <?php else : ?>
+            <?= counter_matches(); ?>
+          <?php endif; ?>
         </span>
       </a>
     </li>
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+    <li class="personal__item">
       <a class="personal__link <?php if (! is_front_page() && function_exists('earena_2_current_page')) earena_2_current_page('tournaments'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account?tournaments">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4.8125 4.8125V9.54732C4.8125 12.9591 7.54141 15.787 10.9531 15.8123C11.7696 15.8185 12.5792 15.663 13.3353 15.3549C14.0914 15.0467 14.7791 14.5919 15.3586 14.0168C15.9381 13.4416 16.3981 12.7574 16.712 12.0037C17.0259 11.2499 17.1875 10.4415 17.1875 9.625V4.8125C17.1875 4.63016 17.1151 4.4553 16.9861 4.32636C16.8572 4.19743 16.6823 4.125 16.5 4.125H5.5C5.31766 4.125 5.1428 4.19743 5.01386 4.32636C4.88493 4.4553 4.8125 4.63016 4.8125 4.8125Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -52,15 +53,15 @@
         </svg>
 
         <span class="visually-hidden">
-          <?php _e( 'Трофеи', 'earena_2' ); ?>
+          <?php _e( 'Турниры', 'earena_2' ); ?>
         </span>
 
         <span class="personal__link-count">
-          8
+          <?= counter_tournaments(); ?>
         </span>
       </a>
     </li>
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+    <li class="personal__item">
       <a class="personal__link <?php if (function_exists('earena_2_current_page')) earena_2_current_page('messages'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account?messages">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.90404 15.2107C2.87903 13.4828 2.52006 11.4401 2.89454 9.46627C3.26902 7.49241 4.35119 5.72316 5.93784 4.49073C7.52448 3.2583 9.50646 2.64747 11.5116 2.77294C13.5167 2.89842 15.4071 3.75157 16.8277 5.17219C18.2484 6.59281 19.1015 8.48317 19.227 10.4883C19.3525 12.4935 18.7417 14.4754 17.5093 16.0621C16.2768 17.6487 14.5076 18.7309 12.5337 19.1054C10.5599 19.4799 8.5172 19.1209 6.78928 18.0959L6.7893 18.0959L3.93991 18.91C3.82202 18.9436 3.69727 18.9452 3.57858 18.9144C3.45989 18.8837 3.35159 18.8217 3.26489 18.7351C3.1782 18.6484 3.11626 18.5401 3.08551 18.4214C3.05476 18.3027 3.0563 18.1779 3.08998 18.06L3.9041 15.2106L3.90404 15.2107Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -74,11 +75,11 @@
         </span>
 
         <span class="personal__link-count">
-          1
+          <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
         </span>
       </a>
     </li>
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+    <li class="personal__item">
       <a class="personal__link <?php if (function_exists('earena_2_current_page')) earena_2_current_page('friends'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account?friends">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.5625 13.75C10.0305 13.75 12.0312 11.7493 12.0312 9.28125C12.0312 6.81323 10.0305 4.8125 7.5625 4.8125C5.09448 4.8125 3.09375 6.81323 3.09375 9.28125C3.09375 11.7493 5.09448 13.75 7.5625 13.75Z" stroke="#7B8899" stroke-width="1.5" stroke-miterlimit="10"/>
@@ -93,11 +94,11 @@
         </span>
 
         <span class="personal__link-count">
-          1
+          <?= !empty($new_friends = count(friends_get_friendship_request_user_ids(get_current_user_id()))) ? $new_friends : '0' ?>
         </span>
       </a>
     </li>
-    <li class="personal__item personal__item--<?= $place_personal; ?>">
+    <li class="personal__item">
       <a class="personal__link <?php if (function_exists('earena_2_current_page')) earena_2_current_page('requests'); ?>" href="<?php echo bloginfo( 'url' ); ?>/account?requests">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.9375 6.875L8.9375 17.5071C8.9375 17.6202 8.90956 17.7317 8.85615 17.8315C8.80274 17.9313 8.72553 18.0163 8.63136 18.0791L7.68672 18.7089C7.59505 18.77 7.49004 18.8082 7.38053 18.8202C7.27101 18.8322 7.16021 18.8178 7.05745 18.7781C6.95469 18.7383 6.86299 18.6745 6.79006 18.5919C6.71713 18.5093 6.66511 18.4104 6.63839 18.3036L5.5 13.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -109,7 +110,7 @@
         </span>
 
         <span class="personal__link-count">
-          3
+          <?= counter_admin(); ?>
         </span>
       </a>
     </li>

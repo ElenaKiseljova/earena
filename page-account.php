@@ -28,7 +28,14 @@
       <header class="account__header <?php if ($vip && $private) echo 'account__header--vip'; ?>">
         <div class="account__left">
           <div class="user user--account">
-            <div class="user__image-wrapper <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
+            <div class="user__image-wrapper <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--main'; } ?>">
+              <?php if (!$verified): ?>
+                <button class="verify openpopup" data-popup="verification" type="button" name="verification">
+                  <span class="visually-hidden">
+                    <?php _e( 'Верификация', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php endif; ?>
               <?php if ($private): ?>
                 <div class="user__avatar user__avatar--account">
                   <input class="user__avatar-input visually-hidden" type="file" name="account-image" id="account-image">

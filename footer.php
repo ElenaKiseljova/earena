@@ -14,34 +14,9 @@
               </a>
             </div>
 
-            <nav class="navigation navigation--footer" role="menu">
-              <h5 class="visually-hidden">
-                <?php _e( 'Меню', 'earena_2' ); ?>
-              </h5>
-
-              <?php
-                $menu_items = [
-                  'Команда Earena',
-                  'Кибершкола',
-                  'Магазин',
-                  'Сотрудничество',
-                  'Поддержка игроков',
-                  'Новости киберспорта'
-                ];
-              ?>
-
-              <ul class="navigation__list navigation__list--footer">
-                <?php foreach ($menu_items as $menu_item): ?>
-                  <li class="navigation__item navigation__item--footer">
-                    <a class="navigation__link navigation__link--footer" href="#">
-                      <span>
-                        <?= $menu_item; ?>
-                      </span>
-                    </a>
-                  </li>
-                <?php endforeach; ?>
-              </ul>
-            </nav>
+            <?php
+              get_template_part( 'template-parts/menus/footer' );
+            ?>
 
             <button class="chats chats--footer openpopup" data-popup="chats" type="button" name="chats">
               <span>
@@ -81,7 +56,7 @@
           <?php
             if (function_exists( 'earena_2_menu_loged_user' )) {
               // Ф-я вывода шаблона меню залогиненного пользовател
-              earena_2_menu_loged_user('footer');
+              earena_2_menu_loged_user();
             }
           ?>
         </div>

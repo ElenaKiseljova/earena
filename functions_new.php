@@ -9,9 +9,6 @@
     function after_setup_theme_function () {
       load_theme_textdomain('earena_2', get_template_directory() . '/languages');
 
-      // register_nav_menu( 'top_menu', 'Навигация в шапке сайта' );
-      //register_nav_menu( 'bottom_menu', 'Навигация в подвале сайта' );
-
       // WooCommerce support
       add_theme_support('woocommerce');
 
@@ -129,6 +126,32 @@
     )));
   }
 
+  // Изменение класса пунктов меню
+  add_filter( 'nav_menu_css_class', 'add_my_class_to_nav_menu', 10, 4 );
+
+  function add_my_class_to_nav_menu( $classes, $item, $args, $depth ) {
+  	/* $classes содержит
+  	Array(
+  		[1] => menu-item
+  		[2] => menu-item-type-post_type
+  		[3] => menu-item-object-page
+  		[4] => menu-item-284
+  	)
+  	*/
+    //nav-sublist__item
+    if ($args->theme_location == 'bottom_menu') {
+      foreach ( $classes as $key => $class ) {
+    		if ( $class == 'menu-item' ) {
+    			$classes[ $key ] = 'navigation__item navigation__item--footer';
+    		} else {
+          $classes[ $key ] = '';
+        }
+    	}
+    }
+
+  	return $classes;
+  }
+
   // Section functions
 
   /*
@@ -197,11 +220,7 @@
     *** Ф-я вывода шаблона меню залогиненного пользователя
   */
   if (! function_exists( 'earena_2_menu_loged_user' )) {
-    function earena_2_menu_loged_user ( $personal_place ) {
-      global $place_personal;
-
-      $place_personal = $personal_place;
-
+    function earena_2_menu_loged_user (  ) {
       get_template_part( 'template-parts/personal' );
     }
   }
@@ -344,6 +363,90 @@
   {
       return isset($_COOKIE['ea_user_time_offset']) ? (($_COOKIE['ea_user_time_offset'] <= 0 ? '+' : '-') . (!empty($_COOKIE['ea_user_time_offset']) ? gmdate('H:i',
               abs($_COOKIE['ea_user_time_offset'] * 60)) : 0)) : '+0';
+  }
+
+  function counter_matches()
+  {
+      if (!is_user_logged_in()) {
+          return '';
+      }
+      return EArena_DB::count_my_matches();
+  }
+
+  function counter_tournaments()
+  {
+      if (!is_user_logged_in()) {
+          return '';
+      }
+      return EArena_DB::count_my_tournaments();
+  }
+
+  function counter_admin()
+  {
+      if (!is_user_logged_in()) {
+          return '';
+      }
+      $admin_id = (int)get_site_option('ea_admin_id', 27);
+      $thread_id = ea_get_thread_id($admin_id);
+      return ea_count_unread($thread_id);
+  }
+
+  function count_admin_matches_moderate()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_matches_moderate();
+  }
+
+  function count_admin_tournaments_moderate($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_tournaments_moderate($type) ?: 0;
+  }
+
+  function count_admin_tournaments_not_confirmed($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_tournaments_not_confirmed($type) ?: 0;
+  }
+
+  function count_admin_tournaments($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
+  }
+
+  /* ==============================================
+  ********  //Верификация пользователя
+  =============================================== */
+  function ea_get_verification_requests()
+  {
+      return wp_list_pluck(get_users(
+          array(
+              'meta_query' => [
+                  [
+                      'key' => 'verification_request',
+                      'value' => 1,
+                  ],
+                  [
+                      'key' => 'verification_files',
+                      'compare' => 'EXISTS',
+                  ],
+              ],
+              'fields' => ['ID']
+          )), 'ID');
+  }
+
+  function ea_count_verification_requests()
+  {
+      return count(ea_get_verification_requests());
   }
 
   /*INCLUDE AJAX EARENA FUNCTIONS.PHP*/

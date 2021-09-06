@@ -275,10 +275,6 @@
 
       border-radius: 50%;
     }
-
-    &--friends {
-      width: 70px;
-    }
   }
 
   &--not-verified {
@@ -287,6 +283,14 @@
 
       .bg_icon('../img/check-gray.svg');
       background-size: 14 / 24 * 100%;
+    }
+  }
+
+  &--main {
+    position: relative;
+
+    &::before {
+      opacity: 0;
     }
   }
 

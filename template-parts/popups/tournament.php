@@ -68,7 +68,7 @@
             <?php _e( 'На вашем счете недостаточно средств', 'earena_2' ); ?>
           </p>
 
-          <a class="pay__button button button--blue" href="purse">
+          <a class="pay__button button button--blue" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
             <span>
               <?php _e( 'Пополнить счет', 'earena_2' ); ?>
             </span>

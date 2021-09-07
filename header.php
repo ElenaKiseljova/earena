@@ -134,7 +134,7 @@
         <div class="page-header__bottom">
           <div class="page-header__wrapper page-header__wrapper--bottom">
             <?php if (is_user_logged_in()): ?>
-              <a class="page-header__money-add page-header__money-add--mobile" href="<?php echo bloginfo( 'url' ); ?>/purse/?wallet_action=add">
+              <a class="page-header__money-add page-header__money-add--mobile" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
                 <?php _e( 'Пополнить', 'earena_2' ); ?>
               </a>
             <?php endif; ?>

@@ -52,13 +52,6 @@
               <?php endforeach; ?>
             </ul>
           </div>
-
-          <?php
-            if (function_exists( 'earena_2_menu_loged_user' )) {
-              // Ф-я вывода шаблона меню залогиненного пользовател
-              earena_2_menu_loged_user();
-            }
-          ?>
         </div>
       </footer>
 

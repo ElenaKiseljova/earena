@@ -206,10 +206,10 @@
     function earena_2_current_page ( $page_slug = false ) {
       if ($page_slug) {
         // Проверяем наличие слага с URI
-        $is_current = strpos($_SERVER['REQUEST_URI'], $page_slug);
+        $is_current = strpos($_SERVER['REQUEST_URI'], $page_slug) ? strpos($_SERVER['REQUEST_URI'], $page_slug) : strpos($page_slug, $_SERVER['REQUEST_URI']);
 
         // Если есть - добавляем активный класс
-        if ($is_current) {
+        if ($is_current !== false) {
           echo 'active';
         }
       }
@@ -280,13 +280,13 @@
       $info['user_login'] = isset($_POST['name']) ? $_POST['name'] : '';
       $info['user_password'] = isset($_POST['password']) ? $_POST['password'] : '';
       if (empty($info['user_login'])) {
-        wp_send_json_error(['loggedin' => false, 'message' => __('Введите ваш адрес электронной почты', 'earena')]);
+        wp_send_json_error(['loggedin' => false, 'message' => __('Введите ваш адрес электронной почты', 'earena_2')]);
       }
       if (!is_email($info['user_login'])) {
-        wp_send_json_error(['loggedin' => false, 'message' => __('Некорректный емейл', 'earena')]);
+        wp_send_json_error(['loggedin' => false, 'message' => __('Некорректный емейл', 'earena_2')]);
       }
       if (empty($info['user_password'])) {
-        wp_send_json_error(['loggedin' => false, 'message' => __('Введите пароль', 'earena')]);
+        wp_send_json_error(['loggedin' => false, 'message' => __('Введите пароль', 'earena_2')]);
       }
       $info['remember'] = true;
       $user_signon = wp_signon($info, false);
@@ -295,14 +295,14 @@
         //	if (!email_exists($info['user_login'])) wp_send_json_error( 'Неверный адрес электронной почты' );
           wp_send_json_error([
               'loggedin' => false,
-              'message' => __('Неправильный адрес электронной почты или пароль!', 'earena')
+              'message' => __('Неправильный адрес электронной почты или пароль!', 'earena_2')
           ]);
       } else {
           wp_set_current_user($user_signon->ID, $user_signon->user_login);
           wp_set_auth_cookie($user_signon->ID, true);
           //  $_COOKIE['ea_user_time_offset'] = $_POST['user_time_offset_m'];
           //	echo json_encode(array('loggedin'=>true, 'message'=>__('Отлично! Идет перенаправление...')));
-          wp_send_json_success(['loggedin' => true, 'message' => __('Отлично! Идет перенаправление...', 'earena')]);
+          wp_send_json_success(['loggedin' => true, 'message' => __('Отлично! Идет перенаправление...', 'earena_2')]);
       }
       die();
   }
@@ -449,7 +449,10 @@
       return count(ea_get_verification_requests());
   }
 
+
+  /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_wallet.php' );
+
   /*INCLUDE AJAX EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_ajax.php' );
-
 ?>

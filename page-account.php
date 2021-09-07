@@ -119,7 +119,7 @@
           <div class="account__buttons">
             <?php if ($private): ?>
               <!-- Пополнить счет -->
-              <a class="button button--green" href="purse">
+              <a class="button button--green" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
                 <span>
                   <?php _e( 'Пополнить счет', 'earena_2' ); ?>
                 </span>

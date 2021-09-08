@@ -62,7 +62,7 @@
         ?>
       </ul>
 
-      <form class="form form--popup" id="form-game" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-game" action="/" method="post">
         <input type="hidden" name="game-name" value="">
         <input type="hidden" name="game-platform" value="desktop">
 
@@ -121,7 +121,7 @@
         ?>
       </ul>
 
-      <form class="form form--popup" id="form-game" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-game" action="/" method="post">
         <input type="hidden" name="game-name" value="">
         <input type="hidden" name="game-platform" value="mobile">
 
@@ -180,7 +180,7 @@
         ?>
       </ul>
 
-      <form class="form form--popup" id="form-game" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-game" action="/" method="post">
         <input type="hidden" name="game-name" value="">
         <input type="hidden" name="game-platform" value="xbox">
 
@@ -239,7 +239,7 @@
         ?>
       </ul>
 
-      <form class="form form--popup" id="form-game" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-game" action="/" method="post">
         <input type="hidden" name="game-name" value="">
         <input type="hidden" name="game-platform" value="playstation">
 

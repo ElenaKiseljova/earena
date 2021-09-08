@@ -27,7 +27,7 @@
     </div>
 
     <div class="popup__content popup__content--login">
-      <form class="form form--popup" id="form-login" action="/" method="post">
+      <form class="form form--popup" data-prefix="signin" id="form-login" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>">
         </div>
@@ -67,7 +67,7 @@
     </div>
 
     <div class="popup__content popup__content--login">
-      <form class="form form--popup" id="form-login" action="/" method="post">
+      <form class="form form--popup" data-prefix="signup" id="form-login" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[0-9a-zA-Zа-яА-Я ]{2,}">
         </div>
@@ -165,7 +165,7 @@
     </div>
 
     <div class="popup__content popup__content--login">
-      <form class="form form--popup" id="form-login" action="/" method="post">
+      <form class="form form--popup" data-prefix="forgot" id="form-login" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="email" type="email" name="email" required placeholder="<?php _e( 'Электронная почта', 'earena_2' ); ?>" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}">
         </div>
@@ -193,7 +193,7 @@
         <?php _e( 'Чтобы начать соревноваться <br> с другими игроками необходимо <br> добавить игры в свою учетную запись.', 'earena_2' ); ?>
       </div>
 
-      <a class="popup__add-button button button--blue" href="#">
+      <a class="popup__add-button button button--blue" href="/profile">
         <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
       </a>
     </div>

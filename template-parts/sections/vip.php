@@ -6,13 +6,16 @@
       </h2>
 
       <div class="section__header-right">
-        <a class="section__link" href="text">
+        <a class="section__link" href="<?= get_permalink(571) ?>">
            <?php _e( 'Что такое VIP статус', 'earena_2' ); ?>
         </a>
       </div>
     </header>
 
     <div class="section__content">
+      <!-- Блок для вывода р-тов из старой темы -->
+      <div class="section__result section__result--vip">
+      </div>
       <ul class="section__list">
         <li class="section__item section__item--col-3">
           <div class="vip vip--block">
@@ -23,7 +26,7 @@
               $2
             </p>
 
-            <button class="vip__button button button--orange openpopup" data-popup="vip" type="button" name="vip">
+            <button class="vip__button button button--orange byeVIP" data-month="1" type="button" name="vip">
               <span>
                 <?php _e( 'Активировать за', 'earena_2' ); ?> $2
               </span>
@@ -39,7 +42,7 @@
               $4
             </p>
 
-            <button class="vip__button button button--orange openpopup" data-popup="vip" type="button" name="vip">
+            <button class="vip__button button button--orange byeVIP" data-month="3" type="button" name="vip">
               <span>
                 <?php _e( 'Активировать за', 'earena_2' ); ?> $4
               </span>
@@ -55,7 +58,7 @@
               $10
             </p>
 
-            <button class="vip__button button button--orange openpopup" data-popup="vip" type="button" name="vip">
+            <button class="vip__button button button--orange byeVIP" data-month="12" type="button" name="vip">
               <span>
                 <?php _e( 'Активировать за', 'earena_2' ); ?> $10
               </span>

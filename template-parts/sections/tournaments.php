@@ -493,7 +493,7 @@
 
     <?php if ($_GET['tournaments'] === 'chat'): ?>
       <header class="section__header section__header--tournaments-account-chat">
-        <a class="section__back button button--gray" href="<?php echo bloginfo( 'url' ); ?>/account?tournaments">
+        <a class="section__back button button--gray" href="<?php echo bloginfo( 'url' ); ?>/profile?tournaments">
           <span>
             <?php _e( 'Назад к турнирам', 'earena_2' ); ?>
           </span>

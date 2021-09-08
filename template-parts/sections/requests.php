@@ -61,7 +61,7 @@
           <?php _e( 'Диалог с Администратором', 'earena_2' ); ?>
         </h2>
 
-        <a class="section__close"  href="<?php echo bloginfo( 'url' ); ?>/account?requests">
+        <a class="section__close"  href="<?php echo bloginfo( 'url' ); ?>/profile?requests">
           <span class="visually-hidden">
             <?php _e( 'Удалить', 'earena_2' ); ?>
           </span>

@@ -25,7 +25,7 @@
     </div>
 
     <div class="popup__content popup__content--match">
-      <form class="form form--popup" id="form-match" action="/" method="post">
+      <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" list="platform-list" id="platform" name="platform" required placeholder="<?php _e( 'Платформа', 'earena_2' ); ?>" />
           <span class="form__arrow"></span>
@@ -116,7 +116,7 @@
         </a> -->
         <!-- ---- -->
       </div>
-      <form class="form form--popup" id="form-match" action="/" method="post">
+      <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
         </div>
@@ -157,7 +157,7 @@
         </span>
       </div>
 
-      <form class="form form--popup" id="form-match" action="/" method="post">
+      <form class="form form--popup" data-prefix="delete" id="form-match" action="/" method="post">
         <input type="hidden" name="match-status" value="delete">
         <input type="hidden" name="match-id" value="11111111">
         <input type="hidden" name="user-id" value="2222222">
@@ -223,7 +223,7 @@
       </div>
     </div>
     <div class="popup__content popup__content--match">
-      <form class="form form--popup" id="form-match" action="/" method="post">
+      <form class="form form--popup" data-prefix="next" id="form-match" action="/" method="post">
         <div class="form__checkbox form__checkbox--free checkbox checkbox--left">
           <input class="visually-hidden" data-control-field-id="pay-value" data-control-toggle="off" type="checkbox" name="free-match" value="free-match" id="free-match">
           <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="free-match">
@@ -332,7 +332,7 @@
         <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
       </div>
 
-      <a class="popup__go-to-button button button--gray" href="/account">
+      <a class="popup__go-to-button button button--gray" href="/profile">
         <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
     </div>

@@ -25,7 +25,7 @@
     </div>
 
     <div class="popup__content popup__content--stream">
-      <form class="form form--popup" id="form-stream" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-stream" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="stream-source" type="text" name="stream-source" required placeholder="<?php _e( 'Ссылка на источник', 'earena_2' ); ?>" >
         </div>

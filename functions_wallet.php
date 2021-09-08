@@ -263,19 +263,19 @@
               <?php
                     global $wpdb, $wallet_offset;
                     $user_id = get_current_user_id();
-                    $part = $_REQUEST['part'] ?? 1;
+                    // $part = $_REQUEST['part'] ?? 1;
                     $total_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}woo_wallet_transactions WHERE user_id={$user_id}" );
-                    $wallet_limit = isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 10;
-                    $wallet_offset = isset($part) ? ((int)$part-1)*$wallet_limit : 0;
+                    // $wallet_limit = isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 10;
+                    // $wallet_offset = isset($part) ? ((int)$part-1)*$wallet_limit : 0;
               //				$wallet_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
-                    if ( !empty($wallet_offset) ) {
+                    /*if ( !empty($wallet_offset) ) {
                       add_filter( 'woo_wallet_transactions_query', 'ea_woo_wallet_transactions_query_offset' );
                       function ea_woo_wallet_transactions_query_offset($query){
                         global $wallet_offset;
                         $query['limit'] = isset($query['limit']) ? $query['limit']." OFFSET " . $wallet_offset : "OFFSET " . $wallet_offset;
                         return $query;
                       }
-                    }
+                    }*/
                     $transactions = get_wallet_transactions( array( 'limit' => apply_filters( 'woo_wallet_transactions_count', $wallet_limit ) ) );
                     if ( ! empty( $transactions ) ) { ?>
                       <div class="purse">
@@ -443,23 +443,23 @@
             </div>
           </div>
           <script>
-            const transferTotal = function () {
-                $('.ef-wallet #ea-transfer-amount').on('change click keyup blur select', function () {
-                    var amount = Number($(this).val())
-                var total = Math.round(amount.toFixed(3) * 105) / 100
-                if (total == 0) {
-                  result = '--'
-                } else {
-                  result = '<strong>$'+total+'</strong>'
-                }
-            //var total = amount * 1.05
-            //console.log(total);
-                    $('.ef-wallet #ea-transfer-amount-with-comission').html(result)
-                })
-            }
-            jQuery(document).ready(function ($) {
-                transferTotal()
-            })
+            (function ($) {
+              const transferTotal = function () {
+                  $('.ef-wallet #ea-transfer-amount').on('change click keyup blur select', function () {
+                      var amount = Number($(this).val());
+                      var total = Math.round(amount.toFixed(3) * 105) / 100;
+                      if (total == 0) {
+                        result = '--'
+                      } else {
+                        result = '<strong>$'+total+'</strong>'
+                      }
+                      //var total = amount * 1.05
+                      //console.log(result);
+                      $('.ef-wallet #ea-transfer-amount-with-comission').html(result);
+                  })
+              }
+              transferTotal();
+            })(jQuery);
           </script>
       <?php do_action( 'woo_wallet_after_my_wallet_content' );
       return ob_get_clean();
@@ -471,4 +471,56 @@
     wp_redirect(add_query_arg('wallet_action', 'transactions'));die();
   }
   });
+
+  // Покупка VIP
+  function buy_vip($m = 0, $id = 0)
+  {
+      if (!is_user_logged_in()) {
+          return ['success' => 0, 'message' => __('Пользователь не залогинился', 'earena_2')];
+      }
+      $ea_user = $id == 0 ? wp_get_current_user() : get_user_by('id', $id);
+      if (!($ea_user instanceof WP_User)) {
+          return ['success' => 0, 'message' => __('Пользователь не определён', 'earena_2')];
+      }
+      $price = 0;
+      switch ($m) {
+          case 0:
+              return ['success' => 0, 'message' => __('Не указано время', 'earena_2')];//'0 месяцев'
+              break;
+          case 1:
+              $price = 2;
+              break;
+          case 3:
+              $price = 4;
+              break;
+          case 12:
+              $price = 10;
+              break;
+      }
+      $balance = woo_wallet()->wallet->get_wallet_balance($ea_user->ID, '');
+      if (empty($price) || (float)$price > (float)$balance) {
+          return ['success' => 0, 'message' => __('Недостаточно средств', 'earena_2')];
+      }
+      $bet = woo_wallet()->wallet->debit($ea_user->ID, (float)$price,
+          __('Покупка VIP на', 'earena_2') . ' ' . pluralize($m, __('месяц', 'earena_2'), __('месяца', 'earena_2'),
+              __('месяцев', 'earena_2')));
+      if (!$bet) {
+          return ['success' => 0, 'message' => __('Не получилось списать средства.', 'earena_2')];
+      }
+      $time = (!empty($ea_user->get('vt')) && $ea_user->get('vt') > time()) ? $ea_user->get('vt') : time();
+      $process = $time > time() ? __('VIP продлен', 'earena_2') : __('Куплен VIP', 'earena_2');
+      $vt = mktime(23, 59, 59, date("m", $time) + $m, date("d", $time), date("Y", $time));
+      update_metadata('user', $ea_user->ID, 'vip', 1);
+      update_metadata('user', $ea_user->ID, 'vt', $vt);
+      if ($vt == $ea_user->get('vt')) {
+          return [
+              'date' => date('d.m.Y', $vt),
+              'success' => 1,
+              'message' => $process . ' ' . __('на', 'earena_2') . ' ' . pluralize($m, __('месяц', 'earena_2'), __('месяца', 'earena_2'),
+                      __('месяцев', 'earena_2')) . ' ' . __('по', 'earena_2') . ' ' . date('d.m.Y', $vt)
+          ];
+      }
+
+      return ['success' => 0, 'message' => __('Ошибка', 'earena_2')];
+  }
 ?>

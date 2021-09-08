@@ -56,12 +56,12 @@
               ?>
               <div class="page-header__right page-header__right--logged">
                 <div class="user user--header">
-                  <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/account">
+                  <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
                     <?= bp_core_fetch_avatar('item_id=' . $earana_2_user->ID); ?>
                   </a>
 
                   <div class="user__info user__info--header">
-                    <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/account">
+                    <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
                       <h5>
                         <?= $earana_2_user->nickname; ?>
                       </h5>
@@ -69,7 +69,7 @@
 
                     <div class="user__money">
                       <span class="user__money-amount">
-                        $<span><?= balance(); ?></span>
+                        $<span><?= earena_2_nice_money(balance()); ?></span>
                       </span>
                       <a class="page-header__money-add page-header__money-add--desktop" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
                         <?php _e( 'Пополнить', 'earena_2' ); ?>

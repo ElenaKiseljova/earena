@@ -82,7 +82,7 @@
             <?php _e( 'Диалог с', 'earena_2' ); ?> StacyBloom
           </h2>
 
-          <a class="section__close" href="<?php echo bloginfo( 'url' ); ?>/account?messages">
+          <a class="section__close" href="<?php echo bloginfo( 'url' ); ?>/profile?messages">
             <span class="visually-hidden">
               <?php _e( 'Назад', 'earena_2' ); ?>
             </span>
@@ -170,7 +170,7 @@
                     </div>
                   </div>
                 </div>
-                <a class="user__center user__center--messages" href="<?php echo bloginfo( 'url' ); ?>/account?messages=privat">
+                <a class="user__center user__center--messages" href="<?php echo bloginfo( 'url' ); ?>/profile?messages=privat">
                   <time class="user__time user__time--messages">
                     12.11.2020 в 15:50
                   </time>

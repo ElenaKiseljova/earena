@@ -47,15 +47,15 @@
         </a>
       <?php endif; ?>
       <?php if ($matches[$match_index]['user_avatar_1']): ?>
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img width="80" height="80" src="<?= $matches[$match_index]['user_avatar_1']; ?>" alt="Avatar">
         </a>
       <?php elseif ($matches[$match_index]['user_avatar_1'] === null) : ?>
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
       <?php endif; ?>
-      <a class="user__name user__name--match" href="/account">
+      <a class="user__name user__name--match" href="/profile">
         <h5>
           AnnetteBlack
         </h5>
@@ -84,15 +84,15 @@
         </a>
       <?php endif; ?>
       <?php if ($matches[$match_index]['user_avatar_2']): ?>
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img width="80" height="80" src="<?= $matches[$match_index]['user_avatar_2']; ?>" alt="Avatar">
         </a>
       <?php elseif ($matches[$match_index]['user_avatar_2'] === null) : ?>
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
       <?php endif; ?>
-      <a class="user__name user__name--match" href="/account">
+      <a class="user__name user__name--match" href="/profile">
         <h5>
           AnnetteBlack
         </h5>

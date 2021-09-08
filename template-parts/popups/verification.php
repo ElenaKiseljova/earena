@@ -22,7 +22,7 @@
       </div>
 
       <div class="chat-page chat-page--popup-verification">
-        <form class="form form--popup" id="form-verification" action="/" method="post">
+        <form class="form form--popup" data-prefix="" id="form-verification" action="/" method="post">
           <div class="chat-page__form chat-page__form--popup-verification">
             <label class="chat-page__form-field-label chat-page__form-field-label--popup-verification" for="chat-page-result-files">
               <?php _e( 'Прикрепить фото', 'earena_2' ); ?>

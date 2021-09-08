@@ -31,10 +31,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img width="80" height="80" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-1.png" alt="Avatar">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -46,10 +46,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -108,10 +108,10 @@
             <use xlink:href="#icon-play"></use>
           </svg>
         </button>
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-1.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -124,10 +124,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -181,10 +181,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-1.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -196,10 +196,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -253,10 +253,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-3.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -268,10 +268,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -328,10 +328,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-3.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -343,10 +343,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -400,10 +400,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -415,10 +415,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -472,10 +472,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -487,10 +487,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match user__avatar--loader" href="/account">
+        <a class="user__avatar user__avatar--match user__avatar--loader" href="/profile">
           <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -544,10 +544,10 @@
 
     <div class="match__center">
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>
@@ -559,10 +559,10 @@
         </span>
       </div>
       <div class="user user--match">
-        <a class="user__avatar user__avatar--match" href="/account">
+        <a class="user__avatar user__avatar--match" href="/profile">
           <img src="<?php echo get_template_directory_uri(); ?>/assets/img/match-user-2.png" alt="User">
         </a>
-        <a class="user__name user__name--match" href="/account">
+        <a class="user__name user__name--match" href="/profile">
           <h5>
             AnnetteBlack
           </h5>

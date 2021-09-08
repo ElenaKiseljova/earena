@@ -79,7 +79,7 @@
     </div>
 
     <div class="popup__content popup__content--tournament">
-      <form class="form form--popup" id="form-tournament" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-tournament" action="/" method="post">
         <div class="form__row">
           <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
         </div>

@@ -17,7 +17,7 @@
         ?>
       </div>
 
-      <form class="form" action="index.html" method="post" id="form-delete-history">
+      <form class="form" action="index.html" method="post" data-prefix="" id="form-delete-history">
         <input type="hidden" name="id-friend" value="999">
         <input type="hidden" name="accept-remove" value="true">
 

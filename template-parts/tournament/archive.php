@@ -14,7 +14,7 @@
 
 <div class="tournament ">
   <?php if ($tournaments[$tournament_index]['status'] === 'present' && $is_account_page): ?>
-    <a class="tournament__gotochat" href="<?php echo bloginfo( 'url' ); ?>/account?tournaments=chat&tournament_index=<?= $tournament_index;?>">
+    <a class="tournament__gotochat" href="<?php echo bloginfo( 'url' ); ?>/profile?tournaments=chat&tournament_index=<?= $tournament_index;?>">
       <span class="visually-hidden">
         <?php _e( 'В чате турнира сообщений', 'earena_2' ); ?>
       </span>

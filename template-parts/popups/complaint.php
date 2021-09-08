@@ -15,7 +15,7 @@
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Жалоба судье', 'earena_2' ); ?>
       </h2>
-      <form class="form form--popup" id="form-complaint" action="/" method="post">
+      <form class="form form--popup" data-prefix="" id="form-complaint" action="/" method="post">
         <div class="form__row">
           <textarea class="form__field form__field--popup form__field--message" name="message" required placeholder="<?php _e( 'Сообщение...', 'earena_2' ); ?>"></textarea>
         </div>

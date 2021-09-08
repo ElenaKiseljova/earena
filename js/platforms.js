@@ -136,7 +136,7 @@
           let linkToChatTournament = '';
           if (window.location.href.indexOf('account') > -1) {
             linkToChatTournament = `
-                                    <a class="tournament__gotochat" href="/account?tournaments=chat&tournament_index=${id}">
+                                    <a class="tournament__gotochat" href="/profile?tournaments=chat&tournament_index=${id}">
                                       <span class="visually-hidden">
                                         ${__( 'В чате турнира сообщений', 'earena_2' )}
                                       </span>
@@ -297,14 +297,14 @@
             members = {
               0 : {
                 name : 'Bessie Cooper',//test
-                url: '/account',//test
+                url: '/profile',//test
                 img : match['user_avatar_1'],
                 stream : match['stream_1'],
                 result : match['result_user_1'],
               },
               1 : {
                 name : 'Bessie Cooper',//test
-                url: '/account',//test
+                url: '/profile',//test
                 img : match['user_avatar_2'],
                 stream : match['stream_2'],
                 result : match['result_user_2'],

@@ -44,7 +44,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--header">
-      <a class="navigation__link navigation__link--header <?php if (function_exists('earena_2_current_page')) earena_2_current_page('text'); ?>" href="/text">
+      <a class="navigation__link navigation__link--header <?= is_page(874) ? 'active' : '' ?>" href="<?php echo get_page_link(874); ?>">
         <span>
           <?=  __('Команда Earena', 'earena_2'); ?>
         </span>
@@ -65,7 +65,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--header">
-      <a class="navigation__link navigation__link--header" href="/text">
+      <a class="navigation__link navigation__link--header <?= is_page(877) ? 'active' : '' ?>" href="<?php echo get_page_link(877); ?>">
         <span>
           <?=  __('Сотрудничество', 'earena_2'); ?>
         </span>

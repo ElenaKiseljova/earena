@@ -177,6 +177,8 @@
             // Индекс кнопки "Все"
             let allButtonIndex = 0;
 
+            let flagAllSelected = 0;
+
             buttons.forEach((button, i) => {
               button.addEventListener('click', function () {
                 if (button.dataset.tabType === 'all') {
@@ -185,7 +187,22 @@
 
                   // Удаляю активные классы других кнопок/контента
                   window.removeActiveClassElements(buttons);
-                } if (buttons[allButtonIndex].classList.contains('active')) {
+
+                  // Флаг контроля кол-ва выбранных платформ
+                  flagAllSelected = 0;
+                } else if (! button.classList.contains('active')) {
+                  // Увеличиваем кол-во выбранных платформ на 1
+                  flagAllSelected += 1;
+
+                  if (flagAllSelected === 4) {
+                    // Если выбрано 4 платформы - прерываем стандартное действие и запрашиваем ВСЕ
+                    buttons[allButtonIndex].click();
+
+                    return;
+                  }
+                }
+
+                if (buttons[allButtonIndex].classList.contains('active')) {
                   buttons[allButtonIndex].classList.remove('active');
                 }
 

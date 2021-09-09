@@ -72,6 +72,10 @@ $blocked = $ea_user->get('blocked')?:false;
 $yellow_cards = $ea_user->get('yc')?:0;
 $blocked = $yellow_cards>=3?true:$blocked;
 $country = mb_strtolower($ea_user->get('country'));
+
+if (!$country) {
+  $country = ICL_LANGUAGE_CODE;
+}
 ?>
 
 <?php

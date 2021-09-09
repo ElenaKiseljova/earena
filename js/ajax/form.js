@@ -112,7 +112,6 @@
 
                   --- data-prefix="" в тегах <form>
                 */
-
                 let prefix = '';
                 if (PREFIX_FORM !== '' && PREFIX_FORM && PREFIX_FORM !== undefined) {
                   prefix = `-${PREFIX_FORM}`;
@@ -124,6 +123,12 @@
                   formData['action'] = 'ajax_login';
                 }
 
+                // Регистрация
+                if (prefix.indexOf('signout') > -1) {
+
+                }
+
+                // Восстановление
                 if (prefix.indexOf('forgot') > -1) {
                   // Ф-я восстановления пароля
                   formData['action'] = 'ajax_forgot';
@@ -133,6 +138,13 @@
 
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
+                  // Логин
+                  if (prefix.indexOf('signin') > -1) {
+                    $('.popup__ajax-message').html('');
+
+                    return;
+                  }
+
                   let templateBeforeSend = document.querySelector(`#${ID_FORM}-beforesend`);
 
                   if (wrapperFormNode && templateBeforeSend) {
@@ -150,11 +162,32 @@
                     }
                   }
 
-                  console.log('Send: ', status);
+                  console.log('Старт: ', status);
                 };
 
                 // Обработчик успешной отправки
                 var onSuccess = (response) => {
+                  // Логин
+                  if (prefix.indexOf('signin') > -1) {
+                    if (response.data.loggedin === true) {
+                      document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
+                    } else {
+                      console.log(response.data.message);
+                      $('.popup__ajax-message').html(response.data.message);
+
+                      setTimeout(function () {
+                          $('.popup__ajax-message').html('');
+                      }, 2000);
+
+                      return;
+                    }
+                  }
+
+                  // Регистрация
+                  if (prefix.indexOf('signout') > -1) {
+
+                  }
+
                   // Получаю шаблон
                   let templateSuccess = document.querySelector(`#${ID_FORM}-success${prefix}`);
 
@@ -192,23 +225,25 @@
                     }
                   }
 
-                  // Логин
-                  if (prefix.indexOf('signin') > -1) {
-                    if (response.data.loggedin == true) {
-                      document.location.href = earena_2_ajax.redirecturl;
+                  // Восстановление
+                  if (prefix.indexOf('forgot') > -1) {
+                    if (response.data.retrieve_password == true) {
+                      $('.popup__information--template').html(response.data.message);
+                      console.log('Успех', response.data.message);
                     } else {
-                      console.log(response.data.message);
+                      $('.popup__information--template').html(response.data.message);
+                      console.log('Ошибка', response.data.message);
                     }
                   }
 
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();
 
-                  console.log(`Done (${prefix}) : ${response}`);
+                  console.log('Успех: ', response.data);
                 };
 
                 // Обработчик не успешной отправки
-                var onError = (error, prefix='') => {
+                var onError = (response, prefix='') => {
                   let templateError = document.querySelector(`#${ID_FORM}-error${prefix}`);
 
                   if (wrapperFormNode && templateError) {
@@ -220,7 +255,7 @@
                     wrapperFormNode.appendChild(cloneTemplate);
                   }
 
-                  console.log(`Error ${prefix}: `, error);
+                  console.log('Ошибка: ', response);
 
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();

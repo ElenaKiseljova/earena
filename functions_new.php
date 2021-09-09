@@ -271,294 +271,27 @@
 
   /* *** Модификации старого фанкшнс *** */
 
-  /* ==============================================
-  ********  //Логин
-  =============================================== */
-
-  if( wp_doing_ajax() ) {
-    if (!is_user_logged_in()) {
-      add_action('wp_ajax_ajax_login', 'ajax_login');
-      add_action('wp_ajax_nopriv_ajax_login', 'ajax_login');
-    }
-  }
-
-  // Signin
-  function ajax_login()
+  function pluralize($string, $ch1, $ch2, $ch3)
   {
-      // Первым делом проверяем параметр безопасности
-      check_ajax_referer('form.js_nonce', 'security');
-      // Получаем данные из полей формы и проверяем их
-      $info = array();
-      $info['user_login'] = isset($_POST['name']) ? $_POST['name'] : '';
-      $info['user_password'] = isset($_POST['password']) ? $_POST['password'] : '';
-      if (empty($info['user_login'])) {
-        wp_send_json_error(['loggedin' => false, 'message' => __('Введите ваше имя', 'earena_2')]);
-      }
-      // if (!is_email($info['user_login'])) {
-      //   wp_send_json_error(['loggedin' => false, 'message' => __('Некорректный емейл', 'earena_2')]);
-      // }
-      if (empty($info['user_password'])) {
-        wp_send_json_error(['loggedin' => false, 'message' => __('Введите пароль', 'earena_2')]);
-      }
-      $info['remember'] = true;
-      $user_signon = wp_signon($info, false);
-      if (is_wp_error($user_signon)) {
-        //	echo json_encode(array('loggedin'=>false, 'message'=>__('Неправильный логин или пароль!')));
-        //	if (!email_exists($info['user_login'])) wp_send_json_error( 'Неверный адрес электронной почты' );
-          wp_send_json_error([
-              'loggedin' => false,
-              'message' => __('Неправильное имя или пароль!', 'earena_2')
-          ]);
+      $ff = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+      if (substr($string, -2, 1) == 1 and strlen($string) > 1) {
+          $ry = array("0 $ch3", "1 $ch3", "2 $ch3", "3 $ch3", "4 $ch3", "5 $ch3", "6 $ch3", "7 $ch3", "8 $ch3", "9 $ch3");
       } else {
-          wp_set_current_user($user_signon->ID, $user_signon->user_login);
-          wp_set_auth_cookie($user_signon->ID, true);
-          //  $_COOKIE['ea_user_time_offset'] = $_POST['user_time_offset_m'];
-          //	echo json_encode(array('loggedin'=>true, 'message'=>__('Отлично! Идет перенаправление...')));
-          wp_send_json_success(['loggedin' => true, 'message' => __('Отлично! Идет перенаправление...', 'earena_2')]);
+          $ry = array(
+              "0 $ch3",
+              "1 $ch1",
+              "2 $ch2",
+              "3 $ch2",
+              "4 $ch2",
+              "5 $ch3",
+              " 6 $ch3",
+              "7 $ch3",
+              "8 $ch3",
+              " 9 $ch3"
+          );
       }
-      die();
-  }
-
-  /* ==============================================
-  ********  //Забыл пароль
-  =============================================== */
-  if (!is_user_logged_in()) {
-      add_action('wp_ajax_ajax_forgot', 'ajax_forgot');
-      add_action('wp_ajax_nopriv_ajax_forgot', 'ajax_forgot');
-
-      add_action('wp_ajax_nopriv_ajaxreset_pass', 'ajax_reset_pass');
-  }
-  /*
-   *	@desc	Process reset password
-   */
-  function ajax_reset_pass()
-  {
-
-      $errors = new WP_Error();
-
-      check_ajax_referer('ajax-rp-nonce', 'rp_security');
-
-      $pass1 = $_POST['pass1'];
-      $pass2 = $_POST['pass2'];
-      $key = $_POST['user_key'];
-      $login = $_POST['email'];
-
-      $user = check_password_reset_key($key, $login);
-      if (is_wp_error($user)) {
-  //		$errors = $user;
-          $errors->add('invalid_key', sprintf(
-              __('Некорректные данные для смены пароля. Проверьте, правильно ли вы скопировали ссылку из письма или отправьте <a href="%s">ещё одно</a>.'),
-              add_query_arg('action', 'forgot', home_url())
-          ));
-      }
-      /*else {
-  		echo 'Ключ прошел проверку. Можно высылать новый пароль на почту.';
-  	}*/
-      // check to see if user added some string
-      if (empty($pass1) || empty($pass2)) {
-          $errors->add('password_required', __('Введите пароль.', 'earena'));
-      }
-      if (8 >= strlen($pass1)) {
-          $errors->add('password_short', __('Пароль должен быть не менее 8 символов.', 'earena'));
-      }
-      // is pass1 and pass2 match?
-      if ($pass1 != $pass2) {
-          $errors->add('password_reset_mismatch', __('The passwords do not match.'));
-      }
-
-      /**
-       * Fires before the password reset procedure is validated.
-       *
-       * @param object $errors WP Error object.
-       * @param WP_User|WP_Error $user WP_User object if the login and reset key match. WP_Error object otherwise.
-       * @since 3.5.0
-       *
-       */
-      do_action('validate_password_reset', $errors, $user);
-
-      if ((!$errors->get_error_code()) && isset($pass1) && !empty($pass1)) {
-          reset_password($user, $pass1);
-
-          /*		$errors->add( 'password_reset',
-  			sprintf(
-  				__( 'Check your email for the confirmation link, then visit the <a href="%s">login page</a>.' ),
-  				add_query_arg( 'action', 'login', home_url() ) ) );*/
-          $errors->add('password_reset', __('Your password has been reset.'));
-      }
-
-      // display error message
-      if ($errors->get_error_code()) {
-          echo '<p class="error">' . $errors->get_error_message($errors->get_error_code()) . '</p>';
-      }
-
-      // return proper result
-      die();
-  }
-
-  function ajax_forgot()
-  {
-      check_ajax_referer('form.js_nonce', 'security');
-      $email = isset($_POST['email']) ? $_POST['email'] : '';
-      $lostpassword = ea_retrieve_password();
-      if (is_wp_error($lostpassword)) {
-          $err = '';
-          foreach ($lostpassword->get_error_messages() as $error) {
-              $err .= $error . PHP_EOL;
-          }
-          wp_send_json_error(['message' => $err]);
-      } else {
-          wp_send_json_success([
-              'retrieve_password' => true,
-              'message' => sprintf(
-              /* translators: %s: Link to the login page. */
-                  __('Check your email for the confirmation link, then visit the <a href="%s">login page</a>.'),
-                  add_query_arg('action', 'login', home_url())
-              )
-          ]);
-      }
-      die();
-  }
-
-  /**
-   * Handles sending a password retrieval email to a user.
-   *
-   * @return true|WP_Error True when finished, WP_Error object on error.
-   * @since 2.5.0
-   *
-   */
-  function ea_retrieve_password()
-  {
-      $errors = new WP_Error();
-      $user_data = false;
-
-      if (empty($_POST['email']) || !is_string($_POST['email'])) {
-          $errors->add('empty_username', __('Введите ваш адрес электронной почты.', 'earena'));
-      } elseif (!is_email($_POST['email'])) {
-          $errors->add('wrong_username', __('Некорректный емейл.', 'earena'));
-      } elseif (strpos($_POST['email'], '@')) {
-          $user_data = get_user_by('email', trim(wp_unslash($_POST['email'])));
-          if (empty($user_data)) {
-              $errors->add('invalid_email',
-                  __('Не найден аккаунт с таким адресом электронной почты.', 'earena'));
-          }
-      }/* else {
-  		$login	 = trim( wp_unslash( $_POST['email'] ) );
-  		$user_data = get_user_by( 'login', $login );
-  	}*/
-
-      /**
-       * Fires before errors are returned from a password reset request.
-       *
-       * @param WP_Error $errors A WP_Error object containing any errors generated
-       *                                 by using invalid credentials.
-       * @param WP_User|false $user_data WP_User object if found, false if the user does not exist.
-       * @since 5.4.0 Added the `$user_data` parameter.
-       *
-       * @since 2.1.0
-       * @since 4.4.0 Added the `$errors` parameter.
-       */
-      do_action('lostpassword_post', $errors, $user_data);
-
-      /**
-       * Filters the errors encountered on a password reset request.
-       *
-       * The filtered WP_Error object may, for example, contain errors for an invalid
-       * username or email address. A WP_Error object should always be returned,
-       * but may or may not contain errors.
-       *
-       * If any errors are present in $errors, this will abort the password reset request.
-       *
-       * @param WP_Error $errors A WP_Error object containing any errors generated
-       *                                 by using invalid credentials.
-       * @param WP_User|false $user_data WP_User object if found, false if the user does not exist.
-       * @since 5.5.0
-       *
-       */
-      $errors = apply_filters('lostpassword_errors', $errors, $user_data);
-
-      if ($errors->has_errors()) {
-          return $errors;
-      }
-
-      if (!$user_data) {
-          $errors->add('invalidcombo',
-              __('Не найден аккаунт с таким адресом электронной почты.', 'earena'));
-          return $errors;
-      }
-      // Redefining user_login ensures we return the right case in the email.
-      $user_login = $user_data->user_login;
-      $user_email = $user_data->user_email;
-      $key = get_password_reset_key($user_data);
-
-      if (is_wp_error($key)) {
-          return $key;
-      }
-
-      if (is_multisite()) {
-          $site_name = get_network()->site_name;
-      } else {
-          /*
-  		 * The blogname option is escaped with esc_html on the way into the database
-  		 * in sanitize_option. We want to reverse this for the plain text arena of emails.
-  		 */
-          $site_name = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-      }
-
-      $message = __('Someone has requested a password reset for the following account:') . "\r\n\r\n";
-      /* translators: %s: Site name. */
-      $message .= sprintf(__('Site Name: %s'), $site_name) . "\r\n\r\n";
-      /* translators: %s: User login. */
-      $message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-      $message .= __('If this was a mistake, ignore this email and nothing will happen.') . "\r\n\r\n";
-      $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
-      $message .= network_site_url("?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . "\r\n\r\n";
-
-      $requester_ip = $_SERVER['REMOTE_ADDR'];
-      if ($requester_ip) {
-          $message .= sprintf(
-              /* translators: %s: IP address of password reset requester. */
-                  __('This password reset request originated from the IP address %s.'),
-                  $requester_ip
-              ) . "\r\n";
-      }
-
-      /* translators: Password reset notification email subject. %s: Site title. */
-      $title = sprintf(__('[%s] Password Reset'), $site_name);
-
-      /**
-       * Filters the subject of the password reset email.
-       *
-       * @param string $title Email subject.
-       * @param string $user_login The username for the user.
-       * @param WP_User $user_data WP_User object.
-       * @since 4.4.0 Added the `$user_login` and `$user_data` parameters.
-       *
-       * @since 2.8.0
-       */
-      $title = apply_filters('retrieve_password_title', $title, $user_login, $user_data);
-
-      /**
-       * Filters the message body of the password reset mail.
-       *
-       * If the filtered message is empty, the password reset email will not be sent.
-       *
-       * @param string $message Email message.
-       * @param string $key The activation key.
-       * @param string $user_login The username for the user.
-       * @param WP_User $user_data WP_User object.
-       * @since 2.8.0
-       * @since 4.1.0 Added `$user_login` and `$user_data` parameters.
-       *
-       */
-      $message = apply_filters('retrieve_password_message', $message, $key, $user_login, $user_data);
-
-      if ($message && !wp_mail($user_email, wp_specialchars_decode($title), $message)) {
-          $errors->add('retrieve_password_email_failure',
-              __('<strong>Error</strong>: The email could not be sent. Your site may not be correctly configured to send emails.'));
-          return $errors;
-      }
-
-      return true;
+      $string1 = substr($string, 0, -1) . str_replace($ff, $ry, substr($string, -1, 1));
+      return $string1;
   }
 
   // Проверка на админа
@@ -619,6 +352,7 @@
               abs($_COOKIE['ea_user_time_offset'] * 60)) : 0)) : '+0';
   }
 
+  // Колличество
   function counter_matches()
   {
       if (!is_user_logged_in()) {
@@ -677,53 +411,9 @@
       return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
   }
 
-  /* ==============================================
-  ********  //Верификация пользователя
-  =============================================== */
-  function ea_get_verification_requests()
-  {
-      return wp_list_pluck(get_users(
-          array(
-              'meta_query' => [
-                  [
-                      'key' => 'verification_request',
-                      'value' => 1,
-                  ],
-                  [
-                      'key' => 'verification_files',
-                      'compare' => 'EXISTS',
-                  ],
-              ],
-              'fields' => ['ID']
-          )), 'ID');
-  }
-
   function ea_count_verification_requests()
   {
       return count(ea_get_verification_requests());
-  }
-
-  function pluralize($string, $ch1, $ch2, $ch3)
-  {
-      $ff = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-      if (substr($string, -2, 1) == 1 and strlen($string) > 1) {
-          $ry = array("0 $ch3", "1 $ch3", "2 $ch3", "3 $ch3", "4 $ch3", "5 $ch3", "6 $ch3", "7 $ch3", "8 $ch3", "9 $ch3");
-      } else {
-          $ry = array(
-              "0 $ch3",
-              "1 $ch1",
-              "2 $ch2",
-              "3 $ch2",
-              "4 $ch2",
-              "5 $ch3",
-              " 6 $ch3",
-              "7 $ch3",
-              "8 $ch3",
-              " 9 $ch3"
-          );
-      }
-      $string1 = substr($string, 0, -1) . str_replace($ff, $ry, substr($string, -1, 1));
-      return $string1;
   }
 
   // Games

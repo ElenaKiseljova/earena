@@ -411,6 +411,28 @@
       return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
   }
 
+
+  /* ==============================================
+  ********  //Верификация пользователя
+  =============================================== */
+  function ea_get_verification_requests()
+  {
+      return wp_list_pluck(get_users(
+          array(
+              'meta_query' => [
+                  [
+                      'key' => 'verification_request',
+                      'value' => 1,
+                  ],
+                  [
+                      'key' => 'verification_files',
+                      'compare' => 'EXISTS',
+                  ],
+              ],
+              'fields' => ['ID']
+          )), 'ID');
+  }
+
   function ea_count_verification_requests()
   {
       return count(ea_get_verification_requests());
@@ -506,6 +528,17 @@
       $user_id = $id > 0 ? $id : get_current_user_id();
       $nicknames = get_user_meta($user_id, 'nicknames', true);
       return (isset($nicknames[$game]) && is_array($nicknames[$game]) && !empty($nicknames[$game][$platform])) ? $nicknames[$game][$platform] : '<span style="color:red;"><i>NO_NAME</i></span>';
+  }
+
+  function is_online($user_id)
+  {
+      $last_activity = bp_get_user_last_activity($user_id);
+      $exact_time = time();
+      $time_ago = date("Y-m-d H:i:s", $exact_time - 3 * 60);
+      if ($last_activity > $time_ago) {
+          return true;
+      }
+      return false;
   }
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/

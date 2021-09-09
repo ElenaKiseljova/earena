@@ -33,8 +33,7 @@
       </div>
 
       <div class="popup__content popup__content--login">
-        <div class="popup__ajax-message">
-        </div>
+        <div class="popup__ajax-message"></div>
         <form class="form form--popup" data-prefix="signin" id="form-login" action="/" method="post">
           <div class="form__row">
             <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>">
@@ -75,9 +74,10 @@
       </div>
 
       <div class="popup__content popup__content--login">
+        <div class="popup__ajax-message"></div>
         <form class="form form--popup" data-prefix="signup" id="form-login" action="/" method="post">
           <div class="form__row">
-            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" pattern="[0-9a-zA-Zа-яА-Я ]{2,}">
+            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>">
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -87,7 +87,7 @@
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
           <div class="form__row">
-            <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
+            <input class="form__field form__field--popup" id="password" type="password" name="password" minlength="8" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -120,19 +120,19 @@
               <!-- Для переключения состояния - добавляется active класс  -->
               <ul class="select__list">
                 <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="select-country" value="ru" id="select-ru" required>
+                  <input class="visually-hidden" type="radio" name="country" value="ru" id="select-ru" required>
                   <label class="select__label" for="select-ru">
                     <?php _e( 'РФ', 'earena_2' ); ?>
                   </label>
                 </li>
                 <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="select-country" value="ua" id="select-ua" required>
+                  <input class="visually-hidden" type="radio" name="country" value="ua" id="select-ua" required>
                   <label class="select__label" for="select-ua">
                     <?php _e( 'Украина', 'earena_2' ); ?>
                   </label>
                 </li>
                 <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="select-country" value="by" id="select-by" required>
+                  <input class="visually-hidden" type="radio" name="country" value="by" id="select-by" required>
                   <label class="select__label" for="select-by">
                     <?php _e( 'Беларусь', 'earena_2' ); ?>
                   </label>

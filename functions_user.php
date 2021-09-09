@@ -8,6 +8,9 @@ if( wp_doing_ajax() ) {
   if (!is_user_logged_in()) {
     add_action('wp_ajax_ajax_login', 'ajax_login');
     add_action('wp_ajax_nopriv_ajax_login', 'ajax_login');
+
+    add_action( 'wp_ajax_earena_2_ajax_register', 'earena_2_ajax_register' );
+    add_action( 'wp_ajax_nopriv_earena_2_ajax_register', 'earena_2_ajax_register' );
   }
 }
 
@@ -300,6 +303,84 @@ if(isset($_GET['ref'])){
 	setcookie('ref_id', $ref_id, time()+60*60*24*30);
 }
 
+// Signup
+function earena_2_ajax_register () {
+  check_ajax_referer( 'form.js_nonce', 'security' );
+
+	global $login, $password, $email, $country, $birth_date, $reg_errors;
+	$password   =   isset($_POST['password'])?esc_attr( $_POST['password'] ):null;
+	$email      =   isset($_POST['email'])?sanitize_email( $_POST['email'] ):null;
+	$login      =   isset($_POST['name'])?$_POST['name']:null;
+	$country	=   isset($_POST['country'])?sanitize_text_field( $_POST['country'] ):null;
+	$confirm_password = null;//isset($_POST['confirm_password'])?esc_attr( $_POST['confirm_password'] ):null;
+	$birth_date = isset($_POST['birthday']) ? date("Y-m-d",strtotime($_POST['birthday'])) : null;
+
+	registration_validation(
+		$login,
+		$email,
+		$password,
+		$confirm_password,
+		$country,
+		$birth_date
+	);
+
+	earena_2_complete_registration(
+		$login,
+		$email,
+		$password,
+		$country,
+		$birth_date
+	);
+
+	if ( $reg_errors->has_errors() ){
+		wp_send_json_success( $reg_errors );
+	} else {
+		wp_send_json_success( ['registered'=>true, 'message'=> __( 'Вы зарегистрировались!', 'earena_plugin' )] );
+	}
+
+	die();
+}
+
+function earena_2_complete_registration( $login, $email, $password, $country, $birth_date = null ) {
+	global $reg_errors, $wpdb;
+	if ( 1 > count( $reg_errors->get_error_messages() ) ) {
+		$userdata = array(
+		'user_login'   =>   sanitize_user( $login ),
+		'nickname'     =>   $login,
+		'display_name' =>   $login,
+		'user_email'   =>   $email,
+		'user_pass'	   =>   $password,
+		);
+		$user_id = wp_insert_user( $userdata );
+		if( !is_wp_error( $user_id ) ) {
+
+            $birth_date = $birth_date ?? date("Y-m-d", time());
+			update_user_meta( $user_id, 'birth_date', $birth_date );
+			update_user_meta( $user_id, 'country', $country );
+			update_user_meta( $user_id, 'rating', 500 );
+			update_user_meta( $user_id, 'mig', 0 );//money in games
+            update_user_meta( $user_id, 'notification_messages_new_message', 'no' );
+            if(isset($_COOKIE['ref_id'])){
+                $ref_id = sanitize_text_field($_COOKIE['ref_id']);
+                update_user_meta( $user_id, 'ref', $ref_id );
+            }
+			wp_new_user_notification( $user_id, null, 'user' );
+			$info = array();
+			$info['user_login'] = $email;
+			$info['user_password'] = $password;
+			$info['remember'] = true;
+			$user_signon = wp_signon( $info, false );
+			wp_set_current_user( $user_signon->ID, $user_signon->user_login );
+
+			write_new_nicename($user_id);
+            ea_add_rand_ava($user_id);
+			return true;
+		} else {
+			return $user_id;
+		}
+	}
+}
+
 add_action( 'wp_ajax_nopriv_register_check', 'register_check' );
 function register_check () {
 	check_ajax_referer( 'ea_register', 'reg_security' );
@@ -565,25 +646,4 @@ function filter_function_name_1306( $wp_new_user_notification_email, $user, $blo
 		'. __( 'Вход:', 'earena_plugin' ) .' <a href="'.home_url('?action=login').'">'.home_url('?action=login').'</a>';
 
 	return $wp_new_user_notification_email;
-}
-
-/* ==============================================
-********  //Верификация пользователя
-=============================================== */
-function ea_get_verification_requests()
-{
-    return wp_list_pluck(get_users(
-        array(
-            'meta_query' => [
-                [
-                    'key' => 'verification_request',
-                    'value' => 1,
-                ],
-                [
-                    'key' => 'verification_files',
-                    'compare' => 'EXISTS',
-                ],
-            ],
-            'fields' => ['ID']
-        )), 'ID');
 }

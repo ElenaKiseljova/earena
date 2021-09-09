@@ -373,6 +373,13 @@
     }
   }
 
+  &--account {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
   &--disabled {
     pointer-events: none;
   }
@@ -586,9 +593,9 @@
 
     border-radius: 30px;
 
-    span {
-      color: #colors[text_black]
-    }
+    // span {
+    //   color: #colors[text_black]
+    // }
   }
 
   &--invited {
@@ -613,6 +620,12 @@
     content: ' | ';
 
     color: #colors[dark_light];
+  }
+
+  &--account {
+    &::after {
+      display: none;
+    }
   }
 
   @media (max-width: @mobile) {

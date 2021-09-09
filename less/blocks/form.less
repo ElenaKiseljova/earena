@@ -211,12 +211,6 @@
     .select2-container {
       position: static;
 
-      &--open {
-        .dropdown-wrapper {
-          z-index: 5;
-        }
-      }
-
       .select2-selection {
         flex-grow: 1;
 
@@ -277,6 +271,21 @@
           display: none;
         }
       }
+
+      &--open {
+        .dropdown-wrapper {
+          z-index: 5;
+        }
+
+        .select2-selection {
+          &:hover,
+          &:focus {
+            background: #colors[dark];
+          }
+        }
+      }
+
+
     }
   }
 }

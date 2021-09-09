@@ -146,9 +146,6 @@
 
   // Страница Акаунта
   global $is_account_page;
-
-  // Приватный режим
-  global $private;
 ?>
 
 <?php if ($is_account_page): ?>
@@ -163,7 +160,7 @@
       </h2>
 
       <div class="section__header-right">
-        <?php if ($private): ?>
+        <?php if (is_user_logged_in()): ?>
           <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-desktop">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
@@ -222,7 +219,7 @@
       </h2>
 
       <div class="section__header-right">
-        <?php if ($private): ?>
+        <?php if (is_user_logged_in()): ?>
           <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-mobile">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
@@ -281,7 +278,7 @@
       </h2>
 
       <div class="section__header-right">
-        <?php if ($private): ?>
+        <?php if (is_user_logged_in()): ?>
           <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-xbox">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>
@@ -340,7 +337,7 @@
       </h2>
 
       <div class="section__header-right">
-        <?php if ($private): ?>
+        <?php if (is_user_logged_in()): ?>
           <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-playstation">
             <span>
               <?php _e( 'Добавить игру', 'earena_2' ); ?>

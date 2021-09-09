@@ -52,18 +52,18 @@
 
             <?php if (is_user_logged_in()): ?>
               <?php
-                $earana_2_user = wp_get_current_user();
+                $ea_user = wp_get_current_user();
               ?>
               <div class="page-header__right page-header__right--logged">
                 <div class="user user--header">
                   <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                    <?= bp_core_fetch_avatar('item_id=' . $earana_2_user->ID); ?>
+                    <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
                   </a>
 
                   <div class="user__info user__info--header">
                     <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
                       <h5>
-                        <?= $earana_2_user->nickname; ?>
+                        <?= $ea_user->nickname; ?>
                       </h5>
                     </a>
 

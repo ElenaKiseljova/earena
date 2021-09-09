@@ -124,8 +124,9 @@
                 }
 
                 // Регистрация
-                if (prefix.indexOf('signout') > -1) {
-
+                if (prefix.indexOf('signup') > -1) {
+                  // Ф-я логирования
+                  formData['action'] = 'earena_2_ajax_register';
                 }
 
                 // Восстановление
@@ -134,13 +135,18 @@
                   formData['action'] = 'ajax_forgot';
                 }
 
+                // Popup message
+                let popupMessage = FORM_CHECK.closest('.popup').querySelector('.popup__ajax-message');
+
                 /***** END Actions AJAX *****/
 
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
                   // Логин
-                  if (prefix.indexOf('signin') > -1) {
-                    $('.popup__ajax-message').html('');
+                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1) {
+                    if (popupMessage) {
+                      popupMessage.innerHTML = '';
+                    }
 
                     return;
                   }
@@ -173,19 +179,36 @@
                       document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
                     } else {
                       console.log(response.data.message);
-                      $('.popup__ajax-message').html(response.data.message);
+                      if (popupMessage) {
+                        popupMessage.innerHTML = response.data.message;
 
-                      setTimeout(function () {
-                          $('.popup__ajax-message').html('');
-                      }, 2000);
+                        setTimeout(function () {
+                          popupMessage.innerHTML = '';
+                        }, 2000);
+                      }
 
                       return;
                     }
                   }
 
                   // Регистрация
-                  if (prefix.indexOf('signout') > -1) {
+                  if (prefix.indexOf('signup') > -1) {
+                    if (response.data.registered) {
+                      document.location.href = 'profile?after_registration=1';
+                    } else {
+                      let message = '';
 
+                      if (popupMessage) {
+                        $.each(response.data.errors, function (key, val) {
+                            console.log(key + ' : '+ val);
+                            message += val + '<br>';
+
+                            popupMessage.innerHTML = message;
+                        });
+                      }
+
+                      return;
+                    }
                   }
 
                   // Получаю шаблон

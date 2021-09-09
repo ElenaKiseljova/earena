@@ -6,9 +6,6 @@
 <?php
   // Страница Акаунта
   global $is_account_page;
-
-  // Приватный режим
-  global $private;
 ?>
 
 <div class="toggles toggles--account">
@@ -25,7 +22,7 @@
         <?php _e( 'Турниры (8)', 'earena_2' ); ?>
       </button>
 
-      <?php if ($private): ?>
+      <?php if (is_user_logged_in()): ?>
         <button class="toggles__item <?php if ($_GET['messages'] !== null) echo 'active'; ?>" type="button" name="toggle">
           <?php _e( 'Сообщения (1)', 'earena_2' ); ?>
         </button>
@@ -35,7 +32,7 @@
         <?php _e( 'Друзья (25)', 'earena_2' ); ?>
       </button>
 
-      <?php if ($private): ?>
+      <?php if (is_user_logged_in()): ?>
         <button class="toggles__item <?php if ($_GET['invited'] !== null) echo 'active'; ?>" type="button" name="toggle">
           <?php _e( 'Приглашенные (4)', 'earena_2' ); ?>
         </button>
@@ -55,7 +52,7 @@
           earena_2_get_section( 'games' );
         }
 
-        if ($private) {
+        if (is_user_logged_in()) {
           // Стрим
           get_template_part( 'template-parts/stream' );
         }
@@ -96,7 +93,7 @@
     </div>
   </div>
 
-  <?php if ($private): ?>
+  <?php if (is_user_logged_in()): ?>
     <div class="toggles__content toggles__content--account <?php if ($_GET['messages'] !== null) echo 'active'; ?>">
       <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
         <?php
@@ -120,7 +117,7 @@
     </div>
   </div>
 
-  <?php if ($private): ?>
+  <?php if (is_user_logged_in()): ?>
     <div class="toggles__content toggles__content--account <?php if ($_GET['invited'] !== null) echo 'active'; ?>">
       <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
         <?php

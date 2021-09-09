@@ -1,9 +1,6 @@
 <?php
   // Страница Акаунта
   global $is_account_page;
-
-  // Приватный режим
-  global $private;
 ?>
 
 <div class="section section--friends" id="friends">
@@ -17,7 +14,7 @@
   </header>
 
   <ul class="section__list section__list--friends">
-    <?php if ($private): ?>
+    <?php if (is_user_logged_in()): ?>
       <li class="section__item section__item--col-2 section__item--friends section__item--new-request">
         <div class="user user--friends-page">
           <?php
@@ -153,7 +150,7 @@
                     <?php _e( 'Написать', 'earena_2' ); ?>
                   </span>
                 </button>
-                <?php if ($private): ?>
+                <?php if (is_user_logged_in()): ?>
                   <button class="user__button user__button--friends button button--gray openpopup" data-popup="friends" type="button" name="delete">
                     <span>
                       <?php _e( 'Удалить', 'earena_2' ); ?>

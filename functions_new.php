@@ -818,6 +818,8 @@
       return (isset($nicknames[$game]) && is_array($nicknames[$game]) && !empty($nicknames[$game][$platform])) ? $nicknames[$game][$platform] : '<span style="color:red;"><i>NO_NAME</i></span>';
   }
 
+  /*INCLUDE USER EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_user.php' );
 
   /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_wallet.php' );

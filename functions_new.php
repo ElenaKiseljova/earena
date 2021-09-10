@@ -541,6 +541,36 @@
       return false;
   }
 
+  // Статистика на Главной
+
+  add_shortcode('counter1', 'counter1');
+  function counter1_value()
+  {
+  //	return number_format(rand(1000000,10000000), 0, ',', ' ');
+  	$qty = wp_cache_get( 'ea_total_matches','ea' );
+  	if( empty($qty) ){
+  		global $wpdb;
+  		$qty = $wpdb->get_var("SELECT count(*) FROM `{$wpdb->base_prefix}earena_matches` WHERE status>=100") + $wpdb->get_var("SELECT count(*) FROM `{$wpdb->base_prefix}earena_tournament_matches` WHERE status>=100");
+  		wp_cache_set( 'ea_total_matches', $qty, 'ea', 60 );
+  	}
+      return number_format($qty, 0, ',', ' ');
+  }
+  function counter1()
+  {
+      return '<span class="ea-banner-counter1">'.counter1_value().'</span>';
+  }
+
+  add_shortcode('counter2', 'counter2');
+  function counter2_value()
+  {
+  //	return number_format((float)rand(1000000,10000000)/100, 2, ',', ' ');
+      return number_format((float)get_site_option('total_win'), 0, ',', ' ');
+  }
+  function counter2()
+  {
+      return '<span class="ea-banner-counter2">'.counter2_value().'</span>';
+  }
+
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_user.php' );
 

@@ -3,6 +3,10 @@
     Статистика на Главной
   */
 ?>
+<?php
+  global $promo_matches;
+  global $promo_payed;
+?>
 <div class="statistics statistics--front">
   <ul class="statistics__variation">
     <li class="statistics__variation-item statistics__variation-item--one">
@@ -18,14 +22,14 @@
 
   <dl class="statistics__achives">
     <dt class="statistics__achives-termin">
-      167 086 942
+      <?= do_shortcode( $promo_matches ); ?>
     </dt>
     <dd class="statistics__achives-description">
       <?php _e( 'Сыграно матчей', 'earena_2' ); ?>
     </dd>
 
     <dt class="statistics__achives-termin">
-      $802 760
+      $<?= do_shortcode( $promo_payed ); ?>
     </dt>
     <dd class="statistics__achives-description">
       <?php _e( 'Выплачено игрокам', 'earena_2' ); ?>

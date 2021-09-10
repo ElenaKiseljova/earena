@@ -6,29 +6,55 @@
 <div class="promo__slider swiper-container">
   <div class="promo__slider-list swiper-wrapper">
     <?php
-      for ($i=0; $i < 4; $i++) {
-        ?>
-          <div class="promo__slider-item swiper-slide">
-            <?php if ($i == 0): ?>
-              <!-- Слайд со статистикой -->
-              <div class="promo__content">
-                <!-- Статистика -->
-                <?php
-                  get_template_part( 'template-parts/statistics/page', 'front' );
-                ?>
-              </div>
-            <?php endif; ?>
-            <div class="promo__image <?php if ($i == 0) echo 'promo__image--first'; ?>" itemscope itemtype="http://schema.org/ImageObject">
-              <picture class="promo__picture">
-                <!-- <source media="(min-width: 1200px)" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/promo.png" type="image/jpg"> -->
+      $promo_count_slides_acf = 7;
 
-                <img itemprop="contentUrl" src="<?php echo get_template_directory_uri(); ?>/assets/img/promo.png" alt="Slide">
-              </picture>
+      for ($i=1; $i <= $promo_count_slides_acf; $i++) {
+        $promo_banner = get_field('promo_banner_' . $i);
+        $promo_link = get_field('promo_link_' . $i);
 
-              <meta itemprop="name" content="Slide">
+        if ($i == 1) {
+          global $promo_matches;
+          global $promo_payed;
+
+          $promo_matches = get_field('promo_matches');
+          $promo_payed = get_field('promo_payed');
+        }
+        if (! empty($promo_banner) && is_array($promo_banner) ) {
+          ?>
+            <div class="promo__slider-item swiper-slide">
+              <?php if ($i == 1): ?>
+                <!-- Слайд со статистикой -->
+                <div class="promo__content promo__content--front">
+                  <!-- Статистика -->
+                  <?php
+                    get_template_part( 'template-parts/statistics/page', 'front' );
+                  ?>
+                </div>
+              <?php endif; ?>
+              <?php if (!empty($promo_link)): ?>
+                <a href="<?= $promo_link; ?>" class="promo__image <?php if ($i == 1) echo 'promo__image--first'; ?>" itemscope itemtype="http://schema.org/ImageObject">
+                  <picture class="promo__picture">
+                    <!-- <source media="(min-width: 1200px)" srcset="<?= $promo_banner['url']; ?>" type="image/jpg"> -->
+
+                    <img itemprop="contentUrl" src="<?= $promo_banner['url']; ?>" alt="<?= $promo_banner['alt'] ? $promo_banner['alt'] : $promo_banner['title']; ?>">
+                  </picture>
+
+                  <meta itemprop="name" content="<?= $promo_banner['title'] ? $promo_banner['title'] : $promo_banner['alt']; ?>">
+                </a>
+              <?php elseif (empty($promo_link)): ?>
+                <div class="promo__image <?php if ($i == 1) echo 'promo__image--first'; ?>" itemscope itemtype="http://schema.org/ImageObject">
+                  <picture class="promo__picture">
+                    <!-- <source media="(min-width: 1200px)" srcset="<?= $promo_banner['url']; ?>" type="image/jpg"> -->
+
+                    <img itemprop="contentUrl" src="<?= $promo_banner['url']; ?>" alt="<?= $promo_banner['alt'] ? $promo_banner['alt'] : $promo_banner['title']; ?>">
+                  </picture>
+
+                  <meta itemprop="name" content="<?= $promo_banner['title'] ? $promo_banner['title'] : $promo_banner['alt']; ?>">
+                </div>
+              <?php endif; ?>
             </div>
-          </div>
-        <?php
+          <?php
+        }
       }
     ?>
   </div>

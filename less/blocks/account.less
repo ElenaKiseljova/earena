@@ -83,38 +83,40 @@
   margin: 0;
 
   margin-left: 10px;
-}
 
-.account__emoji-label {
-  display: flex;
+  span {
+    display: flex;
 
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 
-  height: 42px;
+    height: 42px;
 
-  font-family: #fonts[];
-  font-style: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 140%;
-  /* identical to box height, or 42px */
+    font-family: #fonts[];
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 140%;
+    /* identical to box height, or 42px */
 
-  letter-spacing: 0.1em;
+    letter-spacing: 0.1em;
 
-  /* Text */
+    /* Text */
 
-  color: #colors[text];
+    color: #colors[text];
 
-  opacity: 0.3;
+    opacity: 0.3;
 
-  img {
-    margin: 0!important;
+    img {
+      margin: 0!important;
+    }
   }
-}
 
-input[type="radio"]:checked + .account__emoji-label {
-  opacity: 1;
+  &.active {
+    span {
+      opacity: 1;
+    }
+  }
 }
 
 .account__buttons {

@@ -9,41 +9,38 @@
 ?>
 
 <main class="page-main">
-  <div class="page-main__wrapper">
-    <!-- Кнопки -->
-    <button class="button button--blue openpopup" data-popup="add" type="button" name="add">
-      <span>
-        <?php _e( 'Принять', 'earena_2' ); ?>
-      </span>
-    </button>
-    <button class="button button--red openpopup" data-popup="delete" type="button" name="delete">
-      <span>
-        <?php _e( 'Удалить', 'earena_2' ); ?>
-      </span>
-    </button>
-    <button class="button button--orange openpopup" data-popup="vip" type="button" name="vip">
-      <span>
-        <?php _e( 'VIP статус', 'earena_2' ); ?>
-      </span>
-    </button>
-    <button class="button button--green openpopup" data-popup="pay" type="button" name="pay">
-      <span>
-        <?php _e( 'Пополнить', 'earena_2' ); ?>
-      </span>
-    </button>
-    <button class="button button--gray" type="button" name="ended">
-      <span>
-        <?php _e( 'Завершен', 'earena_2' ); ?>
-      </span>
-    </button>
+  <section class="content">
+    <div class="content__wrapper">
+      <header class="content__header">
+        <div class="content__description">
+          <h1 class="content__title">
+            <?php the_title(  ); ?>
+          </h1>
 
-    <h2>Кнопка верификации. Т.к. не нашла: где она в макете и что попап вызвать должно?</h2>
-    <button class="button button--green openpopup" data-popup="verification" type="button" name="verification">
-      <span>
-        <?php _e( 'Верификация', 'earena_2' ); ?>
-      </span>
-    </button>
-  </div>
+          <div class="content__subtitle">
+            <p>
+              По вопросам сотрудничества, спонсорства,
+              <br>
+              франшизы и не только — <a href="mailto:info@earena.bet">info@earena.bet</a>
+            </p>
+          </div>
+        </div>
+        <div class="content__image" itemscope itemtype="http://schema.org/ImageObject">
+          <picture class="content__picture">
+            <!-- <source media="(min-width: 1200px)" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/page-banner.png" type="image/jpg"> -->
+
+            <img itemprop="contentUrl" src="<?php echo get_template_directory_uri(); ?>/assets/img/page-banner.png" alt="<?php the_title(  ); ?>">
+          </picture>
+
+          <meta itemprop="name" content="<?php the_title(  ); ?>">
+        </div>
+      </header>
+
+      <div class="content__inner">
+        <?php the_content(); ?>
+      </div>
+    </div>
+  </section>
 </main>
 
 <?php

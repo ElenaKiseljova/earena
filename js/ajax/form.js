@@ -135,6 +135,12 @@
                   formData['action'] = 'ajax_forgot';
                 }
 
+                // Сброс
+                if (prefix.indexOf('reset') > -1) {
+                  // Ф-я сброса пароля
+                  formData['action'] = 'earena_2_ajax_reset_pass';
+                }
+
                 // Popup message
                 let popupMessage = FORM_CHECK.closest('.popup').querySelector('.popup__ajax-message');
 
@@ -143,7 +149,7 @@
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
                   // Логин
-                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1) {
+                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1) {
                     if (popupMessage) {
                       popupMessage.innerHTML = '';
                     }
@@ -211,6 +217,19 @@
                     }
                   }
 
+                  // Сброс
+                  if (prefix.indexOf('reset') > -1) {
+                    if (response.data.error) {
+                      if (popupMessage) {
+                        popupMessage.innerHTML = response.data.error;
+                      }
+
+                      return;
+                    }
+
+                    console.log(response);
+                  }
+
                   // Получаю шаблон
                   let templateSuccess = document.querySelector(`#${ID_FORM}-success${prefix}`);
 
@@ -259,10 +278,15 @@
                     }
                   }
 
+                  // Сброс
+                  if (prefix.indexOf('reset') > -1 && response.data.message) {
+                    $('.popup__information--template').html(response.data.message);
+                  }
+
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();
 
-                  console.log('Успех: ', response.data);
+                  console.log('Успех: ', response);
                 };
 
                 // Обработчик не успешной отправки
@@ -358,15 +382,20 @@
                       }
                     }
 
-                    if (!item.validity.valid) {
+                    if (item.type === 'password' && item.name === 'pass_2') {
+                      if ( item.value !== FORM_CHECK.querySelector('input[name="pass_1"]').value ) {
+                        notValid = true;
+                      } else {
+                        notValid = false;
+                      }
+                    }
+
+                    if (!item.validity.valid || (notValid === true && item.type === 'password' && item.name === 'pass_2')) {
                       notValid = true;
 
                       if (!item.closest('.invalid')) {
                         // Проверка наличия обертки
                         if (item.closest('.form__row')) {
-                          // Поле в фокус невалидное
-                          item.focus();
-
                           item.closest('.form__row').classList.add('invalid');
                           item.closest('.form__row').classList.remove('valid');
                         }
@@ -399,9 +428,6 @@
 
                     // Проверка наличия обертки
                     if (item.closest('.form__row')) {
-                      // Поле в фокус невалидное
-                      item.focus();
-
                       item.closest('.form__row').classList.add('invalid');
                       item.closest('.form__row').classList.remove('valid');
                     }

@@ -270,23 +270,27 @@
 
 .popup__information,
 .popup__ajax-message {
+  .w100();
+
+   color: #colors[text_black];
+
+   a {
+     color: #colors[link];
+   }
+}
+
+.popup__ajax-message {
+  margin-bottom: 10px;
+}
+
+.popup__information {
   display: flex;
 
   justify-content: flex-start;
   align-items: center;
 
-  .w100();
-
-   color: #colors[text_black];
-}
-
-.popup__information {
   &--template {
     display: inline-block;
-
-    a {
-      color: #colors[link];
-    }
   }
 }
 

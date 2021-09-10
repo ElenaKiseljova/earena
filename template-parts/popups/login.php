@@ -15,7 +15,7 @@
       }
     ?>
 
-    <!-- Шаблоны попапов вход/регистрация/восстановление -->
+    <!-- Шаблоны попапов вход/регистрация/восстановление/сброса -->
     <template id="popup-login-signin">
       <div class="popup__header popup__header--login">
         <h2 class="popup__title popup__title--login">
@@ -49,7 +49,7 @@
             <?php _e( 'Я забыл пароль', 'earena_2' ); ?>
           </button>
 
-          <button class="form__submit button button--blue disabled" type="submit" name="call-submit">
+          <button class="form__submit form__submit--signin button button--blue disabled" type="submit" name="call-submit">
             <span>
               <?php _e( 'Войти', 'earena_2' ); ?>
             </span>
@@ -101,16 +101,6 @@
           </span>
 
           <div class="form__row">
-            <!-- <input class="form__field form__field--popup" list="country-list" id="country" name="country" required placeholder="<?php _e( 'Страна', 'earena_2' ); ?>" />
-            <span class="form__arrow"></span>
-
-            <datalist id="country-list">
-                <option value="Chocolate">
-                <option value="Coconut">
-                <option value="Mint">
-                <option value="Strawberry">
-                <option value="Vanilla">
-            </datalist> -->
             <div class="select select--login">
               <!-- Для переключения состояния - добавляется active класс  -->
               <button class="select__button select__button--login" type="button" name="button">
@@ -179,7 +169,7 @@
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-          <button class="form__submit button button--blue disabled" type="submit" name="call-submit">
+          <button class="form__submit form__submit--forgot button button--blue disabled" type="submit" name="call-submit">
             <span>
               <?php _e( 'Восстановить пароль', 'earena_2' ); ?>
             </span>
@@ -187,25 +177,47 @@
         </form>
       </div>
     </template>
-
-    <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
-    <template id="form-login-success">
-      <div class="popup__content popup__content--login">
-        <h2 class="popup__title popup__title--template">
-          Alexeyshkitin,
-          <br>
-          <?php _e( 'добро пожаловать!', 'earena_2' ); ?>
+    <template id="popup-login-reset">
+      <div class="popup__header popup__header--login">
+        <h2 class="popup__title popup__title--login">
+          <?php _e( 'Сброс пароля?', 'earena_2' ); ?>
         </h2>
 
-        <div class="popup__information popup__information--template">
-          <?php _e( 'Чтобы начать соревноваться <br> с другими игроками необходимо <br> добавить игры в свою учетную запись.', 'earena_2' ); ?>
+        <div class="popup__information">
+          <span>
+            <?php _e( 'Укажите новый пароль', 'earena_2' ); ?>
+          </span>
         </div>
+      </div>
 
-        <a class="popup__add-button button button--blue" href="/profile">
-          <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
-        </a>
+      <div class="popup__content popup__content--login">
+        <div class="popup__ajax-message"></div>
+        <form class="form form--popup" data-prefix="reset" id="form-login" action="/" method="post">
+          <div class="form__row">
+            <input class="form__field form__field--popup" id="pass_1" type="password" name="pass_1" minlength="8" required placeholder="<?php _e( 'Новый пароль', 'earena_2' ); ?>">
+          </div>
+          <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+          <div class="form__row">
+            <input class="form__field form__field--popup" id="pass_2" type="password" name="pass_2" minlength="8" required placeholder="<?php _e( 'Повтор пароля', 'earena_2' ); ?>">
+          </div>
+          <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+          <p class="form__text form__text--reset">
+            <?php _e('Используйте латинские буквы A-z верхнего или нижнего регистра, а так же числа от 1 до 0. Минимальная длина пароля - 8 символов.', 'earena_2') ?>
+          </p>
+
+          <input type="hidden" name="user_login" value="<?= $_GET['login']; ?>">
+          <input type="hidden" name="user_key" value="<?= $_GET['key']; ?>">
+
+          <button class="form__submit form__submit--reset button button--blue disabled" type="submit" name="call-submit">
+            <span>
+              <?php _e( 'Изменить пароль', 'earena_2' ); ?>
+            </span>
+          </button>
+        </form>
       </div>
     </template>
+
+    <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
     <!-- Успешная форма восстановления пароля -->
     <template id="form-login-success-forgot">
       <div class="popup__content popup__content--login">
@@ -245,7 +257,54 @@
         </div>
       </div>
     </template>
+
+    <!-- Успешная форма восстановления пароля -->
+    <template id="form-login-success-reset">
+      <div class="popup__content popup__content--login">
+        <h2 class="popup__title popup__title--template">
+          <?php _e( 'Сброс пароля', 'earena_2' ); ?>
+        </h2>
+
+        <div class="popup__information popup__information--template">
+          <?php _e( 'Пароль успешно изменён! Закройте окно и войдите в свой аккаунт используя новый пароль.', 'earena_2' ); ?>
+        </div>
+        <button class="form__popup-close button button--gray" name="close" type="button">
+          <?php _e( 'Закрыть', 'earena_2' ); ?>
+        </button>
+      </div>
+    </template>
+    <!-- При ошибке восстановления пароля -->
+    <template id="form-login-error-reset">
+      <div class="popup__content popup__content--login">
+        <h2 class="popup__title popup__title--template">
+          <?php _e( 'Что-то пошло <br> не так', 'earena_2' ); ?>
+        </h2>
+
+        <div class="popup__information popup__information--template">
+          <?php _e( 'Пожалуйста, обновите страницу и <br> повторите отправку формы.', 'earena_2' ); ?>
+        </div>
+      </div>
+    </template>
   </div>
+
+  <?php if (!is_user_logged_in() && isset($_GET['action'])): ?>
+    <?php
+      // После загрузки стр - отработать клик открытия попапа
+      $type_action = 'forgot';
+
+      if ($_GET['action'] === 'rp') {
+        $type_action = 'reset';
+      }
+    ?>
+    <button class="openpopup" id="<?= $type_action; ?>-button" data-popup="login" type="button" name="<?= $type_action; ?>">
+      <span><?= _e('Открыть попап', 'earena_2'); ?> <?= $type_action; ?></span>
+    </button>
+    <script type="text/javascript">
+      window.addEventListener('load', function () {
+        document.querySelector('#<?= $type_action; ?>-button').click();
+      });
+    </script>
+  <?php endif; ?>
 <?php elseif (is_user_logged_in() && isset($_GET['login-status']) && $_GET['login-status'] === 'success'): ?>
   <?php
     /**
@@ -253,6 +312,7 @@
     */
   ?>
   <?php
+    // После загрузки стр - отработать клик открытия попапа
     $earana_2_user = wp_get_current_user();
   ?>
   <div class="popup popup--login">
@@ -288,7 +348,6 @@
     <span><?= _e('Открыть попап с успешным логированием', 'earena_2'); ?></span>
   </button>
   <script type="text/javascript">
-    // После загрузки стр - отработать клик открытия попапа
     window.addEventListener('load', function () {
       document.querySelector('#login-success-button').click();
     });

@@ -151,23 +151,20 @@ if (!$country) {
         </div>
         <div class="account__right">
           <ul class="account__emoji">
-            <li class="account__emoji-item">
-              <input class="visually-hidden" id="account-emoji-relax" type="radio" name="account-emoji" value="relax" checked>
-              <label class="account__emoji-label" for="account-emoji-relax">
+            <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
+              <span>
                 😌
-              </label>
+              </span>
             </li>
-            <li class="account__emoji-item">
-              <input class="visually-hidden" id="account-emoji-angry" type="radio" name="account-emoji" value="angry">
-              <label class="account__emoji-label" for="account-emoji-angry">
+            <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
+              <span>
                 😬
-              </label>
+              </span>
             </li>
-            <li class="account__emoji-item">
-              <input class="visually-hidden" id="account-emoji-dizziness" type="radio" name="account-emoji" value="dizziness">
-              <label class="account__emoji-label" for="account-emoji-dizziness">
+            <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
+              <span>
                 😵
-              </label>
+              </span>
             </li>
           </ul>
 

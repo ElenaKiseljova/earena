@@ -58,14 +58,83 @@ if (!is_user_logged_in()) {
     add_action('wp_ajax_ajax_forgot', 'ajax_forgot');
     add_action('wp_ajax_nopriv_ajax_forgot', 'ajax_forgot');
 
+    add_action('wp_ajax_ajaxreset_pass', 'ajax_reset_pass');
     add_action('wp_ajax_nopriv_ajaxreset_pass', 'ajax_reset_pass');
+
+    add_action('wp_ajax_earena_2_ajax_reset_pass', 'earena_2_ajax_reset_pass');
+    add_action('wp_ajax_nopriv_earena_2_ajax_reset_pass', 'earena_2_ajax_reset_pass');
 }
 /*
  *	@desc	Process reset password
  */
+
+ function earena_2_ajax_reset_pass()
+ {
+     $errors = new WP_Error();
+
+     check_ajax_referer('form.js_nonce', 'security');
+
+     $pass1 = $_POST['pass_1'];
+     $pass2 = $_POST['pass_2'];
+     $key = $_POST['user_key'];
+     $login = $_POST['user_login'];
+
+     $user = check_password_reset_key($key, $login);
+     if (is_wp_error($user)) {
+ //		$errors = $user;
+         $errors->add('invalid_key', sprintf(
+             __('Некорректные данные для смены пароля. Проверьте, правильно ли вы скопировали ссылку из письма или отправьте <a href="%s">ещё одно</a>.'),
+             add_query_arg('action', 'forgot', home_url())
+         ));
+     }
+     /*else {
+     echo 'Ключ прошел проверку. Можно высылать новый пароль на почту.';
+   }*/
+     // check to see if user added some string
+     if (empty($pass1) || empty($pass2)) {
+         $errors->add('password_required', __('Введите пароль.', 'earena'));
+     }
+     if (8 >= strlen($pass1)) {
+         $errors->add('password_short', __('Пароль должен быть не менее 8 символов.', 'earena'));
+     }
+     // is pass1 and pass2 match?
+     if ($pass1 != $pass2) {
+         $errors->add('password_reset_mismatch', __('The passwords do not match.'));
+     }
+
+     /**
+      * Fires before the password reset procedure is validated.
+      *
+      * @param object $errors WP Error object.
+      * @param WP_User|WP_Error $user WP_User object if the login and reset key match. WP_Error object otherwise.
+      * @since 3.5.0
+      *
+      */
+     do_action('validate_password_reset', $errors, $user);
+
+     if ((!$errors->get_error_code()) && isset($pass1) && !empty($pass1)) {
+         reset_password($user, $pass1);
+
+         /*		$errors->add( 'password_reset',
+       sprintf(
+         __( 'Check your email for the confirmation link, then visit the <a href="%s">login page</a>.' ),
+         add_query_arg( 'action', 'login', home_url() ) ) );*/
+
+         wp_send_json_error(['message' => __('Your password has been reset.')]);
+     }
+
+     // display error message
+     if ($errors->get_error_code()) {
+       $err = $errors->get_error_message($errors->get_error_code());
+
+       wp_send_json_error(['error' => $err]);
+     }
+
+     // return proper result
+     die();
+ }
 function ajax_reset_pass()
 {
-
     $errors = new WP_Error();
 
     check_ajax_referer('ajax-rp-nonce', 'rp_security');

@@ -548,6 +548,17 @@
     margin-top: 30px;
   }
 
+  &--reset,
+  &--signin {
+    margin-top: 30px;
+    margin-bottom: 0;
+  }
+
+  &--forgot {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
   @media (max-width: @mobile) {
     &--wallet {
       width: 100%;
@@ -633,6 +644,10 @@
   .caption();
 
   color: #colors[text_black];
+
+  &--reset {
+    .body();
+  }
 
   &--match {
     margin-bottom: 20px;

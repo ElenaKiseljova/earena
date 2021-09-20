@@ -352,7 +352,7 @@
 
   &--loader {
     width: 80px;
-    height: 80px;
+    height: auto;
 
     border: 1px solid #colors[dark_light];
   }
@@ -376,7 +376,14 @@
   &--account {
     img {
       width: 100px;
-      height: 100px;
+      height: auto;
+    }
+  }
+
+  &--friends {
+    img {
+      width: 70px;
+      height: auto;
     }
   }
 
@@ -394,8 +401,10 @@
     }
 
     &--account {
-      width: 60px;
-      height: auto;
+      img {
+        width: 60px;
+        height: auto;
+      }
     }
   }
 }

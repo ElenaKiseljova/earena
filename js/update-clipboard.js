@@ -1,15 +1,15 @@
 'use strict';
 
-(function () {
-  document.addEventListener('DOMContentLoaded', function () {
+(function ($) {
+  /* document.addEventListener('DOMContentLoaded', function () {
     // Ф-я обновления содержимого буфера обмена (работает только с https)
     let updateClipboard = function (newClip) {
       if (window.isSecureContext) {
         window.navigator.clipboard.writeText(newClip).then(function() {
-          /* clipboard successfully set */
+          // clipboard successfully set
           // console.log('clipboard successfully set');
         }, function() {
-          /* clipboard write failed */
+          // clipboard write failed
           // console.log('clipboard write failed');
         });
       } else {
@@ -27,5 +27,15 @@
         });
       });
     }
+  }); */
+
+  var clipboard = new ClipboardJS('.updateclipboard');
+
+  clipboard.on('success', function(e) {
+    $(e.trigger).addClass('active');
+
+    setTimeout(function () {
+      $(e.trigger).removeClass('active');
+    }, 1500);
   });
-})();
+})(jQuery);

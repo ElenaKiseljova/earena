@@ -42,7 +42,12 @@
     wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
-    wp_enqueue_script('update-clipboard-script', get_template_directory_uri() . '/assets/js/update-clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
+
+    if (is_user_logged_in() && is_page(527)) {
+      wp_enqueue_script('clipboard-script', 'https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('update-clipboard-script', get_template_directory_uri() . '/assets/js/update-clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
+    }
+
     wp_enqueue_script('select-script', get_template_directory_uri() . '/assets/js/select.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     // С переводами
@@ -310,6 +315,15 @@
       return $user->get('rating') > 0 ? $user->get('rating') : 0;
   }
 
+  function earena_2_rating($user = false)
+  {
+      if ($user ===  false) {
+        $user = wp_get_current_user();
+      }
+
+      return $user->get('rating') > 0 ? $user->get('rating') : 0;
+  }
+
   // Баланс
   function balance()
   {
@@ -317,6 +331,14 @@
           return '';
       }
       $user_id = get_current_user_id();
+      return woo_wallet()->wallet->get_wallet_balance($user_id, '');
+  }
+
+  function earena_2_balance($user_id = false)
+  {   if ($user_id === false) {
+        $user_id = get_current_user_id();
+      }
+
       return woo_wallet()->wallet->get_wallet_balance($user_id, '');
   }
 
@@ -569,6 +591,66 @@
   function counter2()
   {
       return '<span class="ea-banner-counter2">'.counter2_value().'</span>';
+  }
+
+  // Статистика в Аккаунте
+  function ea_get_user_stat($user_id = 0) {
+      $user_id = $user_id > 0 ? $user_id : get_current_user_id();
+      $ea_user = get_user_by('id', (int)$user_id);
+      $user_stat = wp_cache_get( 'ea_statistics_user_'.$ea_user->ID, 'ea' );
+      if( empty($user_stat) ){
+          $nicknames =  ($ea_user instanceof WP_User) ? $ea_user->get('nicknames'):[];
+          $games = get_site_option( 'games' );
+          $user_stat = [];
+          if( !empty($nicknames) ){
+              foreach (@$nicknames as $game => $v) {
+                  $user_stat[$game]['id'] = $games[$game]['id'];
+                  $user_stat[$game]['shortname'] = $games[$game]['shortname'];
+                  $user_stat[$game]['m_wins'] = EArena_DB::get_ea_matches_win($ea_user->ID, $game);
+                  $user_stat[$game]['m_loses'] = EArena_DB::get_ea_matches_lose($ea_user->ID, $game);
+
+                  $user_stat[$game]['t_wins'] = EArena_DB::get_ea_tournament_matches_win($ea_user->ID, $game);
+                  $user_stat[$game]['t_loses'] = EArena_DB::get_ea_tournament_matches_lose($ea_user->ID, $game);
+                  $user_stat[$game]['t_draw'] = EArena_DB::get_ea_tournament_matches_draw($ea_user->ID, $game);
+
+                  $user_stat[$game]['gf'] = EArena_DB::get_ea_matches_goals_from($ea_user->ID, $game) + EArena_DB::get_ea_tournament_matches_goals_from($ea_user->ID, $game);
+                  $user_stat[$game]['gt'] = EArena_DB::get_ea_matches_goals_to($ea_user->ID, $game) + EArena_DB::get_ea_tournament_matches_goals_to($ea_user->ID, $game);
+              }
+              wp_cache_set( 'ea_statistics_user_'.$ea_user->ID, $user_stat, 'ea' );
+          }
+      }
+      return $user_stat;
+  }
+
+  // Приглашенные в Аккаунте
+  function my_referrals()
+  {
+      if (!is_user_logged_in()) {
+          return [];
+      }
+      $user_id = get_current_user_id();
+      $result = get_users(array(
+          'meta_key' => 'ref',
+          'meta_value' => $user_id,
+          'fields' => 'all_with_meta' //['ID','nickname'],
+      ));
+      return $result;
+  }
+
+  // замена bp_core_get_user_domain
+  function ea_user_link($id = 0)
+  {
+      if ($id == get_current_user_id()) {
+          return home_url('profile');
+      }
+      $ea_user = $id == 0 ? wp_get_current_user() : get_user_by('id', $id);
+      $username = is_integer($ea_user->user_nicename) ? rawurlencode($ea_user->user_nicename) : $ea_user->ID;
+      return home_url('user/' . $username);
+
+      /*
+  	$link = EArena_DB::get_ea_user_link( $id );
+  	return home_url('user/'.$link);
+  	*/
   }
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/

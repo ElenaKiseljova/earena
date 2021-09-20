@@ -8,10 +8,10 @@
   <header class="toggles__header">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
-      <button class="toggles__item active" type="button" name="toggle">
+      <button class="toggles__item toggles__item--tournament active" type="button" name="toggle">
         <?php _e( 'Сведения', 'earena_2' ); ?>
       </button>
-      <button class="toggles__item" type="button" name="toggle">
+      <button class="toggles__item toggles__item--tournament" type="button" name="toggle">
         <?php _e( 'Туры', 'earena_2' ); ?>
       </button>
     </div>
@@ -23,7 +23,7 @@
     </div>
   </header>
 
-  <div class="toggles__content active">
+  <div class="toggles__content toggles__content--tournament active">
     <div class="toggles__content-item toggles__content-item--col-2">
       <!-- Таблица Наград -->
       <?php
@@ -43,7 +43,7 @@
       ?>
     </div>
   </div>
-  <div class="toggles__content">
+  <div class="toggles__content toggles__content--tournament">
     <div class="toggles__content-item toggles__content-item--col-1">
       <!-- Аккордеон -->
       <?php

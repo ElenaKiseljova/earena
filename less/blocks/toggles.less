@@ -134,9 +134,9 @@
     display: flex;
   }
 
-  &--account {
-    margin-bottom: 0;
-  }
+  // &--account {
+  //   margin-bottom: 0;
+  // }
 }
 
 .toggles__content-item {
@@ -165,16 +165,14 @@
     margin-bottom: 0;
   }
 
-  &--rating {
-    // Минимальный размер таблицы рейтинга - 768px
-    @media (max-width: 798px) {
-      overflow-x: scroll;
-    }
-  }
-
   @media (max-width: @mobile) {
     &--col-2 {
       width: calc(100% - 20px);
+    }
+
+    &--rating {
+      // Минимальный размер таблицы рейтинга - 768px
+      overflow-x: scroll;
     }
   }
 }

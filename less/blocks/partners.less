@@ -14,8 +14,13 @@
 .partners__list {
   display: flex;
 
+  flex-wrap: wrap;
+
   justify-content: space-between;
   align-items: center;
+  align-content: flex-start;
+
+  margin-bottom: -44px;
 
   list-style: none;
 
@@ -31,11 +36,7 @@
   padding: 0;
   margin: 0;
 
-  @media (max-width: @mobile) {
-    &:not(:last-of-type) {
-      margin-bottom: 44px;
-    }
-  }
+  margin-bottom: 44px;
 }
 
 .partners__image {

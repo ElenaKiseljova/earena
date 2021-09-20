@@ -89,7 +89,21 @@
                     let valueInput = inputField.value;
 
                     if (nameInput && valueInput) {
-                      formData[`${nameInput}`] = valueInput;
+                      if (inputField.type === 'radio') {
+                        if (inputField.checked) {
+                          formData[`${nameInput}`] = valueInput;
+                        }
+                      } else if (inputField.type === 'checkbox') {
+                        if (!formData[`${nameInput}`]) {
+                          formData[`${nameInput}`] = [];
+                        }
+
+                        if (inputField.checked) {
+                          formData[`${nameInput}`].push(valueInput);
+                        }
+                      } else {
+                        formData[`${nameInput}`] = valueInput;
+                      }
                     }
                   });
                 }

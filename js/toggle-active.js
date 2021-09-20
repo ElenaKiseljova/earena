@@ -230,7 +230,7 @@
       window.toggleActive.nextElementToggle('.accordeon__button');
 
       /* Тогглы */
-      window.toggleActive.multiple('.toggles__item', '.toggles__content');
+      window.toggleActive.multiple('.toggles__item--tournament', '.toggles__content--tournament');
 
       /* Табы ( кошелёк ) */
       window.toggleActive.multiple('.tabs__button--purse');

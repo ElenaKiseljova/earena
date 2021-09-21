@@ -52,7 +52,21 @@
                       }
                     ?>
                     <div class="user__left">
-                      <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_invited_user) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
+                      <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_invited_user) echo 'user__image-wrapper--verified'; ?>">
+                        <?php if (!$verified_invited_user): ?>
+                          <span class="verify verify--false">
+                            <span class="visually-hidden">
+                              <?php _e( 'Не верифицированный игрок', 'earena_2' ); ?>
+                            </span>
+                          </span>
+                        <?php else : ?>
+                          <span class="verify verify--true">
+                            <span class="visually-hidden">
+                              <?php _e( 'Верифицированный игрок', 'earena_2' ); ?>
+                            </span>
+                          </span>
+                        <?php endif; ?>
+
                         <a class="user__avatar user__avatar--friends" href="<?=(ea_user_link($ref->ID)?:'#');?>">
                           <?=bp_core_fetch_avatar('item_id='.$ref->ID);?>
                         </a>

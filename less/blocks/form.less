@@ -13,8 +13,10 @@
   align-items: stretch;
 
   p {
-    padding: 0;
-    margin: 0;
+    &:not(.form__text) {
+      padding: 0;
+      margin: 0;
+    }
   }
 
   &--wallet {
@@ -526,6 +528,10 @@
 
     margin: 0;
     margin-left: auto;
+  }
+
+  @media (max-width: @mobile) {
+    width: 100%;
   }
 }
 

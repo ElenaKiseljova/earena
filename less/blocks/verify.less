@@ -19,4 +19,24 @@
 
   .bg_icon('../img/check-gray.svg');
   background-size: 14 / 24 * 100%;
+
+  &--true,
+  &--false {
+    pointer-events: none;
+  }
+
+  &--true {
+    background-color: #colors[accent];
+
+    .bg_icon('../img/check.svg');
+    background-size: 14 / 24 * 100%;
+  }
+
+  &--search {
+    top: 50%;
+    right: 20px;
+    left: auto;
+
+    transform: translateY(-50%);
+  }
 }

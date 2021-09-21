@@ -34,13 +34,19 @@
 <header class="account__header <?php if ($vip && is_user_logged_in()) echo 'account__header--vip'; ?>">
   <div class="account__left">
     <div class="user user--account">
-      <div class="user__image-wrapper <?php if ($verified) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--main'; } ?>">
+      <div class="user__image-wrapper <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
         <?php if (!$verified): ?>
           <button class="verify openpopup" data-popup="verification" type="button" name="verification">
             <span class="visually-hidden">
               <?php _e( 'Верификация', 'earena_2' ); ?>
             </span>
           </button>
+        <?php else : ?>
+          <span class="verify verify--true">
+            <span class="visually-hidden">
+              <?php _e( 'Верифицированный игрок', 'earena_2' ); ?>
+            </span>
+          </span>
         <?php endif; ?>
         <?php if (is_user_logged_in()): ?>
           <div class="user__avatar user__avatar--account">

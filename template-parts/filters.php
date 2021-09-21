@@ -23,7 +23,7 @@
   <form class="filters__form" action="" method="post" id="filters-main">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
-        <input class="filters__field filters__field--input" type="text" name="id-match" value="" placeholder="ID матча">
+        <input class="filters__field filters__field--input" type="text" name="id-match" value="" placeholder="<?php _e( 'ID матча', 'earena_2' ); ?>">
         <button class="filters__button filters__button--search" type="button" name="button">
           <svg class="filters__icon" width="20" height="20">
             <use xlink:href="#icon-search"></use>

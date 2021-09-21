@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Gray Arena</title>
+    <title><?= bloginfo( 'name' ); ?></title>
     <?php
       wp_head();
     ?>
@@ -23,7 +23,7 @@
 
       <!-- Header -->
       <header class="page-header">
-        <div class="page-header__top">
+        <div class="page-header__top <?php echo is_ea_admin() ? 'page-header__top--admin' : ''; ?>">
           <div class="page-header__wrapper page-header__wrapper--top">
             <div class="logo logo--header">
               <a href="<?php echo bloginfo( 'url' ); ?>">
@@ -50,46 +50,69 @@
               </div>
             </div>
 
-            <?php if (is_user_logged_in()): ?>
+            <?php if ( is_user_logged_in() ): ?>
               <?php
                 $ea_user = wp_get_current_user();
               ?>
               <div class="page-header__right page-header__right--logged">
-                <div class="user user--header">
-                  <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                    <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
-                  </a>
-
-                  <div class="user__info user__info--header">
-                    <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                      <h5>
-                        <?= $ea_user->nickname; ?>
-                      </h5>
+                <?php if ( is_ea_admin() ): ?>
+                  <div class="user user--header">
+                    <a class="user__avatar user__avatar--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
+                      <img width="60" height="60" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="">
                     </a>
 
-                    <div class="user__money">
-                      <span class="user__money-amount">
-                        $<span><?= earena_2_nice_money(balance()); ?></span>
-                      </span>
-                      <a class="page-header__money-add page-header__money-add--desktop" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
-                        <?php _e( 'Пополнить', 'earena_2' ); ?>
+                    <div class="user__info user__info--header">
+                      <a class="user__name user__name--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
+                        <h5>
+                          Administrator
+                        </h5>
                       </a>
                     </div>
-                  </div>
 
-                  <a class="page-header__signout page-header__signout--desktop" href="<?php echo wp_logout_url(home_url()); ?>">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M6.75 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </div>
+                    <a class="page-header__signout page-header__signout--desktop" href="<?php echo wp_logout_url(home_url()); ?>">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.75 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                <?php else: ?>
+                  <div class="user user--header">
+                    <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
+                      <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
+                    </a>
+
+                    <div class="user__info user__info--header">
+                      <a class="user__name user__name--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
+                        <h5>
+                          <?= $ea_user->nickname; ?>
+                        </h5>
+                      </a>
+
+                      <div class="user__money">
+                        <span class="user__money-amount">
+                          $<span><?= earena_2_nice_money(balance()); ?></span>
+                        </span>
+                        <a class="page-header__money-add page-header__money-add--desktop" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
+                          <?php _e( 'Пополнить', 'earena_2' ); ?>
+                        </a>
+                      </div>
+                    </div>
+
+                    <a class="page-header__signout page-header__signout--desktop" href="<?php echo wp_logout_url(home_url()); ?>">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12.75L15.75 9L12 5.25" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.75 9H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.75 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V3.75C2.25 3.35218 2.40804 2.97064 2.68934 2.68934C2.97064 2.40804 3.35218 2.25 3.75 2.25H6.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                <?php endif; ?>
+
                 <?php
-                  if (function_exists( 'earena_2_menu_loged_user' )) {
-                    // Ф-я вывода шаблона меню залогиненного пользовател
-                    earena_2_menu_loged_user();
-                  }
+                  // Персональное меню
+                  get_template_part( 'template-parts/personal' );
                 ?>
               </div>
             <?php else : ?>
@@ -130,6 +153,25 @@
           </div>
         </div>
 
+        <?php if ( is_ea_admin() ): ?>
+          <div class="page-header__search">
+            <div class="page-header__wrapper page-header__wrapper--search">
+              <div class="search">
+                <form class="search__form" action="" method="post" id="search-gamer">
+                  <div class="search__row">
+                    <input class="search__field" type="text" name="search-field" value="" placeholder="<?php _e( 'Поиск игрока (Имя или e-mail)', 'earena_2' ); ?>">
+                    <button class="search__button" type="button" name="button">
+                      <svg class="filters__icon" width="20" height="20">
+                        <use xlink:href="#icon-search"></use>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="search__result"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
         <!-- Для переключения состояния - добавляется active класс  -->
         <div class="page-header__bottom">
           <div class="page-header__wrapper page-header__wrapper--bottom">

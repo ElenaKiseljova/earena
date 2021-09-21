@@ -24,6 +24,9 @@
 
   // Scripts theme
   function earena_2_scripts () {
+    if ( is_ea_admin() ) {
+      wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+    }
     wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -143,32 +146,6 @@
     )));
   }
 
-  // Изменение класса пунктов меню
-  add_filter( 'nav_menu_css_class', 'add_my_class_to_nav_menu', 10, 4 );
-
-  function add_my_class_to_nav_menu( $classes, $item, $args, $depth ) {
-  	/* $classes содержит
-  	Array(
-  		[1] => menu-item
-  		[2] => menu-item-type-post_type
-  		[3] => menu-item-object-page
-  		[4] => menu-item-284
-  	)
-  	*/
-    //nav-sublist__item
-    if ($args->theme_location == 'bottom_menu') {
-      foreach ( $classes as $key => $class ) {
-    		if ( $class == 'menu-item' ) {
-    			$classes[ $key ] = 'navigation__item navigation__item--footer';
-    		} else {
-          $classes[ $key ] = '';
-        }
-    	}
-    }
-
-  	return $classes;
-  }
-
   // Section functions
 
   /*
@@ -230,15 +207,6 @@
           echo 'active';
         }
       }
-    }
-  }
-
-  /*
-    *** Ф-я вывода шаблона меню залогиненного пользователя
-  */
-  if (! function_exists( 'earena_2_menu_loged_user' )) {
-    function earena_2_menu_loged_user (  ) {
-      get_template_part( 'template-parts/personal' );
     }
   }
 
@@ -655,6 +623,9 @@
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_user.php' );
+
+  /*INCLUDE ADMIN EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_admin.php' );
 
   /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_wallet.php' );

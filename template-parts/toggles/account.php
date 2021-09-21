@@ -68,7 +68,7 @@
     </div>
   </header>
 
-  <!-- Профиль  -->
+  <!-- Что ниже будет удалено. Вернее - перемещено в шаблоны. template-parts/account/content-__.php  -->
 
   <div class="toggles__content toggles__content--account <?php if(is_page(518)) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
@@ -104,16 +104,16 @@
     </div>
   <?php endif; ?>
 
-  <div class="toggles__content toggles__content--account <?php if(is_page(515)) echo 'active'; ?>">
+  <!-- <div class="toggles__content toggles__content--account <?php if(is_page(515)) echo 'active'; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
           // Друзья
-          earena_2_get_section( 'friends' );
+          //earena_2_get_section( 'friends' );
         }
       ?>
     </div>
-  </div>
+  </div> -->
 
   <?php if (is_user_logged_in()): ?>
     <div class="toggles__content toggles__content--account <?php if(is_page(654)) echo 'active'; ?>">

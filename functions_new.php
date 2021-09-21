@@ -244,6 +244,140 @@
 
   /* *** Модификации старого фанкшнс *** */
 
+  # Отключение провайдера карт сайтов: пользователи и таксономии
+  add_filter('wp_sitemaps_add_provider', 'ea_remove_sitemap_provider', 10, 2);
+  function ea_remove_sitemap_provider($provider, $name)
+  {
+      // отключаем архивы пользователей
+      if (in_array($name, ['users'])) {
+          return false;
+      }
+      return $provider;
+  }
+
+  add_filter('wp_sitemaps_posts_query_args', 'ea_sitemaps_posts_query_args', 10, 2);
+  function ea_sitemaps_posts_query_args($args, $post_type)
+  {
+
+      if ('page' !== $post_type) {
+          return $args;
+      }
+
+      // учтем что этот параметр может быть уже установлен
+      if (!isset($args['post__not_in'])) {
+          $args['post__not_in'] = array();
+      }
+
+      // Исключаем посты
+      foreach ([
+                   8,
+                   274,
+                   298,
+                   552,
+                   555,
+                   577,
+                   637,
+                   640,
+                   643,
+                   646,
+                   649,
+                   657,
+                   907,
+                   1569,
+                   1710,
+                   1716,
+                   510,
+                   515,
+                   518,
+                   521,
+                   524,
+                   527,
+                   1169,
+                   866,
+                   280,
+                   503,
+                   654
+               ] as $post_id) {
+          $args['post__not_in'][] = $post_id;
+      }
+
+      return $args;
+  }
+
+  add_action('init', 'do_rewrite');
+  function do_rewrite()
+  {
+      // Правило перезаписи
+      add_rewrite_rule('^(user)/([^/]*)/?', 'index.php?pagename=$matches[1]&username=$matches[2]', 'top');
+      // нужно указать ?p=123 если такое правило создается для записи 123
+      // первый параметр для записей: p или name, для страниц: page_id или pagename
+
+      // скажем WP, что есть новые параметры запроса
+      add_filter('query_vars', function ($vars) {
+          $vars[] = 'username';
+          return $vars;
+      });
+  }
+
+  add_filter('woocommerce_get_cart_page_id', function ($page_id) {
+      return 1710;
+  });
+  add_filter('woocommerce_get_myaccount_page_id', function ($page_id) {
+      return 1716;
+  });
+
+  function ea_page_profile_public_friends_buttons($user_id = 0)
+  {
+      if ($user_id == 0 || $user_id == get_current_user_id()) {
+          return;
+      }
+      ?>
+      <a href="<?= home_url('/profile/messages/?new-message&fast=1&to=' . get_user_by('id', $user_id)->user_nicename); ?>"
+         class="btn-mess button-white"><img class="svg"
+                                            src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg" alt=""></a>
+      <?php
+      $status = friends_check_friendship_status(get_current_user_id(), $user_id);
+      ?>
+      <pre class="d-none">
+  							<?php print_r($status); ?>
+  						</pre>
+      <?php
+      function user_link_class($status, $status_name_array)
+      {
+          $is_equal = false;
+          foreach ($status_name_array as $status_name) {
+              if ($status === $status_name) {
+                  $is_equal = true;
+              }
+          }
+
+          return $is_equal ? '' : ' d-none';
+      }
+
+      ?>
+      <a href="#" data-user="<?= $user_id; ?>" data-username="<?= get_user_meta($user_id, 'nickname', true); ?>"
+         data-toggle="modal" data-target="#removeFriend"
+         class="btn-remove-friend btn-del button-red<?= user_link_class($status, array('is_friend')); ?>"><img class="svg"
+                                                                                                               src="<?= get_template_directory_uri() . '/images/icons/icon-close.svg'; ?>"
+                                                                                                               alt=""></a>
+      <a href="#" data-user="<?= $user_id; ?>"
+         class="btn-apply-friend button-purple<?= user_link_class($status, array('awaiting_response')); ?>">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 6L9 17L4 12" stroke="#00B012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+      </a>
+      <a href="#" data-user="<?= $user_id; ?>" class="btn-reject-friend btn-del button-white<?= user_link_class($status,
+          array('pending', 'awaiting_response')); ?>"><img class="svg"
+                                                           src="<?= get_template_directory_uri() . '/images/icons/icon-close.svg'; ?>"
+                                                           alt=""></a>
+      <a href="#" data-user="<?= $user_id; ?>"
+         class="btn-add-friend button-white<?= user_link_class($status, array('not_friends')); ?>"><img class="svg"
+                                                                                                        src="<?= get_template_directory_uri() . '/images/icons/icon-user-plus.svg'; ?>"
+                                                                                                        alt=""></a>
+      <?php
+  //echo ea_user_switching($user_id);
+  }
+
   function pluralize($string, $ch1, $ch2, $ch3)
   {
       $ff = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
@@ -620,6 +754,91 @@
   	return home_url('user/'.$link);
   	*/
   }
+
+  function ea_page_profile_friends_data($user_id = 0)
+  {
+      $user_id = $user_id > 0 ? $user_id : get_current_user_id();
+      $requests = friends_get_friendship_request_user_ids($user_id);
+      $friends = friends_get_friend_user_ids($user_id);
+      if (empty($requests) && empty($friends)) {
+          echo "<tr><td>" . __('Нет друзей', 'earena') . "</td></tr>";
+      } else {
+          foreach ($requests as $user_id) {
+              ?>
+              <tr>
+                  <td>
+                      <a href="<?= ea_user_link($user_id); ?>"
+                         class="image"><?= bp_core_fetch_avatar('item_id=' . $user_id); ?></a>
+                      <a href="<?= ea_user_link($user_id); ?>" class="name">
+                          <!--									<?= (is_online($user_id) ? '<span style="background: #00D115;width: 10px;height: 10px;border-radius: 10px;display: inline-block;vertical-align: middle;"></span>' : ''); ?>-->
+                          <?= get_user_meta($user_id, 'nickname', true); ?>
+                          <span class="friends-request-text"><?php _e('Хочет добавить вас в друзья', 'earena'); ?></span>
+                      </a>
+                  </td>
+                  <td>
+                      <div class="links-friends">
+                          <a href="#" data-user="<?= $user_id; ?>" class="btn-apply-friend button-purple">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                   xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M20 6L9 17L4 12" stroke="#00B012" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"/>
+                              </svg>
+                          </a>
+                          <a href="#" data-user="<?= $user_id; ?>" class="btn-reject-friend btn-del button-white">
+                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
+                                   alt="">
+                          </a>
+                          <a href="<?= /*buddydev_get_threads_between_users(get_current_user_id(),$user_id).*/
+                          home_url('/profile/messages/?new-message&to=' . get_the_author_meta('nicename', $user_id)); ?>"
+                             data-user="<?= $user_id; ?>" class="btn-message-friend btn-mess button-white d-none">
+                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg"
+                                   alt="">
+                          </a>
+                          <a href="#" data-user="<?= $user_id; ?>"
+                             data-username="<?= get_user_meta($user_id, 'nickname', true); ?>" data-toggle="modal"
+                             data-target="#removeFriend" class="btn-remove-friend btn-del button-red d-none">
+                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
+                                   alt="">
+                          </a>
+                      </div>
+                  </td>
+              </tr>
+              <?php
+          }
+          foreach ($friends as $user_id) {
+              ?>
+              <tr>
+                  <td>
+                      <a href="<?= ea_user_link($user_id); ?>"
+                         class="image"><?= bp_core_fetch_avatar('item_id=' . $user_id); ?></a>
+                      <a href="<?= ea_user_link($user_id); ?>" class="name">
+                          <!--										<?= (is_online($user_id) ? '<span style="background: #00D115;width: 10px;height: 10px;border-radius: 10px;display: inline-block;vertical-align: middle;"></span>' : ''); ?>-->
+                          <?= get_user_meta($user_id, 'nickname', true); ?>
+                      </a>
+                  </td>
+                  <td>
+                      <div class="links-friends">
+                          <a href="<?= /*buddydev_get_threads_between_users(get_current_user_id(),$user_id).*/
+                          home_url('/profile/messages/?new-message&fast=1&to=' . get_the_author_meta('nicename',
+                                  $user_id)); ?>" data-user="<?= $user_id; ?>"
+                             class="btn-message-friend btn-mess button-white">
+                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg"
+                                   alt="">
+                          </a>
+                          <a href="#" data-user="<?= $user_id; ?>"
+                             data-username="<?= get_user_meta($user_id, 'nickname', true); ?>" data-toggle="modal"
+                             data-target="#removeFriend" class="btn-remove-friend btn-del button-red">
+                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
+                                   alt="">
+                          </a>
+                      </div>
+                  </td>
+              </tr>
+              <?php
+          }
+      }
+  }
+
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_user.php' );

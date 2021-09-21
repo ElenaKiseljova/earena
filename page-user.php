@@ -1,13 +1,10 @@
 <?php
   /*
-    Template Name: Профиль
+    Template Name: Профиль (public)
   */
 ?>
 <?php
   global $wpdb, $icons;
-  $ref = $wpdb->get_var($wpdb->prepare(
-      "SELECT COUNT(*) FROM `ef_usermeta` WHERE meta_key='ref' and meta_value=%s", $ea_user->ID
-  ));
 
   $username = get_query_var('username');
   if (empty($username) && is_user_logged_in()) {
@@ -78,7 +75,7 @@
     <div class="account__wrapper">
       <?php
         // Шапка Аккаунта
-        get_template_part( 'template-parts/account/header', 'privat' );
+        get_template_part( 'template-parts/account/header', 'public' );
       ?>
 
       <?php

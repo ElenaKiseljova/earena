@@ -349,6 +349,7 @@ $menu_items = apply_filters('woo_wallet_nav_menu_items', array(
         </form>
       </div>
     </div>
+    <!-- Табличка ниже - не перенесена в рабочий кошелёк. Она (вроде как) не нужна. -->
     <div class="purse">
       <h3 class="purse__title">
         <?php _e( 'Заявки на вывод средств', 'earena_2' ); ?>

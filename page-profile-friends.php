@@ -1,14 +1,9 @@
 <?php
-  /*
-    Template Name: Профиль - Приглашенные
-  */
+/*
+Template Name: Профиль - Друзья
+*/
 ?>
 <?php
-  global $wpdb, $icons;
-  $ref = $wpdb->get_var($wpdb->prepare(
-      "SELECT COUNT(*) FROM `ef_usermeta` WHERE meta_key='ref' and meta_value=%s", $ea_user->ID
-  ));
-
   // Страница Акаунта
   global $is_account_page;
 
@@ -34,7 +29,7 @@
 
       <?php
         // Контент Аккаунта
-        get_template_part( 'template-parts/account/content', 'affiliate' );
+        get_template_part( 'template-parts/account/content', 'friends' );
       ?>
     </div>
   </section>

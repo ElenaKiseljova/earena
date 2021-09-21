@@ -1,5 +1,4 @@
 <?php
-  global $ea_user;
   $username = get_query_var('username');
   if (empty($username) && is_user_logged_in()) {
     $ea_user = wp_get_current_user();
@@ -31,16 +30,16 @@
   }
 ?>
 
-<header class="account__header <?php if ($vip && is_user_logged_in()) echo 'account__header--vip'; ?>">
+<header class="account__header <?php if ($vip && !$blocked) {echo 'account__header--vip';} else if ($blocked) {echo 'account__header--blocked';} ?>">
   <div class="account__left">
     <div class="user user--account">
       <div class="user__image-wrapper <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
         <?php if (!$verified): ?>
-          <button class="verify openpopup" data-popup="verification" type="button" name="verification">
+          <span class="verify verify--false">
             <span class="visually-hidden">
-              <?php _e( 'Верификация', 'earena_2' ); ?>
+              <?php _e( 'Не верифицированный игрок', 'earena_2' ); ?>
             </span>
-          </button>
+          </span>
         <?php else : ?>
           <span class="verify verify--true">
             <span class="visually-hidden">
@@ -48,22 +47,9 @@
             </span>
           </span>
         <?php endif; ?>
-        <?php if (is_user_logged_in()): ?>
-          <div class="user__avatar user__avatar--account">
-            <input class="user__avatar-input visually-hidden" type="file" name="account-image" id="account-image">
-            <label class="user__avatar-label" for="account-image">
-              <span class="visually-hidden">
-                <?php _e( 'Загрузить аватар', 'earena_2' ); ?>
-              </span>
-            </label>
-            <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
-          </div>
-        <?php else : ?>
-          <div class="user__avatar user__avatar--account account__image--public">
-            <!-- <img width="100" height="100" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar.png" alt="<?php the_title(  ); ?>"> -->
-            <img width="100" height="100" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-default.svg" alt="<?php the_title(  ); ?>">
-          </div>
-        <?php endif; ?>
+        <div class="user__avatar user__avatar--account account__image--public">
+          <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
+        </div>
       </div>
 
       <div class="user__info user__info--account">
@@ -86,12 +72,6 @@
             ?>
           </div>
         <?php endif; ?>
-
-        <div class="user__money user__money--account">
-          <span class="user__money-amount user__money-amount--account">
-            $<span><?= earena_2_nice_money(balance()); ?></span>
-          </span>
-        </div>
 
         <div class="user__rating user__rating--account">
           <span>
@@ -121,42 +101,18 @@
     </ul>
 
     <div class="account__buttons">
-      <?php if (is_user_logged_in()): ?>
-        <!-- Пополнить счет -->
-        <a class="button button--green" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
-          <span>
-            <?php _e( 'Пополнить счет', 'earena_2' ); ?>
-          </span>
-        </a>
+      <!-- Удалить из друзей / Добавить в друзья -->
+      <button class="button button--gray" type="button" name="ended">
+        <span>
+          <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
+        </span>
+      </button>
 
-        <?php if ($vip): ?>
-          <div class="account__vip account__vip--active button button--orange">
-            <span>
-              <?php _e( 'VIP статус до', 'earena_2' ); ?> <time><?= $vip_time; ?></time>
-            </span>
-          </div>
-        <?php else : ?>
-          <a class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
-            <span>
-              <?php _e( 'VIP статус', 'earena_2' ); ?>
-            </span>
-          </a>
-        <?php endif; ?>
-
-      <?php else : ?>
-        <!-- Удалить из друзей / Добавить в друзья -->
-        <button class="button button--gray" type="button" name="ended">
-          <span>
-            <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
-          </span>
-        </button>
-
-        <button class="account__message button button--blue openpopup" data-popup="add" type="button" name="add">
-          <span>
-            <?php _e( 'Сообщение', 'earena_2' ); ?>
-          </span>
-        </button>
-      <?php endif; ?>
+      <button class="account__message button button--blue openpopup" data-popup="add" type="button" name="add">
+        <span>
+          <?php _e( 'Сообщение', 'earena_2' ); ?>
+        </span>
+      </button>
     </div>
   </div>
 </header>

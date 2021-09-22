@@ -129,7 +129,7 @@ $menu_items = apply_filters('woo_wallet_nav_menu_items', array(
         <div class="tabs tabs--purse">
           <?php foreach ($menu_items as $item => $menu_item) : ?>
               <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                <a class="tabs__button tabs__button--purse <?php if(function_exists('earena_2_current_page')) earena_2_current_page($menu_item['url']); ?> card" href="<?php echo $menu_item['url']; ?>" >
+                <a class="tabs__button tabs__button--purse <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?> card" href="<?php echo $menu_item['url']; ?>" >
                   <?php echo $menu_item['title']; ?>
                 </a>
               <?php endif; ?>

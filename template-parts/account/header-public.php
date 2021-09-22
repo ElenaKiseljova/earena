@@ -34,19 +34,8 @@
   <div class="account__left">
     <div class="user user--account">
       <div class="user__image-wrapper <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
-        <?php if (!$verified): ?>
-          <span class="verify verify--false">
-            <span class="visually-hidden">
-              <?php _e( 'Не верифицированный игрок', 'earena_2' ); ?>
-            </span>
-          </span>
-        <?php else : ?>
-          <span class="verify verify--true">
-            <span class="visually-hidden">
-              <?php _e( 'Верифицированный игрок', 'earena_2' ); ?>
-            </span>
-          </span>
-        <?php endif; ?>
+        <?php earena_2_verification_html($verified, 'public'); ?>
+
         <div class="user__avatar user__avatar--account account__image--public">
           <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
         </div>
@@ -84,35 +73,21 @@
   <div class="account__right">
     <ul class="account__emoji">
       <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
-        <span>
-          😌
-        </span>
+        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-good.svg" alt="<?php _e( 'Нет предупреждений', 'earena_2' ); ?>">
       </li>
       <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
-        <span>
-          😬
-        </span>
+        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-not-so-bad.svg" alt="<?php _e( 'Есть предупреждения', 'earena_2' ); ?>">
       </li>
       <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
-        <span>
-          😵
-        </span>
+        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-bad.svg" alt="<?php _e( 'Пользователь заблокирован', 'earena_2' ); ?>">
       </li>
     </ul>
 
     <div class="account__buttons">
-      <!-- Удалить из друзей / Добавить в друзья -->
-      <button class="button button--gray" type="button" name="ended">
-        <span>
-          <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
-        </span>
-      </button>
-
-      <button class="account__message button button--blue openpopup" data-popup="add" type="button" name="add">
-        <span>
-          <?php _e( 'Сообщение', 'earena_2' ); ?>
-        </span>
-      </button>
+      <?php
+        // Выводит кнопки Удалить из друзей / Добавить в друзья и Сообщение
+        earena_2_page_profile_public_friends_buttons($ea_user->ID);
+      ?>
     </div>
   </div>
 </header>

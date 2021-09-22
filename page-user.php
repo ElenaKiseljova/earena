@@ -24,6 +24,11 @@
 
   if ( !($ea_user instanceof WP_User) ) {wp_redirect( home_url('404') );exit;}
 
+  // Эта переменная используется в шаблоне toggles/account-page.php
+  global $earena_2_user_public;
+
+  $earena_2_user_public = $ea_user;
+
   //		$rating = $ea_user->get('rating');
   //		$month_ratings = EArena_DB::get_ea_month_ratings($ea_user->ID);
 
@@ -80,12 +85,7 @@
 
       <?php
         // Переключатели
-        get_template_part( 'template-parts/toggles/account' );
-      ?>
-
-      <?php
-        // Контент Аккаунта
-        get_template_part( 'template-parts/account/content', 'profile' );
+        get_template_part( 'template-parts/toggles/account', 'public' );
       ?>
     </div>
   </section>

@@ -133,8 +133,15 @@ jQuery(document).ready(function ($) {
                                 })
                             }
                         }
+                        // Список друзей во вкладке Друзья в Профиле
                         if ($('#private-friend-list').length) {
                             $('#private-friend-list').html(resp[1][1])
+                            $('body').trigger('private-friend-list-updated')
+                        }
+
+                        // Список друзей во вкладке Друзья в Профиле
+                        if ($('#public-friend-list').length) {
+                            $('#public-friend-list').html(resp[1][1])
                             $('body').trigger('private-friend-list-updated')
                         }
                     }

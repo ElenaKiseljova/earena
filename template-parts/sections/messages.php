@@ -217,3 +217,8 @@
     </ul>
   </div>
 <?php endif; ?>
+
+<?php
+  //ea_message_box($thread_id);
+  the_content();
+?>

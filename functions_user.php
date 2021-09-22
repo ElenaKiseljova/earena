@@ -362,9 +362,10 @@ function ea_retrieve_password()
     return true;
 }
 
-/**
- * REGISTRATION
- */
+/* ==============================================
+********  //Регистрация
+=============================================== */
+
 if (!is_user_logged_in()) {
 
 if(isset($_GET['ref'])){
@@ -715,4 +716,381 @@ function filter_function_name_1306( $wp_new_user_notification_email, $user, $blo
 		'. __( 'Вход:', 'earena_plugin' ) .' <a href="'.home_url('?action=login').'">'.home_url('?action=login').'</a>';
 
 	return $wp_new_user_notification_email;
+}
+
+/* ==============================================
+********  //Друзья - Подтверждение
+=============================================== */
+add_action('wp_ajax_accept_friend', 'accept_friend_callback');
+function accept_friend_callback()
+{
+    check_ajax_referer('form.js_nonce', 'security');
+    $ea_user = get_current_user_id();
+    $friend = $_POST['user'];
+    if (ea_friend_accept($ea_user, $friend)) {
+        update_user_meta($ea_user, 'friend_update', time());
+        update_user_meta($friend, 'friend_update', time());
+        $arr_response['success'] = 1;
+//		$arr_response['content'] = 	'Пользователь удалён из друзей.';
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
+}
+
+function ea_friend_accept($initiator_userid, $friend_userid)
+{
+    $status = friends_check_friendship_status($initiator_userid, $friend_userid);
+    if ($status == 'awaiting_response') {
+        $friendship_id = friends_get_friendship_id($initiator_userid, $friend_userid);
+        return friends_accept_friendship($friendship_id);
+    }
+}
+
+/* ==============================================
+********  //Друзья - Отказ
+=============================================== */
+
+add_action('wp_ajax_remove_friend', 'remove_friend_callback');
+function remove_friend_callback()
+{
+    check_ajax_referer('form.js_nonce', 'security');
+    $ea_user = get_current_user_id();
+    $friend = $_POST['user'];
+    if (ea_friend_remove($ea_user, $friend)) {
+        update_user_meta($ea_user, 'friend_update', time());
+        update_user_meta($friend, 'friend_update', time());
+        $arr_response['success'] = 1;
+        $arr_response['content'] = __('Пользователь удалён из друзей.', 'earena');
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
+}
+
+function ea_friend_remove($initiator_userid, $friend_userid)
+{
+    $status = friends_check_friendship_status($initiator_userid, $friend_userid);
+    if ($status == 'is_friend') {
+        return friends_remove_friend($initiator_userid, $friend_userid);
+    }
+}
+
+/* ==============================================
+********  //Друзья - Добавление
+=============================================== */
+
+add_action('wp_ajax_earena_2_add_request_friend', 'earena_2_add_request_friend_callback');
+function earena_2_add_request_friend_callback()
+{
+    check_ajax_referer('form.js_nonce', 'security');
+    $ea_user = get_current_user_id();
+    $friend = $_POST['user'];
+    if (ea_friend_add_request($ea_user, $friend)) {
+        update_user_meta($ea_user, 'friend_update', time());
+        update_user_meta($friend, 'friend_update', time());
+        $arr_response['success'] = 1;
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
+}
+
+function ea_friend_add_request($initiator_userid, $friend_userid)
+{
+    $status = friends_check_friendship_status($initiator_userid, $friend_userid);
+    if ($status == 'not_friends') {
+        return friends_add_friend($initiator_userid, $friend_userid);
+    }
+}
+
+/* ==============================================
+********  //Друзья - Удаление
+=============================================== */
+
+add_action('wp_ajax_del_request_friend', 'del_request_friend_callback');
+function del_request_friend_callback()
+{
+    check_ajax_referer('form.js_nonce', 'security');
+    $ea_user = get_current_user_id();
+    $friend = $_POST['user'];
+    if (ea_friend_del_request($ea_user, $friend)) {
+        update_user_meta($ea_user, 'friend_update', time());
+        update_user_meta($friend, 'friend_update', time());
+        $arr_response['success'] = 1;
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
+}
+
+function ea_friend_del_request($initiator_userid, $friend_userid)
+{
+    $status = friends_check_friendship_status($initiator_userid, $friend_userid);
+    if ($status == 'pending' || $status == 'awaiting_response') {
+        $result = friends_remove_friend($initiator_userid, $friend_userid);
+        if ($result) {
+            friends_update_friend_totals($initiator_userid, $friend_userid, 'add');
+        }
+        return $result;
+    }
+}
+
+/* ==============================================
+********  //Друзья - Список ИД
+=============================================== */
+
+function ea_get_friend_user_ids($user_id = 0, $length = 0, $offset = 0)
+{
+    $user_id = $user_id > 0 ? $user_id : get_current_user_id();
+//	$arr = friends_get_newest($user_id,$per_page,$page);
+//	return array_column($arr['users'],'id');
+    return ($length > 0 || $offset > 0) ? array_slice(friends_get_friend_user_ids($user_id), $offset,
+        $length) : friends_get_friend_user_ids($user_id);
+}
+
+/* ==============================================
+********  ////Друзья - Кнопки
+=============================================== */
+
+function earena_2_page_profile_public_friends_buttons($user_id = 0)
+{
+    if ($user_id == 0 || $user_id == get_current_user_id()) {
+        return;
+    }
+
+    $status = friends_check_friendship_status(get_current_user_id(), $user_id);
+    // Для теста выводим значение
+    ?>
+      <pre class="visually-hidden d-none">
+        <?php print_r($status); ?>
+      </pre>
+    <?php
+    /*function user_link_class($status, $status_name_array)
+    {
+        $is_equal = false;
+        foreach ($status_name_array as $status_name) {
+            if ($status === $status_name) {
+                $is_equal = true;
+            }
+        }
+
+        return $is_equal ? '' : ' d-none';
+    }*/
+    global $earena_2_friend_id;
+
+    $earena_2_friend_id = $user_id;
+
+    switch ($status) {
+      case 'is_friend':
+        ?>
+          <button class="account__friends button button--gray openpopup" data-popup="friends" type="button" name="delete">
+            <span>
+              <?php _e( 'Удалить из друзей', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php
+        break;
+
+      case 'awaiting_response':
+        ?>
+          <button class="account__friends button button--green openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="apply">
+            <span>
+              <?php _e( 'Добавить', 'earena_2' ); ?>
+            </span>
+          </button>
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="reject">
+            <span>
+              <?php _e( 'Отклонить', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php
+        break;
+
+      case 'not_friends':
+        ?>
+          <button class="account__friends button button--gray openpopup" data-popup="friends" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php
+        break;
+
+      default:
+        ?>
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="add">
+            <span>
+              <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php
+        break;
+    }
+    ?>
+
+    <a class="account__message button button--blue" href="<?= home_url('/profile/messages/?new-message&fast=1&to=' . get_user_by('id', $user_id)->user_nicename); ?>">
+      <?php _e( 'Сообщение', 'earena_2' ); ?>
+    </a>
+  <?php
+  //echo ea_user_switching($user_id);
+}
+
+/* ==============================================
+********  //Друзья - Данные таблицы в профиле (может и не только)
+=============================================== */
+//ea_page_profile_friends_data
+function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = 'public')
+{
+    $user_id = $user_id > 0 ? $user_id : get_current_user_id();
+    $requests = friends_get_friendship_request_user_ids($user_id);
+    $friends = friends_get_friend_user_ids($user_id);
+    if (($type_profile_page === 'private' && empty($requests) && empty($friends)) || ($type_profile_page === 'public' && empty($friends))) {
+        echo __('Нет друзей', 'earena');
+    } else {
+      if ($type_profile_page === 'private') {
+        foreach ($requests as $user_id) {
+          global $earena_2_friend_id;
+          $earena_2_friend_id = $user_id;
+
+          $user_friend = get_user_by( 'id', $user_id );
+          $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
+
+          $country_friend = mb_strtolower($user_friend->get('country'));
+
+          if (!$country_friend) {
+            $country_friend = ICL_LANGUAGE_CODE;
+          }
+            ?>
+              <li class="section__item section__item--col-2 section__item--friends section__item--new-request">
+                <div class="user user--friends-page">
+                  <div class="user__left">
+                    <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_friend) { echo 'user__image-wrapper--verified'; } ?>">
+                      <?php earena_2_verification_html($verified_friend, 'public'); ?>
+
+                      <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
+                        <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                      </a>
+                    </div>
+
+                    <div class="user__info user__info--friends">
+                      <a class="user__name user__name--friends" href="<?= ea_user_link($user_id); ?>">
+                        <h5>
+                          <?= get_user_meta($user_id, 'nickname', true); ?>
+                        </h5>
+                      </a>
+
+                      <div class="user__country user__country--friends">
+                        <img width="28" height="20" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $country_friend; ?>.svg" alt="Flag">
+                      </div>
+
+                      <?php if (is_online($user_id)): ?>
+                        <div class="user__status user__status--online user__status--friends">
+                          Online
+                        </div>
+                      <?php else : ?>
+                        <div class="user__status user__status--friends">
+                          <?php
+                            echo __( 'Был(а) ', 'earena_2' ) . human_time_diff( strtotime(bp_get_user_last_activity($user_id)) ).__(' назад', 'earena_2');
+                          ?>
+                        </div>
+                      <?php endif; ?>
+
+                      <div class="user__rating user__rating--friends">
+                        <span>
+                          <?php _e( 'Рейтинг', 'earena_2' ); ?>
+                        </span>: <?= earena_2_rating($user_id); ?>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user__right user__right--new-request">
+                    <span class="user__request">
+                      <?php _e( 'Новая заявка', 'earena_2' ); ?>
+                    </span>
+                    <button class="user__button user__button--friends user__button--new-request button button--green openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="apply">
+                      <span>
+                        <?php _e( 'Добавить', 'earena_2' ); ?>
+                      </span>
+                    </button>
+                    <button class="user__button user__button--friends user__button--new-request button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="reject">
+                      <span>
+                        <?php _e( 'Отклонить', 'earena_2' ); ?>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            <?php
+        }
+      }
+
+        foreach ($friends as $user_id) {
+          global $earena_2_friend_id;
+          $earena_2_friend_id = $user_id;
+
+          $user_friend = get_user_by( 'id', $user_id );
+          $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
+
+          $country_friend = mb_strtolower($user_friend->get('country'));
+
+          if (!$country_friend) {
+            $country_friend = ICL_LANGUAGE_CODE;
+          }
+            ?>
+              <li class="section__item section__item--col-2 section__item--friends">
+                <div class="user user--friends-page">
+                  <div class="user__left">
+                    <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_friend) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
+                      <?php earena_2_verification_html($verified_friend, 'public'); ?>
+
+                      <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
+                        <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                      </a>
+                    </div>
+
+                    <div class="user__info user__info--friends">
+                      <a class="user__name user__name--friends" href="<?= ea_user_link($user_id); ?>">
+                        <h5>
+                          <?= get_user_meta($user_id, 'nickname', true); ?>
+                        </h5>
+                      </a>
+
+                      <div class="user__country user__country--friends">
+                        <img width="28" height="20" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $country_friend; ?>.svg" alt="Flag">
+                      </div>
+
+                      <?php if (is_online($user_id)): ?>
+                        <div class="user__status user__status--online user__status--friends">
+                          Online
+                        </div>
+                      <?php else : ?>
+                        <div class="user__status user__status--friends">
+                          <?php
+                            echo __( 'Был(а) ', 'earena_2' ) . human_time_diff( strtotime(bp_get_user_last_activity($user_id)) ).__(' назад', 'earena_2');
+                          ?>
+                        </div>
+                      <?php endif; ?>
+
+                      <div class="user__rating user__rating--friends">
+                        <span>
+                          <?php _e( 'Рейтинг', 'earena_2' ); ?>
+                        </span>: <?= earena_2_rating($user_id); ?>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user__right user__right--friends">
+                    <a class="user__button user__button--friends button button--blue" href="<?= home_url('/profile/messages/?new-message&fast=1&to=' . get_the_author_meta('nicename', $user_id)); ?>">
+                      <span>
+                        <?php _e( 'Написать', 'earena_2' ); ?>
+                      </span>
+                    </a>
+                    <?php if ($type_profile_page === 'private'): ?>
+                      <button class="user__button user__button--friends button button--gray openpopup" data-popup="friends" type="button" name="delete">
+                        <span>
+                          <?php _e( 'Удалить', 'earena_2' ); ?>
+                        </span>
+                      </button>
+                    <?php endif; ?>
+                  </div>
+                </div>
+              </li>
+            <?php
+        }
+    }
 }

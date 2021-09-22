@@ -80,27 +80,16 @@
                 popupContentCreator(sufixPopupName, popupItem, popupButton, '.popup__button--information');
               }
 
-              if (sufixPopupName === 'complaint') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
-              }
+              if (
+                  sufixPopupName === 'complaint' ||
+                  sufixPopupName === 'tournament' ||
+                  sufixPopupName === 'match' ||
+                  sufixPopupName === 'game' ||
+                  sufixPopupName === 'stream' ||
+                  sufixPopupName === 'verification' ||
+                  sufixPopupName === 'friends'
+                ) {
 
-              if (sufixPopupName === 'tournament') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
-              }
-
-              if (sufixPopupName === 'match') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
-              }
-
-              if (sufixPopupName === 'game') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
-              }
-
-              if (sufixPopupName === 'stream') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
-              }
-
-              if (sufixPopupName === 'verification') {
                 popupContentCreator(sufixPopupName, popupItem, popupButton);
               }
 

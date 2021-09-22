@@ -132,27 +132,56 @@
                 }
 
                 /***** START Actions AJAX *****/
-                if (prefix.indexOf('signin') > -1) {
-                  // Ф-я логирования
-                  formData['action'] = 'ajax_login';
+                if ( ID_FORM.indexOf('login') ) {
+                  // Логирование
+                  if (prefix.indexOf('signin') > -1) {
+                    // Ф-я логирования
+                    formData['action'] = 'ajax_login';
+                  }
+
+                  // Регистрация
+                  if (prefix.indexOf('signup') > -1) {
+                    // Ф-я регистрации
+                    formData['action'] = 'earena_2_ajax_register';
+                  }
+
+                  // Восстановление
+                  if (prefix.indexOf('forgot') > -1) {
+                    // Ф-я восстановления пароля
+                    formData['action'] = 'ajax_forgot';
+                  }
+
+                  // Сброс
+                  if (prefix.indexOf('reset') > -1) {
+                    // Ф-я сброса пароля
+                    formData['action'] = 'earena_2_ajax_reset_pass';
+                  }
                 }
 
-                // Регистрация
-                if (prefix.indexOf('signup') > -1) {
-                  // Ф-я логирования
-                  formData['action'] = 'earena_2_ajax_register';
-                }
+                if ( ID_FORM.indexOf('friends') ) {
+                  // Друзья - Добавление
+                  if (prefix.indexOf('add') > -1) {
+                    // Ф-я добавления в друзья
+                    formData['action'] = 'earena_2_add_request_friend';
+                  }
 
-                // Восстановление
-                if (prefix.indexOf('forgot') > -1) {
-                  // Ф-я восстановления пароля
-                  formData['action'] = 'ajax_forgot';
-                }
+                  // Друзья - Подтверждение
+                  if (prefix.indexOf('apply') > -1) {
+                    // Ф-я подтверждения добавления в друзья
+                    formData['action'] = 'accept_friend';
+                  }
 
-                // Сброс
-                if (prefix.indexOf('reset') > -1) {
-                  // Ф-я сброса пароля
-                  formData['action'] = 'earena_2_ajax_reset_pass';
+                  // Друзья - Отмена
+                  if (prefix.indexOf('reject') > -1) {
+                    // Ф-я Отмена добавления в друзья
+                    formData['action'] = 'del_request_friend';
+                  }
+
+                  // Друзья - Удаление
+                  if (prefix.indexOf('delete') > -1) {
+                    // Ф-я удаления из друзей
+                    formData['action'] = 'remove_friend';
+                  }
                 }
 
                 // Popup message
@@ -193,55 +222,57 @@
 
                 // Обработчик успешной отправки
                 var onSuccess = (response) => {
-                  // Логин
-                  if (prefix.indexOf('signin') > -1) {
-                    if (response.data.loggedin === true) {
-                      document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
-                    } else {
-                      console.log(response.data.message);
-                      if (popupMessage) {
-                        popupMessage.innerHTML = response.data.message;
+                  if (ID_FORM.indexOf('login')) {
+                    // Логин
+                    if (prefix.indexOf('signin') > -1) {
+                      if (response.data.loggedin === true) {
+                        document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
+                      } else {
+                        console.log(response.data.message);
+                        if (popupMessage) {
+                          popupMessage.innerHTML = response.data.message;
 
-                        setTimeout(function () {
-                          popupMessage.innerHTML = '';
-                        }, 2000);
+                          setTimeout(function () {
+                            popupMessage.innerHTML = '';
+                          }, 2000);
+                        }
+
+                        return;
                       }
-
-                      return;
-                    }
-                  }
-
-                  // Регистрация
-                  if (prefix.indexOf('signup') > -1) {
-                    if (response.data.registered) {
-                      document.location.href = 'profile?after_registration=1';
-                    } else {
-                      let message = '';
-
-                      if (popupMessage) {
-                        $.each(response.data.errors, function (key, val) {
-                            console.log(key + ' : '+ val);
-                            message += val + '<br>';
-
-                            popupMessage.innerHTML = message;
-                        });
-                      }
-
-                      return;
-                    }
-                  }
-
-                  // Сброс
-                  if (prefix.indexOf('reset') > -1) {
-                    if (response.data.error) {
-                      if (popupMessage) {
-                        popupMessage.innerHTML = response.data.error;
-                      }
-
-                      return;
                     }
 
-                    console.log(response);
+                    // Регистрация
+                    if (prefix.indexOf('signup') > -1) {
+                      if (response.data.registered) {
+                        document.location.href = 'profile?after_registration=1';
+                      } else {
+                        let message = '';
+
+                        if (popupMessage) {
+                          $.each(response.data.errors, function (key, val) {
+                              console.log(key + ' : '+ val);
+                              message += val + '<br>';
+
+                              popupMessage.innerHTML = message;
+                          });
+                        }
+
+                        return;
+                      }
+                    }
+
+                    // Сброс
+                    if (prefix.indexOf('reset') > -1) {
+                      if (response.data.error) {
+                        if (popupMessage) {
+                          popupMessage.innerHTML = response.data.error;
+                        }
+
+                        return;
+                      }
+
+                      console.log(response);
+                    }
                   }
 
                   // Получаю шаблон
@@ -281,31 +312,45 @@
                     }
                   }
 
-                  // Восстановление
-                  if (prefix.indexOf('forgot') > -1) {
-                    if (response.data.retrieve_password == true) {
-                      $('.popup__information--template').html(response.data.message);
-                      console.log('Успех', response.data.message);
-                    } else {
-                      $('.popup__information--template').html(response.data.message);
-                      console.log('Ошибка', response.data.message);
+                  if (ID_FORM.indexOf('login')) {
+                    // Восстановление
+                    if (prefix.indexOf('forgot') > -1) {
+                      if (response.data.retrieve_password == true) {
+                        $('.popup__information--template').html(response.data.message);
+                        console.log('Успех', response.data.message);
+                      } else {
+                        $('.popup__information--template').html(response.data.message);
+                        console.log('Ошибка', response.data.message);
+                      }
                     }
-                  }
 
-                  // Сброс
-                  if (prefix.indexOf('reset') > -1 && response.data.message) {
-                    $('.popup__information--template').html(response.data.message);
+                    // Сброс
+                    if (prefix.indexOf('reset') > -1 && response.data.message) {
+                      $('.popup__information--template').html(response.data.message);
+                    }
                   }
 
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();
 
                   console.log('Успех: ', response);
+
+                  if (ID_FORM.indexOf('friends')) {
+                    // Для теста. Пока не подключено обновление контента
+                    setTimeout(function () {
+                      // Перезагрузить текущую страницу
+                      document.location.reload();
+                    }, 300);
+                  }
                 };
 
                 // Обработчик не успешной отправки
                 var onError = (response, prefix='') => {
                   let templateError = document.querySelector(`#${ID_FORM}-error${prefix}`);
+
+                  if (!templateError) {
+                    templateError = document.querySelector(`#${ID_FORM}-error`);
+                  }
 
                   if (wrapperFormNode && templateError) {
                     wrapperFormNode.innerHTML = '';
@@ -551,12 +596,6 @@
       // Формы, которые подставляются из шаблонов - активируются при открытии попапа.
       // Инициализация проходит в файле popup.js
       // Либо по смене табов toggle-active.js
-      window.form({
-        idForm: 'form-delete-friends',
-        selectorForTemplateReplace: `#friends-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
-        classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-        selectorClosestWrapperForm: '.popup--friends', // по умолчанию - false
-      });
 
       window.form({
         idForm: 'form-delete-history',

@@ -1,6 +1,55 @@
+<?php
+  global $earena_2_friend_id;
+
+  $earena_2_friend_name = get_user_meta($earena_2_friend_id, 'nickname', true);
+?>
+
 <!-- Для переключения состояния - добавляется active класс  -->
 <div class="popup popup--friends">
   <div class="popup__template popup__template--friends" id="friends-popup">
+    <!-- Шаблон подставляется по открытию попапа -->
+  </div>
+
+  <?php
+    if ( function_exists( 'earena_2_get_popup_close_button_html' ) ) {
+      earena_2_get_popup_close_button_html( 'friends' );
+    }
+  ?>
+
+  <!-- Шаблоны попапов добавления / удаления / подтверждения / отказа -->
+
+  <template id="popup-friends-add">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Игроку %s будет отправлен Ваш запрос на добавление в друзья.', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+      <div class="popup__ajax-message"></div>
+      <form class="form" action="" method="post" data-prefix="add" id="form-friends">
+        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+
+        <div class="form__buttons">
+          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+            <?php _e( 'Отменить', 'earena_2' ); ?>
+          </button>
+          <button class="form__submit form__submit--buttons button button--blue" type="submit" name="friends-add-submit">
+            <span>
+              <?php _e( 'Отправить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-friends-delete">
     <div class="popup__content popup__content--friends">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Удалить друга', 'earena_2' ); ?>
@@ -8,18 +57,15 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          $user_delete_name = 'Grtteeww';
-
           echo sprintf(
             __( 'Вы уверены, что хотите удалить <br> из друзей игрока %s? ', 'earena_2' ),
-            $user_delete_name
+            $earena_2_friend_name
           );
         ?>
       </div>
-
-      <form class="form" action="index.html" method="post" data-prefix="" id="form-delete-friends">
-        <input type="hidden" name="id-friend" value="999">
-        <input type="hidden" name="accept-remove" value="true">
+      <div class="popup__ajax-message"></div>
+      <form class="form" action="" method="post" data-prefix="delete" id="form-friends">
+        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray">
@@ -33,9 +79,153 @@
         </div>
       </form>
     </div>
-  </div>
+  </template>
+  <template id="popup-friends-apply">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
 
-  <template id="form-delete-friends-beforesend">
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Игрок %s отправил Вам запрос на добавление в друзья.', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+      <div class="popup__ajax-message"></div>
+      <form class="form" action="" method="post" data-prefix="apply" id="form-friends">
+        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+
+        <div class="form__buttons">
+          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+          <button class="form__submit form__submit--buttons button button--blue" type="submit" name="friends-apply-submit">
+            <span>
+              <?php _e( 'Подтвердить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-friends-reject">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Игрок %s отправил Вам запрос на добавление в друзья. <br> Вы хотите его отклонить?', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+      <div class="popup__ajax-message"></div>
+      <form class="form" action="" method="post" data-prefix="reject" id="form-friends">
+        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+
+        <div class="form__buttons">
+          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+          <button class="form__submit form__submit--buttons button button--red" type="submit" name="friends-reject-submit">
+            <span>
+              <?php _e( 'Отклонить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
+  <template id="form-friends-success-delete">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Вы успешно удалили из друзей игрока %s', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+
+      <button class="form__popup-close button button--gray">
+        <?php _e( 'Хорошо', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-friends-success-add">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Вы успешно отправили запрос на добавление в друзья игрока %s', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+
+      <button class="form__popup-close button button--gray">
+        <?php _e( 'Хорошо', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-friends-success-apply">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Вы успешно добавили в друзья игрока %s', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+
+      <button class="form__popup-close button button--gray">
+        <?php _e( 'Хорошо', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-friends-success-reject">
+    <div class="popup__content popup__content--friends">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить друга', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          echo sprintf(
+            __( 'Вы успешно отказали игроку %s в добавлении в друзья', 'earena_2' ),
+            $earena_2_friend_name
+          );
+        ?>
+      </div>
+
+      <button class="form__popup-close button button--gray">
+        <?php _e( 'Хорошо', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+
+  <template id="form-friends-beforesend">
     <div class="popup__content popup__content--friends">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Пожалуйста подождите', 'earena_2' ); ?>
@@ -46,25 +236,16 @@
       </div>
     </div>
   </template>
-  <template id="form-delete-friends-error">
+
+  <template id="form-friends-error">
     <div class="popup__content popup__content--friends">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ошибка удаления', 'earena_2' ); ?>
+        <?php _e( 'Возникла ошибка', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
         <?php _e( 'Пожалуйста, повторите попытку позже', 'earena_2' ); ?>
       </div>
-
-      <button class="form__popup-close form__popup-close--cross">
-        <span class="visually-hidden">
-          <?php _e( 'Закрыть', 'earena_2' ); ?>
-        </span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
     </div>
   </template>
 </div>

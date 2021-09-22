@@ -24,12 +24,12 @@
     <div class="account__wrapper">
       <?php
         // Шапка Аккаунта
-        get_template_part( 'template-parts/account/header' );
+        get_template_part( 'template-parts/account/header', 'private' );
       ?>
 
       <?php
         // Переключатели
-        get_template_part( 'template-parts/toggles/account' );
+        get_template_part( 'template-parts/toggles/account', 'private' );
       ?>
 
       <?php

@@ -2,8 +2,8 @@
   <div class="account__content-item account__content-item--col-1">
     <?php
       if ( function_exists( 'earena_2_get_section' ) ) {
-        // Друзья
-        earena_2_get_section( 'friends' );
+        // Сообщения
+        earena_2_get_section( 'messages' );
       }
     ?>
   </div>

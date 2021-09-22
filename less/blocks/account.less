@@ -42,7 +42,7 @@
 }
 
 .account__left {
-  width: 339 / ( 1156 - 20 - 20 ) * 100%;
+  width: auto;
 
   padding: 0;
   margin: 0;
@@ -85,43 +85,24 @@
 }
 
 .account__emoji-item {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  min-height: 42px;
+
   padding: 0;
   margin: 0;
 
-  margin-left: 10px;
+  opacity: 0.3;
 
-  span {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    height: 42px;
-
-    font-family: #fonts[];
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 140%;
-    /* identical to box height, or 42px */
-
-    letter-spacing: 0.1em;
-
-    /* Text */
-
-    color: #colors[text];
-
-    opacity: 0.3;
-
-    img {
-      margin: 0!important;
-    }
+  &:not(:last-of-type) {
+    margin-right: 10px;
   }
 
   &.active {
-    span {
-      opacity: 1;
-    }
+    opacity: 1;
   }
 }
 
@@ -150,11 +131,15 @@
 }
 
 .account__message {
-  margin-left: 15px;
+
+}
+
+.account__friends {
+  margin-right: 15px;
 
   @media (max-width: @mobile) {
-    margin-left: 0;
-    margin-top: 15px;
+    margin-right: 0;
+    margin-bottom: 15px;
   }
 }
 

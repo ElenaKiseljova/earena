@@ -200,11 +200,14 @@
     function earena_2_current_page ( $page_slug = false ) {
       if ($page_slug) {
         // Проверяем наличие слага с URI
-        $is_current = strpos($_SERVER['REQUEST_URI'], $page_slug) ? strpos($_SERVER['REQUEST_URI'], $page_slug) : strpos($page_slug, $_SERVER['REQUEST_URI']);
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $actual_link = explode('?', $actual_link);
+        $actual_link = $actual_link[0];
 
-        // Если есть - добавляем активный класс
+        $is_current = strpos($actual_link, $page_slug) ? strpos($actual_link, $page_slug) : strpos($page_slug, $actual_link);
+
         if ($is_current !== false) {
-          echo 'active';
+          return true;
         }
       }
     }
@@ -326,57 +329,6 @@
       return 1716;
   });
 
-  function ea_page_profile_public_friends_buttons($user_id = 0)
-  {
-      if ($user_id == 0 || $user_id == get_current_user_id()) {
-          return;
-      }
-      ?>
-      <a href="<?= home_url('/profile/messages/?new-message&fast=1&to=' . get_user_by('id', $user_id)->user_nicename); ?>"
-         class="btn-mess button-white"><img class="svg"
-                                            src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg" alt=""></a>
-      <?php
-      $status = friends_check_friendship_status(get_current_user_id(), $user_id);
-      ?>
-      <pre class="d-none">
-  							<?php print_r($status); ?>
-  						</pre>
-      <?php
-      function user_link_class($status, $status_name_array)
-      {
-          $is_equal = false;
-          foreach ($status_name_array as $status_name) {
-              if ($status === $status_name) {
-                  $is_equal = true;
-              }
-          }
-
-          return $is_equal ? '' : ' d-none';
-      }
-
-      ?>
-      <a href="#" data-user="<?= $user_id; ?>" data-username="<?= get_user_meta($user_id, 'nickname', true); ?>"
-         data-toggle="modal" data-target="#removeFriend"
-         class="btn-remove-friend btn-del button-red<?= user_link_class($status, array('is_friend')); ?>"><img class="svg"
-                                                                                                               src="<?= get_template_directory_uri() . '/images/icons/icon-close.svg'; ?>"
-                                                                                                               alt=""></a>
-      <a href="#" data-user="<?= $user_id; ?>"
-         class="btn-apply-friend button-purple<?= user_link_class($status, array('awaiting_response')); ?>">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 6L9 17L4 12" stroke="#00B012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-      </a>
-      <a href="#" data-user="<?= $user_id; ?>" class="btn-reject-friend btn-del button-white<?= user_link_class($status,
-          array('pending', 'awaiting_response')); ?>"><img class="svg"
-                                                           src="<?= get_template_directory_uri() . '/images/icons/icon-close.svg'; ?>"
-                                                           alt=""></a>
-      <a href="#" data-user="<?= $user_id; ?>"
-         class="btn-add-friend button-white<?= user_link_class($status, array('not_friends')); ?>"><img class="svg"
-                                                                                                        src="<?= get_template_directory_uri() . '/images/icons/icon-user-plus.svg'; ?>"
-                                                                                                        alt=""></a>
-      <?php
-  //echo ea_user_switching($user_id);
-  }
 
   function pluralize($string, $ch1, $ch2, $ch3)
   {
@@ -419,11 +371,38 @@
 
   function earena_2_rating($user = false)
   {
+      //$user - это либо объект пользователя, либо ID пользователя
       if ($user ===  false) {
         $user = wp_get_current_user();
+      } else {
+        // Если передан ID юзера
+        $user = ($user instanceof WP_User) ? $user : get_user_by( 'id', $user );
       }
 
       return $user->get('rating') > 0 ? $user->get('rating') : 0;
+  }
+
+  // Верификация
+  function earena_2_verification_html($verification = false, $type_profile = 'public') {
+    if (!$verification && $type_profile === 'public'): ?>
+      <span class="verify verify--false">
+        <span class="visually-hidden">
+          <?php _e( 'Не верифицированный игрок', 'earena_2' ); ?>
+        </span>
+      </span>
+    <?php elseif (!$verification && $type_profile === 'private') : ?>
+      <button class="verify openpopup" data-popup="verification" type="button" name="verification">
+        <span class="visually-hidden">
+          <?php _e( 'Верификация', 'earena_2' ); ?>
+        </span>
+      </button>
+    <?php else : ?>
+      <span class="verify verify--true">
+        <span class="visually-hidden">
+          <?php _e( 'Верифицированный игрок', 'earena_2' ); ?>
+        </span>
+      </span>
+    <?php endif;
   }
 
   // Баланс
@@ -755,89 +734,7 @@
   	*/
   }
 
-  function ea_page_profile_friends_data($user_id = 0)
-  {
-      $user_id = $user_id > 0 ? $user_id : get_current_user_id();
-      $requests = friends_get_friendship_request_user_ids($user_id);
-      $friends = friends_get_friend_user_ids($user_id);
-      if (empty($requests) && empty($friends)) {
-          echo "<tr><td>" . __('Нет друзей', 'earena') . "</td></tr>";
-      } else {
-          foreach ($requests as $user_id) {
-              ?>
-              <tr>
-                  <td>
-                      <a href="<?= ea_user_link($user_id); ?>"
-                         class="image"><?= bp_core_fetch_avatar('item_id=' . $user_id); ?></a>
-                      <a href="<?= ea_user_link($user_id); ?>" class="name">
-                          <!--									<?= (is_online($user_id) ? '<span style="background: #00D115;width: 10px;height: 10px;border-radius: 10px;display: inline-block;vertical-align: middle;"></span>' : ''); ?>-->
-                          <?= get_user_meta($user_id, 'nickname', true); ?>
-                          <span class="friends-request-text"><?php _e('Хочет добавить вас в друзья', 'earena'); ?></span>
-                      </a>
-                  </td>
-                  <td>
-                      <div class="links-friends">
-                          <a href="#" data-user="<?= $user_id; ?>" class="btn-apply-friend button-purple">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                   xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M20 6L9 17L4 12" stroke="#00B012" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"/>
-                              </svg>
-                          </a>
-                          <a href="#" data-user="<?= $user_id; ?>" class="btn-reject-friend btn-del button-white">
-                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
-                                   alt="">
-                          </a>
-                          <a href="<?= /*buddydev_get_threads_between_users(get_current_user_id(),$user_id).*/
-                          home_url('/profile/messages/?new-message&to=' . get_the_author_meta('nicename', $user_id)); ?>"
-                             data-user="<?= $user_id; ?>" class="btn-message-friend btn-mess button-white d-none">
-                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg"
-                                   alt="">
-                          </a>
-                          <a href="#" data-user="<?= $user_id; ?>"
-                             data-username="<?= get_user_meta($user_id, 'nickname', true); ?>" data-toggle="modal"
-                             data-target="#removeFriend" class="btn-remove-friend btn-del button-red d-none">
-                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
-                                   alt="">
-                          </a>
-                      </div>
-                  </td>
-              </tr>
-              <?php
-          }
-          foreach ($friends as $user_id) {
-              ?>
-              <tr>
-                  <td>
-                      <a href="<?= ea_user_link($user_id); ?>"
-                         class="image"><?= bp_core_fetch_avatar('item_id=' . $user_id); ?></a>
-                      <a href="<?= ea_user_link($user_id); ?>" class="name">
-                          <!--										<?= (is_online($user_id) ? '<span style="background: #00D115;width: 10px;height: 10px;border-radius: 10px;display: inline-block;vertical-align: middle;"></span>' : ''); ?>-->
-                          <?= get_user_meta($user_id, 'nickname', true); ?>
-                      </a>
-                  </td>
-                  <td>
-                      <div class="links-friends">
-                          <a href="<?= /*buddydev_get_threads_between_users(get_current_user_id(),$user_id).*/
-                          home_url('/profile/messages/?new-message&fast=1&to=' . get_the_author_meta('nicename',
-                                  $user_id)); ?>" data-user="<?= $user_id; ?>"
-                             class="btn-message-friend btn-mess button-white">
-                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-link-5.svg"
-                                   alt="">
-                          </a>
-                          <a href="#" data-user="<?= $user_id; ?>"
-                             data-username="<?= get_user_meta($user_id, 'nickname', true); ?>" data-toggle="modal"
-                             data-target="#removeFriend" class="btn-remove-friend btn-del button-red">
-                              <img class="svg" src="<?php bloginfo('template_url'); ?>/images/icons/icon-close.svg"
-                                   alt="">
-                          </a>
-                      </div>
-                  </td>
-              </tr>
-              <?php
-          }
-      }
-  }
+
 
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/

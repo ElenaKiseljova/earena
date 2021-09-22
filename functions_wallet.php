@@ -53,7 +53,7 @@
               <div class="tabs tabs--wallet">
                 <?php foreach ($menu_items as $item => $menu_item) : ?>
                     <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                      <a class="tabs__button tabs__button--wallet <?php if(function_exists('earena_2_current_page')) earena_2_current_page($menu_item['url']); ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                      <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <?php do_action('woo_wallet_menu_items'); ?>
@@ -162,7 +162,7 @@
                             <div class="tabs tabs--wallet">
                               <?php foreach ($menu_items as $item => $menu_item) : ?>
                                   <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                                    <a class="tabs__button tabs__button--wallet <?php if(function_exists('earena_2_current_page')) earena_2_current_page($menu_item['url']); ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                                    <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                                   <?php endif; ?>
                               <?php endforeach; ?>
                               <?php do_action('woo_wallet_menu_items'); ?>
@@ -252,7 +252,7 @@
                 <div class="tabs tabs--wallet">
                   <?php foreach ($menu_items as $item => $menu_item) : ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?php if(function_exists('earena_2_current_page')) earena_2_current_page($menu_item['url']); ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>
@@ -393,7 +393,7 @@
                 <div class="tabs tabs--wallet">
                   <?php foreach ($menu_items as $item => $menu_item) : ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?php if(function_exists('earena_2_current_page')) earena_2_current_page($menu_item['url']); ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>

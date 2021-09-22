@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Профиль - Друзья
+  Template Name: Профиль - Турниры
 */
 ?>
 <?php
@@ -29,7 +29,7 @@ Template Name: Профиль - Друзья
 
       <?php
         // Контент Аккаунта
-        get_template_part( 'template-parts/account/content-friends', 'private' );
+        get_template_part( 'template-parts/account/content-tournaments', 'private' );
       ?>
     </div>
   </section>

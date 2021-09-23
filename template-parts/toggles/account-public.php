@@ -66,7 +66,7 @@
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
           // Матчи
-          earena_2_get_section( 'matches', false, 'filters', 'matches' );
+          earena_2_get_section( 'matches-public', false, 'filters', 'matches' );
         }
       ?>
     </div>
@@ -76,7 +76,7 @@
       <?php
         if ( function_exists( 'earena_2_get_section' ) ) {
           // Турниры
-          earena_2_get_section( 'tournaments', false, 'filters', 'tournaments' );
+          earena_2_get_section( 'tournaments-public', false, 'filters', 'tournaments' );
         }
       ?>
     </div>

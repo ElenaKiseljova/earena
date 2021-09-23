@@ -486,6 +486,10 @@
     justify-content: flex-start;
   }
 
+  &--admin {
+    width: auto;
+  }
+
   @media (max-width: @mobile) {
     &--header {
       margin-right: 0;
@@ -551,15 +555,29 @@
     margin-top: 5px;
   }
 
-  &--account {
-    max-width: calc(100% - 43px);
+  &--account,
+  &--admin {
     padding: 0;
     margin: 0;
 
-    margin-right: 15px;
     margin-bottom: 1px;
 
     .h2();
+  }
+
+  &--admin {
+    max-width: none;
+
+    color: #colors[red];
+
+    h5 {
+      color: #colors[red];
+    }
+  }
+
+  &--account {
+    max-width: calc(100% - 43px);
+    margin-right: 15px;
 
     color: #colors[white];
   }
@@ -585,12 +603,6 @@
 
     h5 {
       color: #colors[text_black];
-    }
-  }
-
-  &--admin {
-    h5 {
-      color: #colors[red];
     }
   }
 

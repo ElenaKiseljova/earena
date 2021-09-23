@@ -514,33 +514,6 @@
       return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
   }
 
-
-  /* ==============================================
-  ********  //Верификация пользователя
-  =============================================== */
-  function ea_get_verification_requests()
-  {
-      return wp_list_pluck(get_users(
-          array(
-              'meta_query' => [
-                  [
-                      'key' => 'verification_request',
-                      'value' => 1,
-                  ],
-                  [
-                      'key' => 'verification_files',
-                      'compare' => 'EXISTS',
-                  ],
-              ],
-              'fields' => ['ID']
-          )), 'ID');
-  }
-
-  function ea_count_verification_requests()
-  {
-      return count(ea_get_verification_requests());
-  }
-
   // Games
   function ea_count_games()
   {

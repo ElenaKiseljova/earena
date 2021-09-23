@@ -87,7 +87,8 @@
                   sufixPopupName === 'game' ||
                   sufixPopupName === 'stream' ||
                   sufixPopupName === 'verification' ||
-                  sufixPopupName === 'friends'
+                  sufixPopupName === 'friends' ||
+                  sufixPopupName === 'purse'
                 ) {
 
                 popupContentCreator(sufixPopupName, popupItem, popupButton);

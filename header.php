@@ -58,7 +58,7 @@
                 <?php if ( is_ea_admin() ): ?>
                   <div class="user user--header">
                     <a class="user__avatar user__avatar--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                      <img width="60" height="60" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="">
+                      <img width="60" height="60" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="Admin">
                     </a>
 
                     <div class="user__info user__info--header">

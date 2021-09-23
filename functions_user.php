@@ -1094,3 +1094,90 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
         }
     }
 }
+
+/* ==============================================
+********  //Друзья - Отказ
+=============================================== */
+
+add_action('wp_ajax_' . 'verification_fileload', 'verification_fileload_callback');
+function verification_fileload_callback()
+{
+    $admin_id = (int)get_site_option('ea_admin_id', 27);
+
+    $ea_user = wp_get_current_user();
+    if (get_user_meta($ea_user->ID, 'verification_request', true) && get_user_meta($ea_user->ID, 'bp_verified_member',
+            true) !== 1) {
+        wp_send_json_error('Запрос уже отправлен.');
+    }
+    if (get_user_meta($ea_user->ID, 'bp_verified_member', true) == 1) {
+        wp_send_json_error('Запрос уже одобрен.');
+    }
+//print_r($_FILES);
+    if (empty($_FILES)) {
+        wp_send_json_error(__('Загрузите файлы', 'earena_2'));
+    } elseif (count($_FILES) > 2) {
+        wp_send_json_error(__('Загружайте не более 2 файлов, пожалуйста.', 'earena'));
+    } else {
+        for ($i = 0; $i < count($_FILES); $i++) {
+            // ограничим вес загружаемой картинки
+            $filesize = $_FILES[$i]['size'];
+            $max_filesize_mb = 4;
+            $max_filesize = $max_filesize_mb * 1024 * 1024;
+            if ($filesize > $max_filesize) {
+                wp_send_json_error(__('Фото не должно быть больше ', 'earena') . $max_filesize_mb . 'Mb.');
+            }
+            // ограничим размер загружаемой картинки
+            $sizedata = getimagesize($_FILES[$i]['tmp_name']);
+            $max_size = 4000;
+            if ($sizedata[0]/*width*/ > $max_size || $sizedata[1]/*height*/ > $max_size) {
+                wp_send_json_error(__('Фото не должно быть больше ',
+                        'earena') . $max_size . __('px в ширину или высоту.', 'earena'));
+            }
+            //разрешим только картинки
+            if ($_FILES[$i]['type'] !== 'image/jpeg' && $_FILES[$i]['type'] !== 'image/png') {
+                wp_send_json_error(__('Тип файла не подходит по соображениям безопасности.', 'earena'));
+            }
+
+        }
+        // обрабатываем загрузку файла
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+
+        // фильтр допустимых типов файлов - разрешим только картинки
+        add_filter('upload_mimes', function ($mimes) {
+            return [
+                'jpg|jpeg|jpe' => 'image/jpeg',
+//			'gif'		  => 'image/gif',
+                'png' => 'image/png',
+            ];
+        });
+
+        $uploaded_imgs = array();
+        $attach = array();
+        $message = "{$ea_user->nickname} " . __('отправил запрос на верификацию:', 'earena') . " <br>\r\n";
+        foreach ($_FILES as $file_id => $data) {
+            $attach_id = media_handle_upload($file_id, 0);
+            if (is_wp_error($attach_id)) {
+                $uploaded_imgs[] = __('Ошибка загрузки файла',
+                        'earena') . '`' . $data['name'] . '`: ' . $attach_id->get_error_message();
+            } else {
+                $parsed = parse_url(wp_get_attachment_url($attach_id));
+                $url = dirname($parsed['path']) . '/' . rawurlencode(basename($parsed['path']));
+                $message .= "<a href=\"$url\"><img class=\"verification_image\" width=\"90px\" height=\"90px\" src=\"$url\"></a> ";
+                $attach[] = $attach_id;
+            }
+        }
+        update_user_meta($ea_user->ID, 'verification_files', $attach);
+        update_user_meta($ea_user->ID, 'verification_request', true);
+        $thread_id = ea_get_thread_id($admin_id);
+        ea_messages_new_message(array(
+            'sender_id' => $ea_user->ID,
+            'thread_id' => $thread_id,
+            'content' => $message,
+        ));
+        $uploaded_imgs[] = $message/*.'<meta http-equiv="refresh" content="1"><br>Страница будет перезагружена'*/
+        ;
+    }
+    wp_send_json_success($uploaded_imgs);
+}

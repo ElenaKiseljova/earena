@@ -38,7 +38,7 @@
         }
       };*/
 
-      // Ф-я добавления закруженных картинок
+      // Ф-я добавления загруженных картинок
       var updateImageDisplay = function () {
         // Если есть ли что-то внутри превью
         while ( previewFile.firstChild ) {

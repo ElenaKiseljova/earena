@@ -79,8 +79,24 @@
                 // Прерываем стандартное действие кнопки для XMLHttpRequest
                 evt.preventDefault();
 
+                /*
+                  *** Префиксы (prefix) ***
+                  *************************
+
+                  --- data-prefix="" в тегах <form>
+                */
+                let prefix = '';
+                if (PREFIX_FORM !== '' && PREFIX_FORM && PREFIX_FORM !== undefined) {
+                  prefix = `-${PREFIX_FORM}`;
+                }
+
                 // Объект для отправки на сервер
                 let formData = {};
+                let dataForm = new FormData();
+
+                if (prefix.indexOf('verification') > -1) {
+                  dataForm.append('action', 'verification_fileload');
+                }
 
                 // Собираем значения из инпутов
                 if (inputs) {
@@ -101,6 +117,11 @@
                         if (inputField.checked) {
                           formData[`${nameInput}`].push(valueInput);
                         }
+                      } else if (inputField.type === 'file') {
+                        //console.log(inputField.files);
+                        $.each(inputField.files, function (key, value) {
+                          dataForm.append(key, value);
+                        });
                       } else {
                         formData[`${nameInput}`] = valueInput;
                       }
@@ -120,19 +141,8 @@
                   });
                 }
 
-                /*
-                  *** Префиксы (prefix) ***
-                  *************************
-
-                  --- data-prefix="" в тегах <form>
-                */
-                let prefix = '';
-                if (PREFIX_FORM !== '' && PREFIX_FORM && PREFIX_FORM !== undefined) {
-                  prefix = `-${PREFIX_FORM}`;
-                }
-
                 /***** START Actions AJAX *****/
-                if ( ID_FORM.indexOf('login') ) {
+                if ( ID_FORM.indexOf('login') > -1 ) {
                   // Логирование
                   if (prefix.indexOf('signin') > -1) {
                     // Ф-я логирования
@@ -158,7 +168,7 @@
                   }
                 }
 
-                if ( ID_FORM.indexOf('friends') ) {
+                if ( ID_FORM.indexOf('friends') > -1) {
                   // Друзья - Добавление
                   if (prefix.indexOf('add') > -1) {
                     // Ф-я добавления в друзья
@@ -192,7 +202,7 @@
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
                   // Логин
-                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1) {
+                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1  || prefix.indexOf('verification') > -1) {
                     if (popupMessage) {
                       popupMessage.innerHTML = '';
                     }
@@ -222,13 +232,12 @@
 
                 // Обработчик успешной отправки
                 var onSuccess = (response) => {
-                  if (ID_FORM.indexOf('login')) {
+                  if ( ID_FORM.indexOf('login') > -1 ) {
                     // Логин
                     if (prefix.indexOf('signin') > -1) {
                       if (response.data.loggedin === true) {
                         document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
                       } else {
-                        console.log(response.data.message);
                         if (popupMessage) {
                           popupMessage.innerHTML = response.data.message;
 
@@ -275,8 +284,27 @@
                     }
                   }
 
+                  // Верификация
+                  if (prefix.indexOf('verification') > -1) {
+                    if (response.success === false) {
+                      if (popupMessage) {
+                        popupMessage.innerHTML = response.data;
+
+                        setTimeout(function () {
+                          popupMessage.innerHTML = '';
+                        }, 2000);
+                      }
+
+                      return;
+                    }
+                  }
+
                   // Получаю шаблон
                   let templateSuccess = document.querySelector(`#${ID_FORM}-success${prefix}`);
+
+                  if (!templateSuccess) {
+                    templateSuccess = document.querySelector(`#${ID_FORM}-success`);
+                  }
 
                   if (wrapperFormNode && templateSuccess) {
                     wrapperFormNode.innerHTML = '';
@@ -312,7 +340,7 @@
                     }
                   }
 
-                  if (ID_FORM.indexOf('login')) {
+                  if ( ID_FORM.indexOf('login') > -1 ) {
                     // Восстановление
                     if (prefix.indexOf('forgot') > -1) {
                       if (response.data.retrieve_password == true) {
@@ -335,7 +363,7 @@
 
                   console.log('Успех: ', response);
 
-                  if (ID_FORM.indexOf('friends')) {
+                  if ( ID_FORM.indexOf('friends') > -1 ) {
                     // Для теста. Пока не подключено обновление контента
                     setTimeout(function () {
                       // Перезагрузить текущую страницу
@@ -370,22 +398,49 @@
                 // Nonce
                 formData['security'] = earena_2_ajax.nonce;
 
-                console.log(formData);
+                // formData - обычный объект
+                // dataForm - потомок FormData() [для передачи файлов]
+                console.log(formData, dataForm);
 
-                $.ajax({
-                  url: earena_2_ajax.url,
-                  data: formData,
-                  type: 'POST',
-                  beforeSend: (response) => {
-                    onBeforeSend(response.readyState);
-                  },
-                  success: (response) => {
-                    onSuccess(response);
-                  },
-                  error: (response) => {
-                    onError(response);
-                  }
-                });
+                if (prefix.indexOf('verification') > -1) {
+                  // Для передачи файлов
+                  $.ajax({
+                    url: earena_2_ajax.url,
+                    type: 'POST',
+                    data: dataForm,
+                    cache: false,
+                    dataType: 'json',
+                    // отключаем обработку передаваемых данных, пусть передаются как есть
+                    processData: false,
+                    // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+                    contentType: false,
+                    beforeSend: (response) => {
+                      onBeforeSend(response.readyState);
+                    },
+                    success: (response) => {
+                      onSuccess(response);
+                    },
+                    error: (response) => {
+                      onError(response);
+                    }
+                  });
+                } else {
+                  // Обычный запрос (без передачи файлов)
+                  $.ajax({
+                    url: earena_2_ajax.url,
+                    data: formData,
+                    type: 'POST',
+                    beforeSend: (response) => {
+                      onBeforeSend(response.readyState);
+                    },
+                    success: (response) => {
+                      onSuccess(response);
+                    },
+                    error: (response) => {
+                      onError(response);
+                    }
+                  });
+                }
               });
             };
 
@@ -416,7 +471,7 @@
               // Проверка инпутов
               if (allInputs) {
                 allInputs.forEach((item, i) => {
-                  if (item.type !== 'submit') {
+                  if (item.type !== 'submit' && item.type !== 'file') {
                     item.autocomplete = 'off';
 
                     // Проверка по возрасту

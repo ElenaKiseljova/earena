@@ -137,19 +137,24 @@
                           'thread_id' => $thread_id,
                           'content' => $message,
                       ));
-            wc_add_notice(__('Ваша заявка отправлена в обработку', 'earena_2'), 'success');
+
+                      wc_add_notice(__('Ваша заявка отправлена в обработку', 'earena_2'), 'success');
   //                    echo '<div style="text-align:center;"><p class="reply">' . __('Ваша заявка отправлена в обработку', 'earena_2') . '</p></div>';
   //                    $total_withdraw = (float)get_site_option('total_withdraw');
   //                    update_site_option('total_withdraw', $total_withdraw + $amount);
+
+                    WC()->session->set( 'withdrawal','success' );
+                    WC()->session->set( 'withdrawal_amount', $amount );
                   } else {
+                    WC()->session->set( 'withdrawal' ,'not success' );
                               if (isset($_POST['woo_wallet_balance_to_withdraw']) && empty($amount)) {
                       wc_add_notice(__('Укажите сумму', 'earena_2'), 'notice');
           //                        echo '<p style="text-align:center;">' . __('Укажите сумму', 'earena_2') . '</p>';
                               } elseif (isset($_POST['woo_wallet_balance_to_withdraw']) && $amount > $max_amount) {
-                      wc_add_notice(__('Сумма больше максимальной', 'earena_2'), 'error');
+                      wc_add_notice(__('Сумма больше доступной на Вашем счету', 'earena_2'), 'error');
           //                       echo '<p style="text-align:center;">' . __('Сумма больше максимальной', 'earena_2') . '</p>';
                               } elseif (isset($_POST['woo_wallet_balance_to_withdraw']) && $amount < $min_amount) {
-                      wc_add_notice(__('Сумма меньше минимальной', 'earena_2'), 'error');
+                      wc_add_notice(__('Сумма меньше минимальной суммы для вывода', 'earena_2'), 'error');
           //                       echo '<p style="text-align:center;">' . __('Сумма меньше минимальной', 'earena_2') . '</p>';
                               }
                   }
@@ -532,5 +537,17 @@
       }
 
       return ['success' => 0, 'message' => __('Ошибка', 'earena_2')];
+  }
+
+  add_action( 'woo_wallet_transfer_amount_debited', 'earena_2_set_session_woo_wallet', 10 );
+  function earena_2_set_session_woo_wallet () {
+    if (isset($_POST['woo_wallet_transfer_user_id'])) {
+      WC()->session->set( 'transaction_user_id', $_POST['woo_wallet_transfer_user_id'] );
+    }
+    if (isset($_POST['woo_wallet_transfer_amount'])) {
+      WC()->session->set( 'transaction_amount', $_POST['woo_wallet_transfer_amount'] );
+    }
+
+    WC()->session->set( 'transaction', 'success' );
   }
 ?>

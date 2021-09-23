@@ -4,7 +4,6 @@
 }
 
 .toggles {
-
 }
 
 .toggles__header {
@@ -18,10 +17,15 @@
 
   background-color: #colors[dark];
 
-  &--account {
+  &--account,
+  &--admin {
     margin-bottom: 50px;
 
     background-color: #colors[dark_light];
+
+    border-radius: 0 0 5px 5px;
+
+    overflow: hidden;
   }
 
   @media (max-width: @mobile) {

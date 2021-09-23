@@ -75,24 +75,29 @@
           // Попап Матча
           earena_2_get_popup( 'match' );
 
-          // Попап Игры
-          earena_2_get_popup( 'game' );
+          if ( earena_2_current_page('purse') || earena_2_current_page('wallet') ) {
+            // Попап Кошелёк
+            earena_2_get_popup( 'purse' );
+          }
 
-          // Попап Кошелёк
-          earena_2_get_popup( 'purse' );
+          if ( earena_2_current_page('profile') && is_user_logged_in() && !is_ea_admin() ) {
+            // Попап Стрим
+            earena_2_get_popup( 'stream' );
 
-          // Попап Удалить друга
-          earena_2_get_popup( 'friends' );
+            // Попап Верификация
+            earena_2_get_popup( 'verification' );
 
-          // Попап Удалить историю переписки
-          earena_2_get_popup( 'history' );
+            // Попап Удалить историю переписки
+            earena_2_get_popup( 'history' );
 
-          // Попап Стрим
-          earena_2_get_popup( 'stream' );
+            // Попап Игры
+            earena_2_get_popup( 'game' );
+          }
 
-          // Попап Верификация
-          // Кнопка верификации в index.php. Т.к. не нашла: где она в макете и что попап вызвать должно?
-          earena_2_get_popup( 'verification' );
+          if ( (earena_2_current_page('profile') || earena_2_current_page('user')) && is_user_logged_in() && !is_ea_admin() ) {
+            // Попап управления Друзьями
+            earena_2_get_popup( 'friends' );
+          }
         }
       ?>
 

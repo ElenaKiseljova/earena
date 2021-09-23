@@ -52,8 +52,11 @@
             <div class="section__header-right section__header-right--wallet">
               <div class="tabs tabs--wallet">
                 <?php foreach ($menu_items as $item => $menu_item) : ?>
+                  <?php
+                    $type_operation = ($item === 'top_up') ? 'add' : $item;
+                  ?>
                     <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                      <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                      <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <?php do_action('woo_wallet_menu_items'); ?>
@@ -75,7 +78,7 @@
                       $min_amount = woo_wallet()->settings_api->get_option( 'min_topup_amount', '_wallet_settings_general', 0 );
                       $max_amount = woo_wallet()->settings_api->get_option( 'max_topup_amount', '_wallet_settings_general', '' );
                       ?>
-                      <input class="form__field form__field--wallet woo-wallet-balance-to-add" type="number" step="0.01" min="<?php echo $min_amount; ?>" max="<?php echo $max_amount; ?>" name="woo_wallet_balance_to_add" id="woo_wallet_balance_to_add" placeholder="<?php _e( 'Сумма ($)', 'earena_2' ); ?>" required="" />
+                      <input class="form__field form__field--wallet woo-wallet-balance-to-add" type="number" step="0.01" min="<?php echo $min_amount; ?>" max="<?php echo $max_amount; ?>" name="woo_wallet_balance_to_add" id="woo_wallet_balance_to_add" placeholder="<?php _e( 'Сумма ($)', 'earena_2' ); ?>" required />
                     </div></div></div>
                 <p class="form__text form__text--wallet">
                   <?php _e( 'Укажите сумму для пополнения.<br>Вы сможете вывести свои внесенные средства в любой момент.', 'earena_2' ); ?>
@@ -161,8 +164,11 @@
                           <div class="section__header-right section__header-right--wallet">
                             <div class="tabs tabs--wallet">
                               <?php foreach ($menu_items as $item => $menu_item) : ?>
+                                <?php
+                                  $type_operation = ($item === 'top_up') ? 'add' : $item;
+                                ?>
                                   <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                                    <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                                    <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                                   <?php endif; ?>
                               <?php endforeach; ?>
                               <?php do_action('woo_wallet_menu_items'); ?>
@@ -180,7 +186,7 @@
                                   <div class="form__row form__row--wallet"><input type="number" step="0.1" min="<?php echo $min_amount; ?>"
                                            <?=$max_amount>$min_amount ? 'max="'.$max_amount.'"' : ''; ?> name="woo_wallet_balance_to_withdraw"
                                            id="woo_wallet_balance_to_withdraw" class="form__field form__field--wallet woo-wallet-balance-to-withdraw"
-                                           required="" placeholder="<?php _e('Сумма ($)', 'earena_2'); ?>"/></div></div>
+                                           required placeholder="<?php _e('Сумма ($)', 'earena_2'); ?>"/></div></div>
                               </div>
                               <p class="form__text form__text--wallet">
                                 <?php _e( 'Минимальная сумма для вывода', 'earena_2'); ?>
@@ -251,8 +257,11 @@
               <div class="section__header-right section__header-right--wallet">
                 <div class="tabs tabs--wallet">
                   <?php foreach ($menu_items as $item => $menu_item) : ?>
+                    <?php
+                      $type_operation = ($item === 'top_up') ? 'add' : $item;
+                    ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>
@@ -392,8 +401,11 @@
               <div class="section__header-right section__header-right--wallet">
                 <div class="tabs tabs--wallet">
                   <?php foreach ($menu_items as $item => $menu_item) : ?>
+                    <?php
+                      $type_operation = ($item === 'top_up') ? 'add' : $item;
+                    ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?= earena_2_current_page($menu_item['url']) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>
@@ -410,7 +422,7 @@
                   <div class="form__left form__left--grid">
                     <div class="form__row-wrapper form__row-wrapper--grid">
                       <div class="form__row form__row--transaction">
-                        <label for="woo_wallet_transfer_user_id"><?php _e( 'Email игрока', 'earena_2' ); ?></label><select name="woo_wallet_transfer_user_id" class="woo-wallet-select2" required=""></select>
+                        <label for="woo_wallet_transfer_user_id"><?php _e( 'Email игрока', 'earena_2' ); ?></label><select name="woo_wallet_transfer_user_id" class="woo-wallet-select2" required></select>
                       </div>
                     </div>
                     <div class="form__row-wrapper form__row-wrapper--grid">
@@ -419,9 +431,8 @@
                           step="0.1"
                           min="<?php echo woo_wallet()->settings_api->get_option('min_transfer_amount', '_wallet_settings_general', 0); ?>"
               						<?=balance()>=(float)woo_wallet()->settings_api->get_option('min_transfer_amount', '_wallet_settings_general', 0)*105/100 ? 'max="' . floor(balance()*10000/105)/100 . '"' : ''; ?>
-                          name="woo_wallet_transfer_amount" required="" placeholder="<?php _e('Сумма ($)', 'earena_2'); ?>" id="ea-transfer-amount">
+                          name="woo_wallet_transfer_amount" required placeholder="<?php _e('Сумма ($)', 'earena_2'); ?>" id="ea-transfer-amount">
                       </div>
-                      <span class="form__error"><?php _e( 'Недостаточно средств <br>Необходимо иметь на счету', 'earena_2' ); ?> $5 050</span>
                     </div>
                     <div class="form__row-wrapper form__row-wrapper--grid">
                       <div class="form__row form__row--message-transaction">
@@ -445,18 +456,17 @@
           <script>
             (function ($) {
               const transferTotal = function () {
-                  $('.ef-wallet #ea-transfer-amount').on('change click keyup blur select', function () {
+                  $('#ea-transfer-amount').on('change click keyup blur select', function (evt) {
                       var amount = Number($(this).val());
                       var total = Math.round(amount.toFixed(3) * 105) / 100;
-                      if (total == 0) {
-                        result = '--'
-                      } else {
-                        result = '<strong>$'+total+'</strong>'
+                      console.log(evt.target.max);
+                      if (total > 0 && !evt.target.validity.valid) {
+                        $(this).closest('.form__row').addClass('invalid');
+                        $(this).closest('.form__row').after('<span class="form__error"><?php _e( 'Недостаточно средств <br>Необходимо иметь на счету', 'earena_2' ); ?> $' + total + '</span>');
+                      } else if (evt.target.validity.valid) {
+                        $(this).closest('.form__row').removeClass('invalid');
                       }
-                      //var total = amount * 1.05
-                      //console.log(result);
-                      $('.ef-wallet #ea-transfer-amount-with-comission').html(result);
-                  })
+                  });
               }
               transferTotal();
             })(jQuery);

@@ -151,6 +151,14 @@
     		echo __( 'Нет запросов', 'earena_2' );
     	} else {
     		foreach ($requests as $user_id) {
+          $user_friend = get_user_by( 'id', $user_id );
+          $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
+
+          $country_friend = mb_strtolower($user_friend->get('country'));
+
+          if (!$country_friend) {
+            $country_friend = ICL_LANGUAGE_CODE;
+          }
           ?>
             <li class="section__item section__item--col-1 section__item--verification">
               <div class="user user--friends-page">

@@ -80,12 +80,9 @@
             earena_2_get_popup( 'purse' );
           }
 
-          if ( earena_2_current_page('profile') && is_user_logged_in() && !is_ea_admin() ) {
+          if ( earena_2_current_page('profile') && is_user_logged_in() ) {
             // Попап Стрим
             earena_2_get_popup( 'stream' );
-
-            // Попап Верификация
-            earena_2_get_popup( 'verification' );
 
             // Попап Удалить историю переписки
             earena_2_get_popup( 'history' );
@@ -97,6 +94,11 @@
           if ( (earena_2_current_page('profile') || earena_2_current_page('user')) && is_user_logged_in() && !is_ea_admin() ) {
             // Попап управления Друзьями
             earena_2_get_popup( 'friends' );
+          }
+
+          if ( (earena_2_current_page('profile') || earena_2_current_page('admin')) && is_user_logged_in() ) {
+            // Попап Верификация
+            earena_2_get_popup( 'verification' );
           }
         }
       ?>

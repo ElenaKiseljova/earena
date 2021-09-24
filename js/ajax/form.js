@@ -94,7 +94,7 @@
                 let formData = {};
                 let dataForm = new FormData();
 
-                if (prefix.indexOf('verification') > -1) {
+                if ( (ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1) ) {
                   dataForm.append('action', 'verification_fileload');
                 }
 
@@ -117,7 +117,7 @@
                         if (inputField.checked) {
                           formData[`${nameInput}`].push(valueInput);
                         }
-                      } else if (inputField.type === 'file') {
+                      } else if (inputField.type === 'file' && dataForm) {
                         //console.log(inputField.files);
                         $.each(inputField.files, function (key, value) {
                           dataForm.append(key, value);
@@ -194,15 +194,31 @@
                   }
                 }
 
+                /**** ADMIN VERIFICATION ****/
+                if ( ID_FORM.indexOf('verification') > -1) {
+                  // Подтверждение верификации
+                  if (prefix.indexOf('apply') > -1) {
+                    // Ф-я подтверждения верификации
+                    formData['action'] = 'earena_2_apply_verification_request';
+                  }
+
+                  // Отказ в верификации
+                  if (prefix.indexOf('reject') > -1) {
+                    // Ф-я отказа в верификации
+                    formData['action'] = 'earena_2_remove_verification_request';
+                  }
+                }
+
                 // Popup message
-                let popupMessage = FORM_CHECK.closest('.popup').querySelector('.popup__ajax-message');
+                let popup = FORM_CHECK.closest('.popup');
+                let popupMessage = popup.querySelector('.popup__ajax-message');
 
                 /***** END Actions AJAX *****/
 
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
                   // Логин
-                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1  || prefix.indexOf('verification') > -1) {
+                  if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1  || prefix.indexOf('request') > -1) {
                     if (popupMessage) {
                       popupMessage.innerHTML = '';
                     }
@@ -285,17 +301,19 @@
                   }
 
                   // Верификация
-                  if (prefix.indexOf('verification') > -1) {
-                    if (response.success === false) {
-                      if (popupMessage) {
-                        popupMessage.innerHTML = response.data;
+                  if ( ID_FORM.indexOf('verification') > -1 ) {
+                    if (prefix.indexOf('request') > -1) {
+                      if (response.success === false) {
+                        if (popupMessage) {
+                          popupMessage.innerHTML = response.data;
 
-                        setTimeout(function () {
-                          popupMessage.innerHTML = '';
-                        }, 2000);
+                          setTimeout(function () {
+                            popupMessage.innerHTML = '';
+                          }, 2000);
+                        }
+
+                        return;
                       }
-
-                      return;
                     }
                   }
 
@@ -343,11 +361,14 @@
                   if ( ID_FORM.indexOf('login') > -1 ) {
                     // Восстановление
                     if (prefix.indexOf('forgot') > -1) {
+                      let popupInformation = popup.querySelector('.popup__information--template');
                       if (response.data.retrieve_password == true) {
-                        $('.popup__information--template').html(response.data.message);
+                        popupInformation.innerHTML = response.data.message;
+
                         console.log('Успех', response.data.message);
                       } else {
-                        $('.popup__information--template').html(response.data.message);
+                        popupInformation.innerHTML = response.data.message;
+
                         console.log('Ошибка', response.data.message);
                       }
                     }
@@ -358,18 +379,31 @@
                     }
                   }
 
+                  // Верификация (принять/отклонить) или Друзья (принять/отклонить/удалить)
+                  if ( (ID_FORM.indexOf('verification') > -1 ) || ID_FORM.indexOf('friends') > -1) {
+                    if ((prefix.indexOf('apply') > -1) || (prefix.indexOf('reject') > -1) || (prefix.indexOf('delete') > -1)) {
+                      response = JSON.parse(response);
+
+                      if (response.success === 1) {
+                        window.popup.userInfo(false, popup);
+
+                        // Для теста. Пока не подключено обновление контента
+                        setTimeout(function () {
+                          // Перезагрузить текущую страницу
+                          document.location.reload();
+                        }, 300);
+                      } else {
+                        let popupInformation = popup.querySelector('.popup__information--template');
+
+                        popupInformation.innerHTML = response.content;
+                      }
+                    }
+                  }
+
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();
 
                   console.log('Успех: ', response);
-
-                  if ( ID_FORM.indexOf('friends') > -1 ) {
-                    // Для теста. Пока не подключено обновление контента
-                    setTimeout(function () {
-                      // Перезагрузить текущую страницу
-                      document.location.reload();
-                    }, 300);
-                  }
                 };
 
                 // Обработчик не успешной отправки
@@ -402,7 +436,7 @@
                 // dataForm - потомок FormData() [для передачи файлов]
                 console.log(formData, dataForm);
 
-                if (prefix.indexOf('verification') > -1) {
+                if ((ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) {
                   // Для передачи файлов
                   $.ajax({
                     url: earena_2_ajax.url,
@@ -450,7 +484,9 @@
 
               if (formClosePopups) {
                 formClosePopups.forEach((formClosePopup, i) => {
-                  formClosePopup.addEventListener('click', () => {
+                  formClosePopup.addEventListener('click', (evt) => {
+                    evt.preventDefault();
+
                     window.popup.closePopup();
                   });
                 });

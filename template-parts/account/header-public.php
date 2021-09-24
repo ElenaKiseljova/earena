@@ -33,10 +33,10 @@
 <header class="account__header <?php if ($vip && !$blocked) {echo 'account__header--vip';} else if ($blocked) {echo 'account__header--blocked';} ?>">
   <div class="account__left">
     <div class="user user--account">
-      <div class="user__image-wrapper <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
+      <div class="user__image-wrapper user__image-wrapper--account <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
         <?php earena_2_verification_html($verified, 'public'); ?>
 
-        <div class="user__avatar user__avatar--account account__image--public">
+        <div class="user__avatar user__avatar--account">
           <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
         </div>
       </div>
@@ -62,7 +62,7 @@
           </div>
         <?php endif; ?>
 
-        <div class="user__rating user__rating--account">
+        <div class="user__rating user__rating--account user__rating--account-public">
           <span>
             <?php _e( 'Рейтинг', 'earena_2' ); ?>
           </span>: <?= rating(); ?>

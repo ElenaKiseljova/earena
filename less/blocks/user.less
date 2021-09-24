@@ -62,13 +62,18 @@
   &--account,
   &--friends,
   &--friends-page,
-  &--invited  {
+  &--invited,
+  &--verification  {
     display: flex;
 
     justify-content: flex-start;
     align-items: center;
 
     width: 100%;
+  }
+
+  &--verification {
+    justify-content: space-between;
   }
 
   &--friends-page,
@@ -122,11 +127,16 @@
 
     &--friends-page,
     &--invited,
-    &--messages {
+    &--messages,
+    &--verification {
       flex-direction: column;
 
       justify-content: flex-start;
       align-items: flex-start;
+    }
+
+    &--account {
+      flex-direction: column;
     }
   }
 }
@@ -149,12 +159,32 @@
     margin-right: 20px;
   }
 
+  &--verification {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    margin-right: 146 / 1156 * 100%;
+    margin-left: auto;
+  }
+
   @media (max-width: @mobile) {
     &--messages {
       width: 100%;
 
       margin-left: 0;
       margin-right: 0;
+      margin-bottom: 20px;
+    }
+
+    &--verification {
+      align-items: flex-start;
+
+      margin-left: 0;
+      margin-right: auto;
       margin-bottom: 20px;
     }
   }
@@ -174,10 +204,22 @@
     width: 260 / ( 1156 - 40 ) * 100%;
   }
 
+  &--new-request {
+    max-width: calc(100% - 240px);
+  }
+
+  &--verification {
+    width: auto;
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
 
     margin-bottom: 20px;
+
+    &--new-request {
+      max-width: none;
+    }
   }
 }
 
@@ -198,7 +240,8 @@
     width: 228 / ( 568 - 40 ) * 100%;
   }
 
-  &--messages {
+  &--messages,
+  &--verification {
     flex-direction: column;
 
     justify-content: space-between;
@@ -295,6 +338,10 @@
         width: 18px;
         height: 18px;
       }
+    }
+
+    &--account {
+      margin-bottom: 30px;
     }
   }
 }
@@ -405,7 +452,7 @@
 
     &--account {
       img {
-        width: 60px;
+        width: 100px;
         height: auto;
       }
     }
@@ -484,6 +531,8 @@
 
   &--friends {
     justify-content: flex-start;
+
+    max-width: calc(100% - 84px);
   }
 
   &--admin {
@@ -493,6 +542,10 @@
   @media (max-width: @mobile) {
     &--header {
       margin-right: 0;
+    }
+
+    &--account {
+      max-width: 100%;
     }
   }
 }
@@ -717,11 +770,13 @@
 
   &--account {
     margin-left: 10px;
+    &-public {
+      margin-left: 0;
+    }
   }
 
   @media (max-width: @mobile) {
     &--account {
-      margin-left: 0;
       margin-bottom: 10px;
     }
   }
@@ -885,7 +940,8 @@
 }
 
 .user__button {
-  &--friends {
+  &--friends,
+  &--verification {
     width: 100%;
     min-width: 100px;
 
@@ -901,7 +957,8 @@
   }
 
   @media (max-width: @mobile) {
-    &--new-request {
+    &--new-request,
+    &--friends {
       width: 48%;
 
       &:not(:last-of-type) {
@@ -952,4 +1009,15 @@
   border-radius: 50%;
 
   background-color: #colors[accent];
+}
+
+.user__link {
+  &--verification {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 189.5%;
+    /* or 23px */
+
+    color: #colors[link];
+  }
 }

@@ -391,7 +391,7 @@
         </span>
       </span>
     <?php elseif (!$verification && $type_profile === 'private') : ?>
-      <button class="verify openpopup" data-popup="verification" type="button" name="verification">
+      <button class="verify openpopup" data-popup="verification" type="button" name="request">
         <span class="visually-hidden">
           <?php _e( 'Верификация', 'earena_2' ); ?>
         </span>

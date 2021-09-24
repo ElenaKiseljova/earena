@@ -1,5 +1,19 @@
 <?php
   /* ==============================================
+  ********  //Отправка сообщений пользователю о р-тах
+  =============================================== */
+  function ea_admin_tech_msg($message, $thread_id)
+  {
+      $admin_id = (int)get_site_option('ea_admin_id', 27);
+      $msg = array(
+          'sender_id' => $admin_id,
+          'thread_id' => $thread_id,
+          'content' => $message,
+      );
+      return ea_messages_new_message($msg);
+  }
+
+  /* ==============================================
   ********  //Поиск пользователей
   =============================================== */
   add_action('wp_ajax_earena_2_get_users', 'earena_2_get_users');
@@ -89,10 +103,10 @@
   ********  //Подтверждение верификации
   =============================================== */
 
-  add_action('wp_ajax_ea_apply_verification_request', 'ea_apply_verification_request_callback');
-  function ea_apply_verification_request_callback()
+  add_action('wp_ajax_earena_2_apply_verification_request', 'earena_2_apply_verification_request_callback');
+  function earena_2_apply_verification_request_callback()
   {
-      check_ajax_referer('ea_functions_nonce', 'security');
+      check_ajax_referer('form.js_nonce', 'security');
       $ea_user = $_POST['user'];
       if (update_user_meta($ea_user, 'bp_verified_member', 1)) {
           update_user_meta($ea_user, 'verification_request', 0);
@@ -117,10 +131,10 @@
   ********  //Отклонение верификации
   =============================================== */
 
-  add_action('wp_ajax_ea_remove_verification_request', 'ea_remove_verification_request_callback');
-  function ea_remove_verification_request_callback()
+  add_action('wp_ajax_earena_2_remove_verification_request', 'earena_2_remove_verification_request_callback');
+  function earena_2_remove_verification_request_callback()
   {
-      check_ajax_referer('ea_functions_nonce', __('security', 'earena'));
+      check_ajax_referer('form.js_nonce', __('security', 'earena'));
       $ea_user = $_POST['user'];
       if (update_user_meta($ea_user, 'verification_request', 0)) {
           update_user_meta($ea_user, 'bp_verified_member', 0);
@@ -145,6 +159,27 @@
   ********  //Разметка списка запросов на верификацию
   =============================================== */
 
+  function earena_2_only_filename( $file_path, $exts )
+  {
+      $onlyfilename = $file_path;
+
+      if( is_string( $exts ) )
+      {
+          if ( strpos( $onlyfilename, $exts, 0 ) !== false )
+          $onlyfilename = str_replace( $exts, "", $onlyfilename );
+      }
+      else if ( is_array( $exts ) )
+      {
+          // works with PHP version <= 5.x.x
+          foreach( $exts as $KEY => $ext )
+          {
+              $onlyfilename = str_replace( $ext, "", $onlyfilename );
+          }
+      }
+
+      return $onlyfilename ;
+  }
+
   function earena_2_admin_verification_requests_html () {
     	$requests = ea_get_verification_requests();
     	if ( empty($requests) ) {
@@ -161,12 +196,12 @@
           }
           ?>
             <li class="section__item section__item--col-1 section__item--verification">
-              <div class="user user--friends-page">
-                <div class="user__left">
+              <div class="user user--verification">
+                <div class="user__left user__left--verification">
                   <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_friend) { echo 'user__image-wrapper--verified'; } ?>">
                     <?php earena_2_verification_html($verified_friend, 'public'); ?>
 
-                    <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
+                    <a class="user__avatar user__avatar--friends" href="<?= ea_user_link($user_id); ?>">
                       <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
                     </a>
                   </div>
@@ -201,24 +236,29 @@
                     </div>
                   </div>
                 </div>
-                <div class="user__center">
+                <div class="user__center user__center--verification">
                   <?php
                     $files = get_user_meta( $user_id, 'verification_files', true );
                     foreach ($files as $file){
                       $parsed = parse_url( wp_get_attachment_url( $file ) );
                       $url    = dirname( $parsed['path'] ) . '/' . rawurlencode( basename( $parsed['path'] ) );
-                      //echo '<a href="'.$url.'">'.rawurlencode( basename( $parsed['path'] ) ).'</a>';
-                      echo "<a href=\"$url\"><img class=\"verification_image\" style=\"border-radius:unset;max-height:50px;max-width:100px;\" src=\"$url\"></a> ";
+
+                      $extensions = ['.jpg', '.png', '.jpeg', '.pjpeg'];
+
+                      // Вариант без картинки
+                      echo '<a class="user__link user__link--verification" href="' . $url . '">' . earena_2_only_filename(rawurlencode( basename( $parsed['path'] ) ), $extensions) . '</a>';
+                      // Вариант с картинкой
+                      //echo "<a href=\"$url\"><img class=\"verification_image\" style=\"border-radius:unset;max-height:50px;max-width:100px;\" src=\"$url\"></a> ";
                     }
                   ?>
                 </div>
-                <div class="user__right user__right--new-request">
-                  <button class="user__button user__button--verification-apply button button--green openpopup" data-popup="admin-verification" data-user="<?= $user_id; ?>" type="button" name="apply">
+                <div class="user__right user__right--verification">
+                  <button class="user__button user__button--verification button button--green openpopup" data-popup="verification" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="apply">
                     <span>
                       <?php _e( 'Подтвердить', 'earena_2' ); ?>
                     </span>
                   </button>
-                  <button class="user__button user__button--verification-reject button button--gray openpopup" data-popup="admin-verification" data-user="<?= $user_id; ?>" type="button" name="reject">
+                  <button class="user__button user__button--verification button button--gray openpopup" data-popup="verification" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="reject">
                     <span>
                       <?php _e( 'Отклонить', 'earena_2' ); ?>
                     </span>

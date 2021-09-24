@@ -3,6 +3,11 @@
 (function () {
   document.addEventListener("DOMContentLoaded", function () {
     try {
+      // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
+      var userVerificationId,
+        userVerificationName;
+
+      // Более точная высота экрана
       let deviceHeight = window.innerHeight && document.documentElement.clientHeight ?
                         Math.min(window.innerHeight, document.documentElement.clientHeight) :
                         window.innerHeight ||
@@ -20,6 +25,33 @@
 
       // Экспортируемый объект
       window.popup = {
+        userInfo : function (button = false, popup) {
+          console.log('window.popup.userInfo', button, popup);
+          if (button) {
+            if (button.dataset.userId && button.dataset.userName) {
+              userVerificationId = button.dataset.userId;
+              userVerificationName = button.dataset.userName;
+            }
+          }
+
+          if (popup && userVerificationId && userVerificationName) {
+            popup.querySelectorAll('.user-name').forEach((userNameField, i) => {
+              if (userNameField.tagName === 'INPUT') {
+                userNameField.value = userVerificationName;
+              } else {
+                userNameField.textContent = userVerificationName;
+              }
+            });
+
+            popup.querySelectorAll('.user-id').forEach((userIdField, i) => {
+              if (userIdField.tagName === 'INPUT') {
+                userIdField.value = userVerificationId;
+              } else {
+                userIdField.textContent = userVerificationId;
+              }
+            });
+          }
+        },
         // Закрытие попапа
         closePopup : function () {
           // Все попапы
@@ -246,8 +278,13 @@
         }
 
         if (prefix === 'verification') {
-          window.files(popup);
+          if (typePopup === 'request') {
+            window.files(popup);
+          }
         }
+
+        // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)
+        window.popup.userInfo(button, popup);
       };
 
       // Все кнопки, которые открывают попапы

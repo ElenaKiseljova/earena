@@ -1,9 +1,3 @@
-<?php
-  global $earena_2_friend_id;
-
-  $earena_2_friend_name = get_user_meta($earena_2_friend_id, 'nickname', true);
-?>
-
 <!-- Для переключения состояния - добавляется active класс  -->
 <div class="popup popup--friends">
   <div class="popup__template popup__template--friends" id="friends-popup">
@@ -26,15 +20,12 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Игроку %s будет отправлен Ваш запрос на добавление в друзья.', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Игроку <span class="user-name"></span> будет отправлен Ваш запрос на добавление в друзья.', 'earena_2' );
         ?>
       </div>
       <div class="popup__ajax-message"></div>
       <form class="form" action="" method="post" data-prefix="add" id="form-friends">
-        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+        <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
@@ -57,15 +48,12 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Вы уверены, что хотите удалить <br> из друзей игрока %s? ', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Вы уверены, что хотите удалить <br> из друзей игрока <span class="user-name"></span>?', 'earena_2' );
         ?>
       </div>
       <div class="popup__ajax-message"></div>
       <form class="form" action="" method="post" data-prefix="delete" id="form-friends">
-        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+        <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray">
@@ -88,15 +76,12 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Игрок %s отправил Вам запрос на добавление в друзья.', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Игрок <span class="user-name"></span> отправил Вам запрос на добавление в друзья.', 'earena_2' );
         ?>
       </div>
       <div class="popup__ajax-message"></div>
       <form class="form" action="" method="post" data-prefix="apply" id="form-friends">
-        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+        <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
@@ -119,15 +104,12 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Игрок %s отправил Вам запрос на добавление в друзья. <br> Вы хотите его отклонить?', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Игрок <span class="user-name"></span> отправил Вам запрос на добавление в друзья. <br> Вы хотите его отклонить?', 'earena_2' );
         ?>
       </div>
       <div class="popup__ajax-message"></div>
       <form class="form" action="" method="post" data-prefix="reject" id="form-friends">
-        <input type="hidden" name="user" value="<?= $earena_2_friend_id; ?>">
+        <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
@@ -152,10 +134,7 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Вы успешно удалили из друзей игрока %s', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Вы успешно удалили из друзей игрока <span class="user-name"></span>', 'earena_2' );
         ?>
       </div>
 
@@ -172,10 +151,7 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Вы успешно отправили запрос на добавление в друзья игрока %s', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Вы успешно отправили запрос на добавление в друзья игрока <span class="user-name"></span>', 'earena_2' );
         ?>
       </div>
 
@@ -192,10 +168,7 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Вы успешно добавили в друзья игрока %s', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Вы успешно добавили в друзья игрока <span class="user-name"></span>', 'earena_2' );
         ?>
       </div>
 
@@ -212,10 +185,7 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          echo sprintf(
-            __( 'Вы успешно отказали игроку %s в добавлении в друзья', 'earena_2' ),
-            $earena_2_friend_name
-          );
+          _e( 'Вы успешно отказали игроку <span class="user-name"></span> в добавлении в друзья', 'earena_2' );
         ?>
       </div>
 

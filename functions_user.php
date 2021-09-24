@@ -873,14 +873,11 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
 
         return $is_equal ? '' : ' d-none';
     }*/
-    global $earena_2_friend_id;
-
-    $earena_2_friend_id = $user_id;
 
     switch ($status) {
       case 'is_friend':
         ?>
-          <button class="account__friends button button--gray openpopup" data-popup="friends" type="button" name="delete">
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="delete">
             <span>
               <?php _e( 'Удалить из друзей', 'earena_2' ); ?>
             </span>
@@ -890,12 +887,12 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
 
       case 'awaiting_response':
         ?>
-          <button class="account__friends button button--green openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="apply">
+          <button class="account__friends button button--green openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="apply">
             <span>
               <?php _e( 'Добавить', 'earena_2' ); ?>
             </span>
           </button>
-          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="reject">
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="reject">
             <span>
               <?php _e( 'Отклонить', 'earena_2' ); ?>
             </span>
@@ -905,7 +902,7 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
 
       case 'not_friends':
         ?>
-          <button class="account__friends button button--gray openpopup" data-popup="friends" type="button" name="add">
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="add">
             <span>
               <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
             </span>
@@ -915,7 +912,7 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
 
       default:
         ?>
-          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="add">
+          <button class="account__friends button button--gray openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="add">
             <span>
               <?php _e( 'Добавить в друзья', 'earena_2' ); ?>
             </span>
@@ -960,7 +957,7 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
             ?>
               <li class="section__item section__item--col-2 section__item--friends section__item--new-request">
                 <div class="user user--friends-page">
-                  <div class="user__left">
+                  <div class="user__left user__left--new-request">
                     <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_friend) { echo 'user__image-wrapper--verified'; } ?>">
                       <?php earena_2_verification_html($verified_friend, 'public'); ?>
 
@@ -1003,12 +1000,12 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                     <span class="user__request">
                       <?php _e( 'Новая заявка', 'earena_2' ); ?>
                     </span>
-                    <button class="user__button user__button--friends user__button--new-request button button--green openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="apply">
+                    <button class="user__button user__button--friends user__button--new-request button button--green openpopup" data-popup="friends"  data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="apply">
                       <span>
                         <?php _e( 'Добавить', 'earena_2' ); ?>
                       </span>
                     </button>
-                    <button class="user__button user__button--friends user__button--new-request button button--gray openpopup" data-popup="friends" data-user="<?= $user_id; ?>" type="button" name="reject">
+                    <button class="user__button user__button--friends user__button--new-request button button--gray openpopup" data-popup="friends"  data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="reject">
                       <span>
                         <?php _e( 'Отклонить', 'earena_2' ); ?>
                       </span>
@@ -1081,7 +1078,7 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                       </span>
                     </a>
                     <?php if ($type_profile_page === 'private'): ?>
-                      <button class="user__button user__button--friends button button--gray openpopup" data-popup="friends" type="button" name="delete">
+                      <button class="user__button user__button--friends button button--gray openpopup" data-popup="friends" data-user-id="<?= $user_id; ?>" data-user-name="<?= get_user_meta($user_id, 'nickname', true); ?>" type="button" name="delete">
                         <span>
                           <?php _e( 'Удалить', 'earena_2' ); ?>
                         </span>

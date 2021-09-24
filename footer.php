@@ -17,12 +17,14 @@
             <?php
               get_template_part( 'template-parts/menus/footer' );
             ?>
-
-            <button class="chats chats--footer openpopup" data-popup="chats" type="button" name="chats">
+            <?php
+              /****** Кнопка вызова Общего чата закоммичена до лучших времен ******/
+            ?>
+            <!-- <button class="chats chats--footer openpopup" data-popup="chats" type="button" name="chats">
               <span>
                 <?php _e( 'Общий чат', 'earena_2' ); ?>
               </span>
-            </button>
+            </button> -->
           </div>
         </div>
         <div class="page-footer__bottom">
@@ -60,8 +62,9 @@
           Ф-я подключает нужный шаблон popup
         */
         if ( function_exists( 'earena_2_get_popup' ) ) {
+          /****** Попап Общего чата закоммичен до лучших времен ******/
           // Попап с Чатом
-          earena_2_get_popup( 'chat' );
+          //earena_2_get_popup( 'chat' );
 
           // Попап с Регистрацией/Входом
           earena_2_get_popup( 'login' );

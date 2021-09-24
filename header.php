@@ -186,7 +186,10 @@
             ?>
 
             <div class="page-header__right page-header__right--chats">
-              <button class="chats chats--header openpopup" data-popup="chats" type="button" name="chats">
+              <?php
+                /****** Кнопка вызова Общего чата закоммичена до лучших времен ******/
+              ?>
+              <!-- <button class="chats chats--header openpopup" data-popup="chats" type="button" name="chats">
                 <svg class="chats__icon chats__icon--arrow" width="20" height="20">
                   <use xlink:href="#icon-arrow-left"></use>
                 </svg>
@@ -198,7 +201,7 @@
                 <span>
                   <?php _e( 'Общий чат', 'earena_2' ); ?>
                 </span>
-              </button>
+              </button> -->
 
               <?php if (is_user_logged_in()): ?>
                 <a class="page-header__signout page-header__signout--mobile" href="<?php echo wp_logout_url(home_url()); ?>">

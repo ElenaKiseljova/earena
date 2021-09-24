@@ -3,8 +3,6 @@
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
     try {
-      let toggleCheckersFlag = false;
-
       /*
         *
         *** Ф-я переключения активного класса по клику
@@ -68,7 +66,7 @@
         },
 
         // Переключение состояния всех связанных элементов по клику на 1 из них
-        multiple: function (buttonSelector, elementSelector = false) {
+        /*multiple: function (buttonSelector, elementSelector = false) {
           // Ф-я подстановки шаблона в контейнер
           let templateReplaseFunction = (containerID, contentID) => {
             let container = document.querySelector(`#${containerID}`);
@@ -82,17 +80,6 @@
 
               // Загружаем шаблон в контейнер
               container.appendChild(cloneTemplate);
-
-              // Форма в Кошельке
-              if (document.querySelector('#form-purse')) {
-                // Перезапуск/запуск валидации формы
-                window.form({
-                  idForm: 'form-purse',
-                  selectorForTemplateReplace: '#purse-popup', // Содержимое будет очищаться при отправке и заменяться шаблонами
-                  classForAddClosestWrapperForm: false, // по умолчанию - false
-                  selectorClosestWrapperForm: false, // по умолчанию - false
-                });
-              }
 
               // Получаем кнопки открытия попапов
               let popupOpenButtons = container.querySelectorAll('.openpopup');
@@ -117,10 +104,10 @@
 
             buttons.forEach((button, i) => {
               // При загрузке страницы подставлять шаблон активного таба
-              if (button.classList.contains('active') && button.dataset.containerId && button.dataset.contentId) {
-                // Ф-я подстановки шаблона в контейнер
-                templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
-              }
+              // if (button.classList.contains('active') && button.dataset.containerId && button.dataset.contentId) {
+              //   // Ф-я подстановки шаблона в контейнер
+              //   templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
+              // }
 
               button.addEventListener('click', function () {
                 // Удаляю активные классы других кнопок/контента
@@ -138,36 +125,14 @@
                 }
 
                 // Если есть дата-атрибуты переключения Шаблонов
-                if (button.dataset.contentId && button.dataset.containerId) {
-                  // Ф-я подстановки шаблона в контейнер
-                  templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
-                }
+                // if (button.dataset.contentId && button.dataset.containerId) {
+                //   // Ф-я подстановки шаблона в контейнер
+                //   templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
+                // }
               });
             });
-
-            // Если в разметке присущи кнопки, переключающие табы, но они - вне тфбов.
-            // Им добавлен класс "togglechecker"
-            // Проверка: подвешено ли уже событие на кнопку
-            // Пример: кнопка 'Все друзья' на стр Аккаунта
-            if (!toggleCheckersFlag) {
-              let toggleCheckers = document.querySelectorAll('.togglechecker');
-
-              if (toggleCheckers) {
-                toggleCheckers.forEach((toggleChecker, i) => {
-                  toggleChecker.addEventListener('click', function () {
-                    if (toggleChecker.dataset.toggleIndex) {
-                      // Переход ко вкладке с индексом в дата-атрибуту кнопки тогл-чекера
-                      buttons[toggleChecker.dataset.toggleIndex].click();
-                    }
-                  });
-
-                  toggleCheckersFlag = true;
-                });
-
-              }
-            }
           }
-        },
+        },*/
 
         // Возможность выбора нескольких табов или таба "Все"
         several: function (buttonSelector) {
@@ -230,10 +195,10 @@
       window.toggleActive.nextElementToggle('.accordeon__button');
 
       /* Тогглы */
-      window.toggleActive.multiple('.toggles__item--tournament', '.toggles__content--tournament');
+      // window.toggleActive.multiple('.toggles__item--tournament', '.toggles__content--tournament');
 
       /* Табы ( кошелёк ) */
-      window.toggleActive.multiple('.tabs__button--purse');
+      // window.toggleActive.multiple('.tabs__button--purse');
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');

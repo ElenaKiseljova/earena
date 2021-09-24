@@ -24,9 +24,8 @@
 
   if ( !($ea_user instanceof WP_User) ) {wp_redirect( home_url('404') );exit;}
 
-  // Эта переменная используется в шаблоне toggles/account-page.php
+  // Эта переменная используется в шаблонах 'public'
   global $earena_2_user_public;
-
   $earena_2_user_public = $ea_user;
 
   //		$rating = $ea_user->get('rating');
@@ -64,6 +63,9 @@
 
   $user_stat = ea_get_user_stat($ea_user->ID);
 
+  // Эта переменная используется в шаблонах 'public'
+  global $earena_2_user_stat_public;
+  $earena_2_user_stat_public = $user_stat;
 
   // Страница Акаунта
   global $is_account_page;

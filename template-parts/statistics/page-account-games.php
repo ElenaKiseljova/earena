@@ -3,6 +3,19 @@
     Статистика игр на странице аккаунта
   */
 ?>
+<?php
+  if (earena_2_current_page('user')) {
+    // Эта переменная используется в шаблонах 'public'
+    global $earena_2_user_public;
+    $ea_user = $earena_2_user_public;
+  }
+
+  if (earena_2_current_page('profile')) {
+    // Эта переменная используется в шаблонах 'private'
+    global $earena_2_user_private;
+    $ea_user = $earena_2_user_private;
+  }
+?>
 <div class="statistics statistics--account">
   <header class="statistics__header">
     <h3 class="statistics__title statistics__title--account">

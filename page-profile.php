@@ -27,6 +27,10 @@
 
   if ( !($ea_user instanceof WP_User) ) {wp_redirect( home_url('404') );exit;}
 
+  // Эта переменная используется в шаблонах 'private'
+  global $earena_2_user_private;
+  $earena_2_user_private = $ea_user;
+
   //		$rating = $ea_user->get('rating');
   //		$month_ratings = EArena_DB::get_ea_month_ratings($ea_user->ID);
 
@@ -62,6 +66,9 @@
 
   $user_stat = ea_get_user_stat($ea_user->ID);
 
+  // Эта переменная используется в шаблонах 'private'
+  global $earena_2_user_stat_private;
+  $earena_2_user_stat_private = $user_stat;
 
   // Страница Акаунта
   global $is_account_page;

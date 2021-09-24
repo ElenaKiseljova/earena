@@ -930,7 +930,7 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
 }
 
 /* ==============================================
-********  //Друзья - Данные таблицы в профиле (может и не только)
+********  //Друзья - Данные таба Друзья в профиле
 =============================================== */
 //ea_page_profile_friends_data
 function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = 'public')
@@ -943,9 +943,6 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
     } else {
       if ($type_profile_page === 'private') {
         foreach ($requests as $user_id) {
-          global $earena_2_friend_id;
-          $earena_2_friend_id = $user_id;
-
           $user_friend = get_user_by( 'id', $user_id );
           $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
 
@@ -1018,9 +1015,6 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
       }
 
         foreach ($friends as $user_id) {
-          global $earena_2_friend_id;
-          $earena_2_friend_id = $user_id;
-
           $user_friend = get_user_by( 'id', $user_id );
           $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
 
@@ -1084,6 +1078,70 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                         </span>
                       </button>
                     <?php endif; ?>
+                  </div>
+                </div>
+              </li>
+            <?php
+        }
+    }
+}
+
+/* ==============================================
+********  //Друзья - Данные таба Провиль в профиле (публичный?)
+=============================================== */
+
+function earena_2_page_profile_public_friends_data($user_id = 0, $length = 0, $offset = 0)
+{
+    $user_id = $user_id > 0 ? $user_id : get_current_user_id();
+    if ($friends = ea_get_friend_user_ids($user_id, $length, $offset)) {
+        foreach ($friends as $user_id) {
+          $user_friend = get_user_by( 'id', $user_id );
+          $verified_friend = $user_friend->get('bp_verified_member')==1?true:false;
+
+          $country_friend = mb_strtolower($user_friend->get('country'));
+
+          if (!$country_friend) {
+            $country_friend = ICL_LANGUAGE_CODE;
+          }
+            ?>
+              <li class="statistics__item">
+                <div class="user user--friends">
+                  <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_friend) { echo 'user__image-wrapper--verified'; } else { echo 'user__image-wrapper--not-verified'; } ?>">
+                    <?php earena_2_verification_html($verified_friend, 'public'); ?>
+
+                    <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
+                      <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                    </a>
+                  </div>
+
+                  <div class="user__info user__info--friends">
+                    <a class="user__name user__name--friends" href="<?= ea_user_link($user_id); ?>">
+                      <h5>
+                        <?= get_user_meta($user_id, 'nickname', true); ?>
+                      </h5>
+                    </a>
+
+                    <div class="user__country user__country--friends">
+                      <img width="28" height="20" src="<?php echo get_template_directory_uri(); ?>/assets/img/flags/flag-<?= $country_friend; ?>.svg" alt="">
+                    </div>
+
+                    <?php if (is_online($user_id)): ?>
+                      <div class="user__status user__status--online user__status--friends">
+                        Online
+                      </div>
+                    <?php else : ?>
+                      <div class="user__status user__status--friends">
+                        <?php
+                          echo __( 'Был(а) ', 'earena_2' ) . human_time_diff( strtotime(bp_get_user_last_activity($user_id)) ).__(' назад', 'earena_2');
+                        ?>
+                      </div>
+                    <?php endif; ?>
+
+                    <div class="user__rating user__rating--friends">
+                      <span>
+                        <?php _e( 'Рейтинг', 'earena_2' ); ?>
+                      </span>: <?= earena_2_rating($user_id); ?>
+                    </div>
                   </div>
                 </div>
               </li>

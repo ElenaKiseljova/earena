@@ -1,6 +1,10 @@
 <?php
   // Страница Акаунта
   global $is_account_page;
+
+  // Эта переменная используется в шаблонах 'private'
+  global $earena_2_user_private;
+  $ea_user = $earena_2_user_private;
 ?>
 
 <div class="section section--friends" id="friends">
@@ -15,7 +19,6 @@
 
   <ul class="section__list section__list--friends" id="private-friend-list">
     <?php
-      $ea_user = wp_get_current_user();
       earena_2_page_profile_friends_data($ea_user->ID, 'private');
     ?>
   </ul>

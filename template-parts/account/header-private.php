@@ -1,6 +1,7 @@
 <?php
-  global $ea_user;
-  $ea_user = wp_get_current_user();
+  // Эта переменная используется в шаблонах 'private'
+  global $earena_2_user_private;
+  $ea_user = $earena_2_user_private;
 
   $vip = $ea_user->get('vip') ?: false;
   $vip_time = $ea_user->get('vt') ?: 0;
@@ -101,7 +102,7 @@
           </span>
         </div>
       <?php else : ?>
-        <a class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
+        <a class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add#vip">
           <span>
             <?php _e( 'VIP статус', 'earena_2' ); ?>
           </span>

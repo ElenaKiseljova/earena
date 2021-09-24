@@ -2,17 +2,15 @@
   // Приглашенные (вкладка)
 ?>
 <?php
-  // Приглашенные
-  global $ref;
-
-  // Игрок (задается в шаблоне Шапки Аккаунта)
-  global $ea_user;
+  // Эта переменная используется в шаблонах 'private'
+  global $earena_2_user_private;
+  $earena_2_user_private = $ea_user;
 ?>
 
 <div class="section section--invited" id="invited">
   <header class="section__header">
     <h2 class="section__title section__title--games-account">
-      <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?= $ref>0 ? $ref : '0'; ?>)
+      <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?>)
     </h2>
 
     <div class="section__header-right">

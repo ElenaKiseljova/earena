@@ -1,13 +1,7 @@
 <?php
-  $username = get_query_var('username');
-  if (empty($username) && is_user_logged_in()) {
-    $ea_user = wp_get_current_user();
-  } elseif (!empty($username)) {
-    $ea_user = get_user_by('slug',$username);
-  //		$ea_user = get_user_by('id',EArena_DB::get_ea_user_id( $username ));
-  } else {
-    wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;
-  }
+  // Эта переменная используется в шаблонах 'public'
+  global $earena_2_user_public;
+  $ea_user = $earena_2_user_public;
 
   $vip = $ea_user->get('vip');
   if ($vip) {

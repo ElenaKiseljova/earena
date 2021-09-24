@@ -6,9 +6,6 @@
 <?php
   // Страница Акаунта
   global $is_account_page;
-
-  // Приглашенные
-  global $ref;
 ?>
 
 <div class="toggles toggles--account">
@@ -31,7 +28,7 @@
         <?php _e( 'Друзья', 'earena_2' ); ?> (<?= bp_get_total_friend_count(get_current_user_id())>0?bp_get_total_friend_count(get_current_user_id()):'0'; ?>)
       </a>
       <a href="<?php echo get_page_link(527); ?>" class="toggles__item toggles__item--account <?php if(is_page(527)) echo 'active'; ?>">
-        <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?= $ref>0 ? $ref : '0'; ?>)
+        <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?>)
       </a>
       <a href="<?php echo get_page_link(654); ?>" class="toggles__item toggles__item--account <?php if(is_page(654)) echo 'active'; ?>">
         <?php _e( 'Уведомления', 'earena_2' ); ?> (<?=counter_admin();?>)

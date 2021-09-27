@@ -6,7 +6,7 @@ const getLastUpdt = () => new Date().toLocaleString("en-US", {timeZone: 'UTC'});
 jQuery(document).ready(function ($) {
 
     const initObj = {
-        0: ['.time span'],
+        0: ['.page-header .time span'],
         1: [],//не существует в новой теме
         2: ['.user__money-amount span'],
         3: ['.header-main .nums .num-green', '.mobile-menu-wrap .nums .num-green', '.dropdown-menu .num-green', '.logged-in-menu-bottom .num-green', '.menu-profile .num-green'],

@@ -46,7 +46,7 @@
 
           <header class="section__header">
             <h1 class="section__title section__title--wallet">
-              <?php the_title(  ); ?>
+              <?php _e( 'Кошелёк', 'earena_2' ); ?>
             </h1>
 
             <div class="section__header-right section__header-right--wallet">
@@ -164,7 +164,7 @@
 
                         <header class="section__header">
                           <h1 class="section__title section__title--wallet">
-                            <?php the_title(  ); ?>
+                            <?php _e( 'Кошелёк', 'earena_2' ); ?>
                           </h1>
                           <div class="section__header-right section__header-right--wallet">
                             <div class="tabs tabs--wallet">
@@ -256,7 +256,7 @@
 
             <header class="section__header">
               <h1 class="section__title section__title--wallet">
-                <?php the_title(  ); ?>
+                <?php _e( 'Кошелёк', 'earena_2' ); ?>
               </h1>
 
               <div class="section__header-right section__header-right--wallet">
@@ -400,7 +400,7 @@
 
             <header class="section__header">
               <h1 class="section__title section__title--wallet">
-                <?php the_title(  ); ?>
+                <?php _e( 'Кошелёк', 'earena_2' ); ?>
               </h1>
 
               <div class="section__header-right section__header-right--wallet">

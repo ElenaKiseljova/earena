@@ -707,18 +707,18 @@
   	*/
   }
 
+  /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_wallet.php' );
 
+  /*INCLUDE BP_BETTER_MESSAGE EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_bp_better_messages.php' );
 
+  /*INCLUDE AJAX EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_ajax.php' );
 
   /*INCLUDE USER EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_user.php' );
 
   /*INCLUDE ADMIN EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_admin.php' );
-
-  /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
-  require_once( get_template_directory() . '/functions_wallet.php' );
-
-  /*INCLUDE AJAX EARENA FUNCTIONS.PHP*/
-  require_once( get_template_directory() . '/functions_ajax.php' );
 ?>

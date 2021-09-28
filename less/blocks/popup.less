@@ -93,6 +93,120 @@
     }
   }
 
+  &--avatar {
+    .bp-avatar-nav {
+      width: 100%;
+
+      margin-bottom: 20px;
+
+      .avatar-nav-items {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: space-between;
+        align-items: flex-end;
+        align-content: flex-start;
+
+        padding: 0;
+        margin: 0;
+
+        border: none;
+
+        list-style: none;
+
+        &::before,
+        &::after {
+          display: none!important;
+        }
+
+        @media (max-width: @mobile) {
+          min-width: max-content;
+        }
+
+        .avatar-nav-item {
+          .button_reset();
+
+          position: relative;
+
+          white-space: nowrap;
+
+          padding: 0;
+          margin: 0;
+
+          padding: 10px 0 12px;
+
+          .menu();
+
+          overflow: hidden;
+
+          &::after {
+            content: '';
+
+            position: absolute;
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3.5px;
+
+            border-radius: 3.5px 3.5px 0 0;
+
+            background-color: #colors[accent];
+
+            transform: translateY(120%);
+
+            transition: transform 0.3s ease-in;
+          }
+
+          a {
+            padding: 0!important;
+            color: #colors[text];
+          }
+
+          &.current {
+            border: none;
+
+            a {
+              color: #colors[accent];
+            }
+
+            &::after {
+              transform: translateY(0%);
+
+              transition: transform 0.3s ease-in;
+            }
+          }
+        }
+      }
+    }
+
+    .bp-avatar {
+      width: 100%;
+
+      .drag-drop {
+        .drag-drop-inside {
+          p {
+            &.drag-drop-buttons {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+
+    .warning {
+      text-align: center;
+    }
+
+    #bp-delete-avatar-container {
+      text-align: center;
+    }
+  }
+
   @media (max-width: @mobile) {
     // &--chats {
     //   padding-top: 150px;
@@ -163,6 +277,16 @@
   &--game {
     padding: 15px 30px 30px;
   }
+
+  &--avatar {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
 }
 
 .popup__title {
@@ -188,6 +312,7 @@
   }
 
   &--template {
+    word-break: break-all;
     margin-bottom: 20px;
   }
 }

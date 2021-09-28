@@ -459,13 +459,15 @@
   }
 }
 
-.user__avatar-label {
+.user__avatar-change {
   position: absolute;
 
   top: 0;
   left: 0;
 
   z-index: 2;
+
+  .button_reset();
 
   display: block;
 
@@ -491,9 +493,9 @@
   }
 }
 
-.user__avatar-input {
-  display: none;
-}
+// .user__avatar-input {
+//   display: none;
+// }
 
 .user__info {
   &--header {

@@ -31,7 +31,7 @@
         <?php earena_2_verification_html($verified, 'public'); ?>
 
         <div class="user__avatar user__avatar--account">
-          <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
+          <?= bp_core_fetch_avatar(['item_id' => $ea_user->ID, 'type' => 'full', 'width' => 100, 'height' => 100]); ?>
         </div>
       </div>
 

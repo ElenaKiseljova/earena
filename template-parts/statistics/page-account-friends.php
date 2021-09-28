@@ -30,7 +30,7 @@
   <div class="statistics__content statistics__content--account">
     <ul class="statistics__list">
       <?php
-        earena_2_page_profile_public_friends_data($ea_user->ID, 6);
+        earena_2_page_profile_public_friends_data($ea_user->ID, 8);
       ?>
     </ul>
   </div>

@@ -318,6 +318,9 @@
                     min-width: 40px!important;
                     margin: 0!important;
 
+                    border-radius: 50%!important;
+                    overflow: hidden;
+
                     img {
                       width: 100%;
                       height: auto;
@@ -393,7 +396,7 @@
                 position: absolute;
 
                 left: 20px;
-                top: 50%;
+                top: 51%;
 
                 z-index: 2;
 
@@ -575,7 +578,7 @@
                 margin-bottom: 20px;
 
                 .bp-verified-badge {
-                  top: 14px;
+                  top: 21px;
 
                   transform: none;
                 }
@@ -608,6 +611,14 @@
           .content {
             padding: 0;
             margin: 0;
+          }
+
+          .pic {
+            span.avatar {
+              border-radius: 50%!important;
+
+              overflow: hidden!important;
+            }
           }
 
           .content {
@@ -733,7 +744,7 @@
         }
 
         .bp-emojionearea {
-          height: 40px;
+          min-height: 40px;
 
           padding: 9px 15px;
 
@@ -904,7 +915,8 @@
   &--message-no-admin {
     .chat-header {
       .new-message,
-      .bpbm-search {
+      .bpbm-search,
+      .starred-messages {
         display: none!important;
       }
     }

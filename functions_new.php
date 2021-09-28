@@ -16,6 +16,22 @@
     }
   endif;
 
+  /* ==============================================
+  ********  //Регистрируем меню
+  =============================================== */
+  function register_my_menus()
+  {
+      register_nav_menus(array(
+          'header-menu' => 'Main Menu',
+          'footer-menu-1' => 'Footer Menu 1',
+          'footer-menu-2' => 'Footer Menu 2'
+      ));
+  }
+
+  if (function_exists('register_nav_menus')) {
+      add_action('init', 'register_my_menus');
+  }
+
   // Styles theme
   function earena_2_styles () {
     wp_enqueue_style('earena_2-style', get_stylesheet_uri());

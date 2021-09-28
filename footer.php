@@ -84,6 +84,9 @@
           }
 
           if ( earena_2_current_page('profile') && is_user_logged_in() ) {
+            // Выбор Аватара
+            earena_2_get_popup( 'avatar' );
+
             // Попап Стрим
             earena_2_get_popup( 'stream' );
 

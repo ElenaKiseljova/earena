@@ -29,13 +29,12 @@
         <?php earena_2_verification_html($verified, 'private'); ?>
 
         <div class="user__avatar user__avatar--account">
-          <input class="user__avatar-input visually-hidden" type="file" name="account-image" id="account-image">
-          <label class="user__avatar-label" for="account-image">
+          <button class="user__avatar-change openpopup" data-popup="avatar" type="button" name="change">
             <span class="visually-hidden">
-              <?php _e( 'Загрузить аватар', 'earena_2' ); ?>
+              <?php _e( 'Открыть попап для выбора аватара', 'earena_2' ); ?>
             </span>
-          </label>
-          <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
+          </button>
+          <?= bp_core_fetch_avatar(['item_id' => $ea_user->ID, 'type' => 'full', 'width' => 100, 'height' => 100]); ?>
         </div>
       </div>
 

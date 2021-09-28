@@ -2,7 +2,7 @@
   // Сообщения (вкладка)
 ?>
 
-<div class="section section--message" id="message">
+<div class="section section--message <?php echo (!is_ea_admin()) ? 'section--message-no-admin' : ''; ?>" id="message">
   <header class="section__header">
     <h2 class="section__title section__title--games-account">
       <?php _e( 'Сообщения', 'earena_2' ); ?> (<?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>)
@@ -18,11 +18,11 @@
 </div>
 
 <?php
-  global $is_account_page;
-
-  $privat_chat = $_GET['messages'] ? true : false;
+  // global $is_account_page;
+  //
+  // $privat_chat = $_GET['messages'] ? true : false;
 ?>
-<?php if ($privat_chat): ?>
+<?php //if ($privat_chat): ?>
   <!-- <div class="section section--message" id="message">
     <header class="section__header">
       <h2 class="section__title section__title--games-account">
@@ -114,7 +114,7 @@
       </li>
     </ul>
   </div> -->
-<?php else : ?>
+<?php //else : ?>
   <!-- <ul class="section__list">
     <?php
       for ($l=0; $l < 10; $l++) {
@@ -220,4 +220,4 @@
       }
     ?>
   </ul> -->
-<?php endif; ?>
+<?php //endif; ?>

@@ -12,6 +12,8 @@
     padding-top: 20px;
   }
 
+  /**** bpbm - START ****/
+
   &--message {
     padding-bottom: 0;
 
@@ -56,7 +58,8 @@
           background-image: linear-gradient(180deg, #262B32 0%, rgba(31, 35, 41, 0) 100%);
         }
 
-        .user {
+        .user,
+        .bpbm-deleted-user-link {
           position: relative;
 
           display: block;
@@ -66,7 +69,7 @@
 
           padding: 12px 0 13px 20px;
 
-          background-color: #colors[dark];
+          background-color: #colors[dark]!important;
 
           border-radius: 5px 0 0 0;
 
@@ -165,7 +168,7 @@
 
           .w100();
 
-          padding: 14px 15px 14px 20px;
+          padding: 21px 15px 19px 20px;
 
           margin-right: 20px;
           margin-bottom: 10px;
@@ -173,31 +176,6 @@
           background-color: #colors[dark_light];
 
           border-radius: 5px;
-
-          &::before {
-            content: '';
-
-            position: absolute;
-
-            left: 55px;
-            top: 50%;
-
-            z-index: 2;
-
-            transform: translate(-50%, -50%);
-
-            width: 24px;
-            height: 24px;
-
-            margin-top: -35px;
-
-            border-radius: 50%;
-
-            background-color: #colors[dark_light];
-
-            .bg_icon('../img/check-gray.svg');
-            background-size: 14 / 24 * 100%;
-          }
 
           &:hover,
           &:focus {
@@ -272,10 +250,83 @@
 
             border-radius: 50%;
 
+            background-color: #colors[dark_light];
             background-image: url('../img/avatar-default.svg');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
+
+            &::before {
+              content: '';
+
+              position: absolute;
+
+              left: 50%;
+              top: 0;
+
+              z-index: 2;
+
+              transform: translate(-50%, -50%);
+
+              width: 24px;
+              height: 24px;
+
+              border-radius: 50%;
+
+              background-color: #colors[dark_light];
+
+              .bg_icon('../img/check-gray.svg');
+              background-size: 14 / 24 * 100%;
+            }
+
+            &.group {
+              flex-wrap: wrap;
+
+              justify-content: space-between;
+              align-content: space-between;
+
+              width: 70px;
+
+              background: none;
+
+              &::before {
+                display: none;
+              }
+
+              a {
+                width: 48%;
+              }
+
+              & + .info {
+                p {
+                  position: relative;
+
+                  @default_width: (800 / 990) * 100%;
+                  width: calc(@default_width - 50px);
+                  overflow: visible;
+
+                  span.avatar {
+                    position: absolute;
+                    left: -50px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 40px;
+                    min-height: 40px!important;
+                    min-width: 40px!important;
+                    margin: 0!important;
+
+                    img {
+                      width: 100%;
+                      height: auto;
+                      margin: 0px;
+                    }
+                  }
+                }
+              }
+            }
 
             a {
               display: flex;
@@ -285,6 +336,7 @@
 
               padding: 0;
               background: none;
+              background-color: inherit;
 
               border-radius: 50%;
 
@@ -848,6 +900,24 @@
       }
     }
   }
+
+  &--message-no-admin {
+    .chat-header {
+      .new-message,
+      .bpbm-search {
+        display: none!important;
+      }
+    }
+
+    .chat-footer {
+      .settings,
+      .bpbm-user-me {
+        display: none!important;
+      }
+    }
+  }
+
+  /**** bpbm - END ****/
 }
 
 .section__wrapper {

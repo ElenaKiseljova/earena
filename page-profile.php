@@ -46,21 +46,6 @@
 
 
   //    $ea_user = wp_get_current_user();
-  $nicknames = $ea_user->get('nicknames')?:[[[]]];
-  $nicknames_by_platforms = [];
-  foreach( $nicknames as $game=>$platforms ) {
-      foreach( $platforms as $platform=>$nickname ) {
-          $nicknames_by_platforms[$platform][$game] = $nickname;
-      }
-  }
-
-  $games = get_site_option( 'games' );
-  $games_by_platforms = [];
-  foreach( array_column($games,'platforms') as $game=>$platforms ) {
-      foreach( $platforms as $platform ) {
-          $games_by_platforms[$platform][] = $game;
-      }
-  }
 
   $stream = $ea_user->get('stream')?:'';
 
@@ -95,7 +80,7 @@
 
       <?php
         // Контент Аккаунта
-        get_template_part( 'template-parts/account/content-profile', 'private' );
+        get_template_part( 'template-parts/account/content', 'profile' );
       ?>
     </div>
   </section>

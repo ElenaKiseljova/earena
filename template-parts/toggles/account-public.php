@@ -39,28 +39,21 @@
   <div class="toggles__content toggles__content--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && !isset($_GET['toggles'])) ? 'active' : ''; ?>">
     <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
       <?php
-        if ( function_exists( 'earena_2_get_section' ) ) {
-          // Игры
-          earena_2_get_section( 'games' );
-        }
-
-        if (is_user_logged_in()) {
-          // Стрим
-          get_template_part( 'template-parts/stream' );
-        }
+        // Контент Аккаунта
+        get_template_part( 'template-parts/account/content', 'profile' );
       ?>
     </div>
 
     <div class="toggles__content-item toggles__content-item--col-2">
       <!-- Статистика игр -->
       <?php
-        get_template_part( 'template-parts/statistics/page', 'account-games' );
+        get_template_part( 'template-parts/statistics/page-account', 'games' );
       ?>
     </div>
     <div class="toggles__content-item toggles__content-item--col-2">
       <!-- Статистика друзей -->
       <?php
-        get_template_part( 'template-parts/statistics/page', 'account-friends' );
+        get_template_part( 'template-parts/statistics/page-account', 'friends' );
       ?>
     </div>
   </div>

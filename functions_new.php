@@ -723,6 +723,9 @@
   	*/
   }
 
+  /*INCLUDE SETTINGS EARENA FUNCTIONS.PHP*/
+  require_once( get_template_directory() . '/functions_settings.php' );
+
   /*INCLUDE WALLET EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_wallet.php' );
 

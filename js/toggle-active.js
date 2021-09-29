@@ -165,6 +165,15 @@
 
                     return;
                   }
+                } else if (button.classList.contains('active') && flagAllSelected > 0) {
+                  flagAllSelected -= 1;
+
+                  if (flagAllSelected === 0) {
+                    // Если не выбрано ни одной платформы
+                    buttons[allButtonIndex].click();
+
+                    return;
+                  }
                 }
 
                 if (buttons[allButtonIndex].classList.contains('active')) {

@@ -1,4 +1,8 @@
 <?php
+  // Страница Акаунта
+  global $is_account_page;
+  global $games, $ea_icons;
+
   if (earena_2_current_page('user')) {
     // Эта переменная используется в шаблонах 'public'
     global $earena_2_user_public;
@@ -11,15 +15,20 @@
     $ea_user = $earena_2_user_private;
   }
 
-  $nicknames = $ea_user->get('nicknames')?:[[[]]];
-  $nicknames_by_platforms = [];
-  foreach( $nicknames as $game=>$platforms ) {
-      foreach( $platforms as $platform=>$nickname ) {
-          $nicknames_by_platforms[$platform][$game] = $nickname;
-      }
+  // Для страниц Профиля (публичного и приватного)
+  if ($ea_user) {
+    $nicknames = $ea_user->get('nicknames')? $ea_user->get('nicknames') : [];
+
+    $nicknames_by_platforms = [];
+    foreach( $nicknames as $game=>$platforms ) {
+        foreach( $platforms as $platform=>$nickname ) {
+            $nicknames_by_platforms[$platform][$game] = $nickname;
+        }
+    }
   }
 
   $games = get_site_option( 'games' );
+
   $games_by_platforms = [];
   foreach( array_column($games,'platforms') as $game=>$platforms ) {
       foreach( $platforms as $platform ) {
@@ -29,122 +38,10 @@
 
   $platforms = get_site_option( 'platforms' );
 ?>
-
-<?php
-  // Игры
-  // global $games;
-  //
-  // global $games_all;
-  // $games_all = [
-  //   0 => [
-  //     'name' => 'WARZONE',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-0.jpg',
-  //     'variations' => [1],
-  //     'platforms' => [ 'playstation' ]
-  //   ],
-  //   1 => [
-  //     'name' => 'Dota 2',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-1.jpg',
-  //     'variations' => [1, 5],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   2 => [
-  //     'name' => 'CS:GO',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-2.jpg',
-  //     'variations' => [1, 2, 5],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   3 => [
-  //     'name' => 'Mortal Combat 11 Ultimate',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-3.jpg',
-  //     'variations' => [1],
-  //     'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
-  //   ],
-  //   4 => [
-  //     'name' => 'League of Legends',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-4.jpg',
-  //     'variations' => [1, 2, 5],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   5 => [
-  //     'name' => 'Heroes III',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-5.jpg',
-  //     'variations' => [1, 2],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   6 => [
-  //     'name' => 'Warcraft III',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-6.jpg',
-  //     'variations' => [1, 2],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   7 => [
-  //     'name' => 'Starcraft II',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-7.jpg',
-  //     'variations' => [1, 2],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   8 => [
-  //     'name' => 'Playerunknown\'s Battlegrounds',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-8.jpg',
-  //     'variations' => [1, 2],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   9 => [
-  //     'name' => 'Heartstone',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-9.jpg',
-  //     'variations' => [1, 2, 5],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   10 => [
-  //     'name' => 'TEKKEN 7',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-10.jpg',
-  //     'variations' => [1],
-  //     'platforms' => [ 'desktop', 'xbox', 'playstation' ]
-  //   ],
-  //   11 => [
-  //     'name' => 'World Of Tanks',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-11.jpg',
-  //     'variations' => [1, 3, 7],
-  //     'platforms' => [ 'desktop', 'mobile' ]
-  //   ],
-  //   12 => [
-  //     'name' => 'World Of Tanks Blitz',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-12.jpg',
-  //     'variations' => [1, 3, 7],
-  //     'platforms' => [ 'mobile' ]
-  //   ],
-  //   13 => [
-  //     'name' => 'PES 21',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-13.jpg',
-  //     'variations' => [1, 2, 3],
-  //     'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
-  //   ],
-  //   14 => [
-  //     'name' => 'FIFA 21',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-14.jpg',
-  //     'variations' => [1, 2],
-  //     'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
-  //   ],
-  //   15 => [
-  //     'name' => 'FIFA ONLINE 4',
-  //     'img' => get_template_directory_uri() . '/assets/img/games/archive/game-15.jpg',
-  //     'variations' => [1],
-  //     'platforms' => [ 'desktop', 'xbox', 'playstation', 'mobile' ]
-  //   ],
-  // ];
-
-  // Записываю все игры в глобальную переменную
-  // $games = $games_all;
-  ?>
-    <!-- <script type="text/javascript">
-      var data = {};
-        data['games'] = <?php echo json_encode( $games_all ) ?>;
-    </script> -->
-  <?php
-  // Страница Акаунта
-  global $is_account_page;
-?>
+  <script type="text/javascript">
+    var data = {};
+      data['games'] = <?= json_encode( $games ) ?>;
+  </script>
 
 <?php if ($is_account_page): ?>
   <?php foreach ($platforms as $key => $value): ?>
@@ -169,53 +66,40 @@
         </div>
       </header>
 
-      <!-- <ul class="section__list">
-        <?php
-          global $games;
-          global $game_index;
-
-          $game_index = 0;
-          $games = $games_desktop;
-
-          $row_index = 1;
-
-          // Перебираем игры десктопные
-          foreach ($games as $game) {
-            ?>
-              <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
-              </li>
-            <?php
-            if ($row_index % 6 === 0) {
-              $row_index = 1;
-            } else {
-              $row_index++;
-            }
-
-            $game_index++;
-          }
-
-          // Оставшееся (до 6 шт) заполняется пустыми карточками
-          while ( $row_index <= 6 && $row_index > 1 ) {
-            ?>
-              <li class="section__item section__item--col-6">
-                <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
-              </li>
-            <?php
-            $row_index++;
-          }
-        ?>
-      </ul> -->
       <?php if (!empty($nicknames_by_platforms[$key])) : ?>
-          <div class="games_nicknames--item_wrapper">
-          <?php foreach ($nicknames_by_platforms[$key] as $game => $name) : ?>
-              <div class="games_nicknames--item">
-                  <div class="games_nicknames--image"><img src="<?php bloginfo('template_url'); ?>/images/icons/<?=$ea_icons['game'][$game];?>.svg" class="svg game-icon" alt="game-icon"></div>
-                  <div class="games_nicknames--text"><span><?= is_string($name) ? $name : ''; ?></span></div>
+          <ul class="section__list">
+            <?php
+              $row_index = 1;
 
-              </div>
-          <?php endforeach; ?>
-          </div>
+              // Перебираем игры
+              foreach ($nicknames_by_platforms[$key] as $game => $name) {
+                // Для корректной работы шаблона
+                global $game_id, $game_user_name;
+                $game_id = $game;
+                $game_user_name = $name;
+                ?>
+                  <li class="section__item section__item--col-6">
+                    <?php get_template_part( 'template-parts/game/archive', 'account' ); ?>
+                  </li>
+                <?php
+                if ($row_index % 6 === 0) {
+                  $row_index = 1;
+                } else {
+                  $row_index++;
+                }
+              }
+
+              // Оставшееся (до 6 шт) заполняется пустыми карточками
+              while ( $row_index <= 6 && $row_index > 1 ) {
+                ?>
+                  <li class="section__item section__item--col-6">
+                    <?php get_template_part( 'template-parts/game/archive', 'empty' ); ?>
+                  </li>
+                <?php
+                $row_index++;
+              }
+            ?>
+          </ul>
       <?php endif; ?>
     </div>
   <?php endforeach; ?>

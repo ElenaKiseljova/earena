@@ -1,3 +1,6 @@
+<?php
+  global $ea_icons;
+?>
 <!DOCTYPE html>
 <html lang="ru" dir="ltr">
   <head>
@@ -11,6 +14,11 @@
     ?>
   </head>
   <body>
+    <script type="text/javascript">
+      var siteURL = '<?= bloginfo( 'url' ); ?>';
+      var siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
+      var ea_icons = <?= json_encode( $ea_icons ) ?>;;
+    </script>
     <div class="container">
 
       <!-- SVG sprite -->

@@ -27,7 +27,7 @@
                 <div class="promo__content promo__content--front">
                   <!-- Статистика -->
                   <?php
-                    get_template_part( 'template-parts/statistics/page', 'front' );
+                    get_template_part( 'template-parts/statistics/slider' );
                   ?>
                 </div>
               <?php endif; ?>

@@ -3,21 +3,6 @@
   Template Name: Главная
   */
 ?>
-<?php
-  global $games;
-  $platforms = get_site_option('platforms');
-  if(isset($_COOKIE['ea_current_platform'])) {
-      $cookiePlatforms = $_COOKIE['ea_current_platform'];
-      $cookiePlatforms = array_map('intval', explode(',', $cookiePlatforms));
-  } else {
-      $cookiePlatforms = [];
-      $cookiePlatforms = [-1];
-  }
-  if(count($cookiePlatforms) == count($platforms)) {
-      $cookiePlatforms = [];
-      $cookiePlatforms = [-1];
-  }
-?>
 
 <?php
   get_header(  );
@@ -31,8 +16,10 @@
 
   <section class="promo">
     <div class="promo__wrapper">
-      <!-- Слайдер с баннерами и статистикой -->
-      <?php get_template_part( 'template-parts/promo/slider' ); ?>
+      <?php
+        // Слайдер с баннерами и статистикой
+        get_template_part( 'template-parts/promo/slider' );
+      ?>
     </div>
   </section>
 

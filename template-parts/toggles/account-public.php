@@ -36,55 +36,23 @@
     </div>
   </header>
 
-  <div class="toggles__content toggles__content--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && !isset($_GET['toggles'])) ? 'active' : ''; ?>">
-    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-      <?php
-        // Контент Аккаунта
-        get_template_part( 'template-parts/account/content', 'profile' );
-      ?>
-    </div>
+  <?php
+    // Контент Аккаунта
+    get_template_part( 'template-parts/account/content-profile', 'public' );
+  ?>
 
-    <div class="toggles__content-item toggles__content-item--col-2">
-      <!-- Статистика игр -->
-      <?php
-        get_template_part( 'template-parts/statistics/page-account', 'games' );
-      ?>
-    </div>
-    <div class="toggles__content-item toggles__content-item--col-2">
-      <!-- Статистика друзей -->
-      <?php
-        get_template_part( 'template-parts/statistics/page-account', 'friends' );
-      ?>
-    </div>
-  </div>
-  <div class="toggles__content toggles__content--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && isset($_GET['toggles']) && $_GET['toggles'] === 'matches') ? 'active' : ''; ?>">
-    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-      <?php
-        if ( function_exists( 'earena_2_get_section' ) ) {
-          // Матчи
-          earena_2_get_section( 'matches-public', false, 'filters', 'matches' );
-        }
-      ?>
-    </div>
-  </div>
-  <div class="toggles__content toggles__content--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments') ? 'active' : ''; ?>">
-    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-      <?php
-        if ( function_exists( 'earena_2_get_section' ) ) {
-          // Турниры
-          earena_2_get_section( 'tournaments-public', false, 'filters', 'tournaments' );
-        }
-      ?>
-    </div>
-  </div>
-  <div class="toggles__content toggles__content--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && isset($_GET['toggles']) && $_GET['toggles'] === 'friends') ? 'active' : ''; ?>">
-    <div class="toggles__content-item toggles__content-item--col-1 toggles__content-item--account">
-      <?php
-        if ( function_exists( 'earena_2_get_section' ) ) {
-          // Друзья
-          earena_2_get_section( 'friends-public' );
-        }
-      ?>
-    </div>
-  </div>
+  <?php
+    // Контент Аккаунта
+    get_template_part( 'template-parts/account/content-matches', 'public' );
+  ?>
+
+  <?php
+    // Контент Аккаунта
+    get_template_part( 'template-parts/account/content-tournaments', 'public' );
+  ?>
+
+  <?php
+    // Контент Аккаунта
+    get_template_part( 'template-parts/account/content-friends', 'public' );
+  ?>
 </div>

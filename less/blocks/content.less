@@ -45,6 +45,17 @@
 }
 
 .content__image {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  max-height: 306px;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+
   @media (max-width: @mobile) {
     position: absolute;
 
@@ -56,12 +67,23 @@
     width: 100vw;
     height: 100%;
 
+    max-height: none;
+
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+
+    border-radius: 0;
   }
 }
 
 .content__picture {
+  width: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
     height: 100%;
@@ -126,5 +148,9 @@
   p + ol,
   p + ul {
     margin-top: 20px;
+  }
+
+  p + p {
+    margin-top: 10px;
   }
 }

@@ -1,18 +1,27 @@
 'use strict';
 
 (function () {
+  /*
+    siteURL,
+    siteThemeFolderURL,
+    ea_icons
+
+    - глобальные переменные, которые используются для составления URI.
+      Задаются в header.php
+  */
   try {
     const { __, _x, _n, _nx } = wp.i18n
 
     // Шаблоны игр/матчей/турниров
     let templates = {
       games : function (game, empty = false) {
-        if (game && !empty) {
+        if (game && !empty && siteURL && siteThemeFolderURL && ea_icons) {
+
           let name = game['name'],
-              img = game['img'],
-              url = '/game',//game['url'],
+              img = siteThemeFolderURL + '/assets/img/games/archive/' + ea_icons['game'][game['key']] + '.jpg',
+              url = siteURL + '/games?game=' + game['key'],
               platforms = game['platforms'],
-              variations = game['variations'];
+              variations = game['game_modes'];
 
           // Вариации
           let variationsTemplate = '';
@@ -33,7 +42,7 @@
               return `
                       <li class="platform platform--game">
                         <svg class="platform__icon" width="30" height="30">
-                          <use xlink:href="#icon-platform-${platform}"></use>
+                          <use xlink:href="#icon-platform-${ea_icons['platform'][platform]}"></use>
                         </svg>
                       </li>
                      `;
@@ -535,11 +544,10 @@
         // Получаем все активные табы
         let platformsActiveTabs = document.querySelectorAll('.tabs__button--platform.active');
 
-        if (platformsActiveTabs && platformsActiveTabs.length > 0) {
+        if (platformsActiveTabs) {
           platformsActiveTabs.forEach((platformsActiveTab, i) => {
             platformsSelected.push(platformsActiveTab.dataset.tabType);
           });
-
           //console.log(platformsSelected);
 
           // Здесь отправляется запрос на получение игр/матчей/турниров под выбранные платформы
@@ -554,8 +562,10 @@
                 let dataPlatforms = data['platforms'];
 
                 for (let i = 0; i < dataPlatforms.length; i++) {
+                  let dataPlatformsToString = dataPlatforms[i].toString();
+
                   // Если в массиве платформ Игры/Матча/Турнира есть хотя бы одна из активных платформ - показываем Игру/Матч/Турнир и прекращаем перебор списка платформ игры
-                  if (platformsSelected.includes(dataPlatforms[i])) {
+                  if (platformsSelected.includes(dataPlatformsToString)) {
                     return true;
 
                     break;
@@ -566,7 +576,6 @@
 
             // Фильтрация (возможно уже будет сразу получен тужный массив отфильтрованный)
             let dataFiltered = data[what].filter(isPlatform);
-
             //console.log(dataFiltered);
 
             // Получаем кол-во отфильтрованных элементов и выводим его в заголовок

@@ -4,28 +4,21 @@
   */
 ?>
 <?php
-  // Для проверки на пустую игру и для получения картинки (может только на этапе локальной разработки пригодится)
-  global $games;
-  global $game_index;
-
-  // Сокрытие никнейма в попапе
-  $no_nickname = true;
+  global $games, $game_id, $game_user_name, $ea_icons;
 ?>
 
 <div class="game">
-  <a class="game__link" href="<?php echo get_template_directory_uri(); ?>/game">
+  <a class="game__link" href="<?= bloginfo( 'url' ) . '/games/?game=' . $game_id; ?>">
     <div class="game__image game__image--archive">
-      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/archive/game-<?= $game_index; ?>.jpg" alt="<?= $games[$game_index]['name']; ?>">
+      <img src="<?php echo get_template_directory_uri(); ?>/assets/img/games/archive/<?= $ea_icons['game'][$game_id]; ?>.jpg" alt="<?= $games[$game_id]['name']; ?>">
     </div>
 
     <h3 class="game__name">
-      <?= $games[$game_index]['name']; ?>
+      <?= $games[$game_id]['name']; ?>
     </h3>
 
-    <?php if (! $no_nickname): ?>
-      <span class="game__nickname">
-        Annetteblack
-      </span>
-    <?php endif; ?>
+    <span class="game__nickname">
+      <?= $game_user_name; ?>
+    </span>
   </a>
 </div>

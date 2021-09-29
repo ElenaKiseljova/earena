@@ -80,7 +80,7 @@
 
       <?php
         // Контент Аккаунта
-        get_template_part( 'template-parts/account/content', 'profile' );
+        get_template_part( 'template-parts/account/content-profile', 'private' );
       ?>
     </div>
   </section>

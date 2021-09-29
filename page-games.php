@@ -1,6 +1,6 @@
 <?php
   /*
-    Игра
+    Template Name: Game template
   */
 ?>
 

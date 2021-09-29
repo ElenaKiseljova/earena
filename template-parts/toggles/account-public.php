@@ -12,13 +12,10 @@
   global $earena_2_user_stat_public;
   $user_stat = $earena_2_user_stat_public;
   $user_stat_key = array_key_first($user_stat);
-
-  // Страница Акаунта
-  global $is_account_page;
 ?>
 
 <div class="toggles toggles--account">
-  <header class="toggles__header <?php if ($is_account_page) echo 'toggles__header--account'; ?>">
+  <header class="toggles__header <?php if ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) ) echo 'toggles__header--account'; ?>">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
       <a href="<?= ea_user_link($ea_user->ID); ?>" class="toggles__item toggles__item--account <?= (earena_2_current_page(ea_user_link($ea_user->ID) . '/') && !isset($_GET['toggles'])) ? 'active' : ''; ?>">

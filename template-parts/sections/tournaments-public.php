@@ -1,4 +1,9 @@
 <?php
+  global $games, $game_id, $ea_icons, $matches, $tournaments;
+
+  $count_tournaments = count($tournaments);
+
+
   global $filter_section;
   global $header_right_section;
 
@@ -7,9 +12,6 @@
   if ($is_tab_global === 'tournaments') {
     $is_tournaments_tab = true;
   }
-
-  global $is_account_page;
-
 
   // Турниры
   global $tournaments;
@@ -487,7 +489,7 @@
   $tournaments_amount = count($tournaments);
 ?>
 <section class="section section--tournaments" id="tournaments">
-  <?php if (! $is_account_page): ?>
+  <?php if (! earena_2_current_page( 'profile' ) && ! earena_2_current_page( 'user' ) ): ?>
     <div class="section__wrapper">
   <?php endif; ?>
 
@@ -872,7 +874,7 @@
       }
     ?>
 
-  <?php if (! $is_account_page): ?>
+  <?php if (! earena_2_current_page( 'profile' ) && ! earena_2_current_page( 'user' ) ): ?>
     </div>
   <?php endif; ?>
 </section>

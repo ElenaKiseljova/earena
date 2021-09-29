@@ -26,7 +26,7 @@
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
       // Главная
-      if (!$_GET['type']) {
+      if (!isset($_GET['type'])) {
         earena_2_get_section( 'games' );
 
         earena_2_get_section( 'matches' );

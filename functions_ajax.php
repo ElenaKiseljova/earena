@@ -290,6 +290,85 @@ function globalHeader()
 //     $user = get_user_by('slug', $slug);
 //     return $user ? $user->ID : null;
 // }
+
+/* ==============================================
+********  //Матчи (объект)
+=============================================== */
+
+add_action('wp_ajax_earena_2_get_matches_object', 'earena_2_get_matches_object');
+add_action('wp_ajax_nopriv_earena_2_get_matches_object', 'earena_2_get_matches_object');
+
+function earena_2_get_matches_object ($limit = 8) {
+  $data = [];
+
+  if (isset($_POST['game_key'])) {
+    $data['game'] = $_POST['game_key'] ?? [];
+  }
+
+  $data['platform'] = $_POST['platform'] ?? [];
+
+  $matches = EArena_DB::get_ea_matches_by_filters($data, $limit === '' ? 8 : $limit, 0);
+
+  if ( is_wp_error($matches) ) {
+    $response = [
+      'success' => 0,
+      'error' => $matches->get_error_message()
+    ];
+
+    wp_send_json( $response );
+
+    die();
+  } else {
+    $response = [
+      'success' => 1,
+      'content' => $matches
+    ];
+
+    wp_send_json( $response );
+
+    die();
+  }
+}
+
+/* ==============================================
+********  //Турниры (объект)
+=============================================== */
+
+add_action('wp_ajax_earena_2_get_tournaments_object', 'earena_2_get_tournaments_object');
+add_action('wp_ajax_nopriv_earena_2_get_tournaments_object', 'earena_2_get_tournaments_object');
+
+function earena_2_get_tournaments_object ($limit = 8) {
+  $data = [];
+
+  if (isset($_POST['game_key'])) {
+    $data['game'] = $_POST['game_key'] ?? [];
+  }
+
+  $data['platform'] = $_POST['platform'] ?? [];
+
+  $tournaments = EArena_DB::get_ea_tournaments_by_filters($data, $limit === '' ? 8 : $limit);
+
+  if ( is_wp_error($tournaments) ) {
+    $response = [
+      'success' => 0,
+      'error' => $tournaments->get_error_message()
+    ];
+
+    wp_send_json( $response );
+
+    die();
+  } else {
+    $response = [
+      'success' => 1,
+      'content' => $tournaments
+    ];
+
+    wp_send_json( $response );
+
+    die();
+  }
+}
+
 //
 // add_action('wp_ajax_get_mathces_html', 'get_mathces_html');
 // add_action('wp_ajax_nopriv_get_mathces_html', 'get_mathces_html');

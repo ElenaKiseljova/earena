@@ -10,7 +10,120 @@
       Задаются в header.php
   */
   try {
-    const { __, _x, _n, _nx } = wp.i18n
+    const { __, _x, _n, _nx } = wp.i18n;
+
+    // Экспортируется в файл toggle-active.js
+    window.platforms = {
+      // Ф-я получения активных платформ и подстановки их шаблона игр/матчей/турниров
+      getSelected : function (what) {
+        // what - может принимать значения : games/matches/tournaments
+
+        // Массив с выбранными платформами
+        let platformsSelected = [];
+
+        // Получаем все активные табы
+        let platformsActiveTabs = document.querySelectorAll('.tabs__button--platform.active');
+
+        if (platformsActiveTabs) {
+          platformsActiveTabs.forEach((platformsActiveTab, i) => {
+            platformsSelected.push(platformsActiveTab.dataset.tabType);
+          });
+          //console.log(platformsSelected);
+
+          // Здесь отправляется запрос на получение игр/матчей/турниров под выбранные платформы
+          // Получаем data[what] (для теста задано вручную)
+          if (data[what]) {
+            // Ф-я с условиями фильтрации массива с играми/матчами/турнирами
+            let isPlatform = function (data) {
+              // Если активный таб "ВСЕ" - то показываем всё
+              if (platformsSelected.includes('all')) {
+                return true;
+              } else {
+                let dataPlatforms = data['platforms'];
+
+                for (let i = 0; i < dataPlatforms.length; i++) {
+                  let dataPlatformsToString = dataPlatforms[i].toString();
+
+                  // Если в массиве платформ Игры/Матча/Турнира есть хотя бы одна из активных платформ - показываем Игру/Матч/Турнир и прекращаем перебор списка платформ игры
+                  if (platformsSelected.includes(dataPlatformsToString)) {
+                    return true;
+
+                    break;
+                  }
+                }
+              }
+            };
+
+            // Фильтрация (возможно уже будет сразу получен тужный массив отфильтрованный)
+            let dataFiltered = data[what].filter(isPlatform);
+            //console.log(dataFiltered);
+
+            // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
+            let amount = dataFiltered.length;
+
+            window.platforms.showFilteredAmount(what, amount);
+
+            // Получаем контейнер для Игр/Матчей/Турниров
+            let container = document.querySelector(`#content-platform-${what}`);
+
+            if (container) {
+              // Количество колонок
+              let column = 4;
+
+              if (what === 'games') {
+                column = 6;
+              }
+
+              let dataTemplate = dataFiltered.map(function(dataFilteredItem) {
+                return `
+                        <li class="section__item section__item--col-${column}">
+                          ${templates[what](dataFilteredItem)}
+                        </li>
+                       `;
+              }).join(' ');
+
+              // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
+              let templateEmpty = templates[what](false, true);
+
+              while ((amount % column) !== 0) {
+                dataTemplate += `
+                        <li class="section__item section__item--col-${column}">
+                          ${templateEmpty}
+                        </li>
+                       `;
+
+                amount++;
+              }
+
+              // Заменяем содержимое контейнера полученными результатами
+              container.innerHTML = dataTemplate;
+
+              // Получаем кнопки открытия попапов
+              let popupOpenButtons = container.querySelectorAll('.openpopup');
+
+              if (popupOpenButtons) {
+                popupOpenButtons.forEach((popupOpenButton, i) => {
+                  // Активация попапа по клику на указанную кнопку
+                  window.popup.activatePopup(popupOpenButton);
+                });
+              }
+
+              // Отрисовка полос прогресса
+              window.progress('.players__progress-bar');
+            }
+          }
+        }
+      },
+      showFilteredAmount : function (what, amount) {
+        // what - может принимать значения : games/matches/tournaments
+
+        let titleAmountWhat =  document.querySelector(`.section__title--${what} .section__amount`);
+
+        if (titleAmountWhat) {
+          titleAmountWhat.textContent = amount;
+        }
+      }
+    };
 
     // Шаблоны игр/матчей/турниров
     let templates = {
@@ -530,119 +643,6 @@
                   `;
         }
       },
-    };
-
-    // Экспортируется в файл toggle-active.js
-    window.platforms = {
-      // Ф-я получения активных платформ и подстановки их шаблона игр/матчей/турниров
-      getSelected : function (what) {
-        // what - может принимать значения : games/matches/tournaments
-
-        // Массив с выбранными платформами
-        let platformsSelected = [];
-
-        // Получаем все активные табы
-        let platformsActiveTabs = document.querySelectorAll('.tabs__button--platform.active');
-
-        if (platformsActiveTabs) {
-          platformsActiveTabs.forEach((platformsActiveTab, i) => {
-            platformsSelected.push(platformsActiveTab.dataset.tabType);
-          });
-          //console.log(platformsSelected);
-
-          // Здесь отправляется запрос на получение игр/матчей/турниров под выбранные платформы
-          // Получаем data[what] (для теста задано вручную)
-          if (data[what]) {
-            // Ф-я с условиями фильтрации массива с играми/матчами/турнирами
-            let isPlatform = function (data) {
-              // Если активный таб "ВСЕ" - то показываем всё
-              if (platformsSelected.includes('all')) {
-                return true;
-              } else {
-                let dataPlatforms = data['platforms'];
-
-                for (let i = 0; i < dataPlatforms.length; i++) {
-                  let dataPlatformsToString = dataPlatforms[i].toString();
-
-                  // Если в массиве платформ Игры/Матча/Турнира есть хотя бы одна из активных платформ - показываем Игру/Матч/Турнир и прекращаем перебор списка платформ игры
-                  if (platformsSelected.includes(dataPlatformsToString)) {
-                    return true;
-
-                    break;
-                  }
-                }
-              }
-            };
-
-            // Фильтрация (возможно уже будет сразу получен тужный массив отфильтрованный)
-            let dataFiltered = data[what].filter(isPlatform);
-            //console.log(dataFiltered);
-
-            // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
-            let amount = dataFiltered.length;
-
-            window.platforms.showFilteredAmount(what, amount);
-
-            // Получаем контейнер для Игр/Матчей/Турниров
-            let container = document.querySelector(`#content-platform-${what}`);
-
-            if (container) {
-              // Количество колонок
-              let column = 4;
-
-              if (what === 'games') {
-                column = 6;
-              }
-
-              let dataTemplate = dataFiltered.map(function(dataFilteredItem) {
-                return `
-                        <li class="section__item section__item--col-${column}">
-                          ${templates[what](dataFilteredItem)}
-                        </li>
-                       `;
-              }).join(' ');
-
-              // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
-              let templateEmpty = templates[what](false, true);
-
-              while ((amount % column) !== 0) {
-                dataTemplate += `
-                        <li class="section__item section__item--col-${column}">
-                          ${templateEmpty}
-                        </li>
-                       `;
-
-                amount++;
-              }
-
-              // Заменяем содержимое контейнера полученными результатами
-              container.innerHTML = dataTemplate;
-
-              // Получаем кнопки открытия попапов
-              let popupOpenButtons = container.querySelectorAll('.openpopup');
-
-              if (popupOpenButtons) {
-                popupOpenButtons.forEach((popupOpenButton, i) => {
-                  // Активация попапа по клику на указанную кнопку
-                  window.popup.activatePopup(popupOpenButton);
-                });
-              }
-
-              // Отрисовка полос прогресса
-              window.progress('.players__progress-bar');
-            }
-          }
-        }
-      },
-      showFilteredAmount : function (what, amount) {
-        // what - может принимать значения : games/matches/tournaments
-
-        let titleAmountWhat =  document.querySelector(`.section__title--${what} .section__amount`);
-
-        if (titleAmountWhat) {
-          titleAmountWhat.textContent = amount;
-        }
-      }
     };
 
     document.addEventListener('DOMContentLoaded', function () {

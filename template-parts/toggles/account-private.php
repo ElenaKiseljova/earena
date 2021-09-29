@@ -3,13 +3,9 @@
     Шаблон переключателей на стр Аккаунта
   */
 ?>
-<?php
-  // Страница Акаунта
-  global $is_account_page;
-?>
 
 <div class="toggles toggles--account">
-  <header class="toggles__header <?php if ($is_account_page) echo 'toggles__header--account'; ?>">
+  <header class="toggles__header <?php if ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) ) echo 'toggles__header--account'; ?>">
     <div class="toggles__list">
       <!-- Для переключения состояния - добавляется active класс  -->
       <a href="<?php echo get_page_link(503); ?>" class="toggles__item toggles__item--account <?php if(is_page(503)) echo 'active'; ?>">

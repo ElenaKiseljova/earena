@@ -66,11 +66,6 @@
   // Эта переменная используется в шаблонах 'public'
   global $earena_2_user_stat_public;
   $earena_2_user_stat_public = $user_stat;
-
-  // Страница Акаунта
-  global $is_account_page;
-
-  $is_account_page = true;
 ?>
 
 <?php

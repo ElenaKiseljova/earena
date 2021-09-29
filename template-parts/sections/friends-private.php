@@ -1,7 +1,4 @@
 <?php
-  // Страница Акаунта
-  global $is_account_page;
-
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_private;
   $ea_user = $earena_2_user_private;

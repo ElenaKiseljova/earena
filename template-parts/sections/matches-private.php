@@ -8,8 +8,6 @@
     $is_matches_tab = true;
   }
 
-  global $is_account_page;
-
   // Матчи
   global $matches;
 
@@ -474,7 +472,7 @@
   $matches_amount = count($matches);
 ?>
 <section class="section section--matches" id="matches">
-  <?php if (! $is_account_page): ?>
+  <?php if (! earena_2_current_page( 'profile' ) && ! earena_2_current_page( 'user' ) ): ?>
     <div class="section__wrapper">
   <?php endif; ?>
     <header class="section__header">
@@ -846,7 +844,7 @@
         <?php
       }
     ?>
-  <?php if (! $is_account_page): ?>
+  <?php if (! earena_2_current_page( 'profile' ) && ! earena_2_current_page( 'user' ) ): ?>
     </div>
   <?php endif; ?>
 </section>

@@ -8,12 +8,10 @@
 
   // Индекс турнира
   global $tournament_index;
-
-  global $is_account_page;
 ?>
 
 <div class="tournament ">
-  <?php if ($tournaments[$tournament_index]['status'] === 'present' && $is_account_page): ?>
+  <?php if ($tournaments[$tournament_index]['status'] === 'present' && ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) )): ?>
     <a class="tournament__gotochat" href="<?php echo bloginfo( 'url' ); ?>/profile?tournaments=chat&tournament_index=<?= $tournament_index;?>">
       <span class="visually-hidden">
         <?php _e( 'В чате турнира сообщений', 'earena_2' ); ?>

@@ -43,6 +43,11 @@
     if ( is_ea_admin() ) {
       wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
     }
+
+    if ( earena_2_current_page( 'games' ) ) {
+      //wp_enqueue_script('vue-script', 'https://cdn.jsdelivr.net/npm/vue@2', $deps = array(), $ver = null, $in_footer = true );
+    }
+
     wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -51,6 +56,7 @@
       wp_enqueue_script('global-throttlingg-script', get_template_directory_uri() . '/assets/js/ajax/global-throttlingg.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('vip-script', get_template_directory_uri() . '/assets/js/ajax/vip.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/ajax/form.min.js', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/ajax/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
     /* Ajax end */
 
     wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/filter.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -58,7 +64,7 @@
     wp_enqueue_script('files-script', get_template_directory_uri() . '/assets/js/files.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('progress-script', get_template_directory_uri() . '/assets/js/progress.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
+
 
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
 

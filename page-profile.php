@@ -54,11 +54,6 @@
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_stat_private;
   $earena_2_user_stat_private = $user_stat;
-
-  // Страница Акаунта
-  global $is_account_page;
-
-  $is_account_page = true;
 ?>
 
 <?php

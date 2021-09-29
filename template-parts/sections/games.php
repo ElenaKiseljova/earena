@@ -1,7 +1,7 @@
 <?php
-  // Страница Акаунта
-  global $is_account_page;
   global $games, $ea_icons;
+
+  $ea_user = false;
 
   if (earena_2_current_page('user')) {
     // Эта переменная используется в шаблонах 'public'
@@ -38,12 +38,8 @@
 
   $platforms = get_site_option( 'platforms' );
 ?>
-  <script type="text/javascript">
-    var data = {};
-      data['games'] = <?= json_encode( $games ) ?>;
-  </script>
 
-<?php if ($is_account_page): ?>
+<?php if ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) ): ?>
   <?php foreach ($platforms as $key => $value): ?>
     <div class="section section--games" id="games-<?= mb_strtolower($value); ?>">
       <header class="section__header">

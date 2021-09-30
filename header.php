@@ -15,12 +15,11 @@
   </head>
   <body>
     <script type="text/javascript">
-    var data = {};
-      data['games'] = <?= json_encode( $games ) ?>;
+      var dataGames = <?= json_encode( $games ) ?>;
 
       var siteURL = '<?= bloginfo( 'url' ); ?>';
       var siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
-      var ea_icons = <?= json_encode( $ea_icons ) ?>;;
+      var ea_icons = <?= json_encode( $ea_icons ) ?>;
     </script>
     <div class="container">
 

@@ -434,7 +434,7 @@
 
                 // formData - обычный объект
                 // dataForm - потомок FormData() [для передачи файлов]
-                console.log(formData, dataForm);
+                //console.log(formData, dataForm);
 
                 if ((ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) {
                   // Для передачи файлов

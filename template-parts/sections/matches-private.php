@@ -430,9 +430,9 @@
   ?>
     <script type="text/javascript">
       // Для получения картинок, если не задан аватар
-      var templateURL = '<?php echo get_template_directory_uri(); ?>'
+      // var templateURL = '<?php echo get_template_directory_uri(); ?>'
 
-      data['matches'] = <?php echo json_encode( $matches_all ) ?>;
+      // data['matches'] = <?php echo json_encode( $matches_all ) ?>;
     </script>
   <?php
 

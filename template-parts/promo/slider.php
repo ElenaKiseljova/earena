@@ -3,21 +3,24 @@
     Слайдер с баннерами и статистикой
   */
 ?>
+<?php
+  $front_page_id = get_option( 'page_on_front' );
+?>
 <div class="promo__slider swiper-container">
   <div class="promo__slider-list swiper-wrapper">
     <?php
       $promo_count_slides_acf = 7;
 
       for ($i=1; $i <= $promo_count_slides_acf; $i++) {
-        $promo_banner = get_field('promo_banner_' . $i);
-        $promo_link = get_field('promo_link_' . $i);
+        $promo_banner = get_field('promo_banner_' . $i, $front_page_id);
+        $promo_link = get_field('promo_link_' . $i, $front_page_id);
 
         if ($i == 1) {
           global $promo_matches;
           global $promo_payed;
 
-          $promo_matches = get_field('promo_matches');
-          $promo_payed = get_field('promo_payed');
+          $promo_matches = get_field('promo_matches', $front_page_id);
+          $promo_payed = get_field('promo_payed', $front_page_id);
         }
         if (! empty($promo_banner) && is_array($promo_banner) ) {
           ?>

@@ -99,3 +99,17 @@
   ["details"]=> NULL
   ["upd"]=> string(1) "1"
 }
+
+// Games
+0 => [
+    'key' => 0,
+    'news-slug' => 'counter-strike-global-offensive',
+    'name' => 'Counter Strike',
+    'details' => 'Global Offensive',
+    'shortname' => 'CS:GO',
+    'id' => 'cs-go',
+    'platforms' => [0],
+    'game_modes' => [1, 2, 5],
+    'team_modes' => [0],
+    'rules_page' => get_page_link(5491)
+],

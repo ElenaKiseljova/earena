@@ -292,13 +292,13 @@ function globalHeader()
 // }
 
 /* ==============================================
-********  //Матчи (объект)
+********  //Матчи (фильтр по платформе и игре)
 =============================================== */
 
-add_action('wp_ajax_earena_2_get_matches_object', 'earena_2_get_matches_object');
-add_action('wp_ajax_nopriv_earena_2_get_matches_object', 'earena_2_get_matches_object');
+add_action('wp_ajax_earena_2_get_matches_html', 'earena_2_get_matches_html');
+add_action('wp_ajax_nopriv_earena_2_get_matches_html', 'earena_2_get_matches_html');
 
-function earena_2_get_matches_object ($limit = 8) {
+function earena_2_get_matches_html ($limit = 8) {
   $data = [];
 
   if (isset($_POST['game_key'])) {
@@ -315,29 +315,240 @@ function earena_2_get_matches_object ($limit = 8) {
       'error' => $matches->get_error_message()
     ];
 
-    wp_send_json( $response );
+    wp_send_json( json_encode($response) );
 
     die();
   } else {
-    $response = [
-      'success' => 1,
-      'content' => $matches
-    ];
+    $game_match_html = '';
 
-    wp_send_json( $response );
+    foreach ($matches as $match) {
+      $game_match_html .= earena_2_show_match($match);
+    }
+
+    echo $game_match_html;
 
     die();
   }
 }
 
+function earena_2_show_match ($match, $profile = false) {
+  $ea_user = is_user_logged_in() ? wp_get_current_user() : null;
+  if (isset($ea_user)) {
+    $ea_user_id = $ea_user->ID;
+  }
+
+  global $icons, $ea_icons;
+  $games = get_site_option('games');
+  if (is_page(518) || earena_2_current_page( 'profile' )) {
+      $profile = true;
+  }
+
+  // Status
+  $match_waiting = ($match->status == 1 ) ? true : false;
+  $match_end = ($match->status > 100) ? true : false;
+  $match_present = ($match->status > 1 && $match->status < 100) ? true : false;
+
+  $match_my = ($match->player1 == $ea_user_id || $match->player2 == $ea_user_id) ? true : false;
+  ?>
+  <div class="match <?php if ($match_my == true) echo 'match--my'; if ($match_end == true) echo 'match--past'; ?>" data-status="<?= $match->status; ?>">
+    <div class="match__image">
+      <img src="<?= get_template_directory_uri() . '/assets/img/games/matches/' . $ea_icons['game'][$match->game] . '.png'; ?>" alt="<?= $games[$match->game]['name']; ?>">
+    </div>
+
+    <div class="match__top">
+      <div class="match__top-left">
+        <h3 class="match__game">
+          <?= $games[$match->game]['name']; ?>
+        </h3>
+        <ul class="variations <?php if ($match->private == '1') echo 'variations--lock'; ?>">
+          <li class="variations__item">
+            <?php if ($match->team_mode > 0): ?>
+              <?= team_mode_to_string($match->team_mode); ?>
+            <?php else : ?>
+              <?= $match->game_mode; ?> vs <?= $match->game_mode; ?>
+            <?php endif; ?>
+          </li>
+        </ul>
+      </div>
+
+      <div class="platform platform--match">
+        <svg class="platform__icon" width="40" height="40">
+          <use xlink:href="#icon-platform-<?= $ea_icons['platform'][$match->platform]; ?>"></use>
+        </svg>
+      </div>
+    </div>
+
+    <div class="match__center">
+      <div class="user user--match">
+        <?php if ( $match->stream1 !== '' ): ?>
+          <a class="user__stream" href="<?= $match->stream1; ?>">
+            <svg class="user__stream-icon" width="16" height="13">
+              <use xlink:href="#icon-play"></use>
+            </svg>
+          </a>
+        <?php endif; ?>
+        <a class="user__avatar user__avatar--match" href="<?= ea_user_link($match->player1); ?>">
+          <?= bp_core_fetch_avatar(['item_id' => $match->player1, 'type' => 'full', 'width' => 80, 'height' => 80]); ?>
+        </a>
+        <a class="user__name user__name--match" href="<?= ea_user_link($match->player1); ?>">
+          <h5>
+            <?= ea_game_nick($match->game, $match->platform, $match->player1); ?>
+          </h5>
+        </a>
+      </div>
+      <?php if (!$match_end): ?>
+        <div class="match__vs match__vs--start">
+          <span>
+            vs
+          </span>
+        </div>
+      <?php else : ?>
+        <div class="match__vs match__vs--end">
+          <span>
+            <?= isset($match->score1) ? $match->score1 : '0'; ?> : <?= isset($match->score2) ? $match->score2 : '0'; ?>
+          </span>
+        </div>
+      <?php endif; ?>
+
+      <div class="user user--match">
+        <?php if (!$match_waiting): ?>
+          <?php if ( $match->stream2 !== '' ): ?>
+            <a class="user__stream" href="<?= $match->stream2; ?>">
+              <svg class="user__stream-icon" width="16" height="13">
+                <use xlink:href="#icon-play"></use>
+              </svg>
+            </a>
+          <?php endif; ?>
+          <a class="user__avatar user__avatar--match" href="<?= ea_user_link($match->player2); ?>">
+            <?= bp_core_fetch_avatar(['item_id' => $match->player2, 'type' => 'full', 'width' => 80, 'height' => 80]); ?>
+          </a>
+          <a class="user__name user__name--match" href="<?= ea_user_link($match->player2); ?>">
+            <h5>
+              <?= ea_game_nick($match->game, $match->platform, $match->player2); ?>
+            </h5>
+          </a>
+        <?php else: ?>
+          <div class="user__avatar user__avatar--match user__avatar--loader">
+            <img width="24" height="24" src="<?php echo get_template_directory_uri(); ?>/assets/img/loader.svg" alt="User">
+          </div>
+          <div class="user__name user__name--match">
+            <h5>
+              NULL
+            </h5>
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+
+    <div class="match__bottom">
+      <div class="match__bet">
+        <?php
+          if (!empty($match->bet)) {
+            echo '$';
+            if (function_exists( 'earena_2_nice_money' )) {
+              echo earena_2_nice_money($match->bet);
+            }
+          } else {
+            echo 'Free';
+          }
+        ?>
+      </div>
+
+      <div class="match__button-wrapper">
+        <?php if ($match_waiting && ((int)$ea_user_id !== (int)$match->player1 || !is_ea_admin())): ?>
+          <?php
+            if (!is_user_logged_in()) {
+                $join_target = 'login';
+            } elseif (is_user_logged_in() && !in_array($match->game, ea_my_games())) {
+                $join_target = 'noGameMatch';
+            } elseif (is_user_logged_in() && !in_array($match->platform, ea_my_platforms($match->game))) {
+                $join_target = 'noPlatformMatch';
+            } elseif (is_user_logged_in() && (int)$match->bet > 0 && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
+                $join_target = 'no18Match';
+            } else {
+                $join_target = 'goMatch';
+            }
+          ?>
+          <button class="button button--blue openpopup"
+                  data-popup="match"
+                  data-target="#<?= $join_target; ?>"
+                  data-id="<?= $match->ID; ?>"
+                  data-price="<?= $match->bet; ?>"
+                  data-private="<?= $match->private; ?>"
+                  data-game="<?= $games[$match->game]['shortname']; ?>"
+                  data-mode="<?= game_mode_to_string($match->game_mode); ?>"
+                  data-command="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
+                  data-image-game="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['game'][(int)$match->game]; ?>.svg"
+                  data-image-platform="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['platform'][(int)$match->platform]; ?>.svg"
+                  type="button" name="accept">
+            <span>
+              <?php _e( 'Принять', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php elseif ($match_waiting && ((int)$ea_user_id == (int)$match->player1 || is_ea_admin())): ?>
+          <button class="button button--red openpopup"
+                  data-popup="match"
+                  data-id="<?= $match->ID; ?>"
+                  type="button" name="delete">
+            <span>
+              <?php _e( 'Удалить', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php elseif ($match_present && $match_my == false): ?>
+          <?php if (is_ea_admin()): ?>
+            <a class="button button--blue" href="/matches/match/?match=<?= $match->ID; ?>">
+              <span>
+                <?php _e( 'Проходит', 'earena_2' ); ?>
+              </span>
+            </a>
+          <?php else: ?>
+            <button class="button button--blue openpopup" disabled data-popup="match" type="button" name="accept">
+              <span>
+                <?php _e( 'Проходит', 'earena_2' ); ?>
+              </span>
+            </button>
+          <?php endif; ?>
+        <?php elseif ($match_present && $match_my == true): ?>
+          <a class="button button--gray" href="/matches/match/?match=<?= $match->ID; ?>">
+            <span class="button__chat button__chat--left">
+              <?= ea_count_unread($match->thread_id) > 0 ? ea_count_unread($match->thread_id) : ''; ?>
+            </span>
+            <span>
+              <?php _e( 'В чат', 'earena_2' ); ?>
+            </span>
+          </a>
+        <?php elseif ($match_end): ?>
+          <button class="button button--gray openpopup" disabled data-popup="match" type="button" name="accept">
+            <span>
+              <?php _e( 'Завершен', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php elseif ($match_waiting): ?>
+          <button class="button button--gray" disabled type="button" name="waiting">
+            <span>
+              <?php _e( 'Ожидает соперника', 'earena_2' ); ?>
+            </span>
+          </button>
+        <?php endif; ?>
+
+        <div class="match__id">
+          ID <?= $match->ID; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+  ~~~
+  <?php
+}
+
 /* ==============================================
-********  //Турниры (объект)
+********  //Турниры (фильтр по платформе и игре)
 =============================================== */
 
-add_action('wp_ajax_earena_2_get_tournaments_object', 'earena_2_get_tournaments_object');
-add_action('wp_ajax_nopriv_earena_2_get_tournaments_object', 'earena_2_get_tournaments_object');
+add_action('wp_ajax_earena_2_get_tournaments_html', 'earena_2_get_tournaments_html');
+add_action('wp_ajax_nopriv_earena_2_get_tournaments_html', 'earena_2_get_tournaments_html');
 
-function earena_2_get_tournaments_object ($limit = 8) {
+function earena_2_get_tournaments_html ($limit = 8) {
   $data = [];
 
   if (isset($_POST['game_key'])) {
@@ -354,19 +565,201 @@ function earena_2_get_tournaments_object ($limit = 8) {
       'error' => $tournaments->get_error_message()
     ];
 
-    wp_send_json( $response );
+    wp_send_json( json_encode($response) );
 
     die();
   } else {
-    $response = [
-      'success' => 1,
-      'content' => $tournaments
-    ];
+    $game_tournaments_html = '';
 
-    wp_send_json( $response );
+    foreach ($tournaments as $tournament) {
+      $game_tournaments_html .= earena_2_show_tournament($tournament);
+    }
+
+    echo $game_tournaments_html;
 
     die();
   }
+}
+
+function earena_2_show_tournament ($tournament, $profile = false) {
+  global $icons, $ea_icons;
+  $games = get_site_option('games');
+  if (is_page(521)) {
+      $profile = true;
+  }
+  ?>
+  <div class="<?php if (is_page(521) || $profile == true) {
+      echo 'col-lg-6 col-md-6 col-sm-6';
+  } else {
+      echo 'col-lg-4 col-md-4 col-sm-6';
+  } ?>">
+      <!--							<div class="<?php if ($profile == true) {
+          echo 'col-lg-6 col-md-6 col-sm-6';
+      } else {
+          echo 'col-lg-4 col-md-4 col-sm-6';
+      } ?>">-->
+      <!--							<div class="<?php echo 'col-lg-6 col-md-6 col-sm-6'; ?>">-->
+      <div class="item <?= in_array(get_current_user_id(),
+          json_decode($tournament->players, true) ?: []) ? 'my-item' : ''; ?>">
+          <div class="top-info">
+              <div class="left">
+                  <img src="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['platform'][(int)$tournament->platform]; ?>.svg"
+                       class="svg platform-icon" alt="">
+                  <img src="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['game'][(int)$tournament->game]; ?>.svg"
+                       class="svg game-icon" alt="">
+                  <div class="txt">
+                      <span><?= $games[$tournament->game]['shortname']; ?></span>
+                      <div class="id">ID <?= $tournament->ID; ?></div>
+                  </div>
+              </div>
+
+              <?php if ($tournament->vip): ?>
+                  <div class="vip">VIP</div>
+              <?php endif; ?>
+
+              <div class="right">
+                  <div class="price"><?= !empty($tournament->price) ? '$'.$tournament->price : 'free'; ?></div>
+                  <?php if ($tournament->private): ?>
+                      <div class="lock right"><img src="<?php bloginfo('template_url'); ?>/images/icons/icon-lock.svg"
+                                                   alt=""></div>
+                  <?php endif; ?>
+              </div>
+          </div>
+
+          <?php if ((int)$tournament->type == 1): ?>
+              <a href="<?= (stripos($_SERVER['REQUEST_URI'],
+                      '/profile/tours/') !== false) ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/tournament/?tournament=' . $tournament->ID; ?>"
+                 class="text-tour<?= $tournament->status > 101 ? ' tour-end' : ''; ?>"
+                 style="background: linear-gradient(180deg, rgba(57, 57, 57, 0) 0%, #000000 100%), url(<?= wp_get_attachment_url($tournament->cover1); ?>) center no-repeat;">
+                  <?php if ((int)$tournament->status !== 103) { ?>
+                      <div class="start-time"><?php _e('Начало', 'earena'); ?> <?= date('d.m.Y',
+                              utc_to_usertime(strtotime($tournament->start_time))); ?> <?php _e('в', 'earena'); ?> <?= date('H:i',
+                              utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)
+                      </div>
+                      <?php if ((int)$tournament->status > 101): ?>
+                          <div class="start-time"><?php _e('Завершен', 'earena'); ?> <?= date('d.m.Y',
+                                  utc_to_usertime(strtotime($tournament->end_time))); ?> <?php _e('в', 'earena'); ?> <?= date('H:i',
+                                  utc_to_usertime(strtotime($tournament->end_time))); ?> (UTC<?= utc_value(); ?>)
+                          </div>
+                      <?php endif; ?>
+                  <?php } ?>
+
+                  <div class="texts">
+                      <div class="infos">
+                          <?php if ($tournament->status < 2): ?>
+                              <div class="btn-end button inproc"><?php _e('Ожидает публикации', 'earena'); ?></div>
+                          <?php elseif ($tournament->status >= 2 && $tournament->status < 4): ?>
+                              <div class="btn-reg button button-purple"><?php _e('Регистрация', 'earena'); ?></div>
+                          <?php elseif ($tournament->status >= 4 && $tournament->status <= 101): ?>
+                              <div class="btn-now button inproc"><?php _e('Проходит', 'earena'); ?></div>
+                          <?php elseif ($tournament->status > 101 && $tournament->status < 103): ?>
+                              <div class="btn-end button inproc"><?php _e('Завершен', 'earena'); ?></div>
+                          <?php elseif ($tournament->status == 103): ?>
+                              <div class="btn-cancel button button-red"><?php _e('Отменен', 'earena'); ?></div>
+                          <?php endif; ?>
+                          <div class="party button button-white"><img class="svg"
+                                                                      src="<?php bloginfo('template_url'); ?>/images/icons/icon-users.svg"
+                                                                      alt=""> <?= count(json_decode($tournament->players,
+                                  true) ?: []); ?>/<?= $tournament->max_players; ?></div>
+                          <div class="prize"><img class="svg"
+                                                  src="<?php bloginfo('template_url'); ?>/images/icons/icon-prize.svg"
+                                                  alt=""> $<?= max($tournament->prize, $tournament->garant); ?></div>
+                      </div>
+                      <div class="name"><?= $tournament->name; ?></div>
+                  </div>
+              </a>
+
+          <?php elseif ((int)$tournament->type == 2): ?>
+              <a href="<?= (stripos($_SERVER['REQUEST_URI'],
+                      '/profile/tours/') !== false) ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/lucky-cup/?lc=' . $tournament->ID; ?>"
+                 class="text-tour<?= $tournament->status > 101 ? ' tour-end' : ''; ?>"
+                 style="background: linear-gradient(180deg, rgba(57, 57, 57, 0) 0%, #000000 100%), url(<?= wp_get_attachment_url($tournament->cover1); ?>) center no-repeat;">
+                  <span class="title">LUCKY CUP</span>
+                  <div class="prize"><img class="svg"
+                                          src="<?php bloginfo('template_url'); ?>/images/icons/icon-prize.svg" alt=""><?php _e('до', 'earena'); ?>
+                      $<?= $tournament->garant; ?></div>
+
+                  <div class="texts">
+                      <div class="infos">
+                          <?php if ($tournament->status < 4): ?>
+                              <div class="btn-reg button button-purple"><?php _e('Регистрация', 'earena'); ?></div>
+                          <?php elseif ($tournament->status >= 4 && $tournament->status <= 101): ?>
+                              <div class="btn-reg button inproc"><?php _e('Проходит', 'earena'); ?></div>
+                          <?php elseif ($tournament->status > 101): ?>
+                              <div class="btn-reg button inproc"><?php _e('Завершен', 'earena'); ?></div>
+                          <?php endif; ?>
+                          <div class="party button button-white"><img class="svg"
+                                                                      src="<?php bloginfo('template_url'); ?>/images/icons/icon-users.svg"
+                                                                      alt=""> <?= count(json_decode($tournament->players,
+                                  true) ?: []); ?>/<?= $tournament->max_players; ?></div>
+                      </div>
+                      <div class="name"><?= $tournament->name; ?></div>
+                  </div>
+              </a>
+
+          <?php elseif ((int)$tournament->type == 3): ?>
+              <a href="<?= (stripos($_SERVER['REQUEST_URI'],
+                      '/profile/tours/') !== false) ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/cup/?cup=' . $tournament->ID; ?>"
+                 class="text-tour<?= $tournament->status > 101 ? ' tour-end' : ''; ?>"
+                 style="background: linear-gradient(180deg, rgba(57, 57, 57, 0) 0%, #000000 100%), url(<?= wp_get_attachment_url($tournament->cover1); ?>) center no-repeat;">
+                  <?php if ((int)$tournament->status !== 103) { ?>
+                      <div class="start-time"><?php _e('Начало', 'earena'); ?> <?= date('d.m.Y',
+                              utc_to_usertime(strtotime($tournament->start_time))); ?> <?php _e('в', 'earena'); ?> <?= date('H:i',
+                              utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)
+                      </div>
+                      <?php if ((int)$tournament->status > 101): ?>
+                          <div class="start-time"><?php _e('Завершен', 'earena'); ?> <?= date('d.m.Y',
+                                  utc_to_usertime(strtotime($tournament->end_time))); ?> <?php _e('в', 'earena'); ?> <?= date('H:i',
+                                  utc_to_usertime(strtotime($tournament->end_time))); ?> (UTC<?= utc_value(); ?>)
+                          </div>
+                      <?php endif; ?>
+                  <?php } ?>
+
+                  <div class="texts">
+                      <div class="infos">
+                          <?php if ($tournament->status < 2): ?>
+                              <div class="btn-end button inproc"><?php _e('Ожидает публикации', 'earena'); ?></div>
+                          <?php elseif ($tournament->status >= 2 && $tournament->status < 4): ?>
+                              <div class="btn-reg button button-purple"><?php _e('Регистрация', 'earena'); ?></div>
+                          <?php elseif ($tournament->status >= 4 && $tournament->status <= 101): ?>
+                              <div class="btn-now button inproc"><?php _e('Проходит', 'earena'); ?></div>
+                          <?php elseif ($tournament->status > 101 && $tournament->status < 103): ?>
+                              <div class="btn-end button inproc"><?php _e('Завершен', 'earena'); ?></div>
+                          <?php elseif ($tournament->status == 103): ?>
+                              <div class="btn-cancel button button-red"><?php _e('Отменен', 'earena'); ?></div>
+                          <?php endif; ?>
+                          <div class="party button button-white"><img class="svg"
+                                                                      src="<?php bloginfo('template_url'); ?>/images/icons/icon-users.svg"
+                                                                      alt=""> <?= count(json_decode($tournament->players,
+                                  true) ?: []); ?><?= !empty($tournament->max_players) ? '/' . $tournament->max_players : ''; ?>
+                          </div>
+                          <div class="prize"><img class="svg"
+                                                  src="<?php bloginfo('template_url'); ?>/images/icons/icon-prize.svg"
+                                                  alt=""> $<?= max($tournament->prize, $tournament->garant); ?></div>
+                      </div>
+                      <div class="name"><?= $tournament->name; ?></div>
+                  </div>
+              </a>
+
+          <?php endif; ?>
+          <?php if ($tournament->status > 101 && !empty($tournament->winner)): ?>
+              <a href="<?= ea_user_link(json_decode($tournament->winner)[0]); ?>" class="winner">
+                  <?= bp_core_fetch_avatar('item_id=' . json_decode($tournament->winner)[0]); ?>
+                  <span>WINNER</span>
+              </a>
+          <?php endif; ?>
+
+          <div class="bottom-info">
+              <div><span><?php _e('Режим игры', 'earena'); ?></span>
+                  <span><?= game_mode_to_string($tournament->game_mode); ?></span></div>
+              <div><span><?php if ($tournament->team_mode > 0) : ?><?php _e('Команда', 'earena'); ?></span>
+                  <span><?= team_mode_to_string($tournament->team_mode); ?><?php else: ?>&nbsp;<?php endif; ?></span>
+              </div>
+          </div>
+      </div>
+  </div>
+  ~~~
+  <?php
 }
 
 //

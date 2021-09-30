@@ -444,7 +444,7 @@
 
   ?>
     <script type="text/javascript">
-      data['tournaments'] = <?php echo json_encode( $tournaments_all ) ?>;
+      //data['tournaments'] = <?php echo json_encode( $tournaments_all ) ?>;
     </script>
   <?php
 

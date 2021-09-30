@@ -388,13 +388,23 @@
 
   &--match {
     background-color: #colors[dark];
+
+    img {
+      width: 80px;
+      height: auto;
+    }
   }
 
   &--loader {
     width: 80px;
-    height: auto;
+    height: 80px;
 
     border: 1px solid #colors[dark_light];
+
+    img {
+      width: auto;
+      height: auto;
+    }
   }
 
   &--account,
@@ -607,6 +617,8 @@
   }
 
   &--match {
+    max-width: none;
+
     margin-top: 5px;
   }
 

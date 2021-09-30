@@ -26,12 +26,15 @@
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
       // Главная
+      earena_2_get_section( 'games' );
+
+      earena_2_get_section( 'matches-public' );
+
+      earena_2_get_section( 'tournaments-public' );
+
+
       if (!isset($_GET['type'])) {
-        earena_2_get_section( 'games' );
 
-        earena_2_get_section( 'matches' );
-
-        earena_2_get_section( 'tournaments' );
       } elseif (isset($_GET['type']) && $_GET['type'] === 'matches') {
 
         // Старница всех матчей

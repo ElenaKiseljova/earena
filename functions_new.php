@@ -729,6 +729,16 @@
   	*/
   }
 
+  function game_mode_to_string($gm)
+  {
+      return isset(get_site_option('game_modes')[$gm]) ? get_site_option('game_modes')[$gm] : 'ERROR';
+  }
+
+  function team_mode_to_string($tm)
+  {
+      return isset(get_site_option('team_modes')[$tm]) ? get_site_option('team_modes')[$tm] : 'ERROR';
+  }
+
   /*INCLUDE SETTINGS EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_settings.php' );
 

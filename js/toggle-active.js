@@ -65,75 +65,6 @@
           }
         },
 
-        // Переключение состояния всех связанных элементов по клику на 1 из них
-        /*multiple: function (buttonSelector, elementSelector = false) {
-          // Ф-я подстановки шаблона в контейнер
-          let templateReplaseFunction = (containerID, contentID) => {
-            let container = document.querySelector(`#${containerID}`);
-            let template = document.querySelector(`#${contentID}`);
-
-            if (container && template) {
-              // Очистка контейнера
-              container.innerHTML = '';
-
-              let cloneTemplate = template.content.cloneNode(true);
-
-              // Загружаем шаблон в контейнер
-              container.appendChild(cloneTemplate);
-
-              // Получаем кнопки открытия попапов
-              let popupOpenButtons = container.querySelectorAll('.openpopup');
-
-              if (popupOpenButtons) {
-                popupOpenButtons.forEach((popupOpenButton, i) => {
-                  // Активация попапа по клику на указанную кнопку
-                  window.popup.activatePopup(popupOpenButton);
-                });
-              }
-            }
-          };
-
-          // Получение всех кнопок
-          let buttons = document.querySelectorAll(buttonSelector);
-
-          if (buttons) {
-            // Если есть класс связанного контента получаем элементы
-            if (elementSelector) {
-              var elements = document.querySelectorAll(elementSelector);
-            }
-
-            buttons.forEach((button, i) => {
-              // При загрузке страницы подставлять шаблон активного таба
-              // if (button.classList.contains('active') && button.dataset.containerId && button.dataset.contentId) {
-              //   // Ф-я подстановки шаблона в контейнер
-              //   templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
-              // }
-
-              button.addEventListener('click', function () {
-                // Удаляю активные классы других кнопок/контента
-                window.removeActiveClassElements(buttons);
-
-                // Переключение класса тогла
-                button.classList.toggle('active');
-
-                // Если есть элементы, полученные из класса связанного контента
-                if (elements) {
-                  window.removeActiveClassElements(elements);
-
-                  // Переключение класса контента
-                  elements[i].classList.toggle('active');
-                }
-
-                // Если есть дата-атрибуты переключения Шаблонов
-                // if (button.dataset.contentId && button.dataset.containerId) {
-                //   // Ф-я подстановки шаблона в контейнер
-                //   templateReplaseFunction(button.dataset.containerId, button.dataset.contentId);
-                // }
-              });
-            });
-          }
-        },*/
-
         // Возможность выбора нескольких табов или таба "Все"
         several: function (buttonSelector) {
           let buttons = document.querySelectorAll(buttonSelector);
@@ -184,9 +115,9 @@
                 button.classList.toggle('active');
 
                 // Импортируется из файла platforms.js
-                window.platforms.getSelected('games');
-                window.platforms.getSelected('matches');
-                window.platforms.getSelected('tournaments');
+                window.platforms.drawSelected('games');
+                window.platforms.drawSelected('matches');
+                window.platforms.drawSelected('tournaments');
               });
             });
           }
@@ -202,12 +133,6 @@
 
       /* Аккордеон */
       window.toggleActive.nextElementToggle('.accordeon__button');
-
-      /* Тогглы */
-      // window.toggleActive.multiple('.toggles__item--tournament', '.toggles__content--tournament');
-
-      /* Табы ( кошелёк ) */
-      // window.toggleActive.multiple('.tabs__button--purse');
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');

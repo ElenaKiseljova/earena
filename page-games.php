@@ -8,7 +8,7 @@
 
   $game_id = isset($_GET['game']) ? $_GET['game'] : false;
 
-  if (!$game_id) {
+  if ($game_id === false) {
     return;
   }
 
@@ -17,8 +17,8 @@
     'game' => [$game_id]
   ];
 
-  $matches = EArena_DB::get_ea_matches_by_filters($data, 8, 0);
-  $tournaments = EArena_DB::get_ea_tournaments_by_filters($data, 8);
+  $matches = EArena_DB::get_ea_matches_by_filters($data, 0, 0);
+  $tournaments = EArena_DB::get_ea_tournaments_by_filters($data, 0);
 
   if ( is_wp_error($matches) || is_wp_error($tournaments) ) {
     return;
@@ -44,10 +44,10 @@
   <?php
     if ( isset($_GET['toggles']) && $_GET['toggles'] === 'matches' ) {
       // С блоком фильтров отображение Матчей
-      earena_2_get_section( 'matches', true, false );
+      earena_2_get_section( 'matches-public', true, false );
     } elseif ( isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments' ) {
       // С блоком фильтров отображение Турниров
-      earena_2_get_section( 'tournaments', true, false );
+      earena_2_get_section( 'tournaments-public', true, false );
     } else {
       if ( function_exists( 'earena_2_get_section' ) ) {
         // Матчи

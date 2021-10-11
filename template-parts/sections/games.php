@@ -106,7 +106,7 @@
         <h2 class="section__title section__title--games">
           <?php _e( 'Игры', 'earena_2' ); ?>
           <span class="section__amount">
-            <?= $games_amount; ?>
+            <?= $games_amount ?? 0; ?>
           </span>
         </h2>
 

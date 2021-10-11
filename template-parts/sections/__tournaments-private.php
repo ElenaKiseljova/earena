@@ -1,3 +1,4 @@
+<!-- Тут пока дичь (переехало с верстки, где было вполне приличным, но на бою оказалось недееспособным) -->
 <?php
   global $filter_section;
   global $header_right_section;
@@ -508,7 +509,7 @@
           <?php _e( 'Турниры', 'earena_2' ); ?>
 
           <span class="section__amount">
-            <?= $tournaments_amount; ?>
+            0
           </span>
         </h2>
 

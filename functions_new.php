@@ -241,7 +241,7 @@
   if (! function_exists( 'earena_2_nice_money' )) {
     function earena_2_nice_money ( $money_value = 0 ) {
       // Получаю дробную часть
-      $money_value_decimal = $money_value - floor($money_value);
+      $money_value_decimal = (int)$money_value - floor($money_value);
       /*
       // Перевожу в целое
       $money_value = floor($money_value);

@@ -62,7 +62,7 @@
           } else {
             dataFiltered = dataFiltered.split('~~~');
 
-            // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
+            // Получаем кол-во полученных элементов
             amount = dataFiltered.length - 1;
 
             dataTemplate = dataFiltered.map(function(dataFilteredItem) {
@@ -74,19 +74,18 @@
             }).join(' ');
           }
 
-          window.platforms.showFilteredAmount(what, amount);
-
           // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
           let templateEmpty = templates[what](false, true);
+          let itemsCount  = amount;
 
-          while ((amount % column) !== 0) {
+          while ((itemsCount % column) !== 0) {
             dataTemplate += `
                     <li class="section__item section__item--col-${column}">
                       ${templateEmpty}
                     </li>
                    `;
 
-            amount++;
+            itemsCount++;
           }
 
           // Заменяем содержимое контейнера полученными результатами
@@ -104,6 +103,14 @@
 
           // Отрисовка полос прогресса
           window.progress('.players__progress-bar');
+
+          // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
+          let amountSpan = container.querySelector(`#count_filtered_${what}`);
+          if (amountSpan) {
+            amount = parseInt(amountSpan.textContent, 10);
+          }
+
+          window.platforms.showFilteredAmount(what, amount);
         }
 
         console.log('Created: ', what);

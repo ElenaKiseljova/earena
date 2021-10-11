@@ -2,7 +2,7 @@
   <?php
     global $games, $game_id, $ea_icons, $matches;
 
-    $count_matches = count($matches);
+    $count_matches = count($matches ?? []);
 
     $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
   ?>
@@ -17,7 +17,7 @@
         </h2>
 
         <div class="section__header-right">
-          <?php if ( $count_matches > 0 ): ?>
+          <?php if ( $count_matches > 8 ): ?>
             <a class="button button--more" href="<?=$actual_link;?>&toggles=matches">
               <span>
                 <?php _e( 'Все матчи', 'earena_2' ); ?>

@@ -4,7 +4,15 @@
   */
 ?>
 <?php
-  global $games, $ea_icons, $match;
+  global $games, $icons, $ea_icons, $match;
+
+  if (!isset($games)) {
+    $games = get_site_option('games');
+  }
+
+  if (is_page(518) || earena_2_current_page( 'profile' )) {
+      $profile = true;
+  }
 
   $username = get_query_var('username');
   if (empty($username) && is_user_logged_in()) {
@@ -19,7 +27,7 @@
     $ea_user = get_user_by('slug',$username);
   }
 
-  $ea_user_id = $ea_user->ID;
+  $ea_user_id = $ea_user->ID ?? null;
 
   // Status
   $match_waiting = ($match->status == 1 ) ? true : false;
@@ -136,8 +144,10 @@
     <div class="match__button-wrapper">
       <?php if ($match_waiting && ((int)$ea_user_id !== (int)$match->player1 || !is_ea_admin())): ?>
         <?php
+          $join_name = 'accept';
           if (!is_user_logged_in()) {
               $join_target = 'login';
+              $join_name = 'signin';
           } elseif (is_user_logged_in() && !in_array($match->game, ea_my_games())) {
               $join_target = 'noGameMatch';
           } elseif (is_user_logged_in() && !in_array($match->platform, ea_my_platforms($match->game))) {
@@ -159,7 +169,8 @@
                 data-command="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
                 data-image-game="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['game'][(int)$match->game]; ?>.svg"
                 data-image-platform="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['platform'][(int)$match->platform]; ?>.svg"
-                type="button" name="accept">
+                type="button"
+                name="<?= $join_name ;?>">
           <span>
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>

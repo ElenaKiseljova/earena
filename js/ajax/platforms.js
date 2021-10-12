@@ -159,6 +159,10 @@
           });
           //console.log(platformsSelected);
 
+          setTimeout(() => {
+            window.platforms.setCookie('ea_current_platform', platformsSelected);
+          }, 300);
+
           return platformsSelected;
         } else {
           return false;
@@ -208,7 +212,44 @@
         if (titleAmountWhat) {
           titleAmountWhat.textContent = amount;
         }
-      }
+      },
+      setCookie : function (name, value, options = {}) {
+        options = {
+          path: '/',
+        }
+
+        if (options.expires instanceof Date) {
+          options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+        for (let optionKey in options) {
+          updatedCookie += '; ' + optionKey;
+          let optionValue = options[optionKey];
+          if (optionValue !== true) {
+            updatedCookie += '=' + optionValue;
+          }
+        }
+        document.cookie = updatedCookie;
+      },
+      getCookiesPlatforms : function () {
+        let cookieObj = document.cookie.split('; ').reduce((prev, current) => {
+          const [name, ...value] = current.split('=');
+          prev[name] = value.join('=');
+          return prev;
+        }, {});
+        if (!cookieObj.ea_current_platform) {
+          window.platforms.setCookie('ea_current_platform', window.platforms.getSelectedPlatforms());
+          return window.platforms.getSelectedPlatforms();
+        }
+        let cookiesPlatforms = cookieObj.ea_current_platform.split('%2C');
+        cookiesPlatforms = cookiesPlatforms.map(elem => {return parseInt(elem)});
+        if (cookiesPlatforms.includes('all')) {
+          cookiesPlatforms = Array.from(Array(window.platforms.getSelectedPlatforms().length).keys());
+        }
+        return cookiesPlatforms;
+      },
     };
 
     // Шаблоны игр/матчей/турниров

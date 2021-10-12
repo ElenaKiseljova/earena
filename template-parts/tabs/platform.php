@@ -12,17 +12,17 @@
       $cookiePlatforms = array_map('intval', explode(',', $cookiePlatforms));
   } else {
       $cookiePlatforms = [];
-      $cookiePlatforms = [-1];
+      $cookiePlatforms = ['all'];
   }
   if(count($cookiePlatforms) == count($platforms)) {
       $cookiePlatforms = [];
-      $cookiePlatforms = [-1];
+      $cookiePlatforms = ['all'];
   }
 ?>
 
 <div class="tabs">
   <!-- Для переключения состояния - добавляется active класс  -->
-  <button class="tabs__button tabs__button--platform <?= array_search(-1, $cookiePlatforms)!== false ? 'active' : '' ?>" data-tab-type="all" type="button" name="tab-all">
+  <button class="tabs__button tabs__button--platform <?= array_search('all', $cookiePlatforms)!== false ? 'active' : '' ?>" data-tab-type="all" type="button" name="tab-all">
     <?php _e( 'Все', 'earena_2' ); ?>
   </button>
   <?php foreach ($platforms as $platform_key => $platform_item) : ?>

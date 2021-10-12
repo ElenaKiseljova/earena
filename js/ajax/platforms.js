@@ -119,16 +119,14 @@
         // Ф-я с условиями фильтрации массива с играми/матчами/турнирами
         let isPlatform = function (data) {
           // Если активный таб "ВСЕ" - то показываем всё
-          if (platformsSelected.includes('all')) {
+          if (platformsSelected.includes(-1)) {
             return true;
           } else {
             let dataPlatforms = data['platforms'];
 
             for (let i = 0; i < dataPlatforms.length; i++) {
-              let dataPlatformsToString = dataPlatforms[i].toString();
-
-              // Если в массиве платформ Игры/Матча/Турнира есть хотя бы одна из активных платформ - показываем Игру/Матч/Турнир и прекращаем перебор списка платформ игры
-              if (platformsSelected.includes(dataPlatformsToString)) {
+              // Если в массиве платформ Игры есть хотя бы одна из активных платформ - показываем Игру и прекращаем перебор списка платформ игры
+              if (platformsSelected.includes(dataPlatforms[i].toString()) || platformsSelected.includes(dataPlatforms[i])) {
                 return true;
 
                 break;
@@ -155,7 +153,7 @@
 
         if (platformsActiveTabs.length > 0) {
           platformsActiveTabs.forEach((platformsActiveTab, i) => {
-            platformsSelected.push(platformsActiveTab.dataset.tabType);
+            platformsSelected.push(parseInt(platformsActiveTab.dataset.tabType, 10));
           });
           //console.log(platformsSelected);
 
@@ -166,51 +164,6 @@
           return platformsSelected;
         } else {
           return false;
-        }
-      },
-      getDataAjax : function (what = 'matches', selectedPlatforms = [], games = []) {
-        let action = '';
-        switch (what) {
-          case 'matches':
-            action = 'earena_2_get_matches_html';
-            break;
-          case 'tournaments':
-            action = 'earena_2_get_tournaments_html';
-            break;
-          default:
-          action = 'earena_2_get_matches_object';
-        }
-
-        let data = {
-          action : action,
-          platform : selectedPlatforms.includes('all') ? [0, 1, 2, 3] : selectedPlatforms,
-          game : games
-        };
-
-        $.ajax({
-          url: earena_2_ajax.url,
-          data: data,
-          type: 'POST',
-          beforeSend: (response) => {
-            console.log(response.readyState, data);
-          },
-          success: (response) => {
-            console.log('Success :',  response);
-
-            window.platforms.createList(what, response);
-          },
-          error: (response) => {
-            console.log('Error :', response);
-          }
-        });
-      },
-      showFilteredAmount : function (what, amount) {
-        // what - может принимать значения : games/matches/tournaments
-
-        let titleAmountWhat =  document.querySelector(`.section__title--${what} .section__amount`);
-
-        if (titleAmountWhat) {
-          titleAmountWhat.textContent = amount;
         }
       },
       setCookie : function (name, value, options = {}) {
@@ -245,11 +198,56 @@
         }
         let cookiesPlatforms = cookieObj.ea_current_platform.split('%2C');
         cookiesPlatforms = cookiesPlatforms.map(elem => {return parseInt(elem)});
-        if (cookiesPlatforms.includes('all')) {
-          cookiesPlatforms = Array.from(Array(window.platforms.getSelectedPlatforms().length).keys());
+        if (cookiesPlatforms.includes(-1)) {
+          cookiesPlatforms = Array.from(Array(platformsArr.length).keys());
         }
         return cookiesPlatforms;
       },
+      getDataAjax : function (what = 'matches', selectedPlatforms = [], games = []) {
+        let action = '';
+        switch (what) {
+          case 'matches':
+            action = 'earena_2_get_matches_html';
+            break;
+          case 'tournaments':
+            action = 'earena_2_get_tournaments_html';
+            break;
+          default:
+          action = 'earena_2_get_matches_object';
+        }
+
+        let data = {
+          action : action,
+          platform : selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()) : selectedPlatforms,
+          game : games
+        };
+
+        $.ajax({
+          url: earena_2_ajax.url,
+          data: data,
+          type: 'POST',
+          beforeSend: (response) => {
+            console.log(response.readyState, data);
+          },
+          success: (response) => {
+            console.log('Success :',  response);
+
+            window.platforms.createList(what, response);
+          },
+          error: (response) => {
+            console.log('Error :', response);
+          }
+        });
+      },
+      showFilteredAmount : function (what, amount) {
+        // what - может принимать значения : games/matches/tournaments
+
+        let titleAmountWhat =  document.querySelector(`.section__title--${what} .section__amount`);
+
+        if (titleAmountWhat) {
+          titleAmountWhat.textContent = amount;
+        }
+      }
     };
 
     // Шаблоны игр/матчей/турниров

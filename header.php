@@ -20,6 +20,7 @@
       var siteURL = '<?= bloginfo( 'url' ); ?>';
       var siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
       var ea_icons = <?= json_encode( $ea_icons ) ?>;
+      var platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
     </script>
     <div class="container">
 

@@ -1,6 +1,6 @@
 <?php if (earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
-    global $games, $game_id, $ea_icons, $matches, $tournaments;
+    global $games, $game_id, $ea_icons, $tournaments;
 
     $count_tournaments = count($tournaments ?? []);
 
@@ -75,7 +75,7 @@
           </span>
         </h2>
         <div class="section__header-right">
-          <a class="button button--more" href="<?php echo bloginfo('url'); ?>/?type=tournaments">
+          <a class="button button--more" href="<?php echo bloginfo('url'); ?>/tournaments">
             <span>
               <?php _e('Все турниры', 'earena_2'); ?>
             </span>
@@ -83,6 +83,35 @@
         </div>
       </header>
 
+      <div class="section__content">
+        <ul class="section__list" id="content-platform-tournaments">
+          <!-- Подстановка содержимого из шаблона -->
+        </ul>
+      </div>
+    </div>
+  </section>
+<?php elseif (earena_2_current_page( 'tournaments' )) : ?>
+  <section class="section section--tournaments" id="tournaments">
+    <div class="section__wrapper">
+      <header class="section__header">
+        <h2 class="section__title section__title--tournaments section__title--page">
+          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__amount">
+            0
+          </span>
+        </h2>
+        <div class="section__header-right section__header-right--account-tabs">
+          <?php
+            // Табы игровых платформ
+            get_template_part('template-parts/tabs/platform');
+          ?>
+        </div>
+      </header>
+
+      <?php
+        // Фильтры
+        get_template_part('template-parts/filters');
+      ?>
       <div class="section__content">
         <ul class="section__list" id="content-platform-tournaments">
           <!-- Подстановка содержимого из шаблона -->

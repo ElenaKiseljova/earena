@@ -112,7 +112,8 @@ input[type="checkbox"]:focus + .checkbox__label--checkbox {
   }
 }
 
-input[type="checkbox"]:checked + .checkbox__label--checkbox {
+input[type="checkbox"]:checked + .checkbox__label--checkbox,
+input[type="radio"]:checked + .checkbox__label--checkbox {
   &::before {
     background-color: #colors[accent];
     border-color: #colors[accent];

@@ -319,7 +319,7 @@ function earena_2_get_matches_html ($limit = 8) {
 
     die();
   } else {
-    $count_filtered_matches_html = '<span class="visually-hidden" id="count_filtered_matches">' . count($matches) . '</span>';
+    $count_filtered_matches_html = '<span class="visually-hidden count_filtered_matches">' . count($matches) . '</span>';
 
     $game_match_html = '';
 
@@ -384,7 +384,7 @@ function earena_2_get_tournaments_html ($limit = 8) {
 
     die();
   } else {
-    $count_filtered_tournaments_html = '<span class="visually-hidden" id="count_filtered_tournaments">' . count($tournaments) . '</span>';
+    $count_filtered_tournaments_html = '<span class="visually-hidden count_filtered_tournaments">' . count($tournaments) . '</span>';
 
     $game_tournaments_html = '';
 
@@ -517,54 +517,53 @@ function get_match()
     }
     die();
 }
-//
-//
-add_action('wp_ajax_get_tournaments', 'get_tournaments');
-add_action('wp_ajax_nopriv_get_tournaments', 'get_tournaments');
 
-function get_tournaments()
+add_action('wp_ajax_earena_2_get_filtered_tournaments', 'earena_2_get_filtered_tournaments');
+add_action('wp_ajax_nopriv_earena_2_get_filtered_tournaments', 'earena_2_get_filtered_tournaments');
+
+function earena_2_get_filtered_tournaments()
 {
-    $id = isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" ? $_POST['id'] : false;
+    $id = (isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" && $_POST['id'] > "") ? $_POST['id'] : false;
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
-    $perPage = 9;
-    $matches_db_collection = [];
+    $perPage = 8;
+    $tournaments_db_collection = [];
     if ($id) {
         $game = null;
         if (isset($_POST['game'])) {
             $game[] = $_POST['game'];
         }
-        $matches_db_collection = EArena_DB::get_ea_tournaments_by_filter_id($id, $perPage, $offset, $game);
+        $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filter_id($id, 0, 0, $game);
     } else {
         $dataFilter = array();
         if (isset($_POST['game'])) {
             $dataFilter['game'][] = $_POST['game'];
         }
         if (isset($_POST['game_mode']) && $_POST['game_mode'] !== "") {
-            $game_mode = explode(',', $_POST['game_mode']);
+            // $game_mode = explode(',', $_POST['game_mode']);
             $dataFilter['game_mode'] = $game_mode;
         }
         if (isset($_POST['team_mode']) && $_POST['team_mode'] !== "") {
-            $team_mode = explode(',', $_POST['team_mode']);
+            // $team_mode = explode(',', $_POST['team_mode']);
             $dataFilter['team_mode'] = $team_mode;
         }
         if (isset($_POST['type']) && $_POST['type'] !== "") {
-            $status = explode(',', $_POST['type']);
-            $dataFilter['type'] = $status;
+            // $type = explode(',', $_POST['type']);
+            $dataFilter['type'] = $type;
         }
         if (isset($_POST['fast']) && $_POST['fast'] !== "") {
-            $status = explode(',', $_POST['fast']);
-            $dataFilter['fast'] = $status;
+            // $fast = explode(',', $_POST['fast']);
+            $dataFilter['fast'] = $fast;
         }
         if (isset($_POST['status']) && $_POST['status'] !== "") {
-            $status = explode(',', $_POST['status']);
+            // $status = explode(',', $_POST['status']);
             $dataFilter['status'] = $status;
         }
         if (isset($_POST['bet']) && $_POST['bet'] !== "") {
-            $bet = explode(',', $_POST['bet']);
+            // $bet = explode(',', $_POST['bet']);
             $dataFilter['bet'] = $bet;
         }
         if (isset($_POST['platform']) && $_POST['platform'] !== "") {
-            $platform = explode(',', $_POST['platform']);
+            // $platform = explode(',', $_POST['platform']);
             $dataFilter['platform'] = $platform;
         }
         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
@@ -573,15 +572,92 @@ function get_tournaments()
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
             $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
         }
-        $matches_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $perPage, $offset);
+        $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, 0, 0);
     }
-    $game_matches_str = '';
-    foreach ($matches_db_collection as $tournament) {
-        $game_matches_str .= show_tournament($tournament);
+    $game_tournaments_str = '';
+
+    $count_tournaments_db_collection_html = '<span class="visually-hidden count_filtered_tournaments">' . count($tournaments_db_collection) . '</span>';
+
+    $item_tournament = 0;
+    foreach ($tournaments_db_collection as $tournament) {
+      if ($item_tournament < $offset) {
+        continue;
+      } else if ($item_tournament > ($offset + $perPage)) {
+        break;
+      }
+
+      $game_tournaments_str .= earena_2_show_tournament($tournament);
+
+      $item_tournament++;
     }
-    echo $game_matches_str;
+    echo $game_tournaments_str . $count_tournaments_db_collection_html;
     die();
 }
+//
+//
+// add_action('wp_ajax_get_tournaments', 'get_tournaments');
+// add_action('wp_ajax_nopriv_get_tournaments', 'get_tournaments');
+//
+// function get_tournaments()
+// {
+//     $id = isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" ? $_POST['id'] : false;
+//     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
+//     $perPage = 9;
+//     $matches_db_collection = [];
+//     if ($id) {
+//         $game = null;
+//         if (isset($_POST['game'])) {
+//             $game[] = $_POST['game'];
+//         }
+//         $matches_db_collection = EArena_DB::get_ea_tournaments_by_filter_id($id, $perPage, $offset, $game);
+//     } else {
+//         $dataFilter = array();
+//         if (isset($_POST['game'])) {
+//             $dataFilter['game'][] = $_POST['game'];
+//         }
+//         if (isset($_POST['game_mode']) && $_POST['game_mode'] !== "") {
+//             $game_mode = explode(',', $_POST['game_mode']);
+//             $dataFilter['game_mode'] = $game_mode;
+//         }
+//         if (isset($_POST['team_mode']) && $_POST['team_mode'] !== "") {
+//             $team_mode = explode(',', $_POST['team_mode']);
+//             $dataFilter['team_mode'] = $team_mode;
+//         }
+//         if (isset($_POST['type']) && $_POST['type'] !== "") {
+//             $status = explode(',', $_POST['type']);
+//             $dataFilter['type'] = $status;
+//         }
+//         if (isset($_POST['fast']) && $_POST['fast'] !== "") {
+//             $status = explode(',', $_POST['fast']);
+//             $dataFilter['fast'] = $status;
+//         }
+//         if (isset($_POST['status']) && $_POST['status'] !== "") {
+//             $status = explode(',', $_POST['status']);
+//             $dataFilter['status'] = $status;
+//         }
+//         if (isset($_POST['bet']) && $_POST['bet'] !== "") {
+//             $bet = explode(',', $_POST['bet']);
+//             $dataFilter['bet'] = $bet;
+//         }
+//         if (isset($_POST['platform']) && $_POST['platform'] !== "") {
+//             $platform = explode(',', $_POST['platform']);
+//             $dataFilter['platform'] = $platform;
+//         }
+//         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
+//             $dataFilter['private'][] = $_POST['private'] === 'true' ? '1' : '0';
+//         }
+//         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
+//             $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
+//         }
+//         $matches_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $perPage, $offset);
+//     }
+//     $game_matches_str = '';
+//     foreach ($matches_db_collection as $tournament) {
+//         $game_matches_str .= show_tournament($tournament);
+//     }
+//     echo $game_matches_str;
+//     die();
+// }
 //
 //
 // add_action('wp_ajax_get_last_tournament_winner', 'get_last_tournament_winner');

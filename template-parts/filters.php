@@ -5,25 +5,23 @@
 ?>
 
 <?php
-  // Для теста
-  $tournaments_page = false;
+  global $games;
+  $games = $games ?? [];
 
-  if (isset($_GET['type']) && $_GET['type'] === 'tournaments') {
-    $tournaments_page = true;
-  }
+  $platforms = get_site_option( 'platforms' ) ?? [];
+  $game_modes = get_site_option( 'game_modes' ) ?? [];
+  $team_modes = get_site_option( 'team_modes' ) ?? [];
 
-  $matches_page = false;
+  $tournaments_page = earena_2_current_page( 'tournaments' );
 
-  if (isset($_GET['type']) && $_GET['type'] === 'matches') {
-    $matches_page = true;
-  }
+  $matches_page = earena_2_current_page( 'matches' );
 ?>
 
 <div class="filters">
   <form class="filters__form" action="" method="post" id="filters-main">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
-        <input class="filters__field filters__field--input" type="text" name="id-match" value="" placeholder="<?php _e( 'ID матча', 'earena_2' ); ?>">
+        <input class="filters__field filters__field--input" type="text" name="id" placeholder="<?php _e( 'ID матча', 'earena_2' ); ?>">
         <button class="filters__button filters__button--search" type="button" name="button">
           <svg class="filters__icon" width="20" height="20">
             <use xlink:href="#icon-search"></use>
@@ -34,8 +32,8 @@
         <?php if ($matches_page): ?>
           <!-- Приватный матч -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="privat-match" value="" id="privat-match">
-            <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="privat-match">
+            <input class="visually-hidden" type="checkbox" name="private" value="1" id="private-match">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="private-match">
               <?php _e( 'Приватный матч', 'earena_2' ); ?>
             </label>
           </div>
@@ -44,15 +42,15 @@
         <?php if ($tournaments_page): ?>
           <!-- Приватный турнир -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="privat-tournament" value="" id="privat-tournament">
-            <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="privat-tournament">
+            <input class="visually-hidden" type="checkbox" name="private" value="1" id="private-tournament">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="private-tournament">
               <?php _e( 'Приватный турнир', 'earena_2' ); ?>
             </label>
           </div>
 
           <!-- VIP турнир -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="vip" value="" id="vip">
+            <input class="visually-hidden" type="checkbox" name="vip" value="1" id="vip">
             <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="vip">
               <?php _e( 'VIP', 'earena_2' ); ?>
             </label>
@@ -61,11 +59,8 @@
       </div>
     </div>
     <div class="filters__container filters__container--bottom">
-
       <?php
-        // is_front_page() && !is_home() пункт выбора Игры присутствует на стр всех матчей / турниров,
-        // но отсутствует на стр всех матчей / турниров конкретной Игры
-        if (( $tournaments_page || $matches_page ) && is_front_page() && !is_home() ) {
+        if ( $tournaments_page || $matches_page ) {
           ?>
             <!-- Выбор игры на стр Всех матчей/турниров -->
             <div class="filters__element filters__element--col-5">
@@ -76,83 +71,44 @@
 
               <!-- Для переключения состояния - добавляется active класс  -->
               <ul class="filters__list filters__list--checkbox">
-                <li class="filters__item filters__item--checkbox">
-                  <div class="checkbox checkbox--left">
-                    <input class="visually-hidden" type="checkbox" name="game" value="Modern Warfare" id="modern-warfare">
-                    <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="modern-warfare">
-                      Modern Warfare
-                    </label>
-                  </div>
-                </li>
-                <li class="filters__item filters__item--checkbox">
-                  <div class="checkbox checkbox--left">
-                    <input class="visually-hidden" type="checkbox" name="game" value="Dota 2" id="dota-2">
-                    <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="dota-2">
-                      Dota 2
-                    </label>
-                  </div>
-                </li>
+                <?php foreach ($games as $game): ?>
+                  <li class="filters__item filters__item--checkbox">
+                    <div class="checkbox checkbox--left">
+                      <input class="visually-hidden" type="checkbox" name="game" value="<?= $game['key']; ?>" id="<?= $game['news-slug']; ?>">
+                      <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="<?= $game['news-slug']; ?>">
+                        <?= $game['name']; ?>
+                      </label>
+                    </div>
+                  </li>
+                <?php endforeach; ?>
               </ul>
-
               <ul class="filters__list filters__list--result">
-                <!-- Шаблон пунктов списка результатов строится в filter.js. Тут приведен для наглядности -->
-                <!-- <li class="filters__item filters__item--result">
-                  <div class="checkbox checkbox--left">
-                    <label class="checkbox__label checkbox__label--result checkbox__label--right" for="modern-warfare">
-                      Modern Warfare
-                    </label>
-                  </div>
-                </li> -->
+                <!-- Шаблон пунктов списка результатов строится в filter.js -->
               </ul>
             </div>
           <?php
         }
       ?>
 
-      <?php
-        // Этот фильтр не виден на стр Всех матчей /  турниров (модификация front-page.php), т.к. там есть табы
-      ?>
-      <?php if (! is_front_page() ): ?>
+      <?php if ( earena_2_current_page( 'games' ) ): ?>
         <div class="filters__element filters__element--col-5">
-          <!-- Для переключения состояния - добавляется active класс  -->
+          <!-- Для переключения состояния - добавляется active класс -->
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Платформа', 'earena_2' ); ?>
           </button>
 
           <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="filters__list filters__list--checkbox">
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="platform" value="xbox" id="platform-xbox">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-xbox">
-                  XBOX
-                </label>
-              </div>
-            </li>
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="platform" value="pc" id="platform-pc">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-pc">
-                  PC
-                </label>
-              </div>
-            </li>
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="platform" value="mobile" id="platform-mobile">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-mobile">
-                  Mobile
-                </label>
-              </div>
-            </li>
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="platform" value="playstation" id="platform-playstation">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-playstation">
-                  PlayStation
-                </label>
-              </div>
-            </li>
+            <?php foreach ($platforms as $platform_key => $platform): ?>
+              <li class="filters__item filters__item--checkbox">
+                <div class="checkbox checkbox--left">
+                  <input class="visually-hidden" type="checkbox" name="platform" value="<?= $platform_key; ?>" id="platform-<?= mb_strtolower($platform); ?>">
+                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-<?= mb_strtolower($platform); ?>">
+                    <?= $platform; ?>
+                  </label>
+                </div>
+              </li>
+            <?php endforeach; ?>
           </ul>
           <ul class="filters__list filters__list--result">
             <!-- Шаблон пунктов списка результатов строится в filter.js -->
@@ -169,33 +125,33 @@
         <ul class="filters__list filters__list--checkbox">
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
-              <input class="visually-hidden" type="checkbox" name="money" value="free" id="money-free">
-              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="money-free">
-                Free
+              <input class="visually-hidden" type="checkbox" name="bet" value="0" id="bet-0">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="bet-0">
+                <?php _e( 'Free', 'earena_2' ); ?>
               </label>
             </div>
           </li>
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
-              <input class="visually-hidden" type="checkbox" name="money" value="5" id="money-5">
-              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="money-5">
-                $5
+              <input class="visually-hidden" type="checkbox" name="bet" value="1" id="bet-1">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="bet-1">
+                $1 – $10
               </label>
             </div>
           </li>
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
-              <input class="visually-hidden" type="checkbox" name="money" value="100" id="money-100">
-              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="money-100">
-                $100
+              <input class="visually-hidden" type="checkbox" name="bet" value="2" id="bet-2">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="bet-2">
+                $10 – $100
               </label>
             </div>
           </li>
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
-              <input class="visually-hidden" type="checkbox" name="money" value="200" id="money-200">
-              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="money-200">
-                $200
+              <input class="visually-hidden" type="checkbox" name="bet" value="3" id="bet-3">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="bet-3">
+                $100+
               </label>
             </div>
           </li>
@@ -208,16 +164,78 @@
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Режим игры', 'earena_2' ); ?>
         </button>
+        <!-- Для переключения состояния - добавляется active класс  -->
+        <ul class="filters__list filters__list--checkbox">
+          <?php foreach ($game_modes as $game_mode_key => $game_mode): ?>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="game_mode" value="<?= $game_mode_key; ?>" id="game_mode_<?= $game_mode_key; ?>">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="game_mode_<?= $game_mode_key; ?>">
+                  <?= $game_mode_key; ?> vs <?= $game_mode_key; ?>
+                </label>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+        <ul class="filters__list filters__list--result">
+          <!-- Шаблон пунктов списка результатов строится в filter.js -->
+        </ul>
       </div>
       <div class="filters__element filters__element--col-5">
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Режим команды', 'earena_2' ); ?>
         </button>
+        <!-- Для переключения состояния - добавляется active класс  -->
+        <ul class="filters__list filters__list--checkbox">
+          <?php foreach ($team_modes as $team_mode_key => $team_mode): ?>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="team_mode" value="<?= $team_mode_key; ?>" id="team_mode_<?= $team_mode_key; ?>">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="team_mode_<?= $team_mode_key; ?>">
+                  <?= $team_mode !== null ? $team_mode : __('NULL', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+        <ul class="filters__list filters__list--result">
+          <!-- Шаблон пунктов списка результатов строится в filter.js -->
+        </ul>
       </div>
       <div class="filters__element filters__element--col-5">
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Статус', 'earena_2' ); ?>
         </button>
+        <!-- Для переключения состояния - добавляется active класс  -->
+        <ul class="filters__list filters__list--checkbox">
+          <li class="filters__item filters__item--checkbox">
+            <div class="checkbox checkbox--left">
+              <input class="visually-hidden" type="checkbox" name="status" value="1" id="status-1">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-1">
+                <?php _e('Регистрация', 'earena_2'); ?>
+              </label>
+            </div>
+          </li>
+          <li class="filters__item filters__item--checkbox">
+            <div class="checkbox checkbox--left">
+              <input class="visually-hidden" type="checkbox" name="status" value="2" id="status-2">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-2">
+                <?php _e('Проходит', 'earena_2'); ?>
+              </label>
+            </div>
+          </li>
+          <li class="filters__item filters__item--checkbox">
+            <div class="checkbox checkbox--left">
+              <input class="visually-hidden" type="checkbox" name="status" value="3" id="status-3">
+              <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-3">
+                <?php _e('Завершён', 'earena_2'); ?>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <ul class="filters__list filters__list--result">
+          <!-- Шаблон пунктов списка результатов строится в filter.js -->
+        </ul>
       </div>
 
       <?php if ($tournaments_page): ?>
@@ -226,16 +244,90 @@
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Тип турнира', 'earena_2' ); ?>
           </button>
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <ul class="filters__list filters__list--checkbox">
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="type" value="1" id="type-1">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="type-1">
+                  <?php _e('Турнир', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="type" value="2" id="type-2">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="type-2">
+                  <?php _e('Lucky Cup', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="type" value="3" id="type-3">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="type-3">
+                  <?php _e('Кубок', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <ul class="filters__list filters__list--result">
+            <!-- Шаблон пунктов списка результатов строится в filter.js -->
+          </ul>
         </div>
         <div class="filters__element filters__element--col-5">
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Скорость', 'earena_2' ); ?>
           </button>
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <ul class="filters__list filters__list--checkbox">
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="fast" value="1" id="fast-1">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-1">
+                  <?php _e('Обычная', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="fast" value="2" id="fast-2">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-2">
+                  <?php _e('Быстрая', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <ul class="filters__list filters__list--result">
+            <!-- Шаблон пунктов списка результатов строится в filter.js -->
+          </ul>
         </div>
         <div class="filters__element filters__element--col-5">
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Дата начала', 'earena_2' ); ?>
           </button>
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <ul class="filters__list filters__list--checkbox">
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="radio" name="date" value="desc" id="date-1">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="date-1">
+                  <?php _e('Дальше', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="radio" name="date" value="asc" id="date-2">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="date-2">
+                  <?php _e('Ближе', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <ul class="filters__list filters__list--result">
+            <!-- Шаблон пунктов списка результатов строится в filter.js -->
+          </ul>
         </div>
       <?php endif; ?>
     </div>

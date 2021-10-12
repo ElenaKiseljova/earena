@@ -16,7 +16,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--header">
-      <a class="navigation__link navigation__link--header navigation__link--blue-hover  <?php if (is_front_page() && function_exists('earena_2_current_page')) earena_2_current_page('matches'); ?>" href="<?php echo bloginfo( 'url' ); ?>?type=matches">
+      <a class="navigation__link navigation__link--header navigation__link--blue-hover <?= earena_2_current_page( 'matches' ) ? 'active' : ''; ?>" href="<?php echo bloginfo( 'url' ); ?>/matches">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M13.0625 9.28125H15.8125" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M6.1875 9.28125H8.9375" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -30,7 +30,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--header">
-      <a class="navigation__link navigation__link--header navigation__link--blue-hover  <?php if (function_exists('earena_2_current_page')) earena_2_current_page('tournaments'); ?>" href="<?php echo bloginfo( 'url' ); ?>?type=tournaments">
+      <a class="navigation__link navigation__link--header navigation__link--blue-hover <?= earena_2_current_page( 'tournaments' ) ? 'active' : ''; ?>" href="<?php echo bloginfo( 'url' ); ?>/tournaments">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4.8125 4.8125V9.54732C4.8125 12.9591 7.54141 15.787 10.9531 15.8123C11.7696 15.8185 12.5792 15.663 13.3353 15.3549C14.0914 15.0467 14.7791 14.5919 15.3586 14.0168C15.9381 13.4416 16.3981 12.7574 16.712 12.0037C17.0259 11.2499 17.1875 10.4415 17.1875 9.625V4.8125C17.1875 4.63016 17.1151 4.4553 16.9861 4.32636C16.8572 4.19743 16.6823 4.125 16.5 4.125H5.5C5.31766 4.125 5.1428 4.19743 5.01386 4.32636C4.88493 4.4553 4.8125 4.63016 4.8125 4.8125Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M8.25 19.25H13.75" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

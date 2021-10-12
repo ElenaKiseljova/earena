@@ -77,7 +77,7 @@
 
             buttons.forEach((button, i) => {
               button.addEventListener('click', function () {
-                if (parseInt(button.dataset.tabType, 10) === -1) {
+                if (parseInt(button.dataset.tabType, 10) === -1 || button.dataset.tabType === -1) {
                   // Переприсваиваем значение индекса (если кнопка "Все" - не под 0 индексом)
                   allButtonIndex = i;
 

@@ -12,13 +12,13 @@
   $game_modes = get_site_option( 'game_modes' ) ?? [];
   $team_modes = get_site_option( 'team_modes' ) ?? [];
 
-  $tournaments_page = earena_2_current_page( 'tournaments' );
+  $tournaments_page = earena_2_current_page( 'tournaments' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments');
 
-  $matches_page = earena_2_current_page( 'matches' );
+  $matches_page = earena_2_current_page( 'matches' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches');
 ?>
 
 <div class="filters">
-  <form class="filters__form" action="" method="post" id="filters-main">
+  <form class="filters__form" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : 'main'); ?>">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
         <input class="filters__field filters__field--input" type="text" name="id" placeholder="<?php _e( 'ID матча', 'earena_2' ); ?>">
@@ -32,7 +32,7 @@
         <?php if ($matches_page): ?>
           <!-- Приватный матч -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="private" value="1" id="private-match">
+            <input class="visually-hidden" type="checkbox" name="private" value="true" id="private-match">
             <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="private-match">
               <?php _e( 'Приватный матч', 'earena_2' ); ?>
             </label>
@@ -42,7 +42,7 @@
         <?php if ($tournaments_page): ?>
           <!-- Приватный турнир -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="private" value="1" id="private-tournament">
+            <input class="visually-hidden" type="checkbox" name="private" value="true" id="private-tournament">
             <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="private-tournament">
               <?php _e( 'Приватный турнир', 'earena_2' ); ?>
             </label>
@@ -50,7 +50,7 @@
 
           <!-- VIP турнир -->
           <div class="checkbox checkbox--top">
-            <input class="visually-hidden" type="checkbox" name="vip" value="1" id="vip">
+            <input class="visually-hidden" type="checkbox" name="vip" value="true" id="vip">
             <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="vip">
               <?php _e( 'VIP', 'earena_2' ); ?>
             </label>
@@ -60,10 +60,10 @@
     </div>
     <div class="filters__container filters__container--bottom">
       <?php
-        if ( $tournaments_page || $matches_page ) {
+        if ( ($tournaments_page || $matches_page) && !earena_2_current_page( 'games' ) ) {
           ?>
             <!-- Выбор игры на стр Всех матчей/турниров -->
-            <div class="filters__element filters__element--col-5">
+            <div class="filters__element filters__element--col-5 <?= earena_2_current_page( 'games' ) ? 'visually-hidden' : ''; ?>">
               <!-- Для переключения состояния - добавляется active класс  -->
               <button class="filters__field filters__field--select" type="button" name="button">
                 <?php _e( 'Игра', 'earena_2' ); ?>
@@ -90,7 +90,7 @@
         }
       ?>
 
-      <?php if ( earena_2_current_page( 'games' ) ): ?>
+      <?php if ( earena_2_current_page( 'games' ) && isset($_GET['toggles']) ): ?>
         <div class="filters__element filters__element--col-5">
           <!-- Для переключения состояния - добавляется active класс -->
           <button class="filters__field filters__field--select" type="button" name="button">
@@ -310,16 +310,16 @@
           <ul class="filters__list filters__list--checkbox">
             <li class="filters__item filters__item--checkbox">
               <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="radio" name="date" value="desc" id="date-1">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="date-1">
+                <input class="visually-hidden" type="radio" name="sort" value="desc" id="sort-1">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-1">
                   <?php _e('Дальше', 'earena_2'); ?>
                 </label>
               </div>
             </li>
             <li class="filters__item filters__item--checkbox">
               <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="radio" name="date" value="asc" id="date-2">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="date-2">
+                <input class="visually-hidden" type="radio" name="sort" value="asc" id="sort-2">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-2">
                   <?php _e('Ближе', 'earena_2'); ?>
                 </label>
               </div>

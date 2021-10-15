@@ -252,7 +252,7 @@
                     // Логин
                     if (prefix.indexOf('signin') > -1) {
                       if (response.data.loggedin === true) {
-                        document.location.href = earena_2_ajax.redirecturl + '?login-status=success';
+                        document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&login-status=success') : (earena_2_ajax.redirecturl + '?login-status=success');
                       } else {
                         if (popupMessage) {
                           popupMessage.innerHTML = response.data.message;

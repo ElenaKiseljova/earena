@@ -63,7 +63,7 @@
 
       <div class="tournament__top-content">
         <?php if ( $tournament_end && !empty($tournament->winner ) ): ?>
-          <a class="tournament__winner" href="<?= ea_user_link(json_decode($tournament->winner)[0]); ?>">
+          <div class="tournament__winner">
             <div class="tournament__winner-image-wrapper">
               <div class="tournament__winner-image">
                 <?= bp_core_fetch_avatar('item_id=' . json_decode($tournament->winner)[0]); ?>
@@ -71,9 +71,11 @@
             </div>
 
             <h5 class="tournament__winner-name">
-              <?php var_dump($tournament->winner); ?>
+              <?php
+                earena_2_get_nickname_by_id(json_decode($tournament->winner)[0]);
+              ?>
             </h5>
-          </a>
+          </div>
         <?php endif; ?>
         <div class="tournament__trophy">
           $<?= earena_2_nice_money( max($tournament->prize, $tournament->garant) ); ?>

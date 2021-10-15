@@ -305,7 +305,9 @@ function earena_2_get_matches_html ($limit = 8) {
     $data['game'] = $_POST['game_key'] ?? [];
   }
 
-  $data['platform'] = $_POST['platform'] ?? [];
+  if (isset($_POST['platform'])) {
+    $data['platform'] = explode(',', $_POST['platform']);
+  }
 
   $matches = EArena_DB::get_ea_matches_by_filters($data, 0, 0);
 
@@ -370,7 +372,9 @@ function earena_2_get_tournaments_html ($limit = 8) {
     $data['game'] = $_POST['game_key'] ?? [];
   }
 
-  $data['platform'] = $_POST['platform'] ?? [];
+  if (isset($_POST['platform'])) {
+    $data['platform'] = explode(',', $_POST['platform']);
+  }
 
   $tournaments = EArena_DB::get_ea_tournaments_by_filters($data, 0);
 
@@ -469,25 +473,92 @@ function earena_2_show_tournament ($tournament, $profile = false) {
 //     die();
 // }
 //
-add_action('wp_ajax_get_match', 'get_match');
-add_action('wp_ajax_nopriv_get_match', 'get_match');
+// add_action('wp_ajax_get_match', 'get_match');
+// add_action('wp_ajax_nopriv_get_match', 'get_match');
+//
+// function get_match()
+// {
+//     $id = isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" ? $_POST['id'] : false;
+//     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
+//     $perPage = $offset === 0 ? 11 : 12;
+//     if ($id) {
+//         $game = null;
+//         if (isset($_POST['game'])) {
+//             $game[] = $_POST['game'];
+//         }
+//         $matches_db_collection = EArena_DB::get_ea_matches_by_filter_id($id, $perPage, $offset, $game);
+//         matchesListResponse($matches_db_collection);
+//     } else {
+//         $dataFilter = array();
+//         if (isset($_POST['game'])) {
+//             $dataFilter['game'][] = $_POST['game'];
+//         }
+//         if (isset($_POST['game_mode']) && $_POST['game_mode'] !== "") {
+//             $game_mode = explode(',', $_POST['game_mode']);
+//             $dataFilter['game_mode'] = $game_mode;
+//         }
+//         if (isset($_POST['team_mode']) && $_POST['team_mode'] !== "") {
+//             $team_mode = explode(',', $_POST['team_mode']);
+//             $dataFilter['team_mode'] = $team_mode;
+//         }
+//         if (isset($_POST['status']) && $_POST['status'] !== "") {
+//             $status = explode(',', $_POST['status']);
+//             $dataFilter['status'] = $status;
+//         }
+//         if (isset($_POST['bet']) && $_POST['bet'] !== "") {
+//             $bet = explode(',', $_POST['bet']);
+//             $dataFilter['bet'] = $bet;
+//         }
+//         if (isset($_POST['platform']) && $_POST['platform'] !== "") {
+//             $platform = explode(',', $_POST['platform']);
+//             $dataFilter['platform'] = $platform;
+//         }
+//         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null") {
+//             $dataFilter['private'][] = $_POST['private'] === 'true' ? '1' : '0';
+//         }
+//         $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $perPage, $offset);
+//         matchesListResponse($matches_db_collection);
+//     }
+//     die();
+// }
 
-function get_match()
+add_action('wp_ajax_earena_2_get_filtered_matches', 'earena_2_get_filtered_matches');
+add_action('wp_ajax_nopriv_earena_2_get_filtered_matches', 'earena_2_get_filtered_matches');
+
+function earena_2_get_filtered_matches()
 {
-    $id = isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" ? $_POST['id'] : false;
+    $id = (isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" && $_POST['id'] > "") ? $_POST['id'] : false;
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
-    $perPage = $offset === 0 ? 11 : 12;
+    $per_page = isset($_POST['perpage']) ? (int)$_POST['perpage'] : 8;
+    $matches_db_collection = [];
+
+    /* for test - start */
+    // $matches_db_collection = [
+    //   'game' => $_POST['game'],
+    //   'id' => $_POST['id'],
+    //   'game_mode' => $_POST['game_mode'],
+    //   'team_mode' => $_POST['team_mode'],
+    //   'type' => $_POST['type'],
+    //   'fast' => $_POST['fast'],
+    //   'status' => $_POST['status'],
+    //   'bet' => $_POST['bet'],
+    //   'platform' => $_POST['platform'],
+    //   'private' => $_POST['private'],
+    //   'vip' => $_POST['vip']
+    // ];
+    /* for test - end */
+
     if ($id) {
         $game = null;
         if (isset($_POST['game'])) {
-            $game[] = $_POST['game'];
+            $game = $_POST['game'];
         }
-        $matches_db_collection = EArena_DB::get_ea_matches_by_filter_id($id, $perPage, $offset, $game);
-        matchesListResponse($matches_db_collection);
+        $matches_db_collection = EArena_DB::get_ea_matches_by_filter_id($id, 0, 0, $game);
     } else {
         $dataFilter = array();
         if (isset($_POST['game'])) {
-            $dataFilter['game'][] = $_POST['game'];
+            $game = explode(',', $_POST['game']);
+            $dataFilter['game'] = $game;
         }
         if (isset($_POST['game_mode']) && $_POST['game_mode'] !== "") {
             $game_mode = explode(',', $_POST['game_mode']);
@@ -496,6 +567,14 @@ function get_match()
         if (isset($_POST['team_mode']) && $_POST['team_mode'] !== "") {
             $team_mode = explode(',', $_POST['team_mode']);
             $dataFilter['team_mode'] = $team_mode;
+        }
+        if (isset($_POST['type']) && $_POST['type'] !== "") {
+            $type = explode(',', $_POST['type']);
+            $dataFilter['type'] = $type;
+        }
+        if (isset($_POST['fast']) && $_POST['fast'] !== "") {
+            $fast = explode(',', $_POST['fast']);
+            $dataFilter['fast'] = $fast;
         }
         if (isset($_POST['status']) && $_POST['status'] !== "") {
             $status = explode(',', $_POST['status']);
@@ -509,12 +588,41 @@ function get_match()
             $platform = explode(',', $_POST['platform']);
             $dataFilter['platform'] = $platform;
         }
-        if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null") {
+        if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
             $dataFilter['private'][] = $_POST['private'] === 'true' ? '1' : '0';
         }
-        $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $perPage, $offset);
-        matchesListResponse($matches_db_collection);
+        if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
+            $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
+        }
+        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
+            $sort = mb_strtoupper($_POST['sort']);
+
+            // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+            $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, 0, 0, $sort, 'date' );
+        } else {
+          // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+          $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, 0, 0);
+        }
     }
+    $game_matches_str = '';
+
+    $count_matches_db_collection_html = '<span class="visually-hidden count_filtered_matches">' . count($matches_db_collection) . '</span>';
+
+    $item_tournament = 1;
+    foreach ($matches_db_collection as $matches) {
+      if ($item_tournament < $offset) {
+        continue;
+      } else if ($item_tournament > ($offset + $per_page)) {
+        break;
+      }
+
+      $game_matches_str .= earena_2_show_match($matches);
+
+      $item_tournament++;
+    }
+
+    echo $game_matches_str . $count_matches_db_collection_html;
+
     die();
 }
 
@@ -525,45 +633,63 @@ function earena_2_get_filtered_tournaments()
 {
     $id = (isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" && $_POST['id'] > "") ? $_POST['id'] : false;
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
-    $perPage = 8;
+    $per_page = isset($_POST['perpage']) ? (int)$_POST['perpage'] : 8;
     $tournaments_db_collection = [];
+
+    /* for test - start */
+    // $tournaments_db_collection = [
+    //   'game' => $_POST['game'],
+    //   'id' => $_POST['id'],
+    //   'game_mode' => $_POST['game_mode'],
+    //   'team_mode' => $_POST['team_mode'],
+    //   'type' => $_POST['type'],
+    //   'fast' => $_POST['fast'],
+    //   'status' => $_POST['status'],
+    //   'bet' => $_POST['bet'],
+    //   'platform' => $_POST['platform'],
+    //   'private' => $_POST['private'],
+    //   'vip' => $_POST['vip']
+    // ];
+    /* for test - end */
+
     if ($id) {
         $game = null;
         if (isset($_POST['game'])) {
-            $game[] = $_POST['game'];
+            $game = $_POST['game'];
         }
         $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filter_id($id, 0, 0, $game);
     } else {
         $dataFilter = array();
         if (isset($_POST['game'])) {
-            $dataFilter['game'][] = $_POST['game'];
+            $game = explode(',', $_POST['game']);
+            $dataFilter['game'] = $game;
         }
         if (isset($_POST['game_mode']) && $_POST['game_mode'] !== "") {
-            // $game_mode = explode(',', $_POST['game_mode']);
+            $game_mode = explode(',', $_POST['game_mode']);
             $dataFilter['game_mode'] = $game_mode;
         }
         if (isset($_POST['team_mode']) && $_POST['team_mode'] !== "") {
-            // $team_mode = explode(',', $_POST['team_mode']);
+            $team_mode = explode(',', $_POST['team_mode']);
             $dataFilter['team_mode'] = $team_mode;
         }
         if (isset($_POST['type']) && $_POST['type'] !== "") {
-            // $type = explode(',', $_POST['type']);
+            $type = explode(',', $_POST['type']);
             $dataFilter['type'] = $type;
         }
         if (isset($_POST['fast']) && $_POST['fast'] !== "") {
-            // $fast = explode(',', $_POST['fast']);
+            $fast = explode(',', $_POST['fast']);
             $dataFilter['fast'] = $fast;
         }
         if (isset($_POST['status']) && $_POST['status'] !== "") {
-            // $status = explode(',', $_POST['status']);
+            $status = explode(',', $_POST['status']);
             $dataFilter['status'] = $status;
         }
         if (isset($_POST['bet']) && $_POST['bet'] !== "") {
-            // $bet = explode(',', $_POST['bet']);
+            $bet = explode(',', $_POST['bet']);
             $dataFilter['bet'] = $bet;
         }
         if (isset($_POST['platform']) && $_POST['platform'] !== "") {
-            // $platform = explode(',', $_POST['platform']);
+            $platform = explode(',', $_POST['platform']);
             $dataFilter['platform'] = $platform;
         }
         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
@@ -572,17 +698,25 @@ function earena_2_get_filtered_tournaments()
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
             $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
         }
-        $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, 0, 0);
+        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
+            $sort = mb_strtoupper($_POST['sort']);
+
+            // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+            $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, 0, 0, $sort, 'date' );
+        } else {
+          // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+          $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, 0, 0);
+        }
     }
     $game_tournaments_str = '';
 
     $count_tournaments_db_collection_html = '<span class="visually-hidden count_filtered_tournaments">' . count($tournaments_db_collection) . '</span>';
 
-    $item_tournament = 0;
+    $item_tournament = 1;
     foreach ($tournaments_db_collection as $tournament) {
       if ($item_tournament < $offset) {
         continue;
-      } else if ($item_tournament > ($offset + $perPage)) {
+      } else if ($item_tournament > ($offset + $per_page)) {
         break;
       }
 
@@ -590,9 +724,12 @@ function earena_2_get_filtered_tournaments()
 
       $item_tournament++;
     }
+
     echo $game_tournaments_str . $count_tournaments_db_collection_html;
+
     die();
 }
+
 //
 //
 // add_action('wp_ajax_get_tournaments', 'get_tournaments');

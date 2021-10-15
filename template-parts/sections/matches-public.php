@@ -69,7 +69,13 @@
   <?php
     global $games, $game_id, $ea_icons, $matches;
 
-    $count_matches = count($matches);
+    $count_matches = count($matches ?? []);
+
+    if (isset($_GET['login-status'])) {
+      unset($_GET['login-status']);
+    } else if (isset($_GET['action'])) {
+      unset($_GET['action']);
+    }
   ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
@@ -90,37 +96,8 @@
       ?>
 
       <div class="section__content">
-        <ul class="section__list">
-          <?php
-            // Записываю все матчи в глобальную переменную
-            $matches = $matches_all;
-            global $match_index;
-
-            $row_index = 1;
-
-            for ($match_index=0; $match_index < 10; $match_index++) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive' ); ?>
-                </li>
-              <?php
-              if ($row_index % 4 === 0) {
-                $row_index = 1;
-              } else {
-                $row_index++;
-              }
-            }
-
-            // Оставшееся (до 4 шт) заполняется пустыми карточками
-            while ( $row_index <= 4 && $row_index > 1 ) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive', 'empty' ); ?>
-                </li>
-              <?php
-              $row_index++;
-            }
-          ?>
+        <ul class="section__list" id="content-platform-matches">
+          <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
     </div>
@@ -212,7 +189,7 @@
         <h2 class="section__title section__title--matches">
           <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
           <span class="section__amount">
-            <?= $count_matches; ?>
+            0
           </span>
         </h2>
 
@@ -226,46 +203,9 @@
         get_template_part( 'template-parts/filters' );
       ?>
 
-      <div class="section__content" id="content-platform">
-        <!-- Подстановка содержимого из шаблона -->
-        <ul class="section__list">
-          <!-- Кнопка создания матча -->
-          <li class="section__item section__item--col-4">
-            <?php get_template_part( 'template-parts/match/create' ); ?>
-          </li>
-          <?php
-            global $matches;
-            global $match_index;
-
-            $match_index = 0;
-            $row_index = 2;
-
-            // Перебираем матчи все
-            foreach ($matches as $match) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive' ); ?>
-                </li>
-              <?php
-              if ($row_index % 4 === 0) {
-                $row_index = 1;
-              } else {
-                $row_index++;
-              }
-
-              $match_index++;
-            }
-
-            // Оставшееся (до 4 шт) заполняется пустыми карточками
-            while ( $row_index <= 4 && $row_index > 1 ) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive', 'empty' ); ?>
-                </li>
-              <?php
-              $row_index++;
-            }
-          ?>
+      <div class="section__content">
+        <ul class="section__list" id="content-platform-matches">
+          <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
     </div>

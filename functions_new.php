@@ -78,6 +78,7 @@
 
     // С переводами
     wp_set_script_translations('platforms-script', 'earena_2');
+    wp_set_script_translations('filter-script', 'earena_2');
 
     // AJAX
     $args = array(
@@ -627,6 +628,21 @@
       $user_id = $id > 0 ? $id : get_current_user_id();
       $nicknames = get_user_meta($user_id, 'nicknames', true);
       return (isset($nicknames[$game]) && is_array($nicknames[$game]) && !empty($nicknames[$game][$platform])) ? $nicknames[$game][$platform] : '<span style="color:red;"><i>NO_NAME</i></span>';
+  }
+
+  /*
+    ***** Ф-я получения имени подльзователя по ИД
+  */
+  function earena_2_get_nickname_by_id ($id = 0)
+  {
+    if ($id > 0) {
+      $tournament_winner = get_user_by('id', $id);
+      if ( !($tournament_winner instanceof WP_User) ) {
+        echo 'NO_NAME';
+      } else {
+        echo $tournament_winner->nickname;
+      }
+    }
   }
 
   function is_online($user_id)

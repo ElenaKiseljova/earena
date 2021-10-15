@@ -1,12 +1,26 @@
 'use strict';
 
 (function ($) {
+  /*
+    dataGames,
+    currentGameId,
+
+    siteURL,
+    siteThemeFolderURL,
+    ea_icons
+    platformsArr
+
+    - глобальные переменные, которые используются для составления URI.
+      Задаются в header.php
+  */
   document.addEventListener('DOMContentLoaded', () => {
     try {
+      const { __, _x, _n, _nx } = wp.i18n;
+
       // Смещение для пагинации/скролла-подгрузки
       let offset = {
         'tournaments' : 0,
-        'match' : 0
+        'matches' : 0
       };
 
       let filterTimeoutLast;
@@ -18,7 +32,7 @@
           if (filterForm) {
             let platformsSelected = window.platforms.getSelectedPlatforms();
             if (!platformsSelected) {
-              platformsSelected = Array.from(Array(platformsArr.length).keys());
+              platformsSelected = window.platforms.getCookiesPlatforms();
             }
 
             // Получаем контейнер для Игр/Матчей/Турниров
@@ -30,6 +44,10 @@
                 itemInput.addEventListener('change', function () {
                   window.filter.inputChange(itemInput, filterForm, what, container, platformsSelected);
                 });
+
+                if ( currentGameId !== false && itemInput.name === 'platform' && platformsSelected.includes(parseInt(itemInput.value, 10)) && itemInput.checked === false ) {
+                  itemInput.click();
+                }
               });
             }
 
@@ -47,12 +65,15 @@
         },
         getDataAjax : function (filterForm, what, container, selectedPlatforms) {
           let action = '';
+          let perPage = 8;
           switch (what) {
             case 'matches':
-              action = '';
+              action = 'earena_2_get_filtered_matches';
+              perPage = (currentGameId === false) ? ((offset[what] === 0) ? 23 : 24) : 8;
               break;
             case 'tournaments':
               action = 'earena_2_get_filtered_tournaments';
+              perPage = (currentGameId === false) ? 16 : 8;
               break;
             default:
             action = '';
@@ -60,32 +81,28 @@
 
           let data = {
             action : action,
-            offset : offset[what]
+            offset : offset[what],
+            perpage : perPage
           };
 
+          if ( currentGameId !== false ) {
+            data['game'] = currentGameId;
+          }
+
           let dataForm = new FormData(filterForm);
-          let i = 1;
+
           for (var pair of dataForm.entries()) {
             // Если один элемент
             if (!data[pair[0]]) {
               data[pair[0]] = pair[1];
-            } else if (data[pair[0]] && !Array.isArray(data[pair[0]])) {
-              // Если массив, но это его второй элемент
-              let firstElement = data[pair[0]];
-              data[pair[0]] = [];
-              data[pair[0]][0] = firstElement;
-              data[pair[0]][i] = pair[1];
-              i++;
-            } else if (data[pair[0]] && Array.isArray(data[pair[0]])) {
-              // Если массив, и это его элементы после 2-го
-              data[pair[0]][i] = pair[1];
-              i++;
+            } else if (data[pair[0]]) {
+              data[pair[0]] += ',' + pair[1];
             }
           }
 
           // Если в фильтрах на стр есть выбор платформ, тогда платформы пишутся оттуда
           if (!data['platform']) {
-            data['platform'] = selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()) : selectedPlatforms;
+            data['platform'] = selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : selectedPlatforms.join(',');
           }
 
           if (filterTimeoutLast) {
@@ -102,7 +119,22 @@
               },
               success: (response) => {
                 //console.log('Success :',  response);
+                if (currentGameId === false && what === 'matches' && isProfile === false && offset[what] === 0) {
+                  let createMatchHTMLTemplate = `
+                    <div class="match match--create">
+                      <div class="match__image">
+                        <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                      </div>
 
+                      <button class="match__create openpopup" data-popup="match" type="button" name="create">
+                        ${__( 'Создать <br> новый матч', 'earena_2' )}
+                      </button>
+                    </div>
+                    ~~~
+                    `;
+
+                  response = createMatchHTMLTemplate + response;
+                }
                 window.platforms.createList(what, response, container);
               },
               error: (response) => {
@@ -150,16 +182,35 @@
             // Получаю активные пункты
             let filterSelects = filterForm.querySelectorAll('.filters__field--select.active');
 
-            // Инициалтзирую клик по ним, чтобы получить дефолтное с-е фильтров
+            // Инициалтзирую клик по ним, чтобы получить дефолтное з-е фильтров
             filterSelects.forEach((filterSelect, i) => {
               filterSelect.click();
             });
           });
+        },
+        onScroll : function () {
+          let elementIsInView = function (el) {
+            const scroll = window.scrollY || window.pageYOffset;
+            const boundsTop = el.getBoundingClientRect().top + scroll;
+
+            const viewport = {
+              top: scroll,
+              bottom: scroll + document.documentElement.clientHeight,
+            }
+
+            const bounds = {
+              top: boundsTop,
+              bottom: boundsTop + el.clientHeight,
+            }
+            return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
+              || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
+          };
         }
       };
 
       // Инициализация фильтра
-      window.filter.init('filters-main');
+      window.filter.init('filters-tournaments', 'tournaments');
+      window.filter.init('filters-matches', 'matches');
     } catch (e) {
       console.log(e);
     }

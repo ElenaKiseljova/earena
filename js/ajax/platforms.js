@@ -3,6 +3,7 @@
 (function ($) {
   /*
     dataGames,
+    currentGameId,
 
     siteURL,
     siteThemeFolderURL,
@@ -37,7 +38,7 @@
 
           return;
         } else if (what !== 'games' && container) {
-          dataFiltered = window.platforms.getDataAjax(what, platformsSelected, [], container);
+          dataFiltered = window.platforms.getDataAjax(what, platformsSelected, '', container);
         }
       },
       createList : function (what, dataFiltered, container) {
@@ -66,12 +67,20 @@
           // Получаем кол-во полученных элементов
           amount = dataFiltered.length - 1;
 
-          dataTemplate = dataFiltered.map(function(dataFilteredItem) {
-            return `
-                    <li class="section__item section__item--col-${column}">
-                      ${dataFilteredItem}
-                    </li>
-                   `;
+          dataTemplate = dataFiltered.map(function(dataFilteredItem, index) {
+            if (index === (dataFiltered.length - 1)) {
+              return `
+                      <li class="visually-hidden">
+                        ${dataFilteredItem}
+                      </li>
+                     `;
+            } else {
+              return `
+                      <li class="section__item section__item--col-${column}">
+                        ${dataFilteredItem}
+                      </li>
+                     `;
+            }
           }).join(' ');
         }
 
@@ -109,6 +118,10 @@
         let amountSpan = container.querySelectorAll(`.count_filtered_${what}`);
         if (amountSpan.length > 0) {
           amount = parseInt(amountSpan[amountSpan.length - 1].textContent, 10);
+
+          if (amount === 0) {
+            container.innerHTML = __('Ничего не найдено', 'earena_2');
+          }
         }
 
         window.platforms.showFilteredAmount(what, amount);
@@ -203,7 +216,7 @@
         }
         return cookiesPlatforms;
       },
-      getDataAjax : function (what = 'matches', selectedPlatforms = [], games = [], container) {
+      getDataAjax : function (what = 'matches', selectedPlatforms = [], games = '', container) {
         // Проверка наличия фильтров на странице
         let filtersSection = document.querySelector('.filters');
         if (!filtersSection) {
@@ -221,7 +234,7 @@
 
           let data = {
             action : action,
-            platform : selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()) : selectedPlatforms,
+            platform : selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : selectedPlatforms.join(','),
             game : games
           };
 

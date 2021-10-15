@@ -1,4 +1,4 @@
-<?php if (earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
+<?php if ( earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
     global $games, $game_id, $ea_icons, $tournaments;
 
@@ -17,7 +17,7 @@
         </h2>
         <div class="section__header-righ">
           <?php if ( $count_tournaments > 8 ): ?>
-            <a class="button button--more" href="<?php echo bloginfo('url'); ?>/?toggles=tournaments">
+            <a class="button button--more" href="<?= $actual_link; ?>&toggles=tournaments">
               <span>
                 <?php _e('Все турниры', 'earena_2'); ?>
               </span>
@@ -64,6 +64,43 @@
       </div>
     </div>
   </section>
+<?php elseif ( earena_2_current_page( 'games' ) && isset($_GET['toggles']) ) : ?>
+  <?php
+    global $games, $game_id, $ea_icons, $tournaments;
+
+    $count_tournaments = count($tournaments ?? []);
+
+    if (isset($_GET['login-status'])) {
+      unset($_GET['login-status']);
+    } else if (isset($_GET['action'])) {
+      unset($_GET['action']);
+    }
+  ?>
+  <section class="section section--tournaments" id="tournaments">
+    <div class="section__wrapper">
+      <header class="section__header">
+        <h2 class="section__title section__title--tournaments section__title--page">
+          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__amount">
+            <?= $count_tournaments; ?>
+          </span>
+        </h2>
+        <div class="section__header-right section__header-right--account-tabs">
+        </div>
+      </header>
+
+      <?php
+        // Фильтры
+        get_template_part('template-parts/filters');
+      ?>
+      <div class="section__content">
+        <ul class="section__list" id="content-platform-tournaments">
+          <!-- Подстановка содержимого из шаблона -->
+        </ul>
+      </div>
+    </div>
+  </section>
+  <div id="isInViewPort"></div>
 <?php elseif (is_front_page() && !is_home()): ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
@@ -119,6 +156,7 @@
       </div>
     </div>
   </section>
+  <div id="isInViewPort"></div>
 <?php else: ?>
   <!-- Тут пока дичь (переехало с верстки, где было вполне приличным, но на бою оказалось недееспособным) -->
   <section class="section section--tournaments" id="tournaments">

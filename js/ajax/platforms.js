@@ -2,9 +2,13 @@
 
 (function ($) {
   /*
+    is_user_logged_in,
+    is_ea_admin,
+
     dataGames,
     currentGameId,
 
+    isProfile,
     siteURL,
     siteThemeFolderURL,
     ea_icons
@@ -15,6 +19,19 @@
   */
   try {
     const { __, _x, _n, _nx } = wp.i18n;
+
+    // Смещение для пагинации/скролла-подгрузки
+    let offset = {
+      'tournaments' : 0,
+      'matches' : 0
+    };
+
+    // Количество найденных элементов
+    let amount = {
+      'games' : 0,
+      'tournaments' : 0,
+      'matches' : 0
+    };
 
     // Экспортируется в файл toggle-active.js
     window.platforms = {
@@ -38,11 +55,10 @@
 
           return;
         } else if (what !== 'games' && container) {
-          dataFiltered = window.platforms.getDataAjax(what, platformsSelected, '', container);
+          dataFiltered = window.platforms.getDataAjax(what, platformsSelected, '', container, 0);
         }
       },
       createList : function (what, dataFiltered, container) {
-        let amount;
         let dataTemplate;
 
         // Количество колонок
@@ -50,7 +66,7 @@
 
         if (what === 'games') {
           // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
-          amount = dataFiltered.length;
+          amount[what] = dataFiltered.length;
 
           column = 6;
 
@@ -62,10 +78,14 @@
                    `;
           }).join(' ');
         } else {
+          if (window.platforms.createMatchHTMLTemplate(what, dataFiltered) !== false) {
+            // Добавляю кнопку создания матча в список матчей
+            dataFiltered = window.platforms.createMatchHTMLTemplate(what, dataFiltered) + dataFiltered;
+          }
           dataFiltered = dataFiltered.split('~~~');
 
           // Получаем кол-во полученных элементов
-          amount = dataFiltered.length - 1;
+          amount[what] = dataFiltered.length - 1;
 
           dataTemplate = dataFiltered.map(function(dataFilteredItem, index) {
             if (index === (dataFiltered.length - 1)) {
@@ -86,7 +106,7 @@
 
         // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
         let templateEmpty = templates[what](false, true);
-        let itemsCount  = amount;
+        let itemsCount  = amount[what];
 
         while ((itemsCount % column) !== 0) {
           dataTemplate += `
@@ -98,8 +118,14 @@
           itemsCount++;
         }
 
-        // Заменяем содержимое контейнера полученными результатами
-        container.innerHTML = dataTemplate;
+        if (window.platforms.getOffset(what) === 0) {
+          // Заменяем содержимое контейнера полученными результатами
+          container.innerHTML = dataTemplate;
+        } else {
+          // Дополняем содержимое контейнера полученными результатами
+          dataTemplate = container.innerHTML + dataTemplate;
+          container.innerHTML = dataTemplate;
+        }
 
         // Получаем кнопки открытия попапов
         let popupOpenButtons = container.querySelectorAll('.openpopup');
@@ -117,16 +143,78 @@
         // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
         let amountSpan = container.querySelectorAll(`.count_filtered_${what}`);
         if (amountSpan.length > 0) {
-          amount = parseInt(amountSpan[amountSpan.length - 1].textContent, 10);
+          amount[what] = parseInt(amountSpan[amountSpan.length - 1].textContent, 10);
 
-          if (amount === 0) {
+          if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataFiltered) === false) {
             container.innerHTML = __('Ничего не найдено', 'earena_2');
           }
         }
 
-        window.platforms.showFilteredAmount(what, amount);
+        window.platforms.showFilteredAmount(what, amount[what]);
 
         console.log('Created: ', what);
+      },
+      createMatchHTMLTemplate : function (what, response) {
+        if (currentGameId === false && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
+          // ~~~ - тильды для обертки карточки создания матча в элемент списка при парсинге response в window.platforms.createList()
+          let matchHTMLTemplate = function () {
+            if (is_ea_admin === false && is_user_logged_in === true) {
+              return `
+                <div class="match match--create">
+                  <div class="match__image">
+                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                  </div>
+
+                  <button class="match__create openpopup" data-popup="match" type="button" name="create">
+                    ${__( 'Создать <br> новый матч', 'earena_2' )}
+                  </button>
+                </div>
+                ~~~
+                `;
+            } else if (is_ea_admin === true) {
+              return `
+                <div class="match match--create">
+                  <div class="match__image">
+                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                  </div>
+
+                  <button class="match__create openpopup" data-popup="match" type="button" name="create" disabled>
+                    ${__( 'Администратор не может<br/>создать свой матч', 'earena_2' )}
+                  </button>
+                </div>
+                ~~~
+                `;
+            } else {
+              return `
+                <div class="match match--create">
+                  <div class="match__image">
+                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                  </div>
+
+                  <button class="match__create openpopup" data-popup="login" type="button" name="signin">
+                    ${__( 'Создать <br> новый матч', 'earena_2' )}
+                  </button>
+                </div>
+                ~~~
+                `;
+            }
+          }
+
+          response = matchHTMLTemplate() + response;
+
+          return response;
+        } else {
+          return false;
+        }
+      },
+      getAmount : function (what) {
+        return amount[what];
+      },
+      getOffset : function (what) {
+        return offset[what];
+      },
+      setOffset : function (what, value) {
+        offset[what] = value;
       },
       getFilteredGames : function (data, platformsSelected) {
         // Ф-я с условиями фильтрации массива с играми/матчами/турнирами
@@ -256,6 +344,8 @@
           });
         } else {
           let filterForm = filtersSection.querySelector('form');
+          // Обнуление отступа
+          window.platforms.setOffset(what, 0);
 
           window.filter.getDataAjax(filterForm, what, container, selectedPlatforms);
         }

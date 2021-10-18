@@ -1,0 +1,96 @@
+@keyframes resize {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes resize3 {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.preloader {
+  position: relative;
+
+  width: 40px;
+  height: 0px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  overflow: visible;
+
+  span {
+    position: absolute;
+    display: block;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background-color: transparent;
+
+    transform-origin: center;
+
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    &:nth-of-type(1) {
+      left: 0;
+
+      animation-duration: 3s;
+    }
+
+    &:nth-of-type(2) {
+      left: 50%;
+
+      margin-left: -5px;
+
+      animation-duration: 2.1s;
+    }
+
+    &:nth-of-type(3) {
+      right: 0;
+
+      animation-duration: 3s;
+    }
+  }
+
+  &.active {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    span {
+      background-color: #colors[text_black];
+
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        animation-name: resize;
+      }
+
+      &:nth-of-type(3) {
+        animation-name: resize3;
+      }
+    }
+  }
+}

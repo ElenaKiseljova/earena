@@ -3,8 +3,6 @@
     global $games, $game_id, $ea_icons, $matches;
 
     $count_matches = count($matches ?? []);
-
-    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
   ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
@@ -18,7 +16,7 @@
 
         <div class="section__header-right">
           <?php if ( $count_matches > 8 ): ?>
-            <a class="button button--more" href="<?=$actual_link;?>&toggles=matches">
+            <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0) . '&toggles=matches'; ?>">
               <span>
                 <?php _e( 'Все матчи', 'earena_2' ); ?>
               </span>
@@ -100,6 +98,12 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
+      <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="isInViewPort"></div>
     </div>
   </section>
 <?php elseif (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) : ?>
@@ -208,6 +212,12 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
+      <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="isInViewPort"></div>
     </div>
   </section>
 <?php else : ?>

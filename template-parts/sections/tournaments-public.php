@@ -3,8 +3,6 @@
     global $games, $game_id, $ea_icons, $tournaments;
 
     $count_tournaments = count($tournaments ?? []);
-
-    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
   ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
@@ -17,7 +15,7 @@
         </h2>
         <div class="section__header-righ">
           <?php if ( $count_tournaments > 8 ): ?>
-            <a class="button button--more" href="<?= $actual_link; ?>&toggles=tournaments">
+            <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
               <span>
                 <?php _e('Все турниры', 'earena_2'); ?>
               </span>
@@ -98,9 +96,14 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
+      <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="isInViewPort"></div>
     </div>
   </section>
-  <div id="isInViewPort"></div>
 <?php elseif (is_front_page() && !is_home()): ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
@@ -154,9 +157,14 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
+      <div class="preloader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="isInViewPort"></div>
     </div>
   </section>
-  <div id="isInViewPort"></div>
 <?php else: ?>
   <!-- Тут пока дичь (переехало с верстки, где было вполне приличным, но на бою оказалось недееспособным) -->
   <section class="section section--tournaments" id="tournaments">

@@ -33,14 +33,14 @@ function getVIPAction()
 // add_action('wp_ajax_setPlafroms', 'setPlafromsAction');
 // add_action('wp_ajax_nopriv_setPlafroms', 'setPlafromsAction');
 //
-// function getCount()
-// {
-//     echo json_encode(ea_count_games_platforms());
-//     die();
-// }
-//
-// add_action('wp_ajax_get_count', 'getCount');
-// add_action('wp_ajax_nopriv_get_count', 'getCount');
+function getCount()
+{
+    echo json_encode(ea_count_games_platforms());
+    die();
+}
+
+add_action('wp_ajax_get_count', 'getCount');
+add_action('wp_ajax_nopriv_get_count', 'getCount');
 //
 // function setPlafromsAction()
 // {
@@ -608,17 +608,19 @@ function earena_2_get_filtered_matches()
 
     $count_matches_db_collection_html = '<span class="visually-hidden count_filtered_matches">' . count($matches_db_collection) . '</span>';
 
-    $item_tournament = 1;
+    $item_match = 1;
     foreach ($matches_db_collection as $matches) {
-      if ($item_tournament < $offset) {
+      if ($item_match <= $offset) {
+        $item_match++;
         continue;
-      } else if ($item_tournament > ($offset + $per_page)) {
+      } else if ($item_match > ($offset + $per_page)) {
+        $item_match++;
         break;
       }
 
       $game_matches_str .= earena_2_show_match($matches);
 
-      $item_tournament++;
+      $item_match++;
     }
 
     echo $game_matches_str . $count_matches_db_collection_html;
@@ -714,9 +716,11 @@ function earena_2_get_filtered_tournaments()
 
     $item_tournament = 1;
     foreach ($tournaments_db_collection as $tournament) {
-      if ($item_tournament < $offset) {
+      if ($item_tournament <= $offset) {
+        $item_tournament++;
         continue;
       } else if ($item_tournament > ($offset + $per_page)) {
+        $item_tournament++;
         break;
       }
 

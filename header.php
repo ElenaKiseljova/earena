@@ -15,6 +15,9 @@
   </head>
   <body>
     <script type="text/javascript">
+      var is_user_logged_in = <?= is_user_logged_in() ? 'true' : 'false'; ?>;
+      var is_ea_admin = <?= is_ea_admin() ? 'true' : 'false'; ?>;
+
       var dataGames = <?= json_encode( $games ); ?>;
       var currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;
 

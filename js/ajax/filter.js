@@ -2,9 +2,13 @@
 
 (function ($) {
   /*
+    is_user_logged_in,
+    is_ea_admin,
+
     dataGames,
     currentGameId,
 
+    isProfile,
     siteURL,
     siteThemeFolderURL,
     ea_icons
@@ -17,13 +21,13 @@
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 
-      // Смещение для пагинации/скролла-подгрузки
-      let offset = {
-        'tournaments' : 0,
-        'matches' : 0
-      };
-
+      let scrollTimeoutLast;
       let filterTimeoutLast;
+
+      let loadFlag = false;
+      // Прелоадер данных
+      let preloader = document.querySelector('.preloader');
+
       // Ф-я для вывода результатов выбранных фильтров
       window.filter = {
         init : function (formId, what = 'tournaments') {
@@ -42,6 +46,9 @@
             if (allInputs.length > 0) {
               allInputs.forEach((itemInput, i) => {
                 itemInput.addEventListener('change', function () {
+                  // Обнуление отступа
+                  window.platforms.setOffset(what, 0);
+
                   window.filter.inputChange(itemInput, filterForm, what, container, platformsSelected);
                 });
 
@@ -51,25 +58,32 @@
               });
             }
 
+            window.filter.onScroll(filterForm, what, container, platformsSelected);
+
             window.filter.formReset(filterForm);
           }
         },
-        inputChange : function (itemInput, filterForm, what, container, selectedPlatforms) {
+        inputChange : function (itemInput, filterForm, what, container) {
           if (itemInput.type === 'checkbox' && itemInput.closest('.filters__list--checkbox')) {
             window.filter.createFilterResultList(itemInput);
           }
 
-          if (filterForm, what && container && selectedPlatforms) {
-            window.filter.getDataAjax(filterForm, what, container, selectedPlatforms);
+          if (filterForm && what && container) {
+            window.filter.getDataAjax(filterForm, what, container);
           }
         },
-        getDataAjax : function (filterForm, what, container, selectedPlatforms) {
+        getDataAjax : function (filterForm, what, container) {
+          let platformsSelected = window.platforms.getSelectedPlatforms();
+          if (!platformsSelected) {
+            platformsSelected = window.platforms.getCookiesPlatforms();
+          }
+
           let action = '';
           let perPage = 8;
           switch (what) {
             case 'matches':
               action = 'earena_2_get_filtered_matches';
-              perPage = (currentGameId === false) ? ((offset[what] === 0) ? 23 : 24) : 8;
+              perPage = (currentGameId === false) ? ((window.platforms.getOffset(what) === 0) ? 23 : 24) : 8;
               break;
             case 'tournaments':
               action = 'earena_2_get_filtered_tournaments';
@@ -81,7 +95,7 @@
 
           let data = {
             action : action,
-            offset : offset[what],
+            offset : window.platforms.getOffset(what),
             perpage : perPage
           };
 
@@ -102,7 +116,7 @@
 
           // Если в фильтрах на стр есть выбор платформ, тогда платформы пишутся оттуда
           if (!data['platform']) {
-            data['platform'] = selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : selectedPlatforms.join(',');
+            data['platform'] = platformsSelected.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : platformsSelected.join(',');
           }
 
           if (filterTimeoutLast) {
@@ -115,30 +129,32 @@
               data: data,
               type: 'POST',
               beforeSend: (response) => {
+                if (preloader) {
+                  preloader.classList.add('active');
+
+                  loadFlag = true;
+                }
+
                 console.log(response.readyState, data);
               },
               success: (response) => {
                 //console.log('Success :',  response);
-                if (currentGameId === false && what === 'matches' && isProfile === false && offset[what] === 0) {
-                  let createMatchHTMLTemplate = `
-                    <div class="match match--create">
-                      <div class="match__image">
-                        <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
-                      </div>
 
-                      <button class="match__create openpopup" data-popup="match" type="button" name="create">
-                        ${__( 'Создать <br> новый матч', 'earena_2' )}
-                      </button>
-                    </div>
-                    ~~~
-                    `;
+                //console.log(response);
+                window.platforms.createList(what, response, container, window.platforms.getOffset(what));
 
-                  response = createMatchHTMLTemplate + response;
+                window.platforms.setOffset(what, (window.platforms.getOffset(what) + perPage));
+
+                if (preloader) {
+                  preloader.classList.remove('active');
+
+                  loadFlag = false;
                 }
-                window.platforms.createList(what, response, container);
               },
               error: (response) => {
                 console.log('Error :', response);
+
+                loadFlag = false;
               }
             });
           }, 500);
@@ -188,23 +204,44 @@
             });
           });
         },
-        onScroll : function () {
-          let elementIsInView = function (el) {
-            const scroll = window.scrollY || window.pageYOffset;
-            const boundsTop = el.getBoundingClientRect().top + scroll;
+        onScroll : function (filterForm, what, container) {
+          let isInViewPort = document.querySelector( '#isInViewPort' );
 
-            const viewport = {
+          let elementIsInView = function (el) {
+            let scroll = window.scrollY || window.pageYOffset;
+            let boundsTop = el.getBoundingClientRect().top + scroll;
+
+            let viewport = {
               top: scroll,
               bottom: scroll + document.documentElement.clientHeight,
             }
 
-            const bounds = {
+            let bounds = {
               top: boundsTop,
               bottom: boundsTop + el.clientHeight,
             }
             return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
               || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
           };
+
+          let onScroll = () => {
+            if (scrollTimeoutLast) {
+              clearTimeout(scrollTimeoutLast);
+            }
+
+            scrollTimeoutLast = setTimeout(function () {
+              console.log(window.platforms.getAmount(what), window.platforms.getOffset(what));
+              if (elementIsInView(isInViewPort) && window.platforms.getOffset(what) > 0 && window.platforms.getAmount(what) > window.platforms.getOffset(what)) {
+                if (loadFlag === false && filterForm && what && container) {
+                  window.filter.getDataAjax(filterForm, what, container);
+                } else {
+                  console.log('Идет загрузка. Подождите');
+                }
+              }
+            }, 20);
+          };
+
+          window.addEventListener('scroll', onScroll);
         }
       };
 

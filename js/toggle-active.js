@@ -69,13 +69,15 @@
         several: function (buttonSelector) {
           let buttons = document.querySelectorAll(buttonSelector);
 
-          if (buttons) {
+          if (buttons.length > 0) {
             // Индекс кнопки "Все"
             let allButtonIndex = 0;
 
             let flagAllSelected = 0;
 
             buttons.forEach((button, i) => {
+              flagAllSelected = button.classList.contains('active') ?( flagAllSelected + 1) : flagAllSelected;
+
               button.addEventListener('click', function () {
                 if (parseInt(button.dataset.tabType, 10) === -1 || button.dataset.tabType === -1) {
                   // Переприсваиваем значение индекса (если кнопка "Все" - не под 0 индексом)
@@ -107,7 +109,9 @@
                   }
                 }
 
-                if (buttons[allButtonIndex].classList.contains('active')) {
+                console.log(flagAllSelected);
+
+                if (buttons[allButtonIndex].classList.contains('active') && (parseInt(button.dataset.tabType, 10) !== -1 && button.dataset.tabType !== -1)) {
                   buttons[allButtonIndex].classList.remove('active');
                 }
 

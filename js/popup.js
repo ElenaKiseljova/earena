@@ -26,7 +26,7 @@
       // Экспортируемый объект
       window.popup = {
         userInfo : function (button = false, popup) {
-          console.log('window.popup.userInfo', button, popup);
+          //console.log('window.popup.userInfo', button, popup);
           if (button) {
             if (button.dataset.userId && button.dataset.userName) {
               userVerificationId = button.dataset.userId;

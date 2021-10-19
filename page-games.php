@@ -4,7 +4,7 @@
   */
 ?>
 <?php
-  global $games, $game_id, $ea_icons, $matches, $tournaments;
+  global $games, $game_id, $ea_icons;
 
   $game_id = isset($_GET['game']) ? $_GET['game'] : false;
 
@@ -17,18 +17,11 @@
     'game' => [$game_id]
   ];
 
-  $matches = EArena_DB::get_ea_matches_by_filters($data, 0, 0);
-  $tournaments = EArena_DB::get_ea_tournaments_by_filters($data, 0);
-
-  if ( is_wp_error($matches) || is_wp_error($tournaments) ) {
-    return;
-  }
-
-  $postslist = get_posts(array('posts_per_page' => 10, 'order' => 'DESC', 'orderby' => 'date', 'cat' => 199));
-
-  $platforms = get_site_option('platforms');
-  $team_modes = get_site_option('team_modes');
-  $min = (float)get_site_option('ea_min_match_price', 1);
+  // $postslist = get_posts(array('posts_per_page' => 10, 'order' => 'DESC', 'orderby' => 'date', 'cat' => 199));
+  //
+  // $platforms = get_site_option('platforms');
+  // $team_modes = get_site_option('team_modes');
+  // $min = (float)get_site_option('ea_min_match_price', 1);
 ?>
 
 <?php

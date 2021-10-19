@@ -1,8 +1,6 @@
 <?php if ( earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
-    global $games, $game_id, $ea_icons, $tournaments;
-
-    $count_tournaments = count($tournaments ?? []);
+    global $games, $game_id, $ea_icons;
   ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
@@ -10,55 +8,26 @@
         <h2 class="section__title section__title--tournaments <?php if (is_page() && !is_front_page()) {echo 'section__title--page';} ?>">
           <?php _e('Турниры', 'earena_2'); ?>
           <span class="section__amount">
-            <?= $count_tournaments; ?>
+            0
           </span>
         </h2>
         <div class="section__header-righ">
-          <?php if ( $count_tournaments > 8 ): ?>
-            <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
-              <span>
-                <?php _e('Все турниры', 'earena_2'); ?>
-              </span>
-            </a>
-          <?php endif; ?>
+          <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
+            <span>
+              <?php _e('Все турниры', 'earena_2'); ?>
+            </span>
+          </a>
         </div>
       </header>
       <div class="section__content">
-        <ul class="section__list">
-          <?php
-            $row_index = 1;
-            $limit = 0;
-            foreach ($tournaments as $tournament_item) {
-              global $tournament;
-              $tournament = $tournament_item;
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/tournament/archive' ); ?>
-                </li>
-              <?php
-              if ($row_index % 4 === 0) {
-                $row_index = 1;
-              } else {
-                $row_index++;
-              }
-              $limit++;
-
-              if ($limit === 8) {
-                break;
-              }
-            }
-
-            // Оставшееся (до 4 шт) заполняется пустыми карточками
-            while ( $row_index <= 4 && $row_index > 1 ) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/tournament/archive', 'empty' ); ?>
-                </li>
-              <?php
-              $row_index++;
-            }
-          ?>
+        <ul class="section__list" id="content-platform-tournaments">
+          <!-- Подстановка содержимого из шаблона -->
         </ul>
+      </div>
+      <div class="preloader preloader--tournaments">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   </section>
@@ -96,7 +65,7 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
-      <div class="preloader">
+      <div class="preloader preloader--tournaments">
         <span></span>
         <span></span>
         <span></span>

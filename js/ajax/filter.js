@@ -25,8 +25,6 @@
       let filterTimeoutLast;
 
       let loadFlag = false;
-      // Прелоадер данных
-      let preloader = document.querySelector('.preloader');
 
       // Ф-я для вывода результатов выбранных фильтров
       window.filter = {
@@ -45,6 +43,22 @@
             let allInputs = filterForm.querySelectorAll('input');
             if (allInputs.length > 0) {
               allInputs.forEach((itemInput, i) => {
+                var onKeyPress = function (evt) {
+                  if (evt.keyCode === 13) {
+                    evt.preventDefault();
+
+                    evt.target.blur();
+
+                    document.removeEventListener('keydown', onKeyPress);
+                  }
+                }
+
+                itemInput.addEventListener('focus', function (evt) {
+                  if (evt.target.name === 'id') {
+                    document.addEventListener('keydown', onKeyPress);
+                  }
+                });
+
                 itemInput.addEventListener('change', function () {
                   // Обнуление отступа
                   window.platforms.setOffset(what, 0);
@@ -73,6 +87,9 @@
           }
         },
         getDataAjax : function (filterForm, what, container) {
+          // Прелоадер данных
+          let preloader = document.querySelector(`.preloader--${what}`);
+
           let platformsSelected = window.platforms.getSelectedPlatforms();
           if (!platformsSelected) {
             platformsSelected = window.platforms.getCookiesPlatforms();
@@ -141,7 +158,7 @@
                 //console.log('Success :',  response);
 
                 //console.log(response);
-                window.platforms.createList(what, response, container, window.platforms.getOffset(what));
+                window.platforms.createList(what, response, container);
 
                 window.platforms.setOffset(what, (window.platforms.getOffset(what) + perPage));
 

@@ -67,7 +67,7 @@
 
   <div class="match__center">
     <div class="user user--match">
-      <?php if ( $match->stream1 !== '' ): ?>
+      <?php if ( $match->stream1 != '' ): ?>
         <a class="user__stream" href="<?= $match->stream1; ?>">
           <svg class="user__stream-icon" width="16" height="13">
             <use xlink:href="#icon-play"></use>
@@ -99,7 +99,7 @@
 
     <div class="user user--match">
       <?php if (!$match_waiting): ?>
-        <?php if ( $match->stream2 !== '' ): ?>
+        <?php if ( $match->stream2 != '' ): ?>
           <a class="user__stream" href="<?= $match->stream2; ?>">
             <svg class="user__stream-icon" width="16" height="13">
               <use xlink:href="#icon-play"></use>
@@ -142,13 +142,14 @@
     </div>
 
     <div class="match__button-wrapper">
-      <?php if ($match_waiting && ((int)$ea_user_id !== (int)$match->player1 || !is_ea_admin())): ?>
+      <?php if ($match_waiting && ($match->player1 != $ea_user_id) && !is_ea_admin()): ?>
         <?php
           $join_name = 'accept';
           if (!is_user_logged_in()) {
               $join_target = 'login';
               $join_name = 'signin';
-          } elseif (is_user_logged_in() && !in_array($match->game, ea_my_games())) {
+          }
+          elseif (is_user_logged_in() && !in_array($match->game, ea_my_games())) {
               $join_target = 'noGameMatch';
           } elseif (is_user_logged_in() && !in_array($match->platform, ea_my_platforms($match->game))) {
               $join_target = 'noPlatformMatch';
@@ -175,13 +176,19 @@
             <?php _e( 'Принять', 'earena_2' ); ?>
           </span>
         </button>
-      <?php elseif ($match_waiting && ((int)$ea_user_id == (int)$match->player1 || is_ea_admin())): ?>
+      <?php elseif ($match_waiting && (($match->player1 == $ea_user_id) || is_ea_admin())): ?>
         <button class="button button--red openpopup"
                 data-popup="match"
                 data-id="<?= $match->ID; ?>"
                 type="button" name="delete">
           <span>
             <?php _e( 'Удалить', 'earena_2' ); ?>
+          </span>
+        </button>
+      <?php elseif ($match_waiting): ?>
+        <button class="button button--gray" disabled type="button" name="waiting">
+          <span>
+            <?php _e( 'Ожидает соперника', 'earena_2' ); ?>
           </span>
         </button>
       <?php elseif ($match_present && $match_my == false): ?>
@@ -211,12 +218,6 @@
         <button class="button button--gray openpopup" disabled data-popup="match" type="button" name="accept">
           <span>
             <?php _e( 'Завершен', 'earena_2' ); ?>
-          </span>
-        </button>
-      <?php elseif ($match_waiting): ?>
-        <button class="button button--gray" disabled type="button" name="waiting">
-          <span>
-            <?php _e( 'Ожидает соперника', 'earena_2' ); ?>
           </span>
         </button>
       <?php endif; ?>

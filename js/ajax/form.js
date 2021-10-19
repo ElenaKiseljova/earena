@@ -51,25 +51,25 @@
             // Ф-я отключения полей формы при выбранном/отключенном чекбоксе
             let checkboxControlField = (checkboxControl, fieldChange, toggle = 'off') => {
               checkboxControl.addEventListener('change', () => {
-                if (checkboxControl.checked === true) {
-                  if (toggle === 'off') {
+                if (toggle === 'off') {
+                  if (checkboxControl.checked === false) {
+                    fieldChange.disabled = false;
+                  } else {
                     fieldChange.disabled = true;
                   }
+                }
 
-                  if (toggle === 'on') {
+                if (toggle === 'on') {
+                  if (checkboxControl.checked === false) {
+                    fieldChange.disabled = true;
+                  } else {
                     fieldChange.disabled = false;
                   }
                 }
 
-                if (checkboxControl.checked === false) {
-                  if (toggle === 'off') {
-                    fieldChange.disabled = false;
-                  }
+                fieldChange.value = '';
 
-                  if (toggle === 'on') {
-                    fieldChange.disabled = true;
-                  }
-                }
+                validateForm();
               });
             };
 
@@ -110,11 +110,13 @@
                           formData[`${nameInput}`] = valueInput;
                         }
                       } else if (inputField.type === 'checkbox') {
-                        if (!formData[`${nameInput}`]) {
-                          formData[`${nameInput}`] = [];
-                        }
+                        if (!formData[`${nameInput}`] && inputField.checked) {
+                          formData[`${nameInput}`] = valueInput;
+                        } else if (formData[`${nameInput}`] && !Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
+                          let previousValue = formData[`${nameInput}`];
 
-                        if (inputField.checked) {
+                          formData[`${nameInput}`] = [previousValue, valueInput];
+                        } else if (formData[`${nameInput}`] && Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
                           formData[`${nameInput}`].push(valueInput);
                         }
                       } else if (inputField.type === 'file' && dataForm) {
@@ -142,6 +144,7 @@
                 }
 
                 /***** START Actions AJAX *****/
+                // LOGIN
                 if ( ID_FORM.indexOf('login') > -1 ) {
                   // Логирование
                   if (prefix.indexOf('signin') > -1) {
@@ -168,6 +171,7 @@
                   }
                 }
 
+                // FRIENDS
                 if ( ID_FORM.indexOf('friends') > -1) {
                   // Друзья - Добавление
                   if (prefix.indexOf('add') > -1) {
@@ -194,7 +198,22 @@
                   }
                 }
 
-                /**** ADMIN VERIFICATION ****/
+                // MATCH
+                if ( ID_FORM.indexOf('match') > -1) {
+                  // Создать
+                  if (prefix.indexOf('create') > -1) {
+                    // Получение разметки для шага 2
+                    formData['action'] = 'earena_2_get_create_match_next_html';
+                  }
+
+                  // Создать (шаг 2)
+                  if (prefix.indexOf('add') > -1) {
+                    // Добавление матча
+                    formData['action'] = 'add_match';
+                  }
+                }
+
+                // ADMIN VERIFICATION
                 if ( ID_FORM.indexOf('verification') > -1) {
                   // Подтверждение верификации
                   if (prefix.indexOf('apply') > -1) {
@@ -209,11 +228,11 @@
                   }
                 }
 
+                /***** END Actions AJAX *****/
+
                 // Popup message
                 let popup = FORM_CHECK.closest('.popup');
                 let popupMessage = popup.querySelector('.popup__ajax-message');
-
-                /***** END Actions AJAX *****/
 
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
@@ -248,6 +267,7 @@
 
                 // Обработчик успешной отправки
                 var onSuccess = (response) => {
+                  // ЛОГИРОВАНИЕ
                   if ( ID_FORM.indexOf('login') > -1 ) {
                     // Логин
                     if (prefix.indexOf('signin') > -1) {
@@ -300,7 +320,7 @@
                     }
                   }
 
-                  // Верификация
+                  // ВЕРИФИКАЦИЯ
                   if ( ID_FORM.indexOf('verification') > -1 ) {
                     if (prefix.indexOf('request') > -1) {
                       if (response.success === false) {
@@ -311,6 +331,50 @@
                             popupMessage.innerHTML = '';
                           }, 2000);
                         }
+
+                        return;
+                      }
+                    }
+                  }
+
+                  // МАТЧ
+                  if ( ID_FORM.indexOf('match') > -1 ) {
+                    // Создание
+                    if (prefix.indexOf('create') > -1) {
+                      response = JSON.parse(response);
+
+                      if (response.success === 1) {
+                        if (wrapperFormNode) {
+                          // Переписываю
+                          wrapperFormNode.innerHTML = response.data;
+
+                          // Перезапуск/запуск валидации формы
+                          window.form({
+                            idForm: ID_FORM,
+                            selectorForTemplateReplace: SELECTOR_FOR_TEMPLATE_REPLACE, // Содержимое будет очищаться при отправке и заменяться шаблонами
+                            classForAddClosestWrapperForm: CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM, // по умолчанию - false
+                            selectorClosestWrapperForm: SELECTOR_CLOSEST_WRAPPER_FORM, // по умолчанию - false
+                          });
+
+                          if (SELECTOR_CLOSEST_WRAPPER_FORM) {
+                            // Регулировка высоты попапа
+                            if (wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).offsetHeight >= deviceHeight) {
+                              wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('scroll-content');
+                              wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('sending');
+                            } else {
+                              wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('scroll-content');
+                              wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('sending');
+                            }
+                          }
+                        }
+
+                        console.log(response);
+
+                        return;
+                      } else {
+                        onError(response, prefix);
+
+                        console.log(response.message);
 
                         return;
                       }
@@ -331,31 +395,6 @@
                     let cloneTemplate = templateContentSuccess.cloneNode(true);
 
                     wrapperFormNode.appendChild(cloneTemplate);
-
-                    // Обработчик успешной отправки при переходе на следующий шаг
-                    // регистрации матча
-                    if (prefix.indexOf('next') > -1) {
-                      // Перезапуск/запуск валидации формы
-                      window.form({
-                        idForm: ID_FORM,
-                        selectorForTemplateReplace: SELECTOR_FOR_TEMPLATE_REPLACE, // Содержимое будет очищаться при отправке и заменяться шаблонами
-                        classForAddClosestWrapperForm: CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM, // по умолчанию - false
-                        selectorClosestWrapperForm: SELECTOR_CLOSEST_WRAPPER_FORM, // по умолчанию - false
-                      });
-                    }
-                  }
-
-                  // Обработчик успешной отправки при переходе на следующий шаг
-                  // регистрации матча
-                  if (prefix.indexOf('next') > -1 && SELECTOR_CLOSEST_WRAPPER_FORM) {
-                    // Регулировка высоты попапа
-                    if (wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).offsetHeight >= deviceHeight) {
-                      wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('scroll-content');
-                      wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('sending');
-                    } else {
-                      wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('scroll-content');
-                      wrapperFormNode.closest(SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('sending');
-                    }
                   }
 
                   if ( ID_FORM.indexOf('login') > -1 ) {
@@ -430,7 +469,9 @@
                 };
 
                 // Nonce
-                formData['security'] = earena_2_ajax.nonce;
+                if (!formData['security']) {
+                  formData['security'] = earena_2_ajax.nonce;
+                }
 
                 // formData - обычный объект
                 // dataForm - потомок FormData() [для передачи файлов]
@@ -459,6 +500,8 @@
                     }
                   });
                 } else {
+                  console.log(formData);
+
                   // Обычный запрос (без передачи файлов)
                   $.ajax({
                     url: earena_2_ajax.url,
@@ -657,7 +700,7 @@
 
           // Поиск зависимых чекбоксов в форме
           let checkboxes = FORM_CHECK.querySelectorAll('input[type="checkbox"]');
-          if (checkboxes) {
+          if (checkboxes.length > 0) {
             checkboxes.forEach((checkboxItem, i) => {
               if (checkboxItem.dataset.controlFieldId) {
                 let fieldControl = FORM_CHECK.querySelector(`#${checkboxItem.dataset.controlFieldId}`);

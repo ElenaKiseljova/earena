@@ -4,10 +4,19 @@
   */
 ?>
 <?php
-  global $games, $game_id, $ea_icons, $matches, $tournaments;
+  global $games, $game_id, $ea_icons;
 
-  $count_matches = count($matches);
-  $count_tournaments = count($tournaments);
+  $dataFilter = [
+    'game' => [$game_id]
+  ];
+
+  // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+  $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, 0, 0, 'DESC', 'ID', $mode = 'new');
+  $count_matches = $matches_db_collection ['total'] ?? 0;
+
+  // ( array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID', $mode = 'old')
+  $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, 0, 0, 'DESC', 'ID', $mode = 'new');
+  $count_tournaments = $tournaments_db_collection['total'] ?? 0;
 ?>
 
 <section class="game game--page">

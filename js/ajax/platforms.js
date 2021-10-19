@@ -33,33 +33,37 @@
       'matches' : 0
     };
 
+    // Проверка наличия фильтров на странице
+    let filtersSection = document.querySelector('.filters');
+
     // Экспортируется в файл toggle-active.js
     window.platforms = {
       drawSelected : function (what) {
         let platformsSelected = window.platforms.getSelectedPlatforms();
 
-        if (!platformsSelected) {
+        if (!platformsSelected && currentGameId === false && !filtersSection) {
           return;
+        } else if (currentGameId !== false && !filtersSection) {
+          platformsSelected = Array.from(Array(platformsArr.length).keys());
         }
 
         //console.log('Выбрано:', platformsSelected + '(' + what +')');
 
-        let dataFiltered;
         // Получаем контейнер для Игр/Матчей/Турниров
         let container = document.querySelector(`#content-platform-${what}`);
 
         if (what === 'games' && dataGames && container) {
-          dataFiltered = window.platforms.getFilteredGames(dataGames, platformsSelected);
+          let dataFiltered = window.platforms.getFilteredGames(dataGames, platformsSelected);
 
           window.platforms.createList(what, dataFiltered, container);
 
           return;
         } else if (what !== 'games' && container) {
-          dataFiltered = window.platforms.getDataAjax(what, platformsSelected, '', container, 0);
+          window.platforms.getDataAjax(what, platformsSelected, container);
         }
       },
       createList : function (what, dataFiltered, container) {
-        let dataTemplate;
+        let dataTemplate = '';
 
         // Количество колонок
         let column = 4;
@@ -80,9 +84,11 @@
         } else {
           if (window.platforms.createMatchHTMLTemplate(what, dataFiltered) !== false) {
             // Добавляю кнопку создания матча в список матчей
-            dataFiltered = window.platforms.createMatchHTMLTemplate(what, dataFiltered) + dataFiltered;
+            dataFiltered = window.platforms.createMatchHTMLTemplate(what, dataFiltered);
           }
+
           dataFiltered = dataFiltered.split('~~~');
+          console.log(dataFiltered.length);
 
           // Получаем кол-во полученных элементов
           amount[what] = dataFiltered.length - 1;
@@ -155,7 +161,7 @@
         console.log('Created: ', what);
       },
       createMatchHTMLTemplate : function (what, response) {
-        if (currentGameId === false && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
+        if (filtersSection && currentGameId === false && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
           // ~~~ - тильды для обертки карточки создания матча в элемент списка при парсинге response в window.platforms.createList()
           let matchHTMLTemplate = function () {
             if (is_ea_admin === false && is_user_logged_in === true) {
@@ -304,37 +310,48 @@
         }
         return cookiesPlatforms;
       },
-      getDataAjax : function (what = 'matches', selectedPlatforms = [], games = '', container) {
-        // Проверка наличия фильтров на странице
-        let filtersSection = document.querySelector('.filters');
+      getDataAjax : function (what = 'matches', selectedPlatforms = [], container) {
+        // Прелоадер данных
+        let preloader = document.querySelector(`.preloader--${what}`);
+
         if (!filtersSection) {
           let action = '';
           switch (what) {
             case 'matches':
-              action = 'earena_2_get_matches_html';
+              action = 'earena_2_get_filtered_matches';
               break;
             case 'tournaments':
-              action = 'earena_2_get_tournaments_html';
+              action = 'earena_2_get_filtered_tournaments';
               break;
             default:
-            action = 'earena_2_get_matches_object';
+            action = 'earena_2_get_filtered_matches';
           }
 
           let data = {
             action : action,
-            platform : selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : selectedPlatforms.join(','),
-            game : games
+            platform : selectedPlatforms.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : selectedPlatforms.join(',')
           };
+
+          if (currentGameId !== false) {
+            data['game'] = currentGameId;
+          }
 
           $.ajax({
             url: earena_2_ajax.url,
             data: data,
             type: 'POST',
             beforeSend: (response) => {
+              if (preloader) {
+                preloader.classList.add('active');
+              }
+
               console.log(response.readyState, data);
             },
             success: (response) => {
               //console.log('Success :',  response);
+              if (preloader) {
+                preloader.classList.remove('active');
+              }
 
               window.platforms.createList(what, response, container);
             },

@@ -1,3 +1,9 @@
+<?php
+  global $ea_icons, $icons;
+
+  $platforms = get_site_option('platforms') ?? [];
+  $games = get_site_option('games')  ?? [];
+?>
 <!-- Для переключения состояния - добавляется active класс  -->
 <div class="popup popup--match">
   <div class="popup__template popup__template--match" id="match-popup">
@@ -27,28 +33,46 @@
     <div class="popup__content popup__content--match">
       <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
-          <input class="form__field form__field--popup" list="platform-list" id="platform" name="platform" required placeholder="<?php _e( 'Платформа', 'earena_2' ); ?>" />
-          <span class="form__arrow"></span>
+          <div class="select select--platforms">
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <button class="select__button select__button--platforms" type="button" name="button">
+              <?php _e( 'Платформа', 'earena_2' ); ?>
+            </button>
 
-          <datalist id="platform-list">
-              <option value="Desktop">
-              <option value="Mobile">
-              <option value="XBOX">
-              <option value="PlayStation">
-          </datalist>
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <ul class="select__list">
+              <?php foreach ($platforms as $key => $platform): ?>
+                <li class="select__item">
+                  <input class="visually-hidden" type="radio" name="platform" value="<?= $key; ?>" id="select-platform-<?= $key; ?>" required>
+                  <label class="select__label" for="select-platform-<?= $key; ?>">
+                    <?= $platform; ?>
+                  </label>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
         <div class="form__row">
-          <input class="form__field form__field--popup" list="game-list" id="game" name="game" required placeholder="<?php _e( 'Игра', 'earena_2' ); ?>" />
-          <span class="form__arrow"></span>
+          <div class="select select--games">
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <button class="select__button select__button--games" type="button" name="button">
+              <?php _e( 'Игра', 'earena_2' ); ?>
+            </button>
 
-          <datalist id="game-list">
-              <option value="Mortal Combat 11 Ultimate">
-              <option value="WARZONE">
-              <option value="League of Legends">
-              <option value="Dota 2">
-          </datalist>
+            <!-- Для переключения состояния - добавляется active класс  -->
+            <ul class="select__list select__list--games">
+              <?php foreach ($games as $key => $game): ?>
+                <li class="select__item">
+                  <input class="visually-hidden" type="radio" name="game" value="<?= $key; ?>" id="select-game-<?= $key; ?>" required>
+                  <label class="select__label" for="select-game-<?= $key; ?>">
+                    <?= $game['name']; ?>
+                  </label>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -210,90 +234,6 @@
       </button>
     </div>
   </template>
-  <template id="form-match-success-next">
-    <div class="popup__header popup__header--match">
-      <h2 class="popup__title popup__title--match">
-        <?php _e( 'Новый матч', 'earena_2' ); ?>
-      </h2>
-
-      <div class="popup__information">
-        <span>
-          <?php _e( 'Укажите сумму входа и режимы', 'earena_2' ); ?>
-        </span>
-      </div>
-    </div>
-    <div class="popup__content popup__content--match">
-      <form class="form form--popup" data-prefix="next" id="form-match" action="/" method="post">
-        <div class="form__checkbox form__checkbox--free checkbox checkbox--left">
-          <input class="visually-hidden" data-control-field-id="pay-value" data-control-toggle="off" type="checkbox" name="free-match" value="free-match" id="free-match">
-          <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="free-match">
-            <?php _e( 'Бесплатный матч', 'earena_2' ); ?>
-          </label>
-        </div>
-
-        <!-- Обычное поле -->
-        <!-- <div class="form__row">
-          <input class="form__field form__field--popup" id="pay-value" type="text" name="pay-value" required placeholder="<?php _e( 'Сумма входа', 'earena_2' ); ?>" >
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span> -->
-
-        <!-- Мало лет -->
-        <div class="form__row invalid">
-          <input class="form__field form__field--popup" id="pay-value" type="text" name="pay-value" required placeholder="<?php _e( 'Сумма входа', 'earena_2' ); ?>" >
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Вам не доступны игры на деньги', 'earena_2' ); ?></span>
-        <!-- ---- -->
-
-        <div class="form__text form__text--match">
-          <?php _e( 'Это сумма, которую вносит каждый из участников перед матчем, формируя приз победителя.', 'earena_2' ); ?>
-        </div>
-
-        <div class="form__row">
-          <input class="form__field form__field--popup" list="game-mode-list" id="game-mode" name="game-mode" required placeholder="<?php _e( 'Режим игры', 'earena_2' ); ?>" />
-          <span class="form__arrow"></span>
-
-          <datalist id="game-mode-list">
-              <option value="1">
-              <option value="2">
-              <option value="3">
-              <option value="4">
-          </datalist>
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
-
-        <div class="form__row">
-          <input class="form__field form__field--popup" list="team-mode-list" id="team-mode" name="team-mode" required placeholder="<?php _e( 'Режим команды', 'earena_2' ); ?>" />
-          <span class="form__arrow"></span>
-
-          <datalist id="team-mode-list">
-              <option value="1">
-              <option value="2">
-              <option value="3">
-              <option value="4">
-          </datalist>
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
-
-        <div class="form__checkbox form__checkbox--private checkbox checkbox--left">
-          <input class="visually-hidden" data-control-field-id="password" data-control-toggle="on" type="checkbox" name="private-match" value="private-match" id="private-match">
-          <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="private-match">
-            <?php _e( 'Приватный матч', 'earena_2' ); ?>
-          </label>
-        </div>
-
-        <div class="form__row">
-          <input class="form__field form__field--popup" id="password" type="password" name="password" required disabled placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
-
-        <button class="form__submit button button--blue" type="submit" name="match-submit">
-          <span>
-            <?php _e( 'Создать матч', 'earena_2' ); ?>
-          </span>
-        </button>
-      </form>
-    </div>
-  </template>
   <template id="form-match-success-no-old-enough">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
@@ -332,7 +272,7 @@
         <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
       </div>
 
-      <a class="popup__go-to-button button button--gray" href="/profile">
+      <a class="popup__go-to-button button button--gray" href="<?= bloginfo( 'url' ); ?>/profile">
         <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
     </div>

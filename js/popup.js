@@ -1,6 +1,23 @@
 'use strict';
 
 (function () {
+  /*
+    is_user_logged_in,
+    is_ea_admin,
+
+    dataGames,
+    currentGameId,
+
+    isProfile,
+    siteURL,
+    siteThemeFolderURL,
+    ea_icons
+    platformsArr
+
+    - глобальные переменные, которые используются для составления URI.
+      Задаются в header.php
+  */
+
   document.addEventListener("DOMContentLoaded", function () {
     try {
       // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
@@ -57,7 +74,7 @@
           // Все попапы
           let allPopup = document.querySelectorAll('.popup');
 
-          if (allPopup) {
+          if (allPopup.length > 0) {
             window.removeActiveClassElements(allPopup);
           }
 
@@ -77,7 +94,7 @@
           // Все попапы
           let allPopup = document.querySelectorAll('.popup');
 
-          if (allPopup) {
+          if (allPopup.length > 0) {
             window.removeActiveClassElements(allPopup);
           }
 
@@ -153,7 +170,7 @@
             // Все кнопки закрытия попапа
             let closePopupButtons = popupItem.querySelectorAll('.popup__close');
 
-            if (closePopupButtons) {
+            if (closePopupButtons.length > 0) {
               closePopupButtons.forEach((closePopupButton, i) => {
                 // Активация кнопки закрытия попапа
                 window.popup.activateClosePopupButton(closePopupButton);
@@ -242,7 +259,7 @@
         if (prefix === 'game') {
           let gameLinks = popup.querySelectorAll('.game__link');
 
-          if (gameLinks) {
+          if (gameLinks.length > 0) {
             gameLinks.forEach((gameLink, i) => {
               gameLink.addEventListener('click', function (evt) {
                 evt.preventDefault();
@@ -253,7 +270,7 @@
                 let formGame = popup.querySelector('#form-game');
                 let gameList = popup.querySelector('.popup__list--game');
 
-                 if (formGame && gameList) {
+                 if (formGame && gameList && dataGames) {
                    formGame.classList.add('active');
                    gameList.classList.add('active');
 
@@ -261,15 +278,29 @@
                    let popupTitle = popup.querySelector('.popup__title--game');
 
                    // Получаем название Игры
-                   let gameTitle = gameLink.querySelector('.game__name');
+                   let gameTitle = dataGames[gameLink.dataset.game].name;
 
                    // Получаем иконку платформы
                    let popupPlatform = popup.querySelector('.platform');
 
+                   // Получаем Инпут с никнеймом
+                   let nicknameInputFiled = formGame.querySelector('#game-nickname');
+
                    if (popupTitle && gameTitle && popupPlatform) {
-                     popupTitle.textContent = gameTitle.textContent;
+                     popupTitle.textContent = gameTitle;
 
                      popupPlatform.classList.add('active');
+
+                     if (nicknameInputFiled) {
+                       let oldNicknameField = formGame.querySelector(`input[name="nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]"]`);
+
+                       if (oldNicknameField) {
+                         //console.log('Clone removed -> ', oldNicknameField);
+                         oldNicknameField.remove();
+                       }
+
+                       nicknameInputFiled.name = `nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]`;
+                     }
                    }
                  }
               });
@@ -290,7 +321,7 @@
       // Все кнопки, которые открывают попапы
       let popupButtons = document.querySelectorAll('.openpopup');
 
-      if (popupButtons) {
+      if (popupButtons.length > 0) {
         // Перебираем все кнопки, которые открывают попапы
         popupButtons.forEach(function (popupButton) {
           // Активация кнопки открытия попапа
@@ -310,7 +341,7 @@
   window.addEventListener('load', function () {
     let popups = document.querySelectorAll('.popup');
     //console.log(popups);
-    if (popups) {
+    if (popups.length > 0) {
       popups.forEach((popup, i) => {
         popup.classList.add('loaded');
       });

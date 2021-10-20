@@ -1,9 +1,9 @@
 <?php
-  global $game_create_match, $platform_create_match;
+  global $games, $game_create_match, $platform_create_match;
 
   $ea_user = wp_get_current_user();
   $min = (float)get_site_option( 'ea_min_match_price', 1 );
-  $games = get_site_option( 'games' );
+  $games = $games ?? [];
   $team_modes = get_site_option( 'team_modes' );
   $game_object = $games[$game_create_match];
   $game_modes = $game_object['game_modes'] ?? [];

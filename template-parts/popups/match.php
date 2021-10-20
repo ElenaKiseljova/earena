@@ -1,8 +1,8 @@
 <?php
-  global $ea_icons, $icons;
+  global $games, $ea_icons, $icons;
 
   $platforms = get_site_option('platforms') ?? [];
-  $games = get_site_option('games')  ?? [];
+  $games = $games ?? [];
 ?>
 <!-- Для переключения состояния - добавляется active класс  -->
 <div class="popup popup--match">
@@ -219,7 +219,7 @@
       </a>
     </div>
   </template>
-  <template id="form-match-success-create">
+  <template id="form-match-success-add">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Матч создан', 'earena_2' ); ?>

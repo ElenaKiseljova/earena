@@ -30,34 +30,71 @@ function getVIPAction()
 //     die();
 // }
 //
-// add_action('wp_ajax_setPlafroms', 'setPlafromsAction');
-// add_action('wp_ajax_nopriv_setPlafroms', 'setPlafromsAction');
-//
+add_action('wp_ajax_get_count', 'getCount');
+add_action('wp_ajax_nopriv_get_count', 'getCount');
+
 function getCount()
 {
     echo json_encode(ea_count_games_platforms());
     die();
 }
 
-add_action('wp_ajax_get_count', 'getCount');
-add_action('wp_ajax_nopriv_get_count', 'getCount');
-//
-// function setPlafromsAction()
-// {
-//     if (is_user_logged_in()) {
-//         $data = $_POST;
-//         unset($data['action']);
-//         foreach ($data as $key => $val) {
-//             $data[$key] = array_filter($val, function ($value) {
-//                 return !is_null($value) && $value !== '';
-//             });
-//         }
-//         if (ea_edit_nicknames($data['nicknames']) == 'Сохранено') {
-//             echo ea_page_profile_nicknames_data(get_current_user_id());
-//         }
-//     }
-//     die();
-// }
+/* ==============================================
+********  //Добавление игры в профиле
+=============================================== */
+
+add_action('wp_ajax_setPlafroms', 'setPlafromsAction');
+add_action('wp_ajax_nopriv_setPlafroms', 'setPlafromsAction');
+
+function setPlafromsAction()
+{
+    if (is_user_logged_in()) {
+        $data = $_POST;
+        unset($data['action']);
+        foreach ($data as $key => $val) {
+            $data[$key] = array_filter($val, function ($value) {
+                return !is_null($value) && $value !== '';
+            });
+        }
+
+        if (ea_edit_nicknames($data['nicknames']) == 'Сохранено') {
+          global $profile;
+
+          $profile = true;
+
+          $response = [];
+          ob_start();
+
+          if ( function_exists( 'earena_2_get_section' ) ) {
+            // Игры
+            earena_2_get_section( 'games' );
+          }
+
+          $response['success'] = 1;
+          $response['message'] = __('Всё ОК ) Игра добавлена', 'earena_2');
+          $response['data'] = ob_get_contents();
+
+          ob_end_clean();
+
+          wp_send_json( json_encode($response) );
+        }
+    }
+    die();
+}
+
+function ea_edit_nicknames($nicknames)
+{
+    $filtered = [];
+    foreach ($nicknames as $k => $v) {
+        $filtered[$k] = array_filter($v, 'strlen');
+    }
+    if (!update_user_meta(get_current_user_id(), 'nicknames', $filtered)) {
+        return 0;
+    } else {
+        return "Сохранено";
+    }
+}
+
 //
 // add_action('wp_ajax_getFriendsList', 'getFriendsListAction');
 // add_action('wp_ajax_nopriv_getFriendsList', 'getFriendsListAction');
@@ -692,6 +729,10 @@ function earena_2_get_create_match_next_html()
     }
 }
 
+/* ==============================================
+********  //Создание матча
+=============================================== */
+
 add_action('wp_ajax_add_match', 'add_match_callback');
 function add_match_callback()
 {
@@ -703,6 +744,10 @@ function add_match_callback()
     wp_send_json(json_encode($arr_response));
     wp_die();
 }
+
+/* ==============================================
+********  //Удаление матча
+=============================================== */
 
 add_action('wp_ajax_delete_match', 'delete_match_callback');
 //add_action('wp_ajax_nopriv_delete_match', 'delete_match_callback');
@@ -718,6 +763,10 @@ function delete_match_callback()
     wp_die();
 }
 
+/* ==============================================
+********  //Присоединение к матчу
+=============================================== */
+
 add_action('wp_ajax_join_match', 'join_match_callback');
 //add_action('wp_ajax_nopriv_join_match', 'join_match_callback');
 function join_match_callback()
@@ -731,6 +780,10 @@ function join_match_callback()
     wp_send_json(json_encode($arr_response));
     wp_die();
 }
+
+/* ==============================================
+********  //Модерация матча
+=============================================== */
 
 add_action('wp_ajax_moderate_match', 'moderate_match_callback');
 //add_action('wp_ajax_nopriv_moderate_match', 'moderate_match_callback');

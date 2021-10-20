@@ -6,12 +6,15 @@
 
 <div class="account__content">
   <div class="account__content-item account__content-item--col-1">
+    <div id="sections-games-profile-update">
+      <?php
+        if ( function_exists( 'earena_2_get_section' ) ) {
+          // Игры
+          earena_2_get_section( 'games' );
+        }
+      ?>
+    </div>
     <?php
-      if ( function_exists( 'earena_2_get_section' ) ) {
-        // Игры
-        earena_2_get_section( 'games' );
-      }
-
       // Стрим
       get_template_part( 'template-parts/stream' );
     ?>

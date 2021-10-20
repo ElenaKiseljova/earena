@@ -137,7 +137,7 @@
         // Получаем кнопки открытия попапов
         let popupOpenButtons = container.querySelectorAll('.openpopup');
 
-        if (popupOpenButtons) {
+        if (popupOpenButtons.length > 0) {
           popupOpenButtons.forEach((popupOpenButton, i) => {
             // Активация попапа по клику на указанную кнопку
             window.popup.activatePopup(popupOpenButton);

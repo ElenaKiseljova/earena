@@ -210,7 +210,21 @@
                   if (prefix.indexOf('add') > -1) {
                     // Добавление матча
                     formData['action'] = 'add_match';
+
+                    if (formData['bet'] && (formData['bet'] === '0' || formData['bet'] === 0) && !formData['free']) {
+                      delete formData.bet;
+
+                      formData['free'] = '1';
+
+                      console.log('free=' + formData['free'],  'bet=' + formData['bet']);
+                    }
                   }
+                }
+
+                // GAME
+                if ( ID_FORM.indexOf('game') > -1) {
+                  // Добавление игры
+                  formData['action'] = 'setPlafroms';
                 }
 
                 // ADMIN VERIFICATION
@@ -339,7 +353,7 @@
 
                   // МАТЧ
                   if ( ID_FORM.indexOf('match') > -1 ) {
-                    // Создание
+                    // Создание шаг 1
                     if (prefix.indexOf('create') > -1) {
                       response = JSON.parse(response);
 
@@ -375,6 +389,19 @@
                         onError(response, prefix);
 
                         console.log(response.message);
+
+                        return;
+                      }
+                    }
+
+                    // Создание шаг 1
+                    if (prefix.indexOf('add') > -1) {
+                      response = JSON.parse(response);
+
+                      if (response.success === 0) {
+                        onError(response, prefix);
+
+                        console.log(response);
 
                         return;
                       }
@@ -439,6 +466,26 @@
                     }
                   }
 
+                  // GAME
+                  if ( ID_FORM.indexOf('game') > -1) {
+                    response = JSON.parse(response);
+
+                    let sectionUpdateArea = document.querySelector('#sections-games-profile-update');
+
+                    if (sectionUpdateArea && response.success === 1) {
+                      sectionUpdateArea.innerHTML = response.data;
+
+                      // Получаем кнопки открытия попапов
+                      let openPopupButtons = sectionUpdateArea.querySelectorAll('.openpopup');
+                      if (openPopupButtons.length > 0) {
+                        openPopupButtons.forEach((openPopupButton, i) => {
+                          // Активация кнопки открытия попапа
+                          window.popup.activatePopup(openPopupButton);
+                        });
+                      }
+                    }
+                  }
+
                   // Ф-я закрытия попапа по клику на кнопку
                   additionButtonClosePopup();
 
@@ -473,11 +520,12 @@
                   formData['security'] = earena_2_ajax.nonce;
                 }
 
-                // formData - обычный объект
-                // dataForm - потомок FormData() [для передачи файлов]
-                //console.log(formData, dataForm);
-
                 if ((ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) {
+                  // dataForm - потомок FormData() [для передачи файлов]
+                  for(var pair of dataForm.entries()) {
+                     console.log(pair[0]+ ', '+ pair[1]);
+                  }
+
                   // Для передачи файлов
                   $.ajax({
                     url: earena_2_ajax.url,
@@ -500,6 +548,7 @@
                     }
                   });
                 } else {
+                  // formData - обычный объект
                   console.log(formData);
 
                   // Обычный запрос (без передачи файлов)

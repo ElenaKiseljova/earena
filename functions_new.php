@@ -688,12 +688,13 @@
 
   // Статистика в Аккаунте
   function ea_get_user_stat($user_id = 0) {
+      global $games;
       $user_id = $user_id > 0 ? $user_id : get_current_user_id();
       $ea_user = get_user_by('id', (int)$user_id);
       $user_stat = wp_cache_get( 'ea_statistics_user_'.$ea_user->ID, 'ea' );
       if( empty($user_stat) ){
           $nicknames =  ($ea_user instanceof WP_User) ? $ea_user->get('nicknames'):[];
-          $games = get_site_option( 'games' );
+          $games = $games ?? [];
           $user_stat = [];
           if( !empty($nicknames) ){
               foreach (@$nicknames as $game => $v) {

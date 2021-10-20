@@ -97,6 +97,11 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
+      <div class="preloader preloader--tournaments">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </section>
 <?php elseif (earena_2_current_page( 'tournaments' )) : ?>

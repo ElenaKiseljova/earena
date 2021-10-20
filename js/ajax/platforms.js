@@ -22,6 +22,7 @@
 
     // Смещение для пагинации/скролла-подгрузки
     let offset = {
+      'games' : 0,
       'tournaments' : 0,
       'matches' : 0
     };
@@ -88,7 +89,7 @@
           }
 
           dataFiltered = dataFiltered.split('~~~');
-          console.log(dataFiltered.length);
+          //console.log(dataFiltered.length);
 
           // Получаем кол-во полученных элементов
           amount[what] = dataFiltered.length - 1;

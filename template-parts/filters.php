@@ -15,6 +15,14 @@
   $tournaments_page = earena_2_current_page( 'tournaments' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments');
 
   $matches_page = earena_2_current_page( 'matches' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches');
+
+  $game_id = $game_id_platforms = $game_id_game_modes = $game_id_team_modes = false;
+  if (earena_2_current_page('games') && isset($_GET['game'])) {
+    $game_id = $_GET['game'];
+    $game_id_platforms = $games[$game_id]['platforms'];
+    $game_id_game_modes = $games[$game_id]['game_modes'];
+    $game_id_team_modes = $games[$game_id]['team_modes'];
+  }
 ?>
 
 <div class="filters">
@@ -99,16 +107,35 @@
 
           <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="filters__list filters__list--checkbox">
-            <?php foreach ($platforms as $platform_key => $platform): ?>
-              <li class="filters__item filters__item--checkbox">
-                <div class="checkbox checkbox--left">
-                  <input class="visually-hidden" type="checkbox" name="platform" value="<?= $platform_key; ?>" id="platform-<?= mb_strtolower($platform); ?>">
-                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-<?= mb_strtolower($platform); ?>">
-                    <?= $platform; ?>
-                  </label>
-                </div>
-              </li>
-            <?php endforeach; ?>
+            <?php
+              foreach ($platforms as $platform_key => $platform) {
+                if ( $game_id && $game_id_platforms ) {
+                  if (in_array($platform_key, $game_id_platforms)) {
+                    ?>
+                      <li class="filters__item filters__item--checkbox">
+                        <div class="checkbox checkbox--left">
+                          <input class="visually-hidden" type="checkbox" name="platform" value="<?= $platform_key; ?>" id="platform-<?= mb_strtolower($platform); ?>">
+                          <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-<?= mb_strtolower($platform); ?>">
+                            <?= $platform; ?>
+                          </label>
+                        </div>
+                      </li>
+                    <?php
+                  }
+                } else {
+                  ?>
+                    <li class="filters__item filters__item--checkbox">
+                      <div class="checkbox checkbox--left">
+                        <input class="visually-hidden" type="checkbox" name="platform" value="<?= $platform_key; ?>" id="platform-<?= mb_strtolower($platform); ?>">
+                        <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="platform-<?= mb_strtolower($platform); ?>">
+                          <?= $platform; ?>
+                        </label>
+                      </div>
+                    </li>
+                  <?php
+                }
+              }
+            ?>
           </ul>
           <ul class="filters__list filters__list--result">
             <!-- Шаблон пунктов списка результатов строится в filter.js -->
@@ -166,42 +193,82 @@
         </button>
         <!-- Для переключения состояния - добавляется active класс  -->
         <ul class="filters__list filters__list--checkbox">
-          <?php foreach ($game_modes as $game_mode_key => $game_mode): ?>
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="game_mode" value="<?= $game_mode_key; ?>" id="game_mode_<?= $game_mode_key; ?>">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="game_mode_<?= $game_mode_key; ?>">
-                  <?= $game_mode_key; ?> vs <?= $game_mode_key; ?>
-                </label>
-              </div>
-            </li>
-          <?php endforeach; ?>
+          <?php
+            foreach ($game_modes as $game_mode_key => $game_mode) {
+              if ( $game_id && $game_id_game_modes ) {
+                if (in_array($game_mode, $game_id_game_modes)) {
+                  ?>
+                    <li class="filters__item filters__item--checkbox">
+                      <div class="checkbox checkbox--left">
+                        <input class="visually-hidden" type="checkbox" name="game_mode" value="<?= $game_mode_key; ?>" id="game_mode_<?= $game_mode_key; ?>">
+                        <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="game_mode_<?= $game_mode_key; ?>">
+                          <?= $game_mode_key; ?> vs <?= $game_mode_key; ?>
+                        </label>
+                      </div>
+                    </li>
+                  <?php
+                }
+              } else {
+                ?>
+                  <li class="filters__item filters__item--checkbox">
+                    <div class="checkbox checkbox--left">
+                      <input class="visually-hidden" type="checkbox" name="game_mode" value="<?= $game_mode_key; ?>" id="game_mode_<?= $game_mode_key; ?>">
+                      <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="game_mode_<?= $game_mode_key; ?>">
+                        <?= $game_mode_key; ?> vs <?= $game_mode_key; ?>
+                      </label>
+                    </div>
+                  </li>
+                <?php
+              }
+            }
+          ?>
         </ul>
         <ul class="filters__list filters__list--result">
           <!-- Шаблон пунктов списка результатов строится в filter.js -->
         </ul>
       </div>
-      <div class="filters__element filters__element--col-5">
-        <button class="filters__field filters__field--select" type="button" name="button">
-          <?php _e( 'Режим команды', 'earena_2' ); ?>
-        </button>
-        <!-- Для переключения состояния - добавляется active класс  -->
-        <ul class="filters__list filters__list--checkbox">
-          <?php foreach ($team_modes as $team_mode_key => $team_mode): ?>
-            <li class="filters__item filters__item--checkbox">
-              <div class="checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="team_mode" value="<?= $team_mode_key; ?>" id="team_mode_<?= $team_mode_key; ?>">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="team_mode_<?= $team_mode_key; ?>">
-                  <?= $team_mode !== null ? $team_mode : __('NULL', 'earena_2'); ?>
-                </label>
-              </div>
-            </li>
-          <?php endforeach; ?>
-        </ul>
-        <ul class="filters__list filters__list--result">
-          <!-- Шаблон пунктов списка результатов строится в filter.js -->
-        </ul>
-      </div>
+      <?php if (($game_id_team_modes && !in_array(0, $game_id_team_modes)) || !$game_id_team_modes): ?>
+        <div class="filters__element filters__element--col-5">
+          <button class="filters__field filters__field--select" type="button" name="button">
+            <?php _e( 'Режим команды', 'earena_2' ); ?>
+          </button>
+          <!-- Для переключения состояния - добавляется active класс  -->
+          <ul class="filters__list filters__list--checkbox">
+            <?php
+              foreach ($team_modes as $team_mode_key => $team_mode) {
+                if ( $game_id && $game_id_team_modes ) {
+                  if (in_array($team_mode_key, $game_id_team_modes)) {
+                    ?>
+                      <li class="filters__item filters__item--checkbox">
+                        <div class="checkbox checkbox--left">
+                          <input class="visually-hidden" type="checkbox" name="team_mode" value="<?= $team_mode_key; ?>" id="team_mode_<?= $team_mode_key; ?>">
+                          <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="team_mode_<?= $team_mode_key; ?>">
+                            <?= $team_mode !== null ? $team_mode : __('NULL', 'earena_2'); ?>
+                          </label>
+                        </div>
+                      </li>
+                    <?php
+                  }
+                } else if ($team_mode_key !== 0) {
+                  ?>
+                    <li class="filters__item filters__item--checkbox">
+                      <div class="checkbox checkbox--left">
+                        <input class="visually-hidden" type="checkbox" name="team_mode" value="<?= $team_mode_key; ?>" id="team_mode_<?= $team_mode_key; ?>">
+                        <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="team_mode_<?= $team_mode_key; ?>">
+                          <?= $team_mode; ?>
+                        </label>
+                      </div>
+                    </li>
+                  <?php
+                }
+              }
+            ?>
+          </ul>
+          <ul class="filters__list filters__list--result">
+            <!-- Шаблон пунктов списка результатов строится в filter.js -->
+          </ul>
+        </div>
+      <?php endif; ?>
       <div class="filters__element filters__element--col-5">
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Статус', 'earena_2' ); ?>

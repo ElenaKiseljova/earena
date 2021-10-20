@@ -32,7 +32,7 @@
       </div>
     </div>
   </section>
-<?php elseif (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches' ): ?>
+<?php elseif (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && ($_GET['toggles'] === 'matches') ): ?>
   <?php
     global $games, $game_id, $ea_icons, $matches;
 
@@ -75,7 +75,42 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
+<?php elseif ( earena_2_current_page( 'matches' ) ) : ?>
+  <section class="section section--matches" id="matches">
+    <div class="section__wrapper">
+      <header class="section__header">
+        <h2 class="section__title section__title--matches">
+          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+          <span class="section__amount">
+            0
+          </span>
+        </h2>
+
+        <div class="section__header-right section__header-right--account-tabs">
+          <!-- Табы платформ -->
+          <?php get_template_part( 'template-parts/tabs/platform' ); ?>
+        </div>
+      </header>
+
+      <?php
+        get_template_part( 'template-parts/filters' );
+      ?>
+
+      <div class="section__content">
+        <ul class="section__list" id="content-platform-matches">
+          <!-- Подстановка содержимого из шаблона -->
+        </ul>
+      </div>
+      <div class="preloader preloader--matches">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="isInViewPort"></div>
+    </div>
+  </section>
 <?php elseif (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) : ?>
+  <!-- тут дичь пока -->
   <section class="section section--matches" id="matches">
     <header class="section__header">
       <h2 class="section__title section__title--matches section__title--page">
@@ -155,40 +190,6 @@
       </ul>
     </div>
   </section>
-<?php elseif ( earena_2_current_page( 'matches' ) ) : ?>
-  <section class="section section--matches" id="matches">
-    <div class="section__wrapper">
-      <header class="section__header">
-        <h2 class="section__title section__title--matches">
-          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
-          <span class="section__amount">
-            0
-          </span>
-        </h2>
-
-        <div class="section__header-right section__header-right--account-tabs">
-          <!-- Табы платформ -->
-          <?php get_template_part( 'template-parts/tabs/platform' ); ?>
-        </div>
-      </header>
-
-      <?php
-        get_template_part( 'template-parts/filters' );
-      ?>
-
-      <div class="section__content">
-        <ul class="section__list" id="content-platform-matches">
-          <!-- Подстановка содержимого из шаблона -->
-        </ul>
-      </div>
-      <div class="preloader preloader--matches">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <div id="isInViewPort"></div>
-    </div>
-  </section>
 <?php else : ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
@@ -209,9 +210,16 @@
         </div>
       </header>
 
-      <ul class="section__list" id="content-platform-matches">
-        <!-- Подстановка содержимого из шаблона -->
-      </ul>
+      <div class="section__content">
+        <ul class="section__list" id="content-platform-matches">
+          <!-- Подстановка содержимого из шаблона -->
+        </ul>
+      </div>
+      <div class="preloader preloader--matches">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </section>
 <?php endif; ?>

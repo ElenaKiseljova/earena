@@ -109,7 +109,7 @@
                   }
                 }
 
-                console.log(flagAllSelected);
+                //console.log(flagAllSelected);
 
                 if (buttons[allButtonIndex].classList.contains('active') && (parseInt(button.dataset.tabType, 10) !== -1 && button.dataset.tabType !== -1)) {
                   buttons[allButtonIndex].classList.remove('active');

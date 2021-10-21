@@ -72,7 +72,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--header">
-      <a class="navigation__link navigation__link--header" href="/text">
+      <a class="navigation__link navigation__link--header <?= is_page(5724) ? 'active' : '' ?>" href="<?php echo get_page_link(5724); ?>">
         <span>
           <?=  __('Поддержка игроков', 'earena_2'); ?>
         </span>

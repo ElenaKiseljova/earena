@@ -35,6 +35,18 @@
     align-content: flex-start;
   }
 
+  &--contact {
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    max-width: 764px;
+
+    margin-top: 50px;
+    margin-right: auto;
+  }
+
   &#form-game {
     display: none;
 
@@ -88,6 +100,10 @@
     width: 590 / ( 1156 - 40 ) * 100%;
   }
 
+  &--contact {
+    width: 300 / 764 * 100%;
+  }
+
   @media (max-width: @mobile) {
     &--wallet-refill,
     &--wallet-withdrawal,
@@ -104,6 +120,23 @@
                            "d"
                            "c";
     }
+  }
+}
+
+.form__right {
+  padding: 0;
+  margin: 0;
+
+  &--contact {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    width: 444 / 764 * 100%;
   }
 }
 
@@ -211,6 +244,8 @@
       line-height: 14px;
 
       color: #57616F;
+
+      pointer-events: none;
     }
 
     .select2-container {
@@ -374,7 +409,7 @@
 
   .field_reset();
 
-  padding: 11px 15px;
+  padding: 10.8px 15px;
 
   font-family: #fonts[1];
   font-style: normal;
@@ -423,10 +458,22 @@
     pointer-events: none;
   }
 
+  &--contact,
+  &--wallet {
+    padding-top: 10.6px;
+    padding-bottom: 10.6px;
+  }
+
   &--message {
     resize: vertical;
 
     height: 40px;
+  }
+
+  &--message-contact {
+    resize: none;
+
+    height: 140px;
   }
 
   &--message-transaction {
@@ -558,6 +605,38 @@
     pointer-events: all;
   }
 
+  &.sending {
+    position: relative;
+
+    pointer-events: none;
+
+    opacity: 0.5;
+
+    &::after {
+      content: '';
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      z-index: 1;
+
+      width: 20px;
+      height: 20px;
+
+      border-radius: 50%;
+
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #555555;
+
+      margin-top: -10px;
+      margin-left: -10px;
+
+      animation: spin 2s linear infinite;
+    }
+  }
+
   &--buttons {
     width: 135 / 291 * 100%;
 
@@ -577,6 +656,12 @@
   &--forgot {
     margin-top: 20px;
     margin-bottom: 0;
+  }
+
+  &--contact {
+    min-width: 111px;
+
+    margin: 0;
   }
 
   @media (max-width: @mobile) {

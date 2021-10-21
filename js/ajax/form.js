@@ -92,11 +92,7 @@
 
                 // Объект для отправки на сервер
                 let formData = {};
-                let dataForm = new FormData();
-
-                if ( (ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1) ) {
-                  dataForm.append('action', 'verification_fileload');
-                }
+                let dataForm = new FormData(FORM_CHECK);
 
                 // Собираем значения из инпутов
                 if (inputs) {
@@ -227,7 +223,7 @@
                   formData['action'] = 'setPlafroms';
                 }
 
-                // ADMIN VERIFICATION
+                // VERIFICATION
                 if ( ID_FORM.indexOf('verification') > -1) {
                   // Подтверждение верификации
                   if (prefix.indexOf('apply') > -1) {
@@ -240,16 +236,32 @@
                     // Ф-я отказа в верификации
                     formData['action'] = 'earena_2_remove_verification_request';
                   }
+
+                  // Запрос на верификацию
+                  if (prefix.indexOf('request') > -1) {
+                    dataForm.append('action', 'verification_fileload');
+                  }
+                }
+
+                // CONTACT
+                if ( ID_FORM.indexOf('contact') > -1 ) {
+                  dataForm.append('action', 'earena_2_sendmail');
                 }
 
                 /***** END Actions AJAX *****/
 
                 // Popup message
                 let popup = FORM_CHECK.closest('.popup');
-                let popupMessage = popup.querySelector('.popup__ajax-message');
+                let popupMessage;
+
+                if (popup) {
+                  popupMessage = popup.querySelector('.popup__ajax-message');
+                }
 
                 // Обработчик старта отправки
                 var onBeforeSend = (status) => {
+                  buttonSubmit.classList.add('sending');
+
                   // Логин
                   if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1  || prefix.indexOf('request') > -1) {
                     if (popupMessage) {
@@ -281,6 +293,8 @@
 
                 // Обработчик успешной отправки
                 var onSuccess = (response) => {
+                  buttonSubmit.classList.remove('sending');
+
                   // ЛОГИРОВАНИЕ
                   if ( ID_FORM.indexOf('login') > -1 ) {
                     // Логин
@@ -494,6 +508,8 @@
 
                 // Обработчик не успешной отправки
                 var onError = (response, prefix='') => {
+                  buttonSubmit.classList.remove('sending');
+
                   let templateError = document.querySelector(`#${ID_FORM}-error${prefix}`);
 
                   if (!templateError) {
@@ -520,7 +536,12 @@
                   formData['security'] = earena_2_ajax.nonce;
                 }
 
-                if ((ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) {
+                // Удаляю дефолтный элемент с собранными файлами (файлы через append() добавляются)
+                if (dataForm.has('files')) {
+                  dataForm.delete('files');
+                }
+
+                if (((ID_FORM.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) ||( ID_FORM.indexOf('contact') > -1)) {
                   // dataForm - потомок FormData() [для передачи файлов]
                   for(var pair of dataForm.entries()) {
                      console.log(pair[0]+ ', '+ pair[1]);
@@ -770,7 +791,9 @@
 
           // Запуск валидации по клику на форму
           FORM_CHECK.addEventListener('click', (evt) => {
-            validateForm();
+            if (evt.target.tagName !== 'A') {
+              validateForm();
+            }
           });
         }
       };
@@ -781,11 +804,17 @@
       // Либо по смене табов toggle-active.js
 
       window.form({
-        idForm: 'form-delete-history',
-        selectorForTemplateReplace: `#history-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
-        classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-        selectorClosestWrapperForm: '.popup--history', // по умолчанию - false
+        idForm: 'form-contact',
+        selectorForTemplateReplace: `#contact-page-form`, // Содержимое будет очищаться при отправке и заменяться шаблонами
       });
+
+      // Закоммиченная форма была в разметке, а вот на бою - не уверена, что она есть
+      // window.form({
+      //   idForm: 'form-delete-history',
+      //   selectorForTemplateReplace: `#history-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
+      //   classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+      //   selectorClosestWrapperForm: '.popup--history', // по умолчанию - false
+      // });
     } catch (e) {
       console.log(e);
     }

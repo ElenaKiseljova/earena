@@ -101,13 +101,17 @@
               <!-- <span class="chat-page__form-vs">
                 vs
               </span>
-              <label class="chat-page__form-field-label" for="chat-page-result-files">
-                <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
-              </label>
-              <input class="chat-page__form-field-input visually-hidden" type="file" id="chat-page-result-files" name="chat-page-result-files" accept=".png, .jpg, .jpeg" multiple>
+              <div class="files files--chat-page">
+                <label class="files__label files__label--chat-page" for="files-chat-page">
+                  <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
+                </label>
+                <input class="files__input visually-hidden" type="file" id="files-chat-page" name="files" accept=".png, .jpg, .jpeg" multiple>
 
-              <div class="preview">
-              </div> -->
+
+                <div class="files__preview">
+                </div>
+              </div>
+              -->
 
               <!-- Change -->
               <!-- <span class="chat-page__form-vs chat-page__form-vs--change">
@@ -131,27 +135,30 @@
               <span class="chat-page__form-vs chat-page__form-vs--change">
                 1 : 5
               </span>
-              <label class="chat-page__form-field-label" for="chat-page-result-files">
-                <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
-              </label>
-              <input class="chat-page__form-field-input visually-hidden" type="file" id="chat-page-result-files" name="chat-page-result-files" accept=".png, .jpg, .jpeg" multiple>
 
-              <!-- Сюда попадают скрины, что загрузил игрок подтверждающий результат матча, что ввел его сопертник -->
-              <div class="preview">
-              </div>
-              <!-- Сюда попадают скрины, что загрузил игрок, который отправил счет матча -->
-              <div class="preview preview--change">
-                <ul>
-                  <li>
-                    <p>
-                      <a href="#">about-medium</a>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      <a href="#">about-medium@2x</a>
-                    </p>
-                  </li>
+              <div class="files files--chat-page">
+                <label class="files__label files__label--chat-page" for="files-chat-page">
+                  <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
+                </label>
+                <input class="files__input visually-hidden" type="file" id="files-chat-page" name="files" accept=".png, .jpg, .jpeg" multiple>
+
+                <!-- Сюда попадают скрины, что загрузил игрок подтверждающий результат матча, что ввел его сопертник -->
+                <div class="files__preview">
+                </div>
+                <!-- Сюда попадают скрины, что загрузил игрок, который отправил счет матча -->
+                <div class="files__preview files__preview--change">
+                  <ul>
+                    <li>
+                      <p>
+                        <a href="#">about-medium</a>
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <a href="#">about-medium@2x</a>
+                      </p>
+                    </li>
+                </div>
               </div>
             </div>
             <div class="chat-page__form-right">

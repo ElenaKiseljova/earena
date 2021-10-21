@@ -12,6 +12,34 @@
       margin-left: 20px;
     }
   }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    &:focus {
+      & + .checkbox__label--checkbox {
+        &::after {
+          opacity: 0.2;
+
+          transition: opacity 0.3s;
+        }
+      }
+    }
+
+    &:checked {
+      & + .checkbox__label--checkbox {
+        &::before {
+          background-color: #colors[accent];
+          border-color: #colors[accent];
+        }
+
+        &::after {
+          opacity: 1;
+
+          transition: opacity 0.3s;
+        }
+      }
+    }
+  }
 }
 
 .checkbox__label {
@@ -101,27 +129,5 @@
     &::after {
       right: 3px;
     }
-  }
-}
-
-input[type="checkbox"]:focus + .checkbox__label--checkbox {
-  &::after {
-    opacity: 0.2;
-
-    transition: opacity 0.3s;
-  }
-}
-
-input[type="checkbox"]:checked + .checkbox__label--checkbox,
-input[type="radio"]:checked + .checkbox__label--checkbox {
-  &::before {
-    background-color: #colors[accent];
-    border-color: #colors[accent];
-  }
-
-  &::after {
-    opacity: 1;
-
-    transition: opacity 0.3s;
   }
 }

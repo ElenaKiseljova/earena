@@ -3,7 +3,7 @@
 (function () {
   window.files = function (container) {
     var inputFile = container.querySelector('input[type="file"]');
-    var previewFile = container.querySelector('.preview');
+    var previewFile = container.querySelector('.files__preview');
 
     if (inputFile && previewFile) {
       // Скрываю инпут

@@ -21,6 +21,7 @@
     add_filter('the_content', 'filter_function_name_add', 1);
     function filter_function_name_add($content)
     {
+      remove_filter( 'the_content', 'wpautop' );
       ob_start();
         global $wp;
         do_action('woo_wallet_before_my_wallet_content');
@@ -56,7 +57,7 @@
                     $type_operation = ($item === 'top_up') ? 'add' : $item;
                   ?>
                     <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                      <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                      <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page( 'wallet' ) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <?php do_action('woo_wallet_menu_items'); ?>
@@ -85,7 +86,7 @@
                 </p>
                 <div class="form__buttons form__buttons--wallet">
                   <?php wp_nonce_field( 'woo_wallet_topup', 'woo_wallet_topup' ); ?>
-                  <input class="purse__submit button button--green oo-add-to-wallet" type="submit" name="woo_add_to_wallet" value="<?php _e( 'Пополнить счет', 'earena_2' ); ?>" />
+                  <input class="purse__submit button button--green woo-add-to-wallet" type="submit" name="woo_add_to_wallet" value="<?php _e( 'Пополнить счет', 'earena_2' ); ?>" />
                 </div></form>
             </div></div></div>
         <?php
@@ -96,6 +97,7 @@
       add_filter('the_content', 'filter_function_name_withdraw', 1);
       function filter_function_name_withdraw($content)
       {
+      remove_filter( 'the_content', 'wpautop' );
       ob_start();
           global $wp;
           do_action('woo_wallet_before_my_wallet_content');
@@ -173,7 +175,7 @@
                                   $type_operation = ($item === 'top_up') ? 'add' : $item;
                                 ?>
                                   <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                                    <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                                    <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page( 'wallet' ) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                                   <?php endif; ?>
                               <?php endforeach; ?>
                               <?php do_action('woo_wallet_menu_items'); ?>
@@ -231,6 +233,7 @@
       add_filter('the_content', 'filter_function_name_transactions', 1);
       function filter_function_name_transactions($content)
       {
+      remove_filter( 'the_content', 'wpautop' );
       ob_start();
           global $wp;
           do_action('woo_wallet_before_my_wallet_content');
@@ -266,100 +269,115 @@
                       $type_operation = ($item === 'top_up') ? 'add' : $item;
                     ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page( 'wallet' ) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>
                 </div>
               </div>
             </header>
-            <div class="">
-              <?php
-                    global $wpdb, $wallet_offset;
-                    $user_id = get_current_user_id();
-                    // $part = $_REQUEST['part'] ?? 1;
-                    $total_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}woo_wallet_transactions WHERE user_id={$user_id}" );
-                    // $wallet_limit = isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 10;
-                    // $wallet_offset = isset($part) ? ((int)$part-1)*$wallet_limit : 0;
-              //				$wallet_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
-                    /*if ( !empty($wallet_offset) ) {
-                      add_filter( 'woo_wallet_transactions_query', 'ea_woo_wallet_transactions_query_offset' );
-                      function ea_woo_wallet_transactions_query_offset($query){
-                        global $wallet_offset;
-                        $query['limit'] = isset($query['limit']) ? $query['limit']." OFFSET " . $wallet_offset : "OFFSET " . $wallet_offset;
-                        return $query;
-                      }
-                    }*/
-                    $transactions = get_wallet_transactions( array( 'limit' => apply_filters( 'woo_wallet_transactions_count', $wallet_limit ) ) );
-                    if ( ! empty( $transactions ) ) { ?>
+            <?php
+                  global $wpdb, $wallet_offset;
+                  $user_id = get_current_user_id();
+                  $part = $_REQUEST['part'] ?? 1;
+                  $total_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->base_prefix}woo_wallet_transactions WHERE user_id={$user_id}" );
+                  $wallet_limit = isset($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 20;
+                  $wallet_offset = isset($part) ? ((int)$part-1)*$wallet_limit : 0;
+                  // $wallet_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
+
+                  // var_dump('$part=', $part, '$total_count=', $total_count, '$wallet_limit=', $wallet_limit, '$wallet_offset=', $wallet_offset);
+                  if ( !empty($wallet_offset) ) {
+                    add_filter( 'woo_wallet_transactions_query', 'ea_woo_wallet_transactions_query_offset' );
+                    function ea_woo_wallet_transactions_query_offset($query){
+                      global $wallet_offset;
+                      $query['limit'] = isset($query['limit']) ? $query['limit']." OFFSET " . $wallet_offset : "OFFSET " . $wallet_offset;
+                      return $query;
+                    }
+                  }
+                  $transactions = get_wallet_transactions( array( 'limit' => apply_filters( 'woo_wallet_transactions_count', $wallet_limit ) ) );
+                  if ( ! empty( $transactions ) ) { ?>
+                    <div class="purse">
+                      <h3 class="purse__title">
+                        <?php _e( 'История операций', 'earena_2' ); ?>
+                      </h3>
+
+                      <div class="purse__table-wrapper">
+                        <table class="purse__table">
+                          <thead class="purse__table-head">
+                            <tr class="purse__table-row">
+                              <th class="purse__table-col purse__table-col--th purse__table-col--1-history">
+                                <?php _e( 'ID', 'earena_2' ); ?>
+                              </th>
+                              <th class="purse__table-col purse__table-col--th purse__table-col--2-history">
+                                <?php _e( 'Операция', 'earena_2' ); ?>
+                              </th>
+                              <th class="purse__table-col purse__table-col--th purse__table-col--3-history">
+                                <?php _e( 'Сумма', 'earena_2' ); ?>
+                              </th>
+                              <th class="purse__table-col purse__table-col--th purse__table-col--4-history">
+                                <?php _e( 'Подробности', 'earena_2' ); ?>
+                              </th>
+                              <th class="purse__table-col purse__table-col--th purse__table-col--5-history">
+                                <?php _e( 'Дата', 'earena_2' ); ?>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody class="purse__table-body">
+                            <?php foreach ( $transactions as $transaction ) : ?>
+                              <tr class="purse__table-row purse__table-row--history">
+                                <td class="purse__table-col purse__table-col--td purse__table-col--1-history">
+                                  <?= $transaction->transaction_id; ?>
+                                </td>
+                                <td class="purse__table-col purse__table-col--td purse__table-col--2-history">
+                                  <?php
+                                    echo $transaction->type == 'credit' ? __( 'Пополнение', 'earena_2' ) : __( 'Списание', 'earena_2' );
+                                  ?>
+                                </td>
+                                <td class="purse__table-col purse__table-col--td purse__table-col--3-history">
+                                  <?php echo wc_price( apply_filters( 'woo_wallet_amount', $transaction->amount, $transaction->currency, $transaction->user_id ), woo_wallet_wc_price_args($transaction->user_id) ); ?>
+                                </td>
+                                <td class="purse__table-col purse__table-col--td purse__table-col--4-history">
+                                  <?php echo $transaction->details; ?>
+                                </td>
+                                <td class="purse__table-col purse__table-col--td purse__table-col--5-history">
+                                  <time><?php echo wc_string_to_datetime( $transaction->date )->date_i18n( wc_date_format() ); ?></time>
+                                </td>
+                              </tr>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pagination pagination--wallet">
+                      <?php
+                        echo paginate_links( [
+                          'base'         => '%_%',
+                          'format'       => '?part=%#%',
+                          'total' => ceil($total_count/$wallet_limit),
+                          'current' => $part,
+                          'prev_next' => false,
+                          'prev_text' => __( 'Previous', 'earena_2' ),
+                          'next_text' => __( 'Next', 'earena_2' ),
+                          'mid_size' => 3,
+                        ] );
+                      ?>
+                    </div>
+                    <?php
+                  } else {
+                    ?>
                       <div class="purse">
                         <h3 class="purse__title">
                           <?php _e( 'История операций', 'earena_2' ); ?>
                         </h3>
 
-                        <div class="purse__table-wrapper">
-                          <table class="purse__table">
-                            <thead class="purse__table-head">
-                              <tr class="purse__table-row">
-                                <th class="purse__table-col purse__table-col--th purse__table-col--1-history">
-                                  <?php _e( 'ID', 'earena_2' ); ?>
-                                </th>
-                                <th class="purse__table-col purse__table-col--th purse__table-col--2-history">
-                                  <?php _e( 'Операция', 'earena_2' ); ?>
-                                </th>
-                                <th class="purse__table-col purse__table-col--th purse__table-col--3-history">
-                                  <?php _e( 'Сумма', 'earena_2' ); ?>
-                                </th>
-                                <th class="purse__table-col purse__table-col--th purse__table-col--4-history">
-                                  <?php _e( 'Подробности', 'earena_2' ); ?>
-                                </th>
-                                <th class="purse__table-col purse__table-col--th purse__table-col--5-history">
-                                  <?php _e( 'Дата', 'earena_2' ); ?>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody class="purse__table-body">
-                              <?php foreach ( $transactions as $transaction ) : ?>
-                                <tr class="purse__table-row purse__table-row--history">
-                                  <td class="purse__table-col purse__table-col--td purse__table-col--1-history">
-                                    <?= $transaction->transaction_id; ?>
-                                  </td>
-                                  <td class="purse__table-col purse__table-col--td purse__table-col--2-history">
-                                    <?php
-                                      echo $transaction->type == 'credit' ? __( 'Пополнение', 'earena_2' ) : __( 'Списание', 'earena_2' );
-                                    ?>
-                                  </td>
-                                  <td class="purse__table-col purse__table-col--td purse__table-col--3-history">
-                                    <?php echo wc_price( apply_filters( 'woo_wallet_amount', $transaction->amount, $transaction->currency, $transaction->user_id ), woo_wallet_wc_price_args($transaction->user_id) ); ?>
-                                  </td>
-                                  <td class="purse__table-col purse__table-col--td purse__table-col--4-history">
-                                    <?php echo $transaction->details; ?>
-                                  </td>
-                                  <td class="purse__table-col purse__table-col--td purse__table-col--5-history">
-                                    <time><?php echo wc_string_to_datetime( $transaction->date )->date_i18n( wc_date_format() ); ?></time>
-                                  </td>
-                                </tr>
-                              <?php endforeach; ?>
-                            </tbody>
-                          </table>
-                        </div>
+                        <p class="purse__empty-history">
+                          <?php _e( 'Пока не было ни одной операциий', 'earena_2' ); ?>
+                        </p>
                       </div>
-                      <?php
-                    } else {
-                      ?>
-                        <div class="purse">
-                          <h3 class="purse__title">
-                            <?php _e( 'История операций', 'earena_2' ); ?>
-                          </h3>
-
-                          <p class="purse__empty-history">
-                            <?php _e( 'Пока не было ни одной операциий', 'earena_2' ); ?>
-                          </p>
-                        </div>
-                      <?php
-                    }
-                    ?>
-            </div>
+                    <?php
+                  }
+                  ?>
           </div>
           <?php
       return ob_get_clean();
@@ -376,6 +394,7 @@
     add_filter('the_content', 'filter_function_name_transfer', 1);
       function filter_function_name_transfer($content)
       {
+      remove_filter( 'the_content', 'wpautop' );
       ob_start();
           do_action('woo_wallet_before_my_wallet_content');
           $is_rendred_from_myaccount = wc_post_content_has_shortcode('woo-wallet') ? false : is_account_page();
@@ -410,7 +429,7 @@
                       $type_operation = ($item === 'top_up') ? 'add' : $item;
                     ?>
                       <?php if (apply_filters('woo_wallet_is_enable_' . $item, true)) : ?>
-                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page($menu_item['url']) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
+                        <a class="tabs__button tabs__button--wallet <?= (earena_2_current_page( 'wallet' ) && isset($_GET['wallet_action']) && $_GET['wallet_action'] === $type_operation) ? 'active' : ''; ?> card" href="<?php echo $menu_item['url']; ?>" ><?php echo $menu_item['title']; ?></a>
                       <?php endif; ?>
                   <?php endforeach; ?>
                   <?php do_action('woo_wallet_menu_items'); ?>
@@ -483,7 +502,8 @@
 
   add_action( 'template_redirect', function(){
   if ( is_page(298) && ( !isset($_GET['wallet_action']) || '' === $_GET['wallet_action'] ) ) {
-    wp_redirect(add_query_arg('wallet_action', 'transactions'));die();
+    wp_redirect(add_query_arg('wallet_action', 'transactions'));
+    die();
   }
   });
 

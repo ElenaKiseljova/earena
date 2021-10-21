@@ -270,4 +270,32 @@
     		}
     	}
   }
+
+  /* ==============================================
+  ********  //Начислить денег пользователю
+  =============================================== */
+  add_action('wp_ajax_ea_add_money_by_admin', 'ea_add_money_by_admin_callback');
+  function ea_add_money_by_admin_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      $amount = (float)$_POST['amount'];
+      if ($amount > 0 && woo_wallet()->wallet->credit($ea_user, (float)$amount,
+              __('Зачисление от администрации', 'earena')) !== false) {
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . __(', вам зачислено $', 'earena') . $amount;
+          ea_admin_tech_msg($message, $thread_id);
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Деньги зачислены.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Деньги не зачислены.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
 ?>

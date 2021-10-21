@@ -1151,7 +1151,7 @@ function earena_2_page_profile_public_friends_data($user_id = 0, $length = 0, $o
 }
 
 /* ==============================================
-********  //Друзья - Отказ
+********  //Верификация
 =============================================== */
 
 add_action('wp_ajax_' . 'verification_fileload', 'verification_fileload_callback');
@@ -1167,7 +1167,7 @@ function verification_fileload_callback()
     if (get_user_meta($ea_user->ID, 'bp_verified_member', true) == 1) {
         wp_send_json_error('Запрос уже одобрен.');
     }
-//print_r($_FILES);
+    //print_r($_FILES);
     if (empty($_FILES)) {
         wp_send_json_error(__('Загрузите файлы', 'earena_2'));
     } elseif (count($_FILES) > 2) {

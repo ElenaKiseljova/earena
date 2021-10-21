@@ -21,16 +21,16 @@
           <?php _e( 'Верификация необходима для подтверждения вашей личности, чтобы совершать операции по выводу средств. <br><br>Пожалуйста прикрепите фото хорошего качества основной страницы паспорта или водительского удостоверения.', 'earena_2' ); ?>
       </div>
 
-      <div class="chat-page chat-page--popup-verification">
+      <div class="popup__form popup__form--verification">
         <form class="form form--popup" data-prefix="request" id="form-verification" action="/" method="post">
-          <div class="chat-page__form chat-page__form--popup-verification">
-            <label class="chat-page__form-field-label chat-page__form-field-label--popup-verification" for="chat-page-result-files">
+          <div class="files files--verification">
+            <label class="files__label files__label--verification" for="files-verification">
               <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
             </label>
-            <input class="chat-page__form-field-input visually-hidden" type="file" id="chat-page-result-files" name="chat-page-result-files" accept=".png, .jpg, .jpeg" multiple>
+            <input class="files__input visually-hidden" type="file" id="files-verification" name="files" accept=".png, .jpg, .jpeg" multiple>
 
             <!-- Сюда попадают скрины, что загрузил игрок подтверждающий себя -->
-            <div class="preview">
+            <div class="files__preview">
             </div>
           </div>
           <div class="popup__ajax-message"></div>

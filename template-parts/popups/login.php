@@ -1,3 +1,6 @@
+<?php
+  $countries = get_site_option( 'countries' );
+?>
 <!-- Для переключения состояния - добавляется active класс  -->
 <?php if (!isset($_GET['login-status'])): ?>
   <?php
@@ -101,32 +104,22 @@
           </span>
 
           <div class="form__row">
-            <div class="select select--login">
+            <div class="select select--country">
               <!-- Для переключения состояния - добавляется active класс  -->
-              <button class="select__button select__button--login" type="button" name="button">
+              <button class="select__button select__button--country" type="button" name="button">
                 <?php _e( 'Страна', 'earena_2' ); ?>
               </button>
 
               <!-- Для переключения состояния - добавляется active класс  -->
-              <ul class="select__list">
-                <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="country" value="ru" id="select-ru" required>
-                  <label class="select__label" for="select-ru">
-                    <?php _e( 'РФ', 'earena_2' ); ?>
-                  </label>
-                </li>
-                <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="country" value="ua" id="select-ua" required>
-                  <label class="select__label" for="select-ua">
-                    <?php _e( 'Украина', 'earena_2' ); ?>
-                  </label>
-                </li>
-                <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="country" value="by" id="select-by" required>
-                  <label class="select__label" for="select-by">
-                    <?php _e( 'Беларусь', 'earena_2' ); ?>
-                  </label>
-                </li>
+              <ul class="select__list select__list--country">
+                <?php foreach ($countries as $country): ?>
+                  <li class="select__item">
+                    <input class="visually-hidden" type="radio" name="country" value="<?= mb_strtolower($country['slug']); ?>" id="select-<?= mb_strtolower($country['slug']); ?>" required>
+                    <label class="select__label" for="select-<?= mb_strtolower($country['slug']); ?>">
+                      <?= $country['name']; ?>
+                    </label>
+                  </li>
+                <?php endforeach; ?>
               </ul>
             </div>
           </div>
@@ -140,7 +133,7 @@
 
           <p class="form__privacy">
             <?php
-              $url_to_rules_page = '#';
+              $url_to_rules_page = get_bloginfo( 'url' ) . '/terms-and-rules/';
               $privacy_policy_url = get_privacy_policy_url();
 
               echo sprintf( __( 'Нажимая кнопку вы соглашаетесь с <a href="%s">Правилами сервиса</a> и <a href="%s">Политикой конфиденциальности</a>', 'earena_2' ), $url_to_rules_page, $privacy_policy_url );

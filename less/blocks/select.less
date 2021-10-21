@@ -61,7 +61,7 @@
     background: #colors[dark_light];
   }
 
-  &--login {
+  &--country {
     color: #colors[text_black];
   }
 
@@ -92,9 +92,17 @@
 
   list-style: none;
 
+  &--games,
+  &--country {
+    overflow: auto;
+  }
+
   &--games {
     max-height: 110px;
-    overflow: auto;
+  }
+
+  &--country {
+    max-height: 170px;
   }
 
   &.loaded {

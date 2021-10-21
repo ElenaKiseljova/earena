@@ -44,10 +44,6 @@
       wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
     }
 
-    if ( earena_2_current_page( 'games' ) ) {
-      //wp_enqueue_script('vue-script', 'https://cdn.jsdelivr.net/npm/vue@2', $deps = array(), $ver = null, $in_footer = true );
-    }
-
     wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -223,12 +219,12 @@
   if (! function_exists( 'earena_2_current_page' )) {
     function earena_2_current_page ( $page_slug = false ) {
       if ($page_slug) {
-        // Проверяем наличие слага с URI
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $actual_link = explode('?', $actual_link);
         $actual_link = $actual_link[0];
 
-        $is_current = strpos($actual_link, $page_slug) ? strpos($actual_link, $page_slug) : strpos($page_slug, $actual_link);
+        // Проверяем наличие слага в URI
+        $is_current = strpos($actual_link, $page_slug);
 
         if ($is_current !== false) {
           return true;
@@ -756,6 +752,62 @@
   {
       return isset(get_site_option('team_modes')[$tm]) ? get_site_option('team_modes')[$tm] : 'ERROR';
   }
+
+  /* ==============================================
+  ********  //Всякий кастомайз и полезности
+  =============================================== */
+  global $icons, $ea_icons;
+  $games = get_site_option('games');
+  $icons = ['xbox-one', 'xbox-x', 'ps4', 'ps5', 'desk', 'mob', 'xbox-one', 'xbox-x', 'ps4', 'ps5', 'desk', 'mob'];
+
+  //Автоматическое присвоение заказам статуса «Выполнен» https://misha.agency/woocommerce/avtovypolnenie-zakazov.html
+  add_filter('woocommerce_order_item_needs_processing', 'filter_function_name_6173', 10, 3);
+  function filter_function_name_6173($condition, $product, $id)
+  {
+      if ($product->get_id() == 10) {
+          return false;
+      }
+      return $condition;
+  }
+
+  add_filter('gettext', 'ea_translate_text');
+  add_filter('ngettext', 'ea_translate_text');
+  function ea_translate_text($translated)
+  {
+      $translated = str_ireplace('Подытог', 'Сумма', $translated);
+      return $translated;
+  }
+
+  add_filter('gettext_woo-wallet', 'filter_function_name_753', 10, 3);
+  function filter_function_name_753($translation, $text, $domain)
+  {
+      if ($text == 'Wallet credit through purchase #') {
+          return __('Пополнение счёта через кассу #', 'earena');
+      }
+      return $translation;
+  }
+
+  add_filter('gettext', 'ea_custom_btc_button_text', 20, 3);
+  function ea_custom_btc_button_text($translated_text, $text, $domain)
+  {
+      if ($translated_text == 'Платите с биткоин') {
+          $translated_text = __('Перейти к оплате', 'earena');
+      }
+      return $translated_text;
+  }
+
+  add_filter('woocommerce_order_button_text', 'truemisha_order_button_text');
+  function truemisha_order_button_text($button_text)
+  {
+      return __('Перейти к оплате', 'earena');
+  }
+
+  add_filter('wc_price', 'filter_function_name_928', 10, 5);
+  function filter_function_name_928($return, $price, $args, $unformatted_price, $original_price)
+  {
+      return $return . ' <span class="ef-rub-price">(' . $price * (float)get_site_option('ea_dollar_value') . ' RUB)</span>';
+  }
+
 
   /*INCLUDE SETTINGS EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_settings.php' );

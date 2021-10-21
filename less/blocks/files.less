@@ -1,4 +1,57 @@
-.preview {
+.files {
+  padding: 0;
+  margin: 0;
+
+  &--contact {
+    width: 148 / 444 * 100%;
+  }
+
+  &--verification {
+    width: 148 / 290 * 100%;
+  }
+}
+
+.files__label {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  .w100();
+
+  padding: 6px 9px;
+
+  .caption();
+
+  color: #colors[text];
+
+  background-color: #colors[dark_light_2];
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  &::before {
+    content: '';
+
+    width: 20px;
+    height: 20px;
+
+    margin-right: 6px;
+
+    .bg_icon('../img/paperclip.svg');
+  }
+
+  &--verification {
+    margin: 0;
+  }
+}
+
+.files__input {
+  display: none;
+}
+
+.files__preview {
   .w100();
 
   .caption();

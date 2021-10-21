@@ -169,3 +169,108 @@
         </div>
     </div>
 </div>
+
+function earena_2_sendmail () {
+  //var_dump($_FILES, $_POST);
+  $errors = array();
+  $attach = array();
+
+  if (count($_FILES) > 3) {
+      wp_send_json_error(__('Загружайте не более 3 файлов, пожалуйста.', 'earena'));
+  } else {
+      for ($i = 0; $i < count($_FILES); $i++) {
+        // ограничим вес загружаемой картинки
+        $filesize = $_FILES[$i]['size'];
+        $max_filesize_mb = 4;
+        $max_filesize = $max_filesize_mb * 1024 * 1024;
+        if ($filesize > $max_filesize) {
+          wp_send_json_error(__('Фото не должно быть больше ', 'earena') . $max_filesize_mb . 'Mb.');
+        }
+        // ограничим размер загружаемой картинки
+        $sizedata = getimagesize($_FILES[$i]['tmp_name']);
+        $max_size = 4000;
+        if ($sizedata[0]/*width*/ > $max_size || $sizedata[1]/*height*/ > $max_size) {
+            wp_send_json_error(__('Фото не должно быть больше ',
+                    'earena') . $max_size . __('px в ширину или высоту.', 'earena'));
+        }
+        //разрешим только картинки
+        if ($_FILES[$i]['type'] !== 'image/jpeg' && $_FILES[$i]['type'] !== 'image/png') {
+            wp_send_json_error($_FILES[$i]['type'] . '-' . __('Тип файла не подходит по соображениям безопасности.', 'earena'));
+        }
+
+        $attach[] = $_FILES[$i]['tmp_name'];
+      }
+
+      // обрабатываем загрузку файла
+      require_once ABSPATH . 'wp-admin/includes/image.php';
+      require_once ABSPATH . 'wp-admin/includes/file.php';
+      require_once ABSPATH . 'wp-admin/includes/media.php';
+
+      // фильтр допустимых типов файлов - разрешим только картинки
+      add_filter('upload_mimes', function ($mimes) {
+          return [
+              'jpg|jpeg|jpe' => 'image/jpeg',
+              'png' => 'image/png',
+          ];
+      });
+
+      foreach ($_FILES as $file_id => $data) {
+          $attach_id = media_handle_upload($file_id, 0);
+          if (is_wp_error($attach_id)) {
+              $errors[] = __('Ошибка загрузки файла',
+                      'earena') . '`' . $data['name'] . '`: ' . $attach_id->get_error_message();
+
+              wp_send_json_error($errors);
+          } else {
+              $parsed = parse_url(wp_get_attachment_url($attach_id));
+              // $url = dirname($parsed['path']) . '/' . rawurlencode(basename($parsed['path']));
+              $attach[] = WP_CONTENT_DIR . '/' . rawurlencode(basename($parsed['path']));
+          }
+      }
+
+      $contactName = isset($_POST['name']) ? ('Имя - ' . esc_html( $_POST['name'] )) : '';
+      // $contactPhone = isset($_POST['phone']) ? ('Телефон - ' . esc_html( $_POST['phone'] )) : '';
+      $contactEmail = isset($_POST['email']) ? ('E-mail - ' . esc_html( $_POST['email'] )) : '';
+      $contactMessage = isset($_POST['message']) ? ('Сообщение - ' . esc_html( $_POST['message'] )) : '';
+      $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : 'Поддержка игроков';
+
+      $contactMail = 'test';
+      // $contactMail = '<p>' . $contactName . '</p>' .
+      //                   '<p>' . // $contactPhone . '</p>' .
+      //                   '<p>' . $contactEmail . '</p>' .
+      //                   '<p>' . $contactMessage . '</p>';
+
+      $to = 'e.a.kiseljova@gmail.com'; //get_option('admin_email');
+      $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
+
+      // удалим фильтры, которые могут изменять заголовок $headers
+      remove_all_filters( 'wp_mail_from' );
+      remove_all_filters( 'wp_mail_from_name' );
+
+      $headers = array(
+        $site_name,
+        'content-type: text/plain',
+      );
+
+      wp_mail( $to, $contactSubject, $contactMail, $headers, $attach );
+      // if ($attach && count($attach) > 0) {
+      //
+      // } else {
+      //   wp_mail( $to, $contactSubject, $contactMail, $headers );
+      // }
+
+
+      $response = [
+        'success' => 1,
+        'files' => $_FILES,
+        'post' => $_POST,
+        'mail' => $contactMail,
+        'attachments' => $attach,
+        'errors' => $errors
+      ];
+
+      wp_send_json_success($response);
+  }
+
+  wp_die();
+}

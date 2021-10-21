@@ -29,7 +29,7 @@
       </a>
     </li>
     <li class="navigation__item navigation__item--footer">
-      <a class="navigation__link navigation__link--footer" href="/text">
+      <a class="navigation__link navigation__link--footer" href="<?php echo get_page_link(5724); ?>">
         <span>
           <?= __('Поддержка игроков', 'earena_2'); ?>
         </span>

@@ -106,6 +106,11 @@
             // Попап Верификация
             earena_2_get_popup( 'verification' );
           }
+
+          if ( is_page(5724) || earena_2_current_page( 'nuzhna-pomoshh' ) ) {
+            // Попап Обратнй связи
+            earena_2_get_popup( 'contact' );
+          }
         }
       ?>
 

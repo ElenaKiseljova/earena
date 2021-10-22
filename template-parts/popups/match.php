@@ -84,6 +84,8 @@
       </form>
     </div>
   </template>
+
+  <!-- Не используется  -->
   <template id="popup-match-accept">
     <div class="match match--popup">
       <div class="match__top-left">
@@ -114,7 +116,7 @@
               </td>
               <!-- Если недостаточно/достаточно средств +/- pay__column--red -->
               <td class="pay__column pay__column--right">
-                $1 300
+                $<?= balance(); ?>
               </td>
             </tr>
             <tr class="pay__row">
@@ -151,7 +153,7 @@
         </p>
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="match-close">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
@@ -182,12 +184,11 @@
       </div>
 
       <form class="form form--popup" data-prefix="delete" id="form-match" action="/" method="post">
-        <input type="hidden" name="match-status" value="delete">
-        <input type="hidden" name="match-id" value="11111111">
-        <input type="hidden" name="user-id" value="2222222">
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="match-close">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
@@ -202,9 +203,43 @@
       </form>
     </div>
   </template>
+  <!-- Не используется -->
+
+  <template id="popup-match-no-old-enough">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Нет доступа', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          _e( 'Принимать участие в играх на деньги могут только игроки, которым исполнилось 18 лет. Вы можете принять участие только в бесплатных играх.', 'earena_2' );
+        ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="popup-match-no-game-or-platform">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Нет платформы', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
+      </div>
+
+      <a class="popup__go-to-button popup__go-to-button--match button button--gray" href="<?= bloginfo( 'url' ); ?>/profile">
+        <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
+      </a>
+    </div>
+  </template>
 
   <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
-  <template id="form-match-success">
+  <template id="form-match-success-join">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Вызов принят', 'earena_2' ); ?>
@@ -219,6 +254,21 @@
       </a>
     </div>
   </template>
+  <template id="form-match-success-delete">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить матч', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы успешно удалили матч.', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
   <template id="form-match-success-add">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
@@ -229,28 +279,27 @@
         <?php _e( 'Ваш матч успешно создан! Дождитесь соперника, который примет ваше предложение об игре.', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
   </template>
-  <template id="form-match-success-no-old-enough">
+  <template id="form-match-success">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Нет доступа', 'earena_2' ); ?>
+        <?php _e( 'Успех', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php
-          _e( 'Принимать участие в играх на деньги могут только игроки, которым исполнилось 18 лет. Вы можете принять участие только в бесплатных играх.', 'earena_2' );
-        ?>
+        <?php _e( 'Запрос прошел успешно.', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray" type="button" name="match-close">
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
   </template>
+
   <template id="form-match-beforesend">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
@@ -262,7 +311,8 @@
       </div>
     </div>
   </template>
-  <template id="form-match-error">
+
+  <template id="form-match-error-create">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Нет платформы', 'earena_2' ); ?>
@@ -272,9 +322,39 @@
         <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
       </div>
 
-      <a class="popup__go-to-button button button--gray" href="<?= bloginfo( 'url' ); ?>/profile">
+      <a class="popup__go-to-button popup__go-to-button--match button button--gray" href="<?= bloginfo( 'url' ); ?>/profile">
         <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
+    </div>
+  </template>
+  <template id="form-match-error-delete">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Нет матча', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Что-то пошло не так... Повторите попытку или напишите нам в техподдержкую', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-match-error">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Ошибка', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Что-то пошло не так...', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
     </div>
   </template>
 </div>

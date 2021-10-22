@@ -22,7 +22,7 @@
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="complaint-close">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="complaint-close">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
@@ -49,7 +49,7 @@
         <?php _e( 'Ваша жалоба успешно отправлена', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -75,7 +75,7 @@
         <?php _e( 'Попробуйте повторить позже', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

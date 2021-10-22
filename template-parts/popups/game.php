@@ -73,7 +73,7 @@
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
           <div class="form__buttons form__buttons--game">
-            <button class="form__popup-close form__popup-close--buttons button button--gray">
+            <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
               <?php _e( 'Назад', 'earena_2' ); ?>
             </button>
             <button class="form__submit form__submit--buttons button button--blue" type="submit" name="game-submit">

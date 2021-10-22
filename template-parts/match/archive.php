@@ -144,32 +144,38 @@
     <div class="match__button-wrapper">
       <?php if ($match_waiting && ($match->player1 != $ea_user_id) && !is_ea_admin()): ?>
         <?php
-          $join_name = 'accept';
+          $join_popup = 'match';
+
           if (!is_user_logged_in()) {
-              $join_target = 'login';
+              $join_popup = 'login';
               $join_name = 'signin';
+
+              // $join_target = 'noLoggedIN';
           }
           elseif (is_user_logged_in() && !in_array($match->game, ea_my_games())) {
-              $join_target = 'noGameMatch';
+              $join_name = 'no-game-or-platform';
           } elseif (is_user_logged_in() && !in_array($match->platform, ea_my_platforms($match->game))) {
-              $join_target = 'noPlatformMatch';
+              $join_name = 'no-game-or-platform';
           } elseif (is_user_logged_in() && (int)$match->bet > 0 && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
-              $join_target = 'no18Match';
+              $join_name = 'no-old-enough';
           } else {
-              $join_target = 'goMatch';
+              $join_name = 'join';
           }
         ?>
         <button class="button button--blue openpopup"
-                data-popup="match"
-                data-target="#<?= $join_target; ?>"
+                data-popup="<?= $join_popup; ?>"
                 data-id="<?= $match->ID; ?>"
-                data-price="<?= $match->bet; ?>"
                 data-private="<?= $match->private; ?>"
                 data-game="<?= $games[$match->game]['shortname']; ?>"
-                data-mode="<?= game_mode_to_string($match->game_mode); ?>"
-                data-command="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
-                data-image-game="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['game'][(int)$match->game]; ?>.svg"
-                data-image-platform="<?php bloginfo('template_url'); ?>/images/icons/<?= $ea_icons['platform'][(int)$match->platform]; ?>.svg"
+                <?php if ($match->team_mode > 0): ?>
+                  data-team="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
+                <?php else : ?>
+                  data-mode="<?= $match->game_mode . ' vs ' . $match->game_mode ?>"
+                <?php endif; ?>
+                data-platform="<?= $ea_icons['platform'][$match->platform]; ?>"
+                data-balance="<?= balance(); ?>"
+                data-bet="<?= $match->bet; ?>"
+                data-security="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>"
                 type="button"
                 name="<?= $join_name ;?>">
           <span>
@@ -207,9 +213,11 @@
         <?php endif; ?>
       <?php elseif ($match_present && $match_my == true): ?>
         <a class="button button--gray" href="/matches/match/?match=<?= $match->ID; ?>">
-          <span class="button__chat button__chat--left">
-            <?= ea_count_unread($match->thread_id) > 0 ? ea_count_unread($match->thread_id) : ''; ?>
-          </span>
+          <?php if (ea_count_unread($match->thread_id) > 0): ?>
+            <span class="button__chat button__chat--left">
+              <?=  ea_count_unread($match->thread_id); ?>
+            </span>
+          <?php endif; ?>
           <span>
             <?php _e( 'В чат', 'earena_2' ); ?>
           </span>

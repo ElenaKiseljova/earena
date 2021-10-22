@@ -32,7 +32,7 @@
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
 

@@ -28,7 +28,7 @@
         <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="cancel">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
           <button class="form__submit form__submit--buttons button button--blue" type="submit" name="friends-add-submit">
@@ -56,7 +56,7 @@
         <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
           <button class="form__submit form__submit--buttons button button--red" type="submit" name="friends-delete-submit">
@@ -84,7 +84,7 @@
         <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="cancel">
             <?php _e( 'Закрыть', 'earena_2' ); ?>
           </button>
           <button class="form__submit form__submit--buttons button button--blue" type="submit" name="friends-apply-submit">
@@ -112,7 +112,7 @@
         <input class="user-id" type="hidden" name="user" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray" type="button" name="cancel">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="cancel">
             <?php _e( 'Закрыть', 'earena_2' ); ?>
           </button>
           <button class="form__submit form__submit--buttons button button--red" type="submit" name="friends-reject-submit">
@@ -138,7 +138,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -155,7 +155,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -172,7 +172,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -189,7 +189,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>

@@ -20,8 +20,6 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     try {
-      const { __, _x, _n, _nx } = wp.i18n;
-
       // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
       var userVerificationId,
         userVerificationName;
@@ -172,6 +170,7 @@
 
             // Все кнопки закрытия попапа
             let closePopupButtons = popupItem.querySelectorAll('.popup__close');
+
             if (closePopupButtons.length > 0) {
               closePopupButtons.forEach((closePopupButton, i) => {
                 // Активация кнопки закрытия попапа
@@ -222,110 +221,6 @@
 
           // Заменяем содержимое контейнера
           popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
-        } else if (popupTemplateContainer && (prefix === 'match') && (typePopup === 'join')) {
-          let getTemplateJoinFormHTML = function () {
-            let hiddenInputsHTML = `
-              <input type="hidden" name="id" value="${button.dataset.id}">
-              <input type="hidden" name="security" value="${button.dataset.security}">
-            `;
-
-            let privateMatchHTML = `
-              <div class="form__row">
-                <input class="form__field form__field--popup" id="password" type="password" name="match_pass" required placeholder="${__( 'Пароль', 'earena_2' )}">
-              </div>
-              <span class="form__error form__error--popup">${__( 'Error', 'earena_2' )}</span>
-
-              <p class="form__text">
-                ${__( 'Это приватный матч. Введите пароль.', 'earena_2' )}
-              </p>
-            `;
-
-            let smallBalanceHTML = `
-              <p class="pay__text pay__text--red">
-                ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
-              </p>
-
-              <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
-                <span>
-                  ${__( 'Пополнить счет', 'earena_2' )}
-                </span>
-              </a>
-            `;
-
-            let templateJoinFormHTML = `
-              <div class="match match--popup">
-                <div class="match__top-left">
-                  <h3 class="match__game">
-                    ${button.dataset.game}
-                  </h3>
-                  <ul class="variations variations--lock">
-                    <li class="variations__item">
-                      ${button.dataset.team ? button.dataset.team : button.dataset.mode}
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="platform platform--match">
-                  <svg class="platform__icon" width="40" height="40">
-                    <use xlink:href="#icon-platform-${button.dataset.platform}"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <div class="popup__content popup__content--match">
-                <div class="pay pay--match">
-                  <table class="pay__table">
-                    <tbody class="pay__body">
-                      <tr class="pay__row">
-                        <td class="pay__column">
-                          ${__( 'Доступный баланс:', 'earena_2' )}
-                        </td>
-                        <td class="pay__column pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
-                          ${('$' + button.dataset.balance)}
-                        </td>
-                      </tr>
-                      <tr class="pay__row">
-                        <td class="pay__column">
-                          ${__( 'Со счета будет списано:', 'earena_2' )}
-                        </td>
-                        <td class="pay__column pay__column--right">
-                          ${('$' + button.dataset.bet)}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  ${(button.dataset.balance < button.dataset.bet) ? smallBalanceHTML : ''}
-                </div>
-                <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
-                  ${(button.dataset.private == '1') ? privateMatchHTML : ''}
-
-                  ${hiddenInputsHTML}
-
-                  <div class="form__buttons">
-                    <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
-                      <span>
-                        ${__( 'Отменить', 'earena_2' )}
-                      </span>
-                    </button>
-
-                    <button class="form__submit form__submit--buttons button button--blue" type="submit" name="match-submit">
-                      <span>
-                        ${__( 'Принять', 'earena_2' )}
-                      </span>
-                    </button>
-                  </div>
-                  <p class="form__text form__text--star">
-                    ${__( 'Отменить участие в матче будет невозможно.', 'earena_2' )}
-                  </p>
-                </form>
-              </div>
-            `;
-
-            return templateJoinFormHTML;
-          };
-
-          popupTemplateContainer.innerHTML = getTemplateJoinFormHTML();
         }
 
         // Проверка : Заданы ли внутренние кнопки
@@ -340,18 +235,16 @@
           });
         }
 
-        // Проверка на то, что форма не находится на странице.
-        // Чтобы избежать дублей событий
         if (prefix !== 'contact') {
-          // Инициализация формы
-          let attrForm = {
+          // Перезапуск/запуск валидации формы
+          window.form({
             idForm: `form-${prefix}`,
             selectorForTemplateReplace: `#${prefix}-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
             classForAddClosestWrapperForm: 'sending', // по умолчанию - false
             selectorClosestWrapperForm: `.popup--${prefix}`, // по умолчанию - false
-          };
-
-          window.form.init(attrForm);
+          });
+        } else {
+          console.log('Тут был дубль валидации (');
         }
 
         // Регулировка высоты попапа
@@ -423,16 +316,6 @@
         if (prefix === 'verification') {
           if (typePopup === 'request') {
             window.files(popup);
-          }
-        }
-
-        if (prefix === 'match') {
-          if (typePopup === 'delete') {
-            let inputId = popupTemplateContainer.querySelector('input[name="id"]');
-
-            if (inputId) {
-              inputId.value = button.dataset.id;
-            }
           }
         }
 

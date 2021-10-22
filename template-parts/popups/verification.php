@@ -35,7 +35,7 @@
           </div>
           <div class="popup__ajax-message"></div>
           <div class="form__buttons">
-            <button class="form__popup-close form__popup-close--buttons button button--gray">
+            <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </button>
 
@@ -64,7 +64,7 @@
         <input class="user-name" type="hidden" name="username" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
 
@@ -92,7 +92,7 @@
         <input class="user-name" type="hidden" name="username" value="">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
 
@@ -117,7 +117,7 @@
         <?php _e( 'Ваша заявка принята! Мы рассмотрим ее в течение 24-х часов.', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -132,7 +132,7 @@
         <?php _e( 'Пользователь <span class="user-name"></span> успешно верифицирован!', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -147,7 +147,7 @@
         <?php _e( 'Пользователю <span class="user-name"></span> отказано в верификации!', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

@@ -10,7 +10,7 @@
     <li class="navigation__item navigation__item--footer">
       <a class="navigation__link navigation__link--footer" href="/text">
         <span>
-          <?= __('Кибершкола', 'earena_2'); ?>
+          <?= __('Школа', 'earena_2'); ?>
         </span>
       </a>
     </li>
@@ -39,6 +39,20 @@
       <a class="navigation__link navigation__link--footer" href="/text">
         <span>
           <?= __('Новости киберспорта', 'earena_2'); ?>
+        </span>
+      </a>
+    </li>
+    <li class="navigation__item navigation__item--footer">
+      <a class="navigation__link navigation__link--footer" href="<?= get_bloginfo( 'url' ) . '/terms-and-rules/'; ?>">
+        <span>
+          <?= __('Пользовательское соглашение', 'earena_2'); ?>
+        </span>
+      </a>
+    </li>
+    <li class="navigation__item navigation__item--footer">
+      <a class="navigation__link navigation__link--footer" href="<?= get_privacy_policy_url(); ?>">
+        <span>
+          <?= __('Политика конфиденциальности', 'earena_2'); ?>
         </span>
       </a>
     </li>

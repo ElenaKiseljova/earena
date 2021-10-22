@@ -75,6 +75,7 @@
     // С переводами
     wp_set_script_translations('platforms-script', 'earena_2');
     wp_set_script_translations('filter-script', 'earena_2');
+    wp_set_script_translations('popup-script', 'earena_2');
 
     // AJAX
     $args = array(

@@ -221,7 +221,7 @@
         <div class="popup__information popup__information--template">
           <?php _e( 'На указанную вами электронную почту отправлен новый пароль.', 'earena_2' ); ?>
         </div>
-        <button class="form__popup-close button button--gray" name="close" type="button">
+        <button class="button button--gray button--popup-close" name="close" type="button">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </button>
       </div>

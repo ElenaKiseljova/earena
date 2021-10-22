@@ -118,7 +118,7 @@
         Championship 2020 Season 2 Premium.
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -135,7 +135,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -154,7 +154,7 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray">
+      <button class="button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -184,7 +184,7 @@
         <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
 
-      <button class="form__popup-close form__popup-close--cross">
+      <button class="popup__close popup__close--cross button button--popup-close">
         <span class="visually-hidden">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </span>

@@ -32,7 +32,7 @@
       $transaction_amount = WC()->session->get( 'transaction_amount', '0' );
       $transaction_user_id = WC()->session->get( 'transaction_user_id', '0' );
       ?>
-        <button class="popup__close popup__close--big popup__close--purse button button--gray">
+        <button class="popup__close popup__close--purse button button--gray">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </button>
         <button id="transaction-button" class="visually-hidden openpopup" data-popup="purse" type="button" name="transaction">
@@ -91,8 +91,8 @@
         ?>
       </div>
 
-      <button class="form__popup-close button button--gray" name="close" type="button">
-        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      <button class="popup__go-to-button popup__go-to-button--purse button button--gray" name="close" type="button">
+        <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
   </template>

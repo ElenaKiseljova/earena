@@ -35,12 +35,12 @@
   &--footer {
     display: grid;
 
-    grid-template: "a c e"
-                   "b d f";
+    grid-template: "a c e g"
+                   "b d f h";
 
-    grid-template-columns: repeat(3, max-content);
-    grid-template-rows: 23px;
-    grid-column-gap: 45px;
+    grid-template-columns: repeat(4, max-content);
+    grid-template-rows: 25px;
+    grid-column-gap: 48px;
   }
 
   @media (max-width: @mobile) {
@@ -91,6 +91,14 @@
 
     &:nth-of-type(6) {
       grid-area: f;
+    }
+
+    &:nth-of-type(7) {
+      grid-area: g;
+    }
+
+    &:nth-of-type(8) {
+      grid-area: h;
     }
   }
 

@@ -108,7 +108,7 @@
               // Переопределяем объект с загруженными файлами новым
               inputFile.files = newFileList.files;
 
-              console.log(inputFile.files);
+              // console.log(inputFile.files);
             });
           });
         // }

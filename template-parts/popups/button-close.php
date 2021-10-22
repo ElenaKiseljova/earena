@@ -1,7 +1,7 @@
 <?php
   global $slug_popup;
 ?>
-<button class="popup__close popup__close--<?= $slug_popup; ?>" type="button" name="close">
+<button class="popup__close popup__close--cross popup__close--<?= $slug_popup; ?>" type="button" name="close">
   <span class="visually-hidden">
     <?php _e( 'Закрыть', 'earena_2' ); ?>
   </span>

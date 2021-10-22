@@ -22,7 +22,7 @@
         <input type="hidden" name="accept-remove" value="true">
 
         <div class="form__buttons">
-          <button class="form__popup-close form__popup-close--buttons button button--gray">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
           </button>
           <button class="form__submit form__submit--buttons button button--red" type="submit" name="history-delete-submit">
@@ -56,7 +56,7 @@
         <?php _e( 'Пожалуйста, повторите попытку позже', 'earena_2' ); ?>
       </div>
 
-      <button class="form__popup-close form__popup-close--cross">
+      <button class="popup__close popup__close--cross button button--popup-close">
         <span class="visually-hidden">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </span>

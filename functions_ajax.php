@@ -812,6 +812,7 @@ function earena_2_sendmail () {
 
   if (count($_FILES) > 3) {
       wp_send_json_error(__('Загружайте не более 3 файлов, пожалуйста.', 'earena'));
+      wp_die();
   } else {
       for ($i = 0; $i < count($_FILES); $i++) {
         // ограничим вес загружаемой картинки
@@ -820,6 +821,7 @@ function earena_2_sendmail () {
         $max_filesize = $max_filesize_mb * 1024 * 1024;
         if ($filesize > $max_filesize) {
           wp_send_json_error(__('Фото не должно быть больше ', 'earena') . $max_filesize_mb . 'Mb.');
+          wp_die();
         }
         // ограничим размер загружаемой картинки
         $sizedata = getimagesize($_FILES[$i]['tmp_name']);
@@ -827,10 +829,12 @@ function earena_2_sendmail () {
         if ($sizedata[0]/*width*/ > $max_size || $sizedata[1]/*height*/ > $max_size) {
             wp_send_json_error(__('Фото не должно быть больше ',
                     'earena') . $max_size . __('px в ширину или высоту.', 'earena'));
+            wp_die();
         }
         //разрешим только картинки
         if ($_FILES[$i]['type'] !== 'image/jpeg' && $_FILES[$i]['type'] !== 'image/png') {
             wp_send_json_error($_FILES[$i]['type'] . '-' . __('Тип файла не подходит по соображениям безопасности.', 'earena'));
+            wp_die();
         }
 
         $uploaddir = WP_CONTENT_DIR  . '/uploads/form_files/';
@@ -839,7 +843,8 @@ function earena_2_sendmail () {
         if (move_uploaded_file($_FILES[$i]['tmp_name'], $uploadfile)) {
           array_push($contactAttachments, $uploadfile);
         } else {
-          wp_send_json_error(__('Возможная атака с помощью файловой загрузки!', 'earena'));
+          wp_send_json_error(__('Возможная атака с помощью файловой загрузки!', 'earena_2'));
+          wp_die();
         }
       }
   }
@@ -847,11 +852,11 @@ function earena_2_sendmail () {
   $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '<p>') : '';
   $contactEmail = isset($_POST['email']) ? ('<p>E-mail - ' . esc_html( $_POST['email'] ) . '') : '<p>';
   $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '<p>') : '';
-  $contactSubject = isset($_POST['subject']) ? '<p>' . esc_html( $_POST['subject'] ) . '<p>' : 'Поддержка игроков';
+  $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : 'Поддержка игроков';
 
   $contactMail = $contactName . $contactEmail . $contactMessage;
 
-  $to = 'e.a.kiseljova@gmail.com'; //get_option('admin_email');
+  $to = (get_field( 'support_mail', 5724 ) && get_field( 'support_mail', 5724 ) !== '') ? get_field( 'support_mail', 5724 ) : 'e.a.kiseljova@gmail.com';
   $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
 
   // удалим фильтры, которые могут изменять заголовок $headers
@@ -869,12 +874,26 @@ function earena_2_sendmail () {
     wp_mail( $to, $contactSubject, $contactMail, $headers );
   }
 
+  // Удаляю загруженный файлы
+  $errors_delete = [];
+  foreach ($contactAttachments as $contactAttachment) {
+    if (unlink($contactAttachment) === false) {
+      $errors_delete[] = $contactAttachment . ' ::: ' . __('Файл не может быть удален.', 'earena_2');
+    }
+  }
+
+  if (count($errors_delete) > 0) {
+    wp_send_json_error($errors_delete);
+  }
+
   $response = [
     'success' => 1,
     'files' => $_FILES,
     'post' => $_POST,
     'mail' => $contactMail,
-    'attachments' => $contactAttachments
+    'attachments' => $contactAttachments,
+    'removed' => true,
+    'mail' => $to
   ];
 
   wp_send_json_success($response);

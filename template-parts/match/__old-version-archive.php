@@ -589,3 +589,89 @@
     </div>
   </div>
 <?php endif; ?>
+<!-- Не используется  -->
+<template id="popup-match-accept">
+  <div class="match match--popup">
+    <div class="match__top-left">
+      <h3 class="match__game">
+        WARZONE
+      </h3>
+      <ul class="variations variations--lock">
+        <li class="variations__item">
+          1 vs 1
+        </li>
+      </ul>
+    </div>
+
+    <div class="platform platform--match">
+      <svg class="platform__icon" width="40" height="40">
+        <use xlink:href="#icon-platform-xbox"></use>
+      </svg>
+    </div>
+  </div>
+
+  <div class="popup__content popup__content--match">
+    <div class="pay pay--match">
+      <table class="pay__table">
+        <tbody class="pay__body">
+          <tr class="pay__row">
+            <td class="pay__column">
+              <?php _e( 'Доступный баланс:', 'earena_2' ); ?>
+            </td>
+            <!-- Если недостаточно/достаточно средств +/- pay__column--red -->
+            <td class="pay__column pay__column--right">
+              $<?= balance(); ?>
+            </td>
+          </tr>
+          <tr class="pay__row">
+            <td class="pay__column">
+              <?php _e( 'Со счета будет списано:', 'earena_2' ); ?>
+            </td>
+            <td class="pay__column pay__column--right">
+              $300
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Если недостаточно средств -->
+      <!-- <p class="pay__text pay__text--red">
+        <?php _e( 'На вашем счете недостаточно средств', 'earena_2' ); ?>
+      </p>
+
+      <a class="pay__button button button--blue" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
+        <span>
+          <?php _e( 'Пополнить счет', 'earena_2' ); ?>
+        </span>
+      </a> -->
+      <!-- ---- -->
+    </div>
+    <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
+      <div class="form__row">
+        <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
+      </div>
+      <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+
+      <p class="form__text">
+        <?php _e( 'Это приватный матч. Введите пароль.', 'earena_2' ); ?>
+      </p>
+
+      <div class="form__buttons">
+        <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
+          <span>
+            <?php _e( 'Отменить', 'earena_2' ); ?>
+          </span>
+        </button>
+
+        <button class="form__submit form__submit--buttons button button--blue" type="submit" name="match-submit">
+          <span>
+            <?php _e( 'Принять', 'earena_2' ); ?>
+          </span>
+        </button>
+      </div>
+      <p class="form__text form__text--star">
+        <?php _e( 'Отменить участие в матче будет невозможно.', 'earena_2' ); ?>
+      </p>
+    </form>
+  </div>
+</template>

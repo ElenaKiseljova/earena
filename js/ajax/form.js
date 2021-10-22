@@ -403,9 +403,9 @@
               if ( formId.indexOf('match') > -1 ) {
                 response = JSON.parse(response);
 
-                if (response.success === 1) {
-                  // Создание шаг 1
-                  if ((prefix.indexOf('create') > -1) && wrapperFormNode) {
+                // Создание шаг 1
+                if ((prefix.indexOf('create') > -1)) {
+                  if (response.success === 1 && wrapperFormNode) {
                     // Переписываю
                     wrapperFormNode.innerHTML = response.data;
 
@@ -433,24 +433,43 @@
                     console.log(response);
 
                     return;
-                  }
+                  } else {
+                    onError(response, prefix);
 
-                  // Создание шаг 2 / Удалить / Присоединиться
-                  if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1) || (prefix.indexOf('juin') > -1)) {
+                    console.log(response);
+
+                    return;
+                  }
+                }
+
+                // Создание шаг 2 / Удалить / Присоединиться
+                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
+                  if (response.success === 1) {
                     // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
                     let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
 
                     if (tabAllPlatform) {
                       tabAllPlatform.click();
                     }
-                  }
-                } else {
-                  if (prefix.indexOf('accept') > -1) {
-
                   } else {
                     onError(response, prefix);
 
                     console.log(response);
+
+                    return;
+                  }
+                }
+
+                if (prefix.indexOf('accept') > -1) {
+                  if (response.content.indexOf('thanks.svg') > -1) {
+                    // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
+                    let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
+
+                    if (tabAllPlatform) {
+                      tabAllPlatform.click();
+                    }
+                  } else {
+                    onError(response, prefix);
 
                     return;
                   }
@@ -599,6 +618,13 @@
                 let cloneTemplate = templateContentError.cloneNode(true);
 
                 wrapperFormNode.appendChild(cloneTemplate);
+
+                if ((prefix.indexOf('accept') > -1) && (formId.indexOf('match') > -1)) {
+                  let popupInformation = popup.querySelector('.popup__information--template');
+                  if (popupInformation) {
+                    popupInformation.innerHTML = response.content;
+                  }
+                }
               }
 
               console.log('Ошибка: ', response);

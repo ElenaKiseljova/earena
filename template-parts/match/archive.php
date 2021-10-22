@@ -199,7 +199,7 @@
         </button>
       <?php elseif ($match_present && $match_my == false): ?>
         <?php if (is_ea_admin()): ?>
-          <a class="button button--blue" href="/matches/match/?match=<?= $match->ID; ?>">
+          <a class="button button--blue" href="<?= bloginfo( 'url' )?>/matches/match/?match=<?= $match->ID; ?>">
             <span>
               <?php _e( 'Проходит', 'earena_2' ); ?>
             </span>
@@ -212,7 +212,7 @@
           </button>
         <?php endif; ?>
       <?php elseif ($match_present && $match_my == true): ?>
-        <a class="button button--gray" href="/matches/match/?match=<?= $match->ID; ?>">
+        <a class="button button--gray" href="<?= bloginfo( 'url' ); ?>/matches/match/?match=<?= $match->ID; ?>">
           <?php if (ea_count_unread($match->thread_id) > 0): ?>
             <span class="button__chat button__chat--left">
               <?=  ea_count_unread($match->thread_id); ?>

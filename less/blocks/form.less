@@ -67,7 +67,8 @@
   }
 
   @media (max-width: @mobile) {
-    &--wallet {
+    &--wallet,
+    &--contact {
       flex-direction: column;
     }
   }
@@ -107,7 +108,8 @@
   @media (max-width: @mobile) {
     &--wallet-refill,
     &--wallet-withdrawal,
-    &--grid {
+    &--grid,
+    &--contact {
       width: 100%;
 
       margin-right: 0;
@@ -137,6 +139,12 @@
     align-content: flex-start;
 
     width: 444 / 764 * 100%;
+  }
+
+  @media (max-width: @mobile) {
+    &--contact {
+      width: 100%;
+    }
   }
 }
 

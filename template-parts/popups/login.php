@@ -1,7 +1,7 @@
 <?php
   $countries = get_site_option( 'countries' );
 ?>
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <?php if (!isset($_GET['login-status'])): ?>
   <?php
     /**
@@ -105,12 +105,12 @@
 
           <div class="form__row">
             <div class="select select--country">
-              <!-- Для переключения состояния - добавляется active класс  -->
+
               <button class="select__button select__button--country" type="button" name="button">
                 <?php _e( 'Страна', 'earena_2' ); ?>
               </button>
 
-              <!-- Для переключения состояния - добавляется active класс  -->
+
               <ul class="select__list select__list--country">
                 <?php foreach ($countries as $country): ?>
                   <li class="select__item">
@@ -221,7 +221,7 @@
         <div class="popup__information popup__information--template">
           <?php _e( 'На указанную вами электронную почту отправлен новый пароль.', 'earena_2' ); ?>
         </div>
-        <button class="button button--gray button--popup-close" name="close" type="button">
+        <button class="popup__go-to-button popup__go-to-button--login button button--gray button--popup-close" name="close" type="button">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </button>
       </div>

@@ -166,7 +166,7 @@
                 data-popup="<?= $join_popup; ?>"
                 data-id="<?= $match->ID; ?>"
                 data-private="<?= $match->private; ?>"
-                data-game="<?= $games[$match->game]['shortname']; ?>"
+                data-game="<?= $games[$match->game]['name']; ?>"
                 <?php if ($match->team_mode > 0): ?>
                   data-team="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
                 <?php else : ?>

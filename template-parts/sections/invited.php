@@ -4,7 +4,6 @@
 <?php
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_private;
-  $earena_2_user_private = $ea_user;
 ?>
 
 <div class="section section--invited" id="invited">
@@ -14,10 +13,10 @@
     </h2>
 
     <div class="section__header-right">
-      <span class="visually-hidden" id="invited-link"><?=add_query_arg('ref',$ea_user->ID,home_url());?></span>
+      <span class="visually-hidden" id="invited-link"><?=add_query_arg('ref',$earena_2_user_private->ID,home_url());?></span>
 
       <button class="section__copy updateclipboard" data-clipboard-target="#invited-link" type="button" name="copy">
-        <?=add_query_arg('ref',$ea_user->ID,home_url());?>
+        <?=add_query_arg('ref',$earena_2_user_private->ID,home_url());?>
         <span>
           <?php _e( 'Скопировано!', 'earena_2' ); ?>
         </span>
@@ -37,7 +36,7 @@
           <?php
             foreach ($referrals as $ref) {
               // $money - чо-т не работает... Заменила на earena_2_balance();
-              $money = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM `ef_woo_wallet_transactions` WHERE details LIKE %s AND type = 'credit' AND user_id = %d", '%(ref_id='.$ref->ID.')%', $ea_user->ID ) )?:0;
+              $money = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM `ef_woo_wallet_transactions` WHERE details LIKE %s AND type = 'credit' AND user_id = %d", '%(ref_id='.$ref->ID.')%', $earena_2_user_private->ID ) )?:0;
               ?>
                 <li class="section__item section__item--col-2 section__item--friends">
                   <div class="user user--invited">

@@ -4,7 +4,7 @@
   $platforms = get_site_option('platforms') ?? [];
   $games = $games ?? [];
 ?>
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--match">
   <div class="popup__template popup__template--match" id="match-popup">
     <!-- Шаблон подставляется по открытию попапа -->
@@ -34,12 +34,12 @@
       <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
           <div class="select select--platforms">
-            <!-- Для переключения состояния - добавляется active класс  -->
+
             <button class="select__button select__button--platforms" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
             </button>
 
-            <!-- Для переключения состояния - добавляется active класс  -->
+
             <ul class="select__list">
               <?php foreach ($platforms as $key => $platform): ?>
                 <li class="select__item">
@@ -56,12 +56,12 @@
 
         <div class="form__row">
           <div class="select select--games">
-            <!-- Для переключения состояния - добавляется active класс  -->
+
             <button class="select__button select__button--games" type="button" name="button">
               <?php _e( 'Игра', 'earena_2' ); ?>
             </button>
 
-            <!-- Для переключения состояния - добавляется active класс  -->
+
             <ul class="select__list select__list--games">
               <?php foreach ($games as $key => $game): ?>
                 <li class="select__item">
@@ -163,7 +163,7 @@
         <?php _e( 'Для того, чтобы начать игру, перейдите в чат матча, и договоритесь с соперником об игре.', 'earena_2' ); ?>
       </div>
 
-      <a class="form__submit form__submit--accept button button--blue" href="<?= bloginfo( 'url' ); ?>/matches/match/?match=<?= $match->ID; ?>">
+      <a class="form__submit form__submit--accept button button--blue" id="go-to-math-link" href="<?= bloginfo( 'url' ); ?>/matches/match/?match=">
         <?php _e( 'Начать диалог', 'earena_2' ); ?>
       </a>
     </div>

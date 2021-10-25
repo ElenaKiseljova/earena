@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--friends">
   <div class="popup__template popup__template--friends" id="friends-popup">
     <!-- Шаблон подставляется по открытию попапа -->
@@ -138,7 +138,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--friends button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -155,7 +155,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--friends button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -172,7 +172,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--friends button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>
@@ -189,7 +189,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--friends button button--gray button--popup-close">
         <?php _e( 'Хорошо', 'earena_2' ); ?>
       </button>
     </div>

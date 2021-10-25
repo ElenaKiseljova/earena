@@ -82,7 +82,7 @@
                     <div class="user__info user__info--header">
                       <a class="user__name user__name--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
                         <h5>
-                          Administrator
+                          <?= __('Administrator', 'earena_2'); ?>
                         </h5>
                       </a>
                     </div>

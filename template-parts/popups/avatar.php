@@ -7,7 +7,7 @@
   do_action( 'earena_2_bp_change_avatar' );
 ?>
 
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--avatar scroll-content">
   <div class="popup__template popup__template--avatar" id="avatar-popup">
     <div class="popup__header popup__header--avatar">

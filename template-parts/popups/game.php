@@ -7,7 +7,7 @@
   $platforms = get_site_option( 'platforms' ) ?? [];
 ?>
 
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--game">
   <div class="popup__template popup__template--game" id="game-popup">
     <!-- Шаблон подставляется по открытию попапа -->

@@ -1,4 +1,7 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+<?php
+  global $match_id, $ea_user;
+?>
+
 <div class="popup popup--complaint">
   <div class="popup__template popup__template--complaint" id="complaint-popup">
     <!-- Шаблон подставляется по открытию попапа -->
@@ -15,11 +18,16 @@
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Жалоба судье', 'earena_2' ); ?>
       </h2>
-      <form class="form form--popup" data-prefix="" id="form-complaint" action="/" method="post">
+      <form class="form form--popup" data-prefix="create" id="form-complaint" action="/" method="post">
         <div class="form__row">
           <textarea class="form__field form__field--popup form__field--message" name="message" required placeholder="<?php _e( 'Сообщение...', 'earena_2' ); ?>"></textarea>
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+        <input type="hidden" name="user_id" value="<?= $ea_user->ID; ?>">
+        <input type="hidden" name="id" value="<?= $match_id; ?>">
+        <input type="hidden" name="type" value="0">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="complaint-close">
@@ -49,7 +57,7 @@
         <?php _e( 'Ваша жалоба успешно отправлена', 'earena_2' ); ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--complaint button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -75,7 +83,7 @@
         <?php _e( 'Попробуйте повторить позже', 'earena_2' ); ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--complaint button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

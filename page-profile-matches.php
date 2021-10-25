@@ -1,7 +1,7 @@
 <?php
-/*
-  Template Name: Профиль - Матчи
-*/
+  /*
+    Template Name: Профиль - Матчи
+  */
 ?>
 <?php
   $username = get_query_var('username');

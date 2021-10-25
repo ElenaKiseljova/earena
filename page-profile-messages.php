@@ -46,7 +46,7 @@
 
       <?php
         // Контент Аккаунта
-        get_template_part( 'template-parts/account/content-messages' );
+        get_template_part( 'template-parts/account/content', 'messages' );
       ?>
     </div>
   </section>

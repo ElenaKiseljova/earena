@@ -4,8 +4,7 @@
 .chat-page__game,
 .chat-page__name,
 .chat-page__header,
-.chat-page__inner,
-.chat-page__form {
+.chat-page__inner {
   .w100();
 }
 
@@ -69,7 +68,9 @@
   width: 568 / 1156 * 100%;
   min-height: 100vh;
 
-  padding: 0;
+  padding: 0 0 21px 0;
+
+  background-color: #colors[dark_light];
 
   border-radius: 5px;
 
@@ -169,7 +170,7 @@
 }
 
 .chat-page__inner {
-  padding: 10px 30px 30px;
+  padding: 20px 30px 30px;
 
   &--match {
     padding-top: 20px;
@@ -185,186 +186,6 @@
 
   text-align: right;
 }
-
-.chat-page__form {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  justify-content: center;
-  align-items: flex-start;
-  align-content: flex-start;
-
-  &--popup-verification {
-    width: 148 / 290 * 100%;
-  }
-
-  @media (max-width: @mobile) {
-    justify-content: space-between;
-  }
-}
-
-.chat-page__form-left,
-.chat-page__form-right {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: flex-start;
-
-  width: ( (80 + 20 + 80) / 508 ) * 100%;
-
-  @media (max-width: @mobile) {
-    width: 40%;
-  }
-}
-
-.chat-page__form-left {
-  flex-wrap: wrap;
-
-  align-content: flex-start;
-
-  @media (max-width: @mobile) {
-    order: 1;
-
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-}
-
-.chat-page__form-right {
-  flex-direction: row-reverse;
-
-  @media (max-width: @mobile) {
-    order: 2;
-
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: flex-end;
-  }
-}
-
-.chat-page__form-center {
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: flex-start;
-  align-items: center;
-
-  width: ( 148 / 508 ) * 100%;
-
-  @media (max-width: @mobile) {
-    order: 3;
-
-    width: 100%;
-  }
-}
-
-.chat-page__form-input {
-  .field_reset();
-
-  width: 80px;
-
-  padding: 13px;
-
-  background: #colors[dark];
-  border: 1px solid #434D5A;
-
-  border-radius: 5px;
-
-  font-family: #fonts[1];
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 14px;
-  /* identical to box height, or 143% */
-
-  text-align: center;
-  letter-spacing: 0.01em;
-
-  color: #57616F;
-}
-
-.chat-page__form-submit {
-  margin-top: 20px;
-
-  @media (max-width: @mobile) {
-    order: 4;
-
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-.chat-page__form-vs {
-  margin-bottom: 15px;
-
-  font-family: #fonts[1];
-  font-style: italic;
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 140%;
-  /* or 50px */
-
-  text-align: center;
-  letter-spacing: 0.01em;
-
-  /* White */
-
-  color: #colors[white];
-
-  text-shadow: 0px 0px 14px rgba(0, 0, 0, 0.5);
-
-  &--change {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 64px;
-    line-height: 140%;
-  }
-}
-
-// .chat-page__form-field-label {
-//   display: flex;
-//
-//   justify-content: flex-start;
-//   align-items: center;
-//
-//   .w100();
-//
-//   padding: 6px 9px;
-//
-//   .caption();
-//
-//   color: #colors[text];
-//
-//   background-color: #colors[dark_light_2];
-//
-//   border-radius: 5px;
-//
-//   cursor: pointer;
-//
-//   &::before {
-//     content: '';
-//
-//     width: 20px;
-//     height: 20px;
-//
-//     margin-right: 6px;
-//
-//     .bg_icon('../img/paperclip.svg');
-//   }
-//
-//   &--popup-verification {
-//     margin: 0;
-//   }
-// }
-//
-// .chat-page__form-field-input {
-//   display: none;
-// }
 
 .chat-page__game {
   margin-bottom: 4px;

@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--tournament">
   <div class="popup__template popup__template--tournament" id="tournament-popup">
     <!-- Шаблон подставляется по открытию попапа -->
@@ -118,7 +118,7 @@
         Championship 2020 Season 2 Premium.
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -135,7 +135,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -154,7 +154,7 @@
         ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

@@ -754,6 +754,21 @@
       return isset(get_site_option('team_modes')[$tm]) ? get_site_option('team_modes')[$tm] : 'ERROR';
   }
 
+
+  /* ==============================================
+  ********  //Вывод информации о матче на стр Мат
+  =============================================== */
+
+  function earena_2_match_page_data($user, $id_match)
+  {
+    global $match_id, $ea_user;
+
+    $match_id = $id_match;
+    $ea_user = $user;
+
+    get_template_part( 'template-parts/match/single' );
+  }
+
   /* ==============================================
   ********  //Всякий кастомайз и полезности
   =============================================== */

@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--contact">
   <div class="popup__template popup__template--contact" id="contact-popup">
     <!-- Шаблон подставляется по открытию попапа -->

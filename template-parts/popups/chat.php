@@ -2,7 +2,7 @@
   global $is_chat_page;
   $is_chat_page = false;
 ?>
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--chats">
   <div class="popup__wrapper popup__wrapper--chats">
     <div class="popup__content popup__content--chats">

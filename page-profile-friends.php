@@ -1,7 +1,7 @@
 <?php
-/*
-Template Name: Профиль - Друзья
-*/
+  /*
+    Template Name: Профиль - Друзья
+  */
 ?>
 <?php
   $username = get_query_var('username');

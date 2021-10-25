@@ -23,14 +23,16 @@
 
       <div class="popup__form popup__form--verification">
         <form class="form form--popup" data-prefix="request" id="form-verification" action="/" method="post">
-          <div class="files files--verification">
-            <label class="files__label files__label--verification" for="files-verification">
-              <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
-            </label>
-            <input class="files__input visually-hidden" type="file" id="files-verification" name="files" accept=".png, .jpg, .jpeg" multiple>
+          <div class="form__row form__row--verification">
+            <div class="files files--verification">
+              <label class="files__label files__label--verification" for="files-verification">
+                <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
+              </label>
+              <input class="files__input visually-hidden" type="file" id="files-verification" name="files" required accept=".png, .jpg, .jpeg" multiple>
 
-            <!-- Сюда попадают скрины, что загрузил игрок подтверждающий себя -->
-            <div class="files__preview">
+              <!-- Сюда попадают скрины, что загрузил игрок подтверждающий себя -->
+              <div class="files__preview">
+              </div>
             </div>
           </div>
           <div class="popup__ajax-message"></div>
@@ -39,7 +41,7 @@
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </button>
 
-            <button class="form__submit form__submit--buttons button button--blue" type="submit" name="verification-submit">
+            <button class="form__submit form__submit--buttons button button--blue" type="submit" name="verification-submit" disabled>
               <span>
                 <?php _e( 'Отправить', 'earena_2' ); ?>
               </span>
@@ -117,7 +119,7 @@
         <?php _e( 'Ваша заявка принята! Мы рассмотрим ее в течение 24-х часов.', 'earena_2' ); ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--verification button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -132,7 +134,7 @@
         <?php _e( 'Пользователь <span class="user-name"></span> успешно верифицирован!', 'earena_2' ); ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--verification button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -147,7 +149,7 @@
         <?php _e( 'Пользователю <span class="user-name"></span> отказано в верификации!', 'earena_2' ); ?>
       </div>
 
-      <button class="button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--verification button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

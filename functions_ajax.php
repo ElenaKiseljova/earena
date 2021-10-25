@@ -774,7 +774,8 @@ function join_match_callback()
     check_ajax_referer('ea_functions_nonce', 'security');
 //	$args = array('id' => $_POST['id'],);
     ob_start();
-    join_match_function();
+    $arr_response['match_id'] = (int) $_POST['id'];
+    $arr_response['success'] = join_match_function();
     $arr_response['content'] = ob_get_contents();
     ob_end_clean();
     wp_send_json(json_encode($arr_response));

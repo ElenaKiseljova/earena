@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--stream">
   <div class="popup__template popup__template--stream" id="stream-popup">
     <!-- Шаблон подставляется по открытию попапа -->

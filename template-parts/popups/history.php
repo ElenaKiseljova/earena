@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--history">
   <div class="popup__template popup__template--history" id="history-popup">
     <div class="popup__content popup__content--history">

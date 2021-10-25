@@ -230,6 +230,7 @@
             `;
 
             let privateMatchHTML = `
+              <div class="popup__ajax-message"></div>
               <div class="form__row">
                 <input class="form__field form__field--popup" id="password" type="password" name="match_pass" required placeholder="${__( 'Пароль', 'earena_2' )}">
               </div>
@@ -342,7 +343,7 @@
 
         // Проверка на то, что форма не находится на странице.
         // Чтобы избежать дублей событий
-        if (prefix !== 'contact') {
+        if ((prefix !== 'contact') && (prefix !== 'chat')) {
           // Инициализация формы
           let attrForm = {
             idForm: `form-${prefix}`,

@@ -216,7 +216,7 @@
               }
             }
 
-            // МАТЧ
+            // MATCH
             if ( formId.indexOf('match') > -1) {
               // Создать
               if (prefix.indexOf('create') > -1) {
@@ -248,6 +248,14 @@
               if (prefix.indexOf('accept') > -1) {
                 // Присоединение к матчу
                 formData['action'] = 'join_match';
+              }
+            }
+
+            // COMPLAINT
+            if ( formId.indexOf('complaint') > -1) {
+              // Создать (0)
+              if (prefix.indexOf('create') > -1) {
+                formData['action'] = 'moderate_match';
               }
             }
 
@@ -297,7 +305,7 @@
               buttonSubmit.classList.add('sending');
 
               // Логин
-              if (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1  || prefix.indexOf('request') > -1) {
+              if ((formId.indexOf('login') > -1 && (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  || (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  || (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1)) {
                 if (popupMessage) {
                   popupMessage.innerHTML = '';
                 }
@@ -399,8 +407,17 @@
                 }
               }
 
-              // МАТЧ
+              // MATCH
               if ( formId.indexOf('match') > -1 ) {
+                // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
+                let resetShowResult = function () {
+                  let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
+
+                  if (tabAllPlatform) {
+                    tabAllPlatform.click();
+                  }
+                };
+
                 response = JSON.parse(response);
 
                 // Создание шаг 1
@@ -446,11 +463,7 @@
                 if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
                   if (response.success === 1) {
                     // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
-                    let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
-
-                    if (tabAllPlatform) {
-                      tabAllPlatform.click();
-                    }
+                    resetShowResult();
                   } else {
                     onError(response, prefix);
 
@@ -461,15 +474,21 @@
                 }
 
                 if (prefix.indexOf('accept') > -1) {
-                  if (response.content.indexOf('thanks.svg') > -1) {
+                  if ((response.content.indexOf('thanks.svg') > -1) || response.success === 1) {
                     // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
-                    let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
-
-                    if (tabAllPlatform) {
-                      tabAllPlatform.click();
-                    }
+                    resetShowResult();
                   } else {
-                    onError(response, prefix);
+                    if (popupMessage) {
+                      popupMessage.innerHTML = response.content;
+
+                      setTimeout(function () {
+                        popupMessage.innerHTML = '';
+                      }, 2000);
+                    }
+
+                    console.log(response);
+
+                    //onError(response, prefix);
 
                     return;
                   }
@@ -480,7 +499,7 @@
               if ( formId.indexOf('contact') > -1 ) {
                 let openPopupButtonsSuccessContactForm = document.querySelector('button[name="success"].openpopup');
                 let openPopupButtonsErrorContactForm = document.querySelector('button[name="error"].openpopup');
-                console.log(openPopupButtonsSuccessContactForm, openPopupButtonsErrorContactForm);
+
                 if (openPopupButtonsSuccessContactForm && openPopupButtonsErrorContactForm) {
                   if (response.success === true) {
                     let filesPreviewList = form.querySelector('.files__preview');
@@ -503,6 +522,14 @@
                 }
               }
 
+              // COMPLAINT
+              if ( formId.indexOf('complaint') > -1) {
+                // Создать (0)
+                if (prefix.indexOf('create') > -1) {
+                  response = JSON.parse(response);
+                }
+              }
+
               // Получаю шаблон
               let templateSuccess = document.querySelector(`#${formId}-success${prefix}`);
 
@@ -519,6 +546,7 @@
                 wrapperFormNode.appendChild(cloneTemplate);
               }
 
+              // LOGIN
               if ( formId.indexOf('login') > -1 ) {
                 // Восстановление
                 if (prefix.indexOf('forgot') > -1) {
@@ -540,7 +568,8 @@
                 }
               }
 
-              // Верификация (принять/отклонить) или Друзья (принять/отклонить/удалить)
+              // Верификация (принять/отклонить) или
+              // Друзья (принять/отклонить/удалить)
               if ( (formId.indexOf('verification') > -1 ) || formId.indexOf('friends') > -1) {
                 if ((prefix.indexOf('apply') > -1) || (prefix.indexOf('reject') > -1) || (prefix.indexOf('delete') > -1)) {
                   response = JSON.parse(response);
@@ -577,6 +606,19 @@
                       // Активация кнопки открытия попапа
                       window.popup.activatePopup(openPopupButton);
                     });
+                  }
+                }
+              }
+
+              // MATCH
+              if ( formId.indexOf('match') > -1 ) {
+                // Присоединиться
+                if (prefix.indexOf('accept') > -1) {
+                  let matchId = response.match_id;
+                  let goToMatchLink = wrapperFormNode.querySelector('#go-to-math-link');
+
+                  if (matchId && goToMatchLink) {
+                    goToMatchLink.href = goToMatchLink.href + matchId;
                   }
                 }
               }
@@ -702,7 +744,6 @@
           } else {
             formClosePopups = container.querySelectorAll('.button--popup-close');
           }
-          console.log(container, formClosePopups);
 
           if (formClosePopups.length > 0) {
             formClosePopups.forEach((formClosePopup, i) => {
@@ -728,7 +769,7 @@
           // Проверка инпутов
           if (allInputs) {
             allInputs.forEach((item, i) => {
-              if (item.type !== 'submit' && item.type !== 'file') {
+              if (item.type !== 'submit') { // && item.type !== 'file'
                 item.autocomplete = 'off';
 
                 // Проверка по возрасту
@@ -910,8 +951,14 @@
         // Содержимое элемента будет очищаться при отправке формы и заменяться содержимым шаблона
         selectorForTemplateReplace: '#support-popup',
       };
-
       window.form.init(attrFormContact);
+
+      let attrFormChat = {
+        idForm: 'form-chat',
+        // Содержимое элемента будет очищаться при отправке формы и заменяться содержимым шаблона
+        selectorForTemplateReplace: '#chat-page-form',
+      };
+      window.form.init(attrFormChat);
 
       // Закоммиченная форма была в разметке, а вот на бою - не уверена, что она есть
       // let attrFormHistory = {

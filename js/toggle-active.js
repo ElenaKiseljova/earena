@@ -49,16 +49,25 @@
         },
 
         // Для переключения следующего эл-та по клику на предыдущий
-        nextElementToggle: function (buttonSelector) {
+        multiple: function (buttonSelector, nextElementToggle = false, unActiveAnother = false, callback = false) {
           let buttons = document.querySelectorAll(buttonSelector);
 
-          if (buttons) {
+          if (buttons.length > 0) {
             buttons.forEach((button, i) => {
               button.addEventListener('click', function () {
+                if (unActiveAnother) {
+                  // Удаляю активные классы других кнопок/контента
+                  window.removeActiveClassElements(buttons);
+                }
+
                 button.classList.toggle('active');
 
-                if (button.nextElementSibling) {
+                if (nextElementToggle && button.nextElementSibling) {
                   button.nextElementSibling.classList.toggle('active');
+                }
+
+                if (callback) {
+                  callback(i);
                 }
               });
             });
@@ -133,13 +142,44 @@
       //                       //
 
       /* Фильтры */
-      window.toggleActive.nextElementToggle('.filters__field--select');
+      window.toggleActive.multiple('.filters__field--select', true);
 
       /* Аккордеон */
-      window.toggleActive.nextElementToggle('.accordeon__button');
+      window.toggleActive.multiple('.accordeon__button', true);
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');
+
+      /* Табы ( пользователи ) - Чат */
+      let toggleUserContent = function (index) {
+        let userFormContainer = document.querySelector('#container-current-user');
+        let userFormTemplate = document.querySelector(`#user-${index}`);
+
+        if (userFormTemplate && userFormContainer) {
+          userFormContainer.innerHTML = '';
+
+          userFormContainer.appendChild(userFormTemplate.content.cloneNode(true));
+
+          let attrFormChat = {
+            idForm: 'form-chat',
+            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+            selectorForTemplateReplace: '#chat-page-form',
+          };
+          window.form.init(attrFormChat);
+
+          let userFormOpenPopupButtons = userFormContainer.querySelectorAll('.openpopup');
+          if (userFormOpenPopupButtons.length > 0) {
+            userFormOpenPopupButtons.forEach((userFormOpenPopupButton, i) => {
+              window.popup.activatePopup(userFormOpenPopupButton);
+            });
+          }
+        }
+      };
+
+      // Вызов при загрузке страницы
+      toggleUserContent(0);
+
+      window.toggleActive.multiple('.tabs__button--users', false, true, toggleUserContent);
 
       /* Языки */
       let languages = document.querySelectorAll('.languages');

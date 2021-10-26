@@ -69,7 +69,7 @@
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Ваша жалоба <br> отправляется...', 'earena_2' ); ?>
+        <?php _e( 'Ваша жалоба отправляется...', 'earena_2' ); ?>
       </div>
     </div>
   </template>

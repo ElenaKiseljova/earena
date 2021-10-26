@@ -9,8 +9,14 @@
 
   color: #colors[text];
 
-  &--wallet {
+  &--wallet,
+  &--users {
     width: 100%;
+  }
+
+  &--users {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: @mobile) {
@@ -50,6 +56,11 @@
     border-radius: 0px 5px 5px 0px;
   }
 
+  * {
+    font: inherit!important;
+    color: inherit!important;
+  }
+
   &:hover,
   &:focus {
     background-color: #colors[dark_light_2];
@@ -70,11 +81,18 @@
     }
   }
 
-  &--wallet {
-    min-width: 25%;
-
+  &--wallet,
+  &--users {
     padding-top: 9px;
     padding-bottom: 10px;
+  }
+
+  &--wallet {
+    min-width: 25%;
+  }
+
+  &--users {
+    width: 50%;
   }
 
   @media (max-width: @mobile) {

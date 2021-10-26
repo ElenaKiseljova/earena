@@ -1,4 +1,106 @@
 <?php
+/* ==============================================
+********  //Отправка письма на мейл (с вложением)
+=============================================== */
+
+add_action('wp_ajax_earena_2_sendmail', 'earena_2_sendmail');
+add_action('wp_ajax_nopriv_earena_2_sendmail', 'earena_2_sendmail');
+
+function earena_2_sendmail () {
+  //var_dump($_FILES, $_POST);
+  $contactAttachments = [];
+
+  if (count($_FILES) > 3) {
+      wp_send_json_error(__('Загружайте не более 3 файлов, пожалуйста.', 'earena'));
+      wp_die();
+  } else {
+      for ($i = 0; $i < count($_FILES); $i++) {
+        // ограничим вес загружаемой картинки
+        $filesize = $_FILES[$i]['size'];
+        $max_filesize_mb = 4;
+        $max_filesize = $max_filesize_mb * 1024 * 1024;
+        if ($filesize > $max_filesize) {
+          wp_send_json_error(__('Фото не должно быть больше ', 'earena') . $max_filesize_mb . 'Mb.');
+          wp_die();
+        }
+        // ограничим размер загружаемой картинки
+        $sizedata = getimagesize($_FILES[$i]['tmp_name']);
+        $max_size = 4000;
+        if ($sizedata[0]/*width*/ > $max_size || $sizedata[1]/*height*/ > $max_size) {
+            wp_send_json_error(__('Фото не должно быть больше ',
+                    'earena') . $max_size . __('px в ширину или высоту.', 'earena'));
+            wp_die();
+        }
+        //разрешим только картинки
+        if ($_FILES[$i]['type'] !== 'image/jpeg' && $_FILES[$i]['type'] !== 'image/png') {
+            wp_send_json_error($_FILES[$i]['type'] . '-' . __('Тип файла не подходит по соображениям безопасности.', 'earena'));
+            wp_die();
+        }
+
+        $uploaddir = WP_CONTENT_DIR  . '/uploads/form_files/';
+        $uploadfile = $uploaddir . basename($_FILES[$i]['name']);
+
+        if (move_uploaded_file($_FILES[$i]['tmp_name'], $uploadfile)) {
+          array_push($contactAttachments, $uploadfile);
+        } else {
+          wp_send_json_error(__('Возможная атака с помощью файловой загрузки!', 'earena_2'));
+          wp_die();
+        }
+      }
+  }
+
+  $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '<p>') : '';
+  $contactEmail = isset($_POST['email']) ? ('<p>E-mail - ' . esc_html( $_POST['email'] ) . '') : '<p>';
+  $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '<p>') : '';
+  $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : 'Поддержка игроков';
+
+  $contactMail = $contactName . $contactEmail . $contactMessage;
+
+  $to = (get_field( 'support_mail', 5724 ) && get_field( 'support_mail', 5724 ) !== '') ? get_field( 'support_mail', 5724 ) : 'e.a.kiseljova@gmail.com';
+  $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
+
+  // удалим фильтры, которые могут изменять заголовок $headers
+  remove_all_filters( 'wp_mail_from' );
+  remove_all_filters( 'wp_mail_from_name' );
+
+  $headers = array(
+    $site_name,
+    'content-type: text/html',
+  );
+
+  if (count($contactAttachments) > 0) {
+    wp_mail( $to, $contactSubject, $contactMail, $headers, $contactAttachments );
+  } else {
+    wp_mail( $to, $contactSubject, $contactMail, $headers );
+  }
+
+  // Удаляю загруженный файлы
+  $errors_delete = [];
+  foreach ($contactAttachments as $contactAttachment) {
+    if (unlink($contactAttachment) === false) {
+      $errors_delete[] = $contactAttachment . ' ::: ' . __('Файл не может быть удален.', 'earena_2');
+    }
+  }
+
+  if (count($errors_delete) > 0) {
+    wp_send_json_error($errors_delete);
+  }
+
+  $response = [
+    'success' => 1,
+    'files' => $_FILES,
+    'post' => $_POST,
+    'mail' => $contactMail,
+    'attachments' => $contactAttachments,
+    'removed' => true,
+    'mail' => $to
+  ];
+
+  wp_send_json_success($response);
+
+  wp_die();
+}
+
 add_action('wp_ajax_getVIP', 'getVIPAction');
 add_action('wp_ajax_nopriv_getVIP', 'getVIPAction');
 
@@ -801,103 +903,65 @@ function moderate_match_callback()
 }
 
 /* ==============================================
-********  //Отправка письма на мейл (с вложением)
+********  //Жалоба рассмотрена
 =============================================== */
+add_action('wp_ajax_earena_2_del_moderate', 'earena_2_del_moderate_callback');
+function earena_2_del_moderate_callback()
+{
+    check_ajax_referer('ea_functions_nonce', 'security');
+    $match_id = $_POST['match_id'];
+    $tid = $_POST['match_thread_id'];
+    $tournament = $_POST['tournament'];
+    $complaint_index = (int)$_POST['complaint_index'];
 
-add_action('wp_ajax_earena_2_sendmail', 'earena_2_sendmail');
-add_action('wp_ajax_nopriv_earena_2_sendmail', 'earena_2_sendmail');
-
-function earena_2_sendmail () {
-  //var_dump($_FILES, $_POST);
-  $contactAttachments = [];
-
-  if (count($_FILES) > 3) {
-      wp_send_json_error(__('Загружайте не более 3 файлов, пожалуйста.', 'earena'));
-      wp_die();
-  } else {
-      for ($i = 0; $i < count($_FILES); $i++) {
-        // ограничим вес загружаемой картинки
-        $filesize = $_FILES[$i]['size'];
-        $max_filesize_mb = 4;
-        $max_filesize = $max_filesize_mb * 1024 * 1024;
-        if ($filesize > $max_filesize) {
-          wp_send_json_error(__('Фото не должно быть больше ', 'earena') . $max_filesize_mb . 'Mb.');
-          wp_die();
-        }
-        // ограничим размер загружаемой картинки
-        $sizedata = getimagesize($_FILES[$i]['tmp_name']);
-        $max_size = 4000;
-        if ($sizedata[0]/*width*/ > $max_size || $sizedata[1]/*height*/ > $max_size) {
-            wp_send_json_error(__('Фото не должно быть больше ',
-                    'earena') . $max_size . __('px в ширину или высоту.', 'earena'));
-            wp_die();
-        }
-        //разрешим только картинки
-        if ($_FILES[$i]['type'] !== 'image/jpeg' && $_FILES[$i]['type'] !== 'image/png') {
-            wp_send_json_error($_FILES[$i]['type'] . '-' . __('Тип файла не подходит по соображениям безопасности.', 'earena'));
-            wp_die();
-        }
-
-        $uploaddir = WP_CONTENT_DIR  . '/uploads/form_files/';
-        $uploadfile = $uploaddir . basename($_FILES[$i]['name']);
-
-        if (move_uploaded_file($_FILES[$i]['tmp_name'], $uploadfile)) {
-          array_push($contactAttachments, $uploadfile);
-        } else {
-          wp_send_json_error(__('Возможная атака с помощью файловой загрузки!', 'earena_2'));
-          wp_die();
-        }
-      }
-  }
-
-  $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '<p>') : '';
-  $contactEmail = isset($_POST['email']) ? ('<p>E-mail - ' . esc_html( $_POST['email'] ) . '') : '<p>';
-  $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '<p>') : '';
-  $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : 'Поддержка игроков';
-
-  $contactMail = $contactName . $contactEmail . $contactMessage;
-
-  $to = (get_field( 'support_mail', 5724 ) && get_field( 'support_mail', 5724 ) !== '') ? get_field( 'support_mail', 5724 ) : 'e.a.kiseljova@gmail.com';
-  $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
-
-  // удалим фильтры, которые могут изменять заголовок $headers
-  remove_all_filters( 'wp_mail_from' );
-  remove_all_filters( 'wp_mail_from_name' );
-
-  $headers = array(
-    $site_name,
-    'content-type: text/html',
-  );
-
-  if (count($contactAttachments) > 0) {
-    wp_mail( $to, $contactSubject, $contactMail, $headers, $contactAttachments );
-  } else {
-    wp_mail( $to, $contactSubject, $contactMail, $headers );
-  }
-
-  // Удаляю загруженный файлы
-  $errors_delete = [];
-  foreach ($contactAttachments as $contactAttachment) {
-    if (unlink($contactAttachment) === false) {
-      $errors_delete[] = $contactAttachment . ' ::: ' . __('Файл не может быть удален.', 'earena_2');
+    if (empty($match_id) || empty($match_id)) {
+        return;
     }
-  }
+    $where = array("ID" => $match_id);
 
-  if (count($errors_delete) > 0) {
-    wp_send_json_error($errors_delete);
-  }
+    $complaint = EArena_DB:: get_ea_match_field($match_id, 'complaint');
+    $complaint = json_decode( $complaint );
 
-  $response = [
-    'success' => 1,
-    'files' => $_FILES,
-    'post' => $_POST,
-    'mail' => $contactMail,
-    'attachments' => $contactAttachments,
-    'removed' => true,
-    'mail' => $to
-  ];
+    $message = __('Ваша жалоба: "', 'earena_2') .
+              $complaint[$complaint_index]->content .'" - ' .
+              __('рассмотрена Администратором', 'earena_2');
 
-  wp_send_json_success($response);
+    unset($complaint[$complaint_index]);
 
-  wp_die();
+    $match_data['complaint'] = json_encode($complaint);
+
+    $result = $tournament == 1 ? EArena_DB::upd_ea_tournament_match($match_data,
+        $where) : EArena_DB::upd_ea_match($match_data, $where);
+    if ($result) {
+        $admin_id = (int)get_site_option('ea_admin_id', 27);
+        global $wpdb;
+        $table_name = $wpdb->get_blog_prefix() . 'bp_messages_recipients';
+        if ($wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE thread_id = %d AND user_id=%d", $tid,
+                $admin_id)) == null) {
+            $wpdb->insert($table_name, ['user_id' => $admin_id, 'thread_id' => $tid]);
+        }
+        ea_messages_new_message(array(
+            'sender_id' => $admin_id,
+            'thread_id' => $tid,
+            'content' => $message,
+        ));
+
+        // ob_start();
+        $arr_response['success'] = 1;
+        $arr_response['complaint'] = $complaint;
+        $arr_response['complaint_index'] = $complaint_index;
+
+        // earena_2_complaint_html($complaint, $match);
+
+        // $arr_response['content'] = ob_get_contents();
+        // ob_end_clean();
+
+        wp_send_json(json_encode($arr_response));
+
+        wp_die();
+    } else {
+        $arr_response['success'] = 0;
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
 }

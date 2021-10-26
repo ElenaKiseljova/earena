@@ -251,11 +251,21 @@
               }
             }
 
+            // CHAT
+            if ( formId.indexOf('chat') > -1 ) {
+              dataForm.append('action', 'ajax_match_results_and_fileload');
+            }
+
             // COMPLAINT
             if ( formId.indexOf('complaint') > -1) {
-              // Создать (0)
+              // Создать
               if (prefix.indexOf('create') > -1) {
                 formData['action'] = 'moderate_match';
+              }
+
+              // Создать
+              if (prefix.indexOf('delete') > -1) {
+                formData['action'] = 'earena_2_del_moderate';
               }
             }
 
@@ -687,7 +697,7 @@
               dataForm.delete('files');
             }
 
-            if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) ||( formId.indexOf('contact') > -1)) {
+            if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) || ( formId.indexOf('contact') > -1) || ( formId.indexOf('chat') > -1)) {
               // dataForm - потомок FormData() [для передачи файлов]
               // for(var pair of dataForm.entries()) {
               //    console.log(pair[0]+ ', '+ pair[1]);
@@ -944,21 +954,35 @@
 
       // Запуск валидации форм, которые есть в разметке при загрузке страницы.
       // Формы, которые подставляются из шаблонов - активируются при открытии попапа.
-      // Инициализация проходит в файле popup.js
+      // Инициализация проходит в файле popup.js и toggle-active.js
 
       let attrFormContact = {
         idForm: 'form-contact',
-        // Содержимое элемента будет очищаться при отправке формы и заменяться содержимым шаблона
+        // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
         selectorForTemplateReplace: '#support-popup',
       };
       window.form.init(attrFormContact);
 
       let attrFormChat = {
         idForm: 'form-chat',
-        // Содержимое элемента будет очищаться при отправке формы и заменяться содержимым шаблона
+        // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
         selectorForTemplateReplace: '#chat-page-form',
       };
       window.form.init(attrFormChat);
+
+      // ADMIN complait forms
+      let complaintAdminChatForms = document.querySelectorAll('form[id*="form-complaint-"]');
+
+      if (complaintAdminChatForms.length > 0) {
+        complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
+          let attrFormComplaint = {
+            idForm: complaintAdminChatForm.id,
+            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+            selectorForTemplateReplace: '#complaint-container',
+          };
+          window.form.init(attrFormComplaint);
+        });
+      }
 
       // Закоммиченная форма была в разметке, а вот на бою - не уверена, что она есть
       // let attrFormHistory = {

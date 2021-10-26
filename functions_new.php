@@ -756,7 +756,7 @@
 
 
   /* ==============================================
-  ********  //Вывод информации о матче на стр Мат
+  ********  //Вывод информации о матче на стр Матча
   =============================================== */
 
   function earena_2_match_page_data($user, $id_match)
@@ -767,6 +767,233 @@
     $ea_user = $user;
 
     get_template_part( 'template-parts/match/single' );
+  }
+
+
+  /* ==============================================
+  ********  //Формы на странице Матча
+  =============================================== */
+
+  function earena_2_chat_form_users_html($match, $match_id, $ea_user, $is_reporter = false) {
+    $player_1 = get_user_by( 'id', $match->player1 );
+    $player_2 = get_user_by( 'id', $match->player2 );
+
+    $stream_player_1 = ($player_1 instanceof WP_User) ? $player_1->get('stream') : false;
+    $stream_player_2 = ($player_2 instanceof WP_User) ? $player_2->get('stream') : false;
+    ?>
+      <div class="chat-page__inner">
+        <form class="form form--chat" data-prefix="" id="form-chat" action="index.html" method="post">
+          <div class="form__left form__left--chat">
+            <div class="user user--form">
+              <?php if ( $match->stream1 != '' ): ?>
+                <a class="user__stream user__stream--right" href="<?= $match->stream1; ?>">
+                  <svg class="user__stream-icon" width="16" height="13">
+                    <use xlink:href="#icon-play"></use>
+                  </svg>
+                </a>
+              <?php endif; ?>
+              <a class="user__avatar user__avatar--form" href="<?= ea_user_link($match->player1); ?>">
+                <?= bp_core_fetch_avatar(['item_id' => $match->player1, 'type' => 'full', 'width' => 80, 'height' => 80]); ?>
+              </a>
+              <a class="user__name user__name--form" href="<?= ea_user_link($match->player1); ?>">
+                <h5>
+                  <?= ea_game_nick($match->game, $match->platform, $match->player1); ?>
+                </h5>
+              </a>
+            </div>
+
+            <?php if ((!isset($match->score1) && !isset($match->score2)) || (isset($match->score1) && isset($match->score2) && $is_reporter)): ?>
+              <div class="form__row form__row--chat">
+                <label class="visually-hidden" for="score1">
+                  <?php _e( 'Результат первого участника', 'earena_2' ) ?>
+                </label>
+                <input class="form__field form__field--chat" type="number" min="0" id="score1" name="score1" required value="<?= isset($match->score1) ? $match->score1 : ''; ?>">
+              </div>
+            <?php endif; ?>
+
+            <?php if ($stream_player_1): ?>
+              <div class="chat-page__stream checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="stream" id="stream">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream">
+                  <?php _e( 'Трансляция', 'earena_2' ); ?>
+                </label>
+              </div>
+            <?php endif; ?>
+          </div>
+          <div class="form__center form__center--chat">
+            <?php if (!isset($match->score1) && !isset($match->score2) || (!$match->winner && $is_reporter)): ?>
+              <span class="form__vs">
+                vs
+              </span>
+            <?php elseif (isset($match->score1) && isset($match->score2) && ($match->winner || !$is_reporter)): ?>
+              <span class="form__vs form__vs--change">
+                <?= isset($match->score1) ? $match->score1 : 0; ?> : <?= isset($match->score2) ? $match->score2 : 0; ?>
+              </span>
+            <?php endif; ?>
+
+            <?php if (!isset($match->winner)): ?>
+              <div class="form__row form__row--files">
+                <div class="files files--chat-page">
+                  <label class="files__label files__label--chat-page" for="files-chat-page">
+                    <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
+                  </label>
+                  <input class="files__input visually-hidden" type="file" id="files-chat-page" name="files" <?= (!$is_reporter) ? '' : 'required'; ?> accept=".png, .jpg, .jpeg" value="">
+
+                  <div class="files__preview">
+                  </div>
+
+                  <?php if (!empty($match->verification1) || !empty($match->verification2) ): ?>
+                    <?php
+                      $extensions = ['.jpg', '.png', '.jpeg', '.pjpeg'];
+                    ?>
+                    <div class="files__preview files__preview--change">
+                      <ul>
+                        <?php if (!empty($match->verification1)): ?>
+                          <li>
+                            <p>
+                              <a href="<?= wp_get_attachment_url($match->verification1); ?>" data-fancybox="attachments">
+                                <?= earena_2_only_filename(rawurlencode( basename ( get_attached_file( $match->verification1 ) ) ), $extensions) ?>
+                              </a>
+                            </p>
+                          </li>
+                        <?php endif; ?>
+                        <?php if (!empty($match->verification2)): ?>
+                          <li>
+                            <p>
+                              <a href="<?= wp_get_attachment_url($match->verification2); ?>" data-fancybox="attachments">
+                                <?= earena_2_only_filename(rawurlencode( basename ( get_attached_file( $match->verification2 ) ) ), $extensions) ?>
+                              </a>
+                            </p>
+                          </li>
+                        <?php endif; ?>
+                    </div>
+                  <?php endif; ?>
+                </div>
+              </div>
+            <?php endif; ?>
+          </div>
+          <div class="form__right form__right--chat">
+            <div class="user user--form">
+              <?php if ( $match->stream2 != '' ): ?>
+                <a class="user__stream user__stream--right" href="<?= $match->stream2; ?>">
+                  <svg class="user__stream-icon" width="16" height="13">
+                    <use xlink:href="#icon-play"></use>
+                  </svg>
+                </a>
+              <?php endif; ?>
+              <a class="user__avatar user__avatar--form" href="<?= ea_user_link($match->player2); ?>">
+                <?= bp_core_fetch_avatar(['item_id' => $match->player2, 'type' => 'full', 'width' => 80, 'height' => 80]); ?>                </a>
+              <a class="user__name user__name--form" href="<?= ea_user_link($match->player2); ?>">
+                <h5>
+                  <?= ea_game_nick($match->game, $match->platform, $match->player2); ?>
+                </h5>
+              </a>
+            </div>
+
+            <?php if ((!isset($match->score1) && !isset($match->score2)) || (isset($match->score1) && isset($match->score2) && $is_reporter)): ?>
+              <div class="form__row form__row--chat">
+                <label class="visually-hidden" for="score2">
+                  <?php _e( 'Результат первого участника', 'earena_2' ) ?>
+                </label>
+                <input class="form__field form__field--chat" type="number" min="0" id="score2" name="score2" required value="<?= isset($match->score2) ? $match->score2 : ''; ?>">
+              </div>
+            <?php endif; ?>
+
+            <?php if ($stream_player_2): ?>
+              <div class="chat-page__stream checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="stream" id="stream">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream">
+                  <?php _e( 'Трансляция', 'earena_2' ); ?>
+                </label>
+              </div>
+            <?php endif; ?>
+          </div>
+
+          <div class="form__bottom form__bottom--chat">
+            <?php if (is_ea_admin()): ?>
+              <button class="chat-page__warning openpopup" data-popup="warning" data-user="<?= $match->player1; ?>" type="button" name="add">
+                <span class="visually-hidden">
+                  <?php _e( 'Добавить предупреждение', 'earena_2' ) ?>
+                </span>
+              </button>
+            <?php endif; ?>
+
+            <?php if (!isset($match->winner)): ?>
+              <?php if (!isset($match->reporter)): ?>
+                <button class="form__submit form__submit--chat button button--blue disabled" type="submit" name="chat-page-result-submit">
+                  <span>
+                    <?php _e( 'Отправить результат', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php elseif ($is_reporter): ?>
+                <button class="form__submit form__submit--chat button button--gray" type="submit" name="chat-page-result-submit">
+                  <span>
+                    <?php _e( 'Изменить результат', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php elseif (!$is_reporter): ?>
+                <button class="form__submit form__submit--chat button button--blue" type="submit" name="chat-page-result-submit">
+                  <span>
+                    <?php _e( 'Подтвердить результат', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if (is_ea_admin()): ?>
+              <button class="chat-page__warning openpopup" data-popup="warning" data-user="<?= $match->player2; ?>" type="button" name="add">
+                <span class="visually-hidden">
+                  <?php _e( 'Добавить предупреждение', 'earena_2' ) ?>
+                </span>
+              </button>
+            <?php endif; ?>
+          </div>
+
+          <?php if (isset($match->score1) && isset($match->score2) && !$is_reporter): ?>
+            <input type="hidden" name="score1" value="<?= $match->score1; ?>">
+            <input type="hidden" name="score2" value="<?= $match->score2; ?>">
+          <?php endif; ?>
+
+          <input type="hidden" name="id" value="<?= $match->ID; ?>">
+          <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+        </form>
+      </div>
+    <?php
+  }
+
+
+  /* ==============================================
+  ********  //Получение Жалоб на стр Матча
+  =============================================== */
+
+  function earena_2_complaint_html($complaint) {
+    global $match;
+    ?>
+      <ul class="chat-page__complaint">
+        <?php foreach ($complaint as $complaint_key => $complaint_item): ?>
+          <li class="chat-page__complaint-item">
+            <h3 class="chat-page__complaint-title">
+              <?php _e( 'Жалоба от ', 'earena_2' ); ?><?= ea_game_nick($match->game, $match->platform, $complaint_item->user_id); ?>
+            </h3>
+
+            <div class="chat-page__complaint-content">
+              <?= $complaint_item->content; ?>
+            </div>
+            <form class="form form--complaint" data-prefix="delete" id="form-complaint-<?= $complaint_key; ?>" action="index.html" method="post">
+              <input type="hidden" name="complaint_index" value="<?= $complaint_key; ?>">
+              <input type="hidden" name="tournament" value="0">
+              <input type="hidden" name="match_thread_id" value="<?= $match->thread_id; ?>">
+              <input type="hidden" name="match_id" value="<?= $match->ID; ?>">
+              <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
+              <button class="form__submit form__submit--complaint button button--blue" type="submit" name="delete">
+                <?php _e( 'Жалоба рассмотрена', 'earena_2' ); ?>
+              </button>
+            </form>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php
   }
 
   /* ==============================================

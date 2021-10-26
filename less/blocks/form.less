@@ -1,6 +1,7 @@
 .form,
 .form__row,
-.form__error {
+.form__error,
+.form__bottom {
   .w100();
 }
 
@@ -56,6 +57,10 @@
 
     justify-content: center;
     align-content: flex-start;
+  }
+
+  &--complaint {
+    margin-top: 30px;
   }
 
   &#form-game {
@@ -225,6 +230,21 @@
 
       width: 100%;
     }
+  }
+}
+
+.form__bottom {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-end;
+
+  margin-top: 20px;
+
+  @media (max-width: @mobile) {
+    order: 3;
+
+    flex-wrap: wrap;
   }
 }
 
@@ -782,7 +802,14 @@
   }
 
   &--chat {
-    margin-top: 20px;
+    margin: 0;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &--complaint {
+    margin: 0;
   }
 
   @media (max-width: @mobile) {
@@ -793,10 +820,11 @@
     }
 
     &--chat {
-      order: 4;
+      order: 0;
 
-      margin-left: auto;
-      margin-right: auto;
+      width: 100%;
+
+      margin-bottom: 20px;
     }
   }
 }
@@ -963,6 +991,8 @@
     font-weight: bold;
     font-size: 64px;
     line-height: 140%;
+
+    white-space: nowrap;
   }
 }
 

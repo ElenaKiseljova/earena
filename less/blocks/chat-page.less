@@ -4,7 +4,12 @@
 .chat-page__game,
 .chat-page__name,
 .chat-page__header,
-.chat-page__inner {
+.chat-page__inner,
+.chat-page__complaint,
+.chat-page__complaint-container,
+.chat-page__complaint-item,
+.chat-page__complaint-title,
+.chat-page__complaint-content  {
   .w100();
 }
 
@@ -35,8 +40,6 @@
 .chat-page__right {
   padding: 0;
   margin: 0;
-
-  background-color: #colors[dark_light];
 }
 
 .chat-page__left {
@@ -96,7 +99,25 @@
   }
 
   &--right {
+    position: relative;
+
     padding: 14px 16px 16px 20px;
+
+    &::after {
+      content: '';
+
+      position: absolute;
+
+      top: 100%;
+      left: 0;
+
+      z-index: 1;
+
+      width: 100%;
+      height: (190 / 800) * 100vh;
+
+      background-image: linear-gradient(180deg, #262B32 0%, rgba(31, 35, 41, 0) 100%);
+    }
   }
 }
 
@@ -165,12 +186,10 @@
   color: #colors[text];
 }
 
-.chat-page__complaint {
-  width: 160px;
-}
-
 .chat-page__inner {
   padding: 20px 30px 30px;
+
+  background-color: #colors[dark_light];
 
   &--match {
     padding-top: 20px;
@@ -195,6 +214,70 @@
   color: #colors[white];
 }
 
-.chat-page__broadcasting {
+.chat-page__stream {
   margin-top: 15px;
+}
+
+.chat-page__warning {
+  .button_reset();
+
+  width: 40px;
+  height: 40px;
+
+  background-color: #colors[dark_light_2];
+  border-radius: 5px;
+
+  .bg_icon('../img/warning.svg');
+  background-size: 25 / 40 * 100%;
+
+  transition: background-color 0.3s;
+
+  &:hover,
+  &:focus {
+    background-color: #colors[red];
+
+    transition: background-color 0.3s;
+  }
+
+  @media (max-width: @mobile) {
+    order: 1;
+  }
+}
+
+.chat-page__complaint {
+  list-style: none;
+}
+
+.chat-page__complaint-openpopup {
+  width: 160px;
+}
+
+.chat-page__complaint-item {
+  padding: 20px 30px 40px;
+
+  background: #310808;
+  border-radius: 5px;
+
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+}
+
+.chat-page__complaint-title {
+  margin-bottom: 10px;
+
+  .h3();
+
+  color: #colors[red];
+
+  * {
+    font: inherit!important;
+    color: inherit!important;
+  }
+}
+
+.chat-page__complaint-content {
+  .body();
+
+  color: #colors[text];
 }

@@ -72,7 +72,8 @@
           }
         },
         // Закрытие попапа
-        closePopup : function () {
+        closePopup : function (evt) {
+          evt.preventDefault();
           // Все попапы
           let allPopup = document.querySelectorAll('.popup');
 
@@ -140,7 +141,8 @@
                   sufixPopupName === 'verification' ||
                   sufixPopupName === 'friends' ||
                   sufixPopupName === 'purse' ||
-                  sufixPopupName === 'contact'
+                  sufixPopupName === 'contact' ||
+                  sufixPopupName === 'warning'
                 ) {
 
                 popupContentCreator(sufixPopupName, popupItem, popupButton);

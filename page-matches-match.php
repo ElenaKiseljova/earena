@@ -79,7 +79,7 @@
           </a>
         </header>
 
-        <div class="chat-page__inner" id="chat-page-form">
+        <div id="chat-page-form">
           <?php earena_2_match_page_data($ea_user, $match_id); ?>
         </div>
       </div>
@@ -90,7 +90,7 @@
           </h1>
 
           <?php if (!is_ea_admin()): ?>
-            <button class="chat-page__complaint button button--red openpopup" data-popup="complaint" type="button" name="complaint">
+            <button class="chat-page__complaint-openpopup button button--red openpopup" data-popup="complaint" type="button" name="complaint">
               <span>
                 <?php _e( 'Жалоба судье', 'earena_2' ); ?>
               </span>

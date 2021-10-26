@@ -22,8 +22,7 @@
   }
 ?>
 
-<div class="tabs">
-  <!-- Для переключения состояния - добавляется active класс  -->
+<div class="tabs tabs--platforms">
   <button class="tabs__button tabs__button--platform <?= array_search(-1, $cookiePlatforms)!== false ? 'active' : '' ?>" data-tab-type="-1" type="button" name="tab-all">
     <?php _e( 'Все', 'earena_2' ); ?>
   </button>

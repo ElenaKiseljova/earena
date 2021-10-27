@@ -627,6 +627,19 @@
       return (isset($nicknames[$game]) && is_array($nicknames[$game]) && !empty($nicknames[$game][$platform])) ? $nicknames[$game][$platform] : '<span style="color:red;"><i>NO_NAME</i></span>';
   }
 
+  function ea_edit_nicknames($nicknames)
+  {
+      $filtered = [];
+      foreach ($nicknames as $k => $v) {
+          $filtered[$k] = array_filter($v, 'strlen');
+      }
+      if (!update_user_meta(get_current_user_id(), 'nicknames', $filtered)) {
+          return 0;
+      } else {
+          return "Сохранено";
+      }
+  }
+
   /*
     ***** Ф-я получения имени подльзователя по ИД
   */
@@ -774,7 +787,9 @@
   ********  //Формы на странице Матча
   =============================================== */
 
-  function earena_2_chat_form_users_html($match, $match_id, $user_id) {
+  function earena_2_chat_form_users_html($match_id, $user_id) {
+    $match = EArena_DB::get_ea_match($match_id);
+
     $player_1 = get_user_by( 'id', $match->player1 );
     $player_2 = get_user_by( 'id', $match->player2 );
 
@@ -816,8 +831,8 @@
 
             <?php if ($stream_player_1): ?>
               <div class="chat-page__stream checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="stream" id="stream">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream">
+                <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player1; ?>" type="checkbox" name="stream1" id="stream1" <?= $match->stream1 ? 'checked' : ''; ?>>
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream1">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>
                 </label>
               </div>
@@ -903,9 +918,9 @@
             <?php endif; ?>
 
             <?php if ($stream_player_2): ?>
-              <div class="chat-page__stream checkbox checkbox--left">
-                <input class="visually-hidden" type="checkbox" name="stream" id="stream">
-                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream">
+              <div class="chat-page__stream checkbox checkbox--right">
+                <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player2; ?>" type="checkbox" name="stream2" id="stream2" <?= $match->stream2 ? 'checked' : ''; ?>>
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="stream2">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>
                 </label>
               </div>
@@ -1015,6 +1030,80 @@
         <?php endforeach; ?>
       </ul>
     <?php
+  }
+
+  /* ==============================================
+  ********  //Трансляция
+  =============================================== */
+  function add_stream_link($url)
+  {
+      if ($url = check_url($url)) {
+          if (getResponseCode($url)) {
+              if (!update_user_meta(get_current_user_id(), 'stream', $url)) {
+                  return __("Ссылка не изменена", 'earena');
+              } else {
+                  return __("Ссылка сохранена", 'earena');
+              }
+          } else {
+              return __("Сервер не отвечает", 'earena');
+          }
+      } else {
+          return __("Некорректная ссылка", 'earena');
+      }
+  }
+
+  function check_url($url)
+  {
+      if (preg_match("@^http://@i", $url)) {
+          $url = preg_replace("@(http://)+@i", 'http://', $url);
+      } else {
+          if (preg_match("@^https://@i", $url)) {
+              $url = preg_replace("@(https://)+@i", 'https://', $url);
+          } else {
+              $url = 'http://' . $url;
+          }
+      }
+      if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+          return false;
+      } else {
+          return $url;
+      }
+  }
+
+  function open_url($url)
+  {
+      $url_c = parse_url($url);
+      if (!empty($url_c['host']) and checkdnsrr($url_c['host'])) {
+          // Ответ сервера
+          if ($otvet = get_headers($url)) {
+              return substr($otvet[0], 9, 3);
+          }
+      }
+      return false;
+  }
+
+  function getResponseCode($url)
+  {
+      $header = '';
+      $options = array(
+          CURLOPT_URL => trim($url),
+          CURLOPT_HEADER => false,
+          CURLOPT_RETURNTRANSFER => true
+      );
+
+      $ch = curl_init();
+      curl_setopt_array($ch, $options);
+      curl_exec($ch);
+      if (!curl_errno($ch)) {
+          $header = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      }
+      curl_close($ch);
+
+      if ($header > 0 && $header < 400) {
+          return true;
+      } else {
+          return false;
+      }
   }
 
   /* ==============================================

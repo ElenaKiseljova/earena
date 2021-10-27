@@ -44,11 +44,6 @@
   $gf = EArena_DB::get_ea_matches_goals_from($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_from($ea_user->ID);
   $gt = EArena_DB::get_ea_matches_goals_to($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_to($ea_user->ID);
 
-
-  //    $ea_user = wp_get_current_user();
-
-  $stream = $ea_user->get('stream')?:'';
-
   $user_stat = ea_get_user_stat($ea_user->ID);
 
   // Эта переменная используется в шаблонах 'private'

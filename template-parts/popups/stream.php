@@ -25,9 +25,9 @@
     </div>
 
     <div class="popup__content popup__content--stream">
-      <form class="form form--popup" data-prefix="" id="form-stream" action="/" method="post">
+      <form class="form form--popup" data-prefix="add" id="form-stream" action="/" method="post">
         <div class="form__row">
-          <input class="form__field form__field--popup" id="stream-source" type="text" name="stream-source" required placeholder="<?php _e( 'Ссылка на источник', 'earena_2' ); ?>" >
+          <input class="form__field form__field--popup" id="stream-source" type="text" name="url" required placeholder="<?php _e( 'Ссылка на источник', 'earena_2' ); ?>" >
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -50,8 +50,12 @@
   <template id="form-stream-success">
     <div class="popup__content popup__content--stream">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ссылка на стрим добавлена', 'earena_2' ); ?>
+        <?php _e( 'Трансляция', 'earena_2' ); ?>
       </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Ссылка на трансляцию успешно добавлена/изменена', 'earena_2' ); ?>
+      </div>
     </div>
   </template>
   <template id="form-stream-beforesend">
@@ -68,11 +72,11 @@
   <template id="form-stream-error">
     <div class="popup__content popup__content--stream">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ссылка на стрим не добавлена', 'earena_2' ); ?>
+        <?php _e( 'Трансляция', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
+        <?php _e( 'Ссылка на трансляцию не добавлена/изменена. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
       </div>
     </div>
   </template>

@@ -120,18 +120,53 @@ function getVIPAction()
     }
     die();
 }
-//
-// add_action('wp_ajax_setTranslation', 'setTranslationAction');
-// add_action('wp_ajax_nopriv_setTranslation', 'setTranslationAction');
-//
-// function setTranslationAction()
-// {
-//     if (is_user_logged_in() && isset($_POST['url'])) {
-//         print add_stream_link($_POST['url']);
-//     }
-//     die();
-// }
-//
+
+add_action('wp_ajax_setTranslation', 'setTranslationAction');
+add_action('wp_ajax_nopriv_setTranslation', 'setTranslationAction');
+
+function setTranslationAction()
+{
+    if (is_user_logged_in() && isset($_POST['url'])) {
+        print add_stream_link($_POST['url']);
+    }
+    die();
+}
+
+add_action('wp_ajax_toggleTranslation', 'toggleTranslationAction');
+add_action('wp_ajax_nopriv_toggleTranslation', 'toggleTranslationAction');
+
+function toggleTranslationAction()
+{
+    if (is_user_logged_in()) {
+      $match_id =  $_POST['match_id'] ?? false;
+      $user_id =  $_POST['user_id'] ?? false;
+
+      $response = [];
+      if ($match_id && $user_id) {
+        ob_start();
+        $response['success'] = add_match_stream_function($match_id, $user_id);
+        $response['message'] = __('Успешно удален/добавлен стрим матча', 'earena_2');
+
+        earena_2_chat_form_users_html($match_id, $user_id);
+
+        $response['content'] = ob_get_contents();
+
+        ob_end_clean();
+
+        wp_send_json( json_encode( $response ) );
+
+        die();
+      } else {
+        $response['success'] = 0;
+        $response['message'] = __('Не переданы данные', 'earena_2');
+
+        wp_send_json( json_encode( $response ) );
+
+        die();
+      }
+    }
+}
+
 add_action('wp_ajax_get_count', 'getCount');
 add_action('wp_ajax_nopriv_get_count', 'getCount');
 
@@ -182,19 +217,6 @@ function setPlafromsAction()
         }
     }
     die();
-}
-
-function ea_edit_nicknames($nicknames)
-{
-    $filtered = [];
-    foreach ($nicknames as $k => $v) {
-        $filtered[$k] = array_filter($v, 'strlen');
-    }
-    if (!update_user_meta(get_current_user_id(), 'nicknames', $filtered)) {
-        return 0;
-    } else {
-        return "Сохранено";
-    }
 }
 
 //

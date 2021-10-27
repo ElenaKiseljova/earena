@@ -23,12 +23,12 @@
 
   <template id="user-0">
     <?php
-      earena_2_chat_form_users_html( $match, $match_id, $match->player1 );
+      earena_2_chat_form_users_html( $match_id, $match->player1 );
     ?>
   </template>
   <template id="user-1">
     <?php
-      earena_2_chat_form_users_html( $match, $match_id, $match->player2 );
+      earena_2_chat_form_users_html( $match_id, $match->player2 );
     ?>
   </template>
 
@@ -50,6 +50,6 @@
   ?>
 <?php else: ?>
   <?php
-    earena_2_chat_form_users_html( $match, $match_id, $ea_user->ID );
+    earena_2_chat_form_users_html( $match_id, $ea_user->ID );
   ?>
 <?php endif; ?>

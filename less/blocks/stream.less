@@ -17,6 +17,11 @@
 
   border-radius: 5px;
   background-color: #colors[dark_light];
+
+  @media (max-width: @mobile) {
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
 }
 
 .stream__title {
@@ -26,4 +31,20 @@
   .h3();
 
   color: #colors[text];
+}
+
+.stream__link {
+  color: #colors[link];
+
+  @media (max-width: @mobile) {
+    margin-top: 10px;
+  }
+}
+
+.stream__button {
+  @media (max-width: @mobile) {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: 0;
+  }
 }

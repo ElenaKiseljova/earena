@@ -53,11 +53,12 @@
     }
 
     &--footer {
-      grid-template: none;
-      grid-template-columns: auto;
-      grid-template-rows: auto;
-      grid-column-gap: 0;
-      grid-row-gap: 14px;
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: flex-start;
+      align-items: center;
     }
   }
 }
@@ -121,6 +122,10 @@
       &:nth-of-type(5),
       &:nth-of-type(6) {
         grid-area: auto;
+      }
+
+      &:not(:last-of-type) {
+        margin-bottom: 14px;
       }
     }
   }

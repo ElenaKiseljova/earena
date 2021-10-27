@@ -30,7 +30,8 @@
             FORM : document.querySelector(`#${attr.idForm}`),
             SELECTOR_FOR_TEMPLATE_REPLACE : attr.selectorForTemplateReplace ? attr.selectorForTemplateReplace : '',
             SELECTOR_CLOSEST_WRAPPER_FORM : attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false,
-            CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM : attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false
+            CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM : attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false,
+            _SETTINGS : attr
           };
 
           if (attrForms[attr.idForm].FORM) {
@@ -65,30 +66,6 @@
               }
             });
           }
-        },
-        // Ф-я отключения полей формы при выбранном/отключенном чекбоксе
-        checkboxControlField : (formId, checkboxControl, fieldChange, toggle = 'off') => {
-          checkboxControl.addEventListener('change', () => {
-            if (toggle === 'off') {
-              if (checkboxControl.checked === false) {
-                fieldChange.disabled = false;
-              } else {
-                fieldChange.disabled = true;
-              }
-            }
-
-            if (toggle === 'on') {
-              if (checkboxControl.checked === false) {
-                fieldChange.disabled = true;
-              } else {
-                fieldChange.disabled = false;
-              }
-            }
-
-            fieldChange.value = '';
-
-            window.form.validateForm(formId);
-          });
         },
         // Ф-я отправки формы
         formSubmitFunction : (formId, inputs, textareas) => {
@@ -302,8 +279,18 @@
 
             // WARNING
             if ( formId.indexOf('warning') > -1 ) {
-              // Добавление предупреждения
-              formData['action'] = 'ea_add_yc';
+              if (prefix.indexOf('add') > -1) {
+                // Добавление предупреждения
+                formData['action'] = 'ea_add_yc';
+              }
+            }
+
+            // STREAM
+            if ( formId.indexOf('stream') > -1 ) {
+              if (prefix.indexOf('add') > -1) {
+                // Добавление ссылки на стрим
+                formData['action'] = 'setTranslation';
+              }
             }
 
             /***** END Actions AJAX *****/
@@ -442,15 +429,8 @@
                     // Переписываю
                     wrapperFormNode.innerHTML = response.data;
 
-                    // Перезапуск/запуск валидации формы
-                    let reinitFormAttr = {
-                      idForm: formId,
-                      selectorForTemplateReplace: attrForms[formId].SELECTOR_FOR_TEMPLATE_REPLACE, // Содержимое будет очищаться при отправке и заменяться шаблонами
-                      classForAddClosestWrapperForm: attrForms[formId].CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM, // по умолчанию - false
-                      selectorClosestWrapperForm: attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM, // по умолчанию - false
-                    };
-
-                    window.form.init(reinitFormAttr);
+                    // Повторная инициализация формы
+                    window.form.init(attrForms[formId]._SETTINGS);
 
                     if (attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM) {
                       // Регулировка высоты попапа
@@ -511,6 +491,16 @@
                 }
               }
 
+              // CHAT
+              if ( formId.indexOf('chat') > -1 ) {
+                setTimeout(function () {
+                  // Перезагрузить текущую страницу
+                  document.location.reload();
+                }, 200);
+
+                return;
+              }
+
               // CONTACT
               if ( formId.indexOf('contact') > -1 ) {
                 let openPopupButtonsSuccessContactForm = document.querySelector('button[name="success"].openpopup');
@@ -550,16 +540,15 @@
                   response = JSON.parse(response);
 
                   if (response.success === 1) {
-                    let complaintFormsContainer = document.querySelector('#complaint-container');
+                    if (wrapperFormNode) {
+                      wrapperFormNode.innerHTML = response.content;
 
-                    if (complaintFormsContainer) {
-                      complaintFormsContainer.innerHTML = response.content;
-
-                      // ADMIN complait forms (reinit)
-                      let complaintAdminChatForms = complaintFormsContainer.querySelectorAll('form[id*="form-complaint-"]');
+                      // ADMIN complait forms
+                      let complaintAdminChatForms = wrapperFormNode.querySelectorAll('form[id*="form-complaint-"]');
 
                       if (complaintAdminChatForms.length > 0) {
                         complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
+                          // Инициализация полученных форм
                           let attrFormComplaint = {
                             idForm: complaintAdminChatForm.id,
                             // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
@@ -644,11 +633,10 @@
                   if (response.success === 1) {
                     window.popup.userInfo(false, popup);
 
-                    // Для теста. Пока не подключено обновление контента
                     setTimeout(function () {
                       // Перезагрузить текущую страницу
                       document.location.reload();
-                    }, 300);
+                    }, 200);
                   } else {
                     let popupInformation = popup.querySelector('.popup__information--template');
 
@@ -697,6 +685,18 @@
                   let popupInformation = popup.querySelector('.popup__information--template');
                   if (popupInformation) {
                     popupInformation.innerHTML = response.content;
+                  }
+                }
+              }
+
+              // STREAM
+              if ( formId.indexOf('stream') > -1 ) {
+                if (prefix.indexOf('add') > -1) {
+                  // Отображаю новую ссылку
+                  let streamLink = document.querySelector('.stream__link');
+                  if (streamLink && formData['url']) {
+                    streamLink.href = formData['url'];
+                    streamLink.textContent = formData['url'];
                   }
                 }
               }
@@ -813,22 +813,6 @@
               });
             }
           });
-        },
-        // Ф-я поиска дополнительных кнопок закрытия попапов
-        additionButtonClosePopup : (container = false) => {
-          let formClosePopups;
-          if (container === false) {
-            formClosePopups = document.querySelectorAll('.button--popup-close');
-          } else {
-            formClosePopups = container.querySelectorAll('.button--popup-close');
-          }
-
-          if (formClosePopups.length > 0) {
-            formClosePopups.forEach((formClosePopup, i) => {
-              // Активация кнопки
-              window.popup.activateClosePopupButton(formClosePopup);
-            });
-          }
         },
         // Ф-я валидации формы
         validateForm : (formId) => {
@@ -977,6 +961,97 @@
                   window.form.checkboxControlField(formId, checkboxItem, fieldControl, checkboxItem.dataset.controlToggle);
                 }
               }
+
+              // Поиск чекбокса для включения/отключения трансляции в матче
+              if (checkboxItem.dataset.matchId && checkboxItem.dataset.userId && (checkboxItem.name.indexOf('stream') > -1)) {
+                let lastStreamTimeout;
+
+                let data = {
+                  'action' : 'toggleTranslation',
+                  'match_id' : checkboxItem.dataset.matchId,
+                  'user_id' : checkboxItem.dataset.userId
+                };
+
+                checkboxItem.addEventListener('change', function () {
+                  if (lastStreamTimeout) {
+                    clearTimeout(lastStreamTimeout);
+                  }
+
+                  lastStreamTimeout = setTimeout(function () {
+                    $.ajax({
+                      url: earena_2_ajax.url,
+                      data: data,
+                      type: 'POST',
+                      beforeSend: (response) => {
+                        console.log(response.readyState);
+                      },
+                      success: (response) => {
+                        response = JSON.parse(response);
+
+                        if (response.success === 1) {
+                          let wrapperFormNode = attrForms[formId].wrapperFormNode;
+
+                          if (wrapperFormNode) {
+                            wrapperFormNode.innerHTML = response.content;
+
+                            // Загрузка файлов
+                            window.files(wrapperFormNode);
+
+                            // Повторная инициализация формы
+                            window.form.init(attrForms[formId]._SETTINGS);
+                          }
+                        }
+
+                        console.log(response);
+                      },
+                      error: (response) => {
+                        response = JSON.parse(response);
+                        console.log(response);
+                      }
+                    });
+                  }, 300);
+                });
+              }
+            });
+          }
+        },
+        // Ф-я отключения полей формы при выбранном/отключенном чекбоксе
+        checkboxControlField : (formId, checkboxControl, fieldChange, toggle = 'off') => {
+          checkboxControl.addEventListener('change', () => {
+            if (toggle === 'off') {
+              if (checkboxControl.checked === false) {
+                fieldChange.disabled = false;
+              } else {
+                fieldChange.disabled = true;
+              }
+            }
+
+            if (toggle === 'on') {
+              if (checkboxControl.checked === false) {
+                fieldChange.disabled = true;
+              } else {
+                fieldChange.disabled = false;
+              }
+            }
+
+            fieldChange.value = '';
+
+            window.form.validateForm(formId);
+          });
+        },
+        // Ф-я поиска дополнительных кнопок закрытия попапов
+        additionButtonClosePopup : (container = false) => {
+          let formClosePopups;
+          if (container === false) {
+            formClosePopups = document.querySelectorAll('.button--popup-close');
+          } else {
+            formClosePopups = container.querySelectorAll('.button--popup-close');
+          }
+
+          if (formClosePopups.length > 0) {
+            formClosePopups.forEach((formClosePopup, i) => {
+              // Активация кнопки
+              window.popup.activateClosePopupButton(formClosePopup);
             });
           }
         },

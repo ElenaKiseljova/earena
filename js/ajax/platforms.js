@@ -153,7 +153,7 @@
           amount[what] = parseInt(amountSpan[amountSpan.length - 1].textContent, 10);
 
           if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataFiltered) === false) {
-            container.innerHTML = __('Ничего не найдено', 'earena_2');
+            container.innerHTML = '<li class="section__item section__item--empty">' + __('Ничего не найдено', 'earena_2') + '</li>';
           }
         }
 

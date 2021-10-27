@@ -72,12 +72,12 @@
           ?>
             <!-- Выбор игры на стр Всех матчей/турниров -->
             <div class="filters__element filters__element--col-5 <?= earena_2_current_page( 'games' ) ? 'visually-hidden' : ''; ?>">
-              <!-- Для переключения состояния - добавляется active класс  -->
+
               <button class="filters__field filters__field--select" type="button" name="button">
                 <?php _e( 'Игра', 'earena_2' ); ?>
               </button>
 
-              <!-- Для переключения состояния - добавляется active класс  -->
+
               <ul class="filters__list filters__list--checkbox">
                 <?php foreach ($games as $game): ?>
                   <li class="filters__item filters__item--checkbox">
@@ -105,7 +105,7 @@
             <?php _e( 'Платформа', 'earena_2' ); ?>
           </button>
 
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <ul class="filters__list filters__list--checkbox">
             <?php
               foreach ($platforms as $platform_key => $platform) {
@@ -148,7 +148,7 @@
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Сумма входа', 'earena_2' ); ?>
         </button>
-        <!-- Для переключения состояния - добавляется active класс  -->
+
         <ul class="filters__list filters__list--checkbox">
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
@@ -191,7 +191,7 @@
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Режим игры', 'earena_2' ); ?>
         </button>
-        <!-- Для переключения состояния - добавляется active класс  -->
+
         <ul class="filters__list filters__list--checkbox">
           <?php
             foreach ($game_modes as $game_mode_key => $game_mode) {
@@ -232,7 +232,7 @@
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Режим команды', 'earena_2' ); ?>
           </button>
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <ul class="filters__list filters__list--checkbox">
             <?php
               foreach ($team_modes as $team_mode_key => $team_mode) {
@@ -273,7 +273,7 @@
         <button class="filters__field filters__field--select" type="button" name="button">
           <?php _e( 'Статус', 'earena_2' ); ?>
         </button>
-        <!-- Для переключения состояния - добавляется active класс  -->
+
         <ul class="filters__list filters__list--checkbox">
           <li class="filters__item filters__item--checkbox">
             <div class="checkbox checkbox--left">
@@ -311,7 +311,7 @@
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Тип турнира', 'earena_2' ); ?>
           </button>
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <ul class="filters__list filters__list--checkbox">
             <li class="filters__item filters__item--checkbox">
               <div class="checkbox checkbox--left">
@@ -346,7 +346,7 @@
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Скорость', 'earena_2' ); ?>
           </button>
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <ul class="filters__list filters__list--checkbox">
             <li class="filters__item filters__item--checkbox">
               <div class="checkbox checkbox--left">
@@ -373,7 +373,7 @@
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Дата начала', 'earena_2' ); ?>
           </button>
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <ul class="filters__list filters__list--checkbox">
             <li class="filters__item filters__item--checkbox">
               <div class="checkbox checkbox--left">

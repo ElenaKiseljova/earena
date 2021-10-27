@@ -28,7 +28,7 @@
       // Главная
       earena_2_get_section( 'games' );
 
-      earena_2_get_section( 'matches-public' );
+      earena_2_get_section( 'matches' );
 
       earena_2_get_section( 'tournaments-public' );
 

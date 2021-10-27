@@ -1,14 +1,21 @@
 'use strict';
 
 (function ($) {
-  /**
-    * List of inner functions on window.form() function
-    *
-    * checkboxControlField
-    * formSubmitFunction
-    * additionButtonClosePopup
-    * validateForm
-    *
+  /*
+    is_user_logged_in,
+    is_ea_admin,
+
+    dataGames,
+    currentGameId,
+
+    isProfile,
+    siteURL,
+    siteThemeFolderURL,
+    ea_icons
+    platformsArr
+
+    - глобальные переменные, которые используются для составления URI.
+      Задаются в header.php
   */
   document.addEventListener('DOMContentLoaded', () => {
     try {
@@ -991,7 +998,7 @@
                         if (response.success === 1) {
                           let wrapperFormNode = attrForms[formId].wrapperFormNode;
 
-                          if (wrapperFormNode) {
+                          if (wrapperFormNode && is_ea_admin === false) {
                             wrapperFormNode.innerHTML = response.content;
 
                             // Загрузка файлов
@@ -999,6 +1006,11 @@
 
                             // Повторная инициализация формы
                             window.form.init(attrForms[formId]._SETTINGS);
+                          } else {
+                            setTimeout(function () {
+                              // Перезагрузить текущую страницу
+                              document.location.reload();
+                            }, 200);
                           }
                         }
 

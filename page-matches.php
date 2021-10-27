@@ -26,7 +26,7 @@
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
       // Старница всех матчей
-      earena_2_get_section( 'matches-public', true, 'tabs' );
+      earena_2_get_section( 'matches', true, 'tabs' );
     }
   ?>
   <!-- Партнеры -->

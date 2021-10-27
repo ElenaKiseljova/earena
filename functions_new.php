@@ -830,7 +830,7 @@
             <?php endif; ?>
 
             <?php if ($stream_player_1): ?>
-              <div class="chat-page__stream checkbox checkbox--left">
+              <div class="chat-page__stream chat-page__stream--left checkbox checkbox--left">
                 <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player1; ?>" type="checkbox" name="stream1" id="stream1" <?= $match->stream1 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream1">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>
@@ -918,7 +918,7 @@
             <?php endif; ?>
 
             <?php if ($stream_player_2): ?>
-              <div class="chat-page__stream checkbox checkbox--right">
+              <div class="chat-page__stream chat-page__stream--right checkbox checkbox--right">
                 <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player2; ?>" type="checkbox" name="stream2" id="stream2" <?= $match->stream2 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="stream2">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>

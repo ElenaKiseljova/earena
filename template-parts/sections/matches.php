@@ -1,3 +1,8 @@
+<?php
+  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
+  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
+?>
 <?php if (earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
     global $games, $game_id, $ea_icons;
@@ -75,7 +80,7 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif ( earena_2_current_page( 'matches' ) ) : ?>
+<?php elseif ( earena_2_current_page( 'matches' ) && !$is_profile ) : ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
       <header class="section__header">
@@ -109,23 +114,36 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) : ?>
-  <!-- тут дичь пока -->
+<?php elseif ($is_profile_matches) : ?>
   <section class="section section--matches" id="matches">
     <header class="section__header">
       <h2 class="section__title section__title--matches section__title--page">
         <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
         <span class="section__amount">
-          <?= $count_matches; ?>
+          0
         </span>
       </h2>
 
-      <div class="section__header-right <?php if($is_tab_global) echo 'section__header-right--account-tabs'; ?>">
-        <!-- Фильтры ( стр Аккаунта ) -->
-        <?php get_template_part( 'template-parts/filters', 'account' ); ?>
+      <div class="section__header-right section__header-right--account-tabs">
+        <?php
+          // Фильтры ( стр Аккаунта )
+          get_template_part( 'template-parts/filters', 'account' );
+        ?>
       </div>
     </header>
     <div class="section__content">
+      <ul class="section__list" id="content-platform-matches">
+        <!-- Подстановка содержимого из шаблона -->
+      </ul>
+    </div>
+    <div class="preloader preloader--matches">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div id="isInViewPort"></div>
+
+    <!-- <div class="section__content">
       <ul class="section__list">
         <?php
           // Записываю все матчи в глобальную переменную
@@ -188,7 +206,7 @@
           }
         ?>
       </ul>
-    </div>
+    </div> -->
   </section>
 <?php else : ?>
   <section class="section section--matches" id="matches">

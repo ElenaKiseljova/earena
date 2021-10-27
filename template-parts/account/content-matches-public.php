@@ -9,7 +9,7 @@
     <?php
       if ( function_exists( 'earena_2_get_section' ) ) {
         // Матчи
-        earena_2_get_section( 'matches-public', false, 'filters', 'matches' );
+        earena_2_get_section( 'matches' );
       }
     ?>
   </div>

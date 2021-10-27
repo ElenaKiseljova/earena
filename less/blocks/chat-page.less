@@ -9,7 +9,8 @@
 .chat-page__complaint-container,
 .chat-page__complaint-item,
 .chat-page__complaint-title,
-.chat-page__complaint-content  {
+.chat-page__complaint-content,
+.chat-page__stream  {
   .w100();
 }
 
@@ -215,7 +216,19 @@
 }
 
 .chat-page__stream {
+  display: flex;
+
+  align-items: center;
+
   margin-top: 15px;
+
+  &--left {
+    justify-content: flex-start;
+  }
+
+  &--right {
+    justify-content: flex-end;
+  }
 }
 
 .chat-page__warning {

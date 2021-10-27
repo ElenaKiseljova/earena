@@ -31,6 +31,7 @@
         init : function (formId, what = 'tournaments') {
           // Получение формы
           let filterForm = document.querySelector(`#${formId}`);
+          console.log(filterForm);
           if (filterForm) {
             let platformsSelected = window.platforms.getSelectedPlatforms();
             if (!platformsSelected) {
@@ -118,6 +119,11 @@
 
           if ( currentGameId !== false ) {
             data['game'] = currentGameId;
+          }
+
+          if (isProfile !== false) {
+            console.log(filterForm);
+            data['player_id'] = [filterForm.dataset.playerId];
           }
 
           let dataForm = new FormData(filterForm);

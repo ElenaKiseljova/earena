@@ -12,10 +12,20 @@
   border-radius: 5px;
 
   &--account-tabs {
+    width: auto;
+    min-width: 510px;
+
     margin: 0;
     padding: 0;
     border-radius: 50%;
     background: none;
+  }
+
+  @media (max-width: @mobile) {
+    &--account-tabs {
+      width: 100%;
+      min-width: unset;
+    }
   }
 }
 

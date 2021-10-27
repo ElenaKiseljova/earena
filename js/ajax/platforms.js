@@ -35,7 +35,8 @@
     };
 
     // Проверка наличия фильтров на странице
-    let filtersSection = document.querySelector('.filters');
+    let filtersSections = document.querySelectorAll('.filters');
+    let filtersSection = (filtersSections.length > 0) ? true : false;
 
     // Экспортируется в файл toggle-active.js
     window.platforms = {
@@ -361,7 +362,7 @@
             }
           });
         } else {
-          let filterForm = filtersSection.querySelector('form');
+          let filterForm = document.querySelector(`#filters-${what}`);
           // Обнуление отступа
           window.platforms.setOffset(what, 0);
 

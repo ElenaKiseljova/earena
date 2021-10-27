@@ -464,6 +464,7 @@ function earena_2_get_filtered_matches()
     $id = (isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" && $_POST['id'] > "") ? $_POST['id'] : false;
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
     $per_page = isset($_POST['perpage']) ? (int)$_POST['perpage'] : 8;
+
     $matches_db_collection = [];
 
     if ($id) {
@@ -474,6 +475,11 @@ function earena_2_get_filtered_matches()
         $matches_db_collection = EArena_DB::get_ea_matches_by_filter_id($id, $per_page, $offset, $game, $mode = 'new');
     } else {
         $dataFilter = array();
+
+        if (isset($_POST['player_id'])) {
+          $dataFilter['player_id'] = $_POST['player_id'];
+        }
+
         if (isset($_POST['game'])) {
             $game = explode(',', $_POST['game']);
             $dataFilter['game'] = $game;
@@ -512,15 +518,16 @@ function earena_2_get_filtered_matches()
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
             $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
         }
-        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
-            $sort = mb_strtoupper($_POST['sort']);
 
-            // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
-            $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $per_page, $offset, $sort, 'date', $mode = 'new');
-        } else {
-          // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
-          $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $per_page, $offset, 'DESC', 'ID', $mode = 'new');
+        $order = 'DESC';
+        $order_by = 'ID';
+        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
+            $order = mb_strtoupper($_POST['sort']);
+            $order_by = 'date';
         }
+
+        // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
+        $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $per_page, $offset, $order, $order_by, $mode = 'new');
     }
     $game_matches_str = '';
 
@@ -780,7 +787,7 @@ add_action('wp_ajax_nopriv_earena_2_get_create_match_next_html', 'earena_2_get_c
 
 function earena_2_get_create_match_next_html()
 {
-    $game = $_POST['game'] ? $_POST['game'] : false;
+    $game = isset($_POST['game']) ? $_POST['game'] : false;
 
     if ($game === false) {
       $response = [
@@ -806,7 +813,7 @@ function earena_2_get_create_match_next_html()
       die();
     }
 
-    if ($game && $platform !== '') {
+    if ($game !== false && $platform !== '') {
       $user_games = ea_my_games();
 
       if (in_array($game, $user_games)) {

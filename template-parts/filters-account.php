@@ -5,52 +5,60 @@
 ?>
 
 <?php
-  // Стр Аккаунта (таб Турниров)
-  global $is_tab_global;
-  $sufix_input = '';
-  if ($is_tab_global === 'tournaments') {
-    $is_tournaments_tab = true;
-    $sufix_input = 'tournaments';
-  } else if ($is_tab_global === 'matches') {
-    $is_matches_tab = true;
-    $sufix_input = 'matches';
+  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
+  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
+
+  $ea_user = false;
+
+  if (earena_2_current_page('user')) {
+    // Эта переменная используется в шаблонах 'public'
+    global $earena_2_user_public;
+    $ea_user = $earena_2_user_public;
   }
+
+  if (earena_2_current_page('profile')) {
+    // Эта переменная используется в шаблонах 'private'
+    global $earena_2_user_private;
+    $ea_user = $earena_2_user_private;
+  }
+
+  $ea_user = ($ea_user instanceof WP_User) ? $ea_user : wp_get_current_user();
 ?>
 
 <div class="filters filters--account-tabs">
-  <form class="filters__form" action="" method="post" id="filters-account">
+  <form class="filters__form" data-player-id="<?= $ea_user->ID; ?>" action="" method="post" id="filters-<?= $is_profile_tournaments ? 'tournaments' : ($is_profile_matches ? 'matches' : 'main'); ?>">
     <div class="filters__container filters__container--account-tabs">
       <div class="filters__element filters__element--col-2 filters__element--account-tabs">
         <div class="select select--account-tabs">
-          <!-- Для переключения состояния - добавляется active класс  -->
+
           <button class="select__button" type="button" name="button">
-            <?php if ($is_matches_tab): ?>
+            <?php if ($is_profile_matches): ?>
               <?php _e( 'Статус матча', 'earena_2' ); ?>
-            <?php elseif ($is_tournaments_tab): ?>
+            <?php elseif ($is_profile_tournaments): ?>
               <?php _e( 'Статус турнира', 'earena_2' ); ?>
             <?php else : ?>
               <?php _e( 'Статус', 'earena_2' ); ?>
             <?php endif; ?>
           </button>
 
-          <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="select__list">
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="future" id="select-<?= $sufix_input; ?>-status-future">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-status-future">
-                <?php _e( 'Будет', 'earena_2' ); ?>
+              <input class="visually-hidden" type="radio" name="status" value="1" id="status-1">
+              <label class="select__label" for="status-1">
+                <?php _e( 'Регистрация', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="past" id="select-<?= $sufix_input; ?>-status-past">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-status-past">
-                <?php _e( 'Прошел', 'earena_2' ); ?>
+              <input class="visually-hidden" type="radio" name="status" value="2" id="status-2">
+              <label class="select__label" for="status-2">
+                <?php _e( 'Проходит', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-status" value="present" id="select-<?= $sufix_input; ?>-status-present">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-status-present">
-                <?php _e( 'Проходит сейчас', 'earena_2' ); ?>
+              <input class="visually-hidden" type="radio" name="status" value="3" id="status-3">
+              <label class="select__label" for="status-3">
+                <?php _e( 'Завершён', 'earena_2' ); ?>
               </label>
             </li>
           </ul>
@@ -58,29 +66,21 @@
       </div>
       <div class="filters__element filters__element--col-2 filters__element--account-tabs">
         <div class="select select--account-tabs">
-          <!-- Для переключения состояния - добавляется active класс  -->
           <button class="select__button" type="button" name="button">
-            <?php _e( 'Период', 'earena_2' ); ?>
+            <?php _e( 'Дата начала', 'earena_2' ); ?>
           </button>
 
-          <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="select__list">
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="month" id="select-<?= $sufix_input; ?>-period-month">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-period-month">
-                <?php _e( 'За месяц', 'earena_2' ); ?>
+              <input class="visually-hidden" type="radio" name="sort" value="desc" id="sort-0">
+              <label class="select__label" for="sort-0">
+                <?php _e( 'Дальше', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="year" id="select-<?= $sufix_input; ?>-period-year">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-period-year">
-                <?php _e( 'За год', 'earena_2' ); ?>
-              </label>
-            </li>
-            <li class="select__item">
-              <input class="visually-hidden" type="radio" name="select-<?= $sufix_input; ?>-period" value="day" id="select-<?= $sufix_input; ?>-period-day">
-              <label class="select__label" for="select-<?= $sufix_input; ?>-period-day">
-                <?php _e( 'За сегодня', 'earena_2' ); ?>
+              <input class="visually-hidden" type="radio" name="sort" value="asc" id="sort-1">
+              <label class="select__label" for="sort-1">
+                <?php _e( 'Ближе', 'earena_2' ); ?>
               </label>
             </li>
           </ul>

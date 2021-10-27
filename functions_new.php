@@ -633,11 +633,11 @@
   function earena_2_get_nickname_by_id ($id = 0)
   {
     if ($id > 0) {
-      $tournament_winner = get_user_by('id', $id);
-      if ( !($tournament_winner instanceof WP_User) ) {
+      $user = get_user_by('id', $id);
+      if ( !($user instanceof WP_User) ) {
         echo 'NO_NAME';
       } else {
-        echo $tournament_winner->nickname;
+        echo $user->nickname;
       }
     }
   }
@@ -774,12 +774,15 @@
   ********  //Формы на странице Матча
   =============================================== */
 
-  function earena_2_chat_form_users_html($match, $match_id, $ea_user, $is_reporter = false) {
+  function earena_2_chat_form_users_html($match, $match_id, $user_id) {
     $player_1 = get_user_by( 'id', $match->player1 );
     $player_2 = get_user_by( 'id', $match->player2 );
 
     $stream_player_1 = ($player_1 instanceof WP_User) ? $player_1->get('stream') : false;
     $stream_player_2 = ($player_2 instanceof WP_User) ? $player_2->get('stream') : false;
+
+    $is_reporter = (isset($match->reporter) && $user_id == (int)$match->reporter) ? true : false;
+    $is_result = (isset($match->score1) && isset($match->score2)) ? true : false;
     ?>
       <div class="chat-page__inner">
         <form class="form form--chat" data-prefix="" id="form-chat" action="index.html" method="post">
@@ -802,7 +805,7 @@
               </a>
             </div>
 
-            <?php if ((!isset($match->score1) && !isset($match->score2)) || (isset($match->score1) && isset($match->score2) && $is_reporter)): ?>
+            <?php if (!$is_result || ($is_result && $is_reporter && !$match->winner)): ?>
               <div class="form__row form__row--chat">
                 <label class="visually-hidden" for="score1">
                   <?php _e( 'Результат первого участника', 'earena_2' ) ?>
@@ -821,11 +824,11 @@
             <?php endif; ?>
           </div>
           <div class="form__center form__center--chat">
-            <?php if (!isset($match->score1) && !isset($match->score2) || (!$match->winner && $is_reporter)): ?>
+            <?php if (!$is_result || (!$match->winner && $is_reporter)): ?>
               <span class="form__vs">
                 vs
               </span>
-            <?php elseif (isset($match->score1) && isset($match->score2) && ($match->winner || !$is_reporter)): ?>
+            <?php elseif ($is_result && ($match->winner || !$is_reporter)): ?>
               <span class="form__vs form__vs--change">
                 <?= isset($match->score1) ? $match->score1 : 0; ?> : <?= isset($match->score2) ? $match->score2 : 0; ?>
               </span>
@@ -890,7 +893,7 @@
               </a>
             </div>
 
-            <?php if ((!isset($match->score1) && !isset($match->score2)) || (isset($match->score1) && isset($match->score2) && $is_reporter)): ?>
+            <?php if (!$is_result || ($is_result && $is_reporter && !$match->winner)): ?>
               <div class="form__row form__row--chat">
                 <label class="visually-hidden" for="score2">
                   <?php _e( 'Результат первого участника', 'earena_2' ) ?>
@@ -909,9 +912,27 @@
             <?php endif; ?>
           </div>
 
+          <?php if ($is_result && !$is_reporter): ?>
+            <input type="hidden" name="score1" value="<?= $match->score1; ?>">
+            <input type="hidden" name="score2" value="<?= $match->score2; ?>">
+          <?php endif; ?>
+
+          <?php if (is_ea_admin()): ?>
+            <input type="hidden" name="player" value="<?= $user_id; ?>">
+          <?php endif; ?>
+
+          <input type="hidden" name="id" value="<?= $match->ID; ?>">
+          <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
           <div class="form__bottom form__bottom--chat">
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning openpopup" data-popup="warning" data-user="<?= $match->player1; ?>" type="button" name="add">
+              <button class="chat-page__warning openpopup"
+                data-popup="warning"
+                data-user-id="<?= $match->player1; ?>"
+                data-user-name="<?= earena_2_get_nickname_by_id( $match->player1 ); ?>"
+                data-match-id="<?= $match_id; ?>"
+                data-match-thread-id="<?= $match->thread_id; ?>"
+                type="button" name="add">
                 <span class="visually-hidden">
                   <?php _e( 'Добавить предупреждение', 'earena_2' ) ?>
                 </span>
@@ -941,21 +962,19 @@
             <?php endif; ?>
 
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning openpopup" data-popup="warning" data-user="<?= $match->player2; ?>" type="button" name="add">
+              <button class="chat-page__warning openpopup"
+                data-popup="warning"
+                data-user-id="<?= $match->player2; ?>"
+                data-user-name="<?= earena_2_get_nickname_by_id( $match->player2 ); ?>"
+                data-match-id="<?= $match_id; ?>"
+                data-match-thread-id="<?= $match->thread_id; ?>"
+                type="button" name="add">
                 <span class="visually-hidden">
                   <?php _e( 'Добавить предупреждение', 'earena_2' ) ?>
                 </span>
               </button>
             <?php endif; ?>
           </div>
-
-          <?php if (isset($match->score1) && isset($match->score2) && !$is_reporter): ?>
-            <input type="hidden" name="score1" value="<?= $match->score1; ?>">
-            <input type="hidden" name="score2" value="<?= $match->score2; ?>">
-          <?php endif; ?>
-
-          <input type="hidden" name="id" value="<?= $match->ID; ?>">
-          <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
         </form>
       </div>
     <?php
@@ -966,21 +985,22 @@
   ********  //Получение Жалоб на стр Матча
   =============================================== */
 
-  function earena_2_complaint_html($complaint) {
-    global $match;
+  function earena_2_complaint_html($complaint, $match_id) {
+    $match = EArena_DB::get_ea_match($match_id);
     ?>
       <ul class="chat-page__complaint">
-        <?php foreach ($complaint as $complaint_key => $complaint_item): ?>
+        <?php $complaint_index = 0; ?>
+        <?php foreach ($complaint as $complaint_item): ?>
           <li class="chat-page__complaint-item">
             <h3 class="chat-page__complaint-title">
-              <?php _e( 'Жалоба от ', 'earena_2' ); ?><?= ea_game_nick($match->game, $match->platform, $complaint_item->user_id); ?>
+              <?php _e( 'Жалоба от ', 'earena_2' ); ?><?= ea_game_nick($match->game, $match->platform, $complaint_item['user_id']); ?>
             </h3>
 
             <div class="chat-page__complaint-content">
-              <?= $complaint_item->content; ?>
+              <?= $complaint_item['content']; ?>
             </div>
-            <form class="form form--complaint" data-prefix="delete" id="form-complaint-<?= $complaint_key; ?>" action="index.html" method="post">
-              <input type="hidden" name="complaint_index" value="<?= $complaint_key; ?>">
+            <form class="form form--complaint" data-prefix="delete" id="form-complaint-<?= $complaint_index; ?>" action="index.html" method="post">
+              <input type="hidden" name="complaint_index" value="<?= $complaint_index; ?>">
               <input type="hidden" name="tournament" value="0">
               <input type="hidden" name="match_thread_id" value="<?= $match->thread_id; ?>">
               <input type="hidden" name="match_id" value="<?= $match->ID; ?>">
@@ -991,6 +1011,7 @@
               </button>
             </form>
           </li>
+        <?php $complaint_index++; ?>
         <?php endforeach; ?>
       </ul>
     <?php

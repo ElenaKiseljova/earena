@@ -160,6 +160,8 @@
 
           userFormContainer.appendChild(userFormTemplate.content.cloneNode(true));
 
+          window.files(userFormContainer);
+
           let attrFormChat = {
             idForm: 'form-chat',
             // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона

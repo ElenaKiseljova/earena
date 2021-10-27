@@ -298,4 +298,139 @@
           wp_die();
       }
   }
+
+  /* ==============================================
+  ********  //Желтые карточки -> Предупреждения
+  =============================================== */
+  add_action('wp_ajax_ea_add_yc', 'ea_add_yc_callback');
+  function ea_add_yc_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      $reason = $_POST['reason'];
+      $reason_text = $reason == 1 ? __('неуважение к сопернику', 'earena') : __('нарушение правил', 'earena');
+      if (!empty($_POST['match_id'])) {
+          $reason_text .= ( $_POST['tournament'] == 1 ? __('в турнирном матче', 'earena') : __('в матче', 'earena') ) . ' ID' . $_POST['match_id'];
+      }
+      $yc = get_user_meta($ea_user, 'yc', true) ?: 0;
+      if ($reason > 0 && $yc < 3 && update_user_meta($ea_user, 'yc', ++$yc)) {
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = !empty($_POST['thread_id']) ? $_POST['thread_id'] : ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . __(', вы получили предупреждение за ',
+                  'earena') . $reason_text . __('. Напоминаем вам, что получение трех предупреждений ведет к блокировке аккаунта.',
+                  'earena');
+          ea_admin_tech_msg($message, $thread_id);
+          if (!empty($_POST['match_thread_id'])) {
+              global $wpdb;
+              $table_name = $wpdb->get_blog_prefix() . 'bp_messages_recipients';
+              $tid = $_POST['match_thread_id'];
+              if ($wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE thread_id = %d AND user_id=%d", $tid,
+                      $admin_id)) == null) {
+                  $wpdb->insert($table_name, ['user_id' => $admin_id, 'thread_id' => $tid]);
+              }
+              ea_messages_new_message(array(
+                  'sender_id' => $admin_id,
+                  'thread_id' => $tid,
+                  'content' => $message,
+              ));
+          }
+          if ($yc == 3) {
+              update_user_meta($ea_user, 'blocked', true);
+              $message = $username . __(', ваш аккаунт заблокирован.', 'earena');
+              ea_admin_tech_msg($message, $thread_id);
+          }
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Предупреждение добавлено.', 'earena') . '(' . $yc . '/3)';
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Предупреждение не добавлено.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+  add_action('wp_ajax_ea_del_yc', 'ea_del_yc_callback');
+  function ea_del_yc_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      $yc = get_user_meta($ea_user, 'yc', true) ?: 0;
+      $old_yc = $yc;
+      if ($yc > 0 && update_user_meta($ea_user, 'yc', --$yc)) {
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = !empty($_POST['thread_id']) ? $_POST['thread_id'] : ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . __(', мы удалили предупреждение.', 'earena');
+          ea_admin_tech_msg($message, $thread_id);
+          if ($yc < 3) {
+              update_user_meta($ea_user, 'blocked', false);
+              if ($old_yc == 3) {
+                  $message = $username . __(', ваш аккаунт разблокирован.', 'earena');
+                  ea_admin_tech_msg($message, $thread_id);
+              }
+          }
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Предупреждение удалено.', 'earena') . '(' . $yc . '/3)';
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Предупреждение не удалено.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+
+  /* ==============================================
+  ********  //Блокировка пользователя
+  =============================================== */
+  add_action('wp_ajax_ea_add_blocked', 'ea_add_blocked_callback');
+  function ea_add_blocked_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      if (update_user_meta($ea_user, 'blocked', true)) {
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . __(', ваш аккаунт заблокирован.', 'earena');
+          ea_admin_tech_msg($message, $thread_id);
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Пользователь заблокирован.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Пользователь не заблокирован.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+  add_action('wp_ajax_ea_del_blocked', 'ea_del_blocked_callback');
+  function ea_del_blocked_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      if (update_user_meta($ea_user, 'blocked', false)) {
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . __(', ваш аккаунт разблокирован.', 'earena');
+          ea_admin_tech_msg($message, $thread_id);
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Пользователь разблокирован.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Пользователь не разблокирован.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
 ?>

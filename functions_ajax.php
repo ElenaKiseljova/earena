@@ -919,14 +919,21 @@ function earena_2_del_moderate_callback()
     }
     $where = array("ID" => $match_id);
 
-    $complaint = EArena_DB:: get_ea_match_field($match_id, 'complaint');
-    $complaint = json_decode( $complaint );
+    $complaint = EArena_DB:: get_ea_match_field($match_id, 'complaint') ?? [];
+    $complaint = json_decode( $complaint, true );
 
     $message = __('Ваша жалоба: "', 'earena_2') .
-              $complaint[$complaint_index]->content .'" - ' .
+              $complaint[$complaint_index]['content'] .'" - ' .
               __('рассмотрена Администратором', 'earena_2');
+    if (isset($complaint[$complaint_index])) {
+      unset($complaint[$complaint_index]);
+    }
 
-    unset($complaint[$complaint_index]);
+    $complaint = array_values($complaint);
+
+    if (empty($complaint)) {
+      $match_data['moderate'] = false;
+    }
 
     $match_data['complaint'] = json_encode($complaint);
 
@@ -946,21 +953,25 @@ function earena_2_del_moderate_callback()
             'content' => $message,
         ));
 
-        // ob_start();
+        ob_start();
         $arr_response['success'] = 1;
         $arr_response['complaint'] = $complaint;
         $arr_response['complaint_index'] = $complaint_index;
 
-        // earena_2_complaint_html($complaint, $match);
+        earena_2_complaint_html($complaint, $match_id);
 
-        // $arr_response['content'] = ob_get_contents();
-        // ob_end_clean();
+        $arr_response['content'] = ob_get_contents();
+        ob_end_clean();
 
         wp_send_json(json_encode($arr_response));
 
         wp_die();
     } else {
         $arr_response['success'] = 0;
+        $arr_response['result'] = $result;
+        $arr_response['complaint'] = $complaint;
+        $arr_response['complaint_index'] = $complaint_index;
+
         wp_send_json(json_encode($arr_response));
         wp_die();
     }

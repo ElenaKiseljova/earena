@@ -300,6 +300,12 @@
               dataForm.append('action', 'earena_2_sendmail');
             }
 
+            // WARNING
+            if ( formId.indexOf('warning') > -1 ) {
+              // Добавление предупреждения
+              formData['action'] = 'ea_add_yc';
+            }
+
             /***** END Actions AJAX *****/
 
             // Popup message
@@ -534,9 +540,60 @@
 
               // COMPLAINT
               if ( formId.indexOf('complaint') > -1) {
-                // Создать (0)
+                // Создать
                 if (prefix.indexOf('create') > -1) {
                   response = JSON.parse(response);
+                }
+
+                // Удалить
+                if (prefix.indexOf('delete') > -1) {
+                  response = JSON.parse(response);
+
+                  if (response.success === 1) {
+                    let complaintFormsContainer = document.querySelector('#complaint-container');
+
+                    if (complaintFormsContainer) {
+                      complaintFormsContainer.innerHTML = response.content;
+
+                      // ADMIN complait forms (reinit)
+                      let complaintAdminChatForms = complaintFormsContainer.querySelectorAll('form[id*="form-complaint-"]');
+
+                      if (complaintAdminChatForms.length > 0) {
+                        complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
+                          let attrFormComplaint = {
+                            idForm: complaintAdminChatForm.id,
+                            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+                            selectorForTemplateReplace: '#complaint-container',
+                          };
+                          window.form.init(attrFormComplaint);
+                        });
+                      }
+                    }
+
+                    console.log(response);
+
+                    return;
+                  } else {
+                    onError(response, prefix);
+
+                    return;
+                  }
+                }
+              }
+
+              // WARNING
+              if ( formId.indexOf('warning') > -1 ) {
+                response = JSON.parse(response);
+
+                // Добавление
+                if ((prefix.indexOf('add') > -1)) {
+                  if (response.success !== 1) {
+                    onError(response, prefix);
+
+                    console.log(response);
+
+                    return;
+                  }
                 }
               }
 
@@ -579,7 +636,7 @@
               }
 
               // Верификация (принять/отклонить) или
-              // Друзья (принять/отклонить/удалить)
+              // Друзья (принять/отклонить/удалить) - ПЕРЕЗАГРУЗКА
               if ( (formId.indexOf('verification') > -1 ) || formId.indexOf('friends') > -1) {
                 if ((prefix.indexOf('apply') > -1) || (prefix.indexOf('reject') > -1) || (prefix.indexOf('delete') > -1)) {
                   response = JSON.parse(response);
@@ -633,6 +690,17 @@
                 }
               }
 
+              // WARNING
+              if ( formId.indexOf('warning') > -1 ) {
+                // Добавление
+                if ((prefix.indexOf('add') > -1)) {
+                  let popupInformation = popup.querySelector('.popup__information--template');
+                  if (popupInformation) {
+                    popupInformation.innerHTML = response.content;
+                  }
+                }
+              }
+
               if (popup) {
                 // Ф-я поиска дополнительных кнопок закрытия попапов
                 window.form.additionButtonClosePopup(popup);
@@ -671,7 +739,7 @@
 
                 wrapperFormNode.appendChild(cloneTemplate);
 
-                if ((prefix.indexOf('accept') > -1) && (formId.indexOf('match') > -1)) {
+                if (((prefix.indexOf('accept') > -1) && (formId.indexOf('match') > -1)) || ((prefix.indexOf('add') > -1) && (formId.indexOf('warning') > -1))) {
                   let popupInformation = popup.querySelector('.popup__information--template');
                   if (popupInformation) {
                     popupInformation.innerHTML = response.content;

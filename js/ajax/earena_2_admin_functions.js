@@ -59,162 +59,162 @@ jQuery('document').ready(function($) {
     };
 
 //SEND RESULT
-    const adminSendMatchResult = function () {
-        // ссылка на файл AJAX  обработчик
-        var ajaxurl = ea_functions_object.url;
-        var nonce = ea_functions_object.nonce;
-
-        var files; // переменная. будет содержать данные файлов
-
-        // заполняем переменную данными, при изменении значения поля file
-        const adminUpdateFileInputValue = function () {
-//console.log(1);
-//files=null;
-//console.log(2);
-            let $fileInput = $('input[type=file]', 'body');
-            $fileInput.on('change', function () {
-                files = this.files;
-            });
-        };
-        adminUpdateFileInputValue();
-        $('body').on('match-updated', adminUpdateFileInputValue);
-//$('body').on('click', '.admin-match-results ul.menu-tab li a', adminUpdateFileInputValue);
-
-
-        //ORDINARY MATCH
-        $('body').on('click', '#send-result-match, #resend-result-match, #confirm-result-match', function (event) {
-//console.log(files);
-            var score1 = $(this).parent().find('input[name=score1]').val();
-            var score2 = $(this).parent().find('input[name=score2]').val();
-            var player = $(this).parent().find('input[name=player]').val();
-            var reply = $(this).parent().find('.ajax-reply');
-//console.log(player);
-            event.stopPropagation(); // остановка всех текущих JS событий
-            event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
-
-            if (!isInteger(score1) || !isInteger(score2)) {
-                reply.html('<span style="color:red;">' + __('Укажите счёт', 'earena_js') + '</span>');
-                return;
-            }
-            // создадим данные файлов в подходящем для отправки формате
-            var data = new FormData();
-
-            $.each(files, function (key, value) {
-                data.append(key, value);
-            });
-
-            // добавим переменную идентификатор запроса
-            data.append('action', 'ajax_match_results_and_fileload');
-            data.append('security', nonce);
-            data.append('score1', score1);
-            data.append('score2', score2);
-            data.append('player', player);
-            data.append('id', $('#send-result-match, #resend-result-match, #confirm-result-match', 'body').data('id'));
-
-
-            // AJAX запрос
-            reply.text(__('Загрузка...', 'earena_js'));
-            $('#send-result-match', 'body').text(__('Загрузка...', 'earena_js'))
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: data,
-                cache: false,
-                dataType: 'json',
-                // отключаем обработку передаваемых данных, пусть передаются как есть
-                processData: false,
-                // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-                contentType: false,
-                // функция успешного ответа сервера
-                success: function (respond, status, jqXHR) {
-                    // ОК
-                    if (respond.success) {
-                        reply.text('');
-                        $('#send-result-match', 'body').attr('id', 'resend-result-match')
-                        $('#resend-result-match', 'body').text(__('Изменить результат', 'earena_js'))
-                        $.each(respond.data, function (key, val) {
-                            reply.append('<p>' + val + '</p>');
-                        });
-                    }
-                    // error
-                    else {
-                        reply.html('<span style="color:red;">' + __('ОШИБКА: ', 'earena_js') + respond.error + '</span>');
-                    }
-                },
-                // функция ошибки ответа сервера
-                error: function (jqXHR, status, errorThrown) {
-                    reply.html('<span style="color:red;">' + __('ОШИБКА AJAX запроса: ', 'earena_js') + status + '</span>');
-                }
-
-            });
-
-        });
-
-
-//TOURNAMENT_MATCH
-        $('body').on('click', '#send-result-tournament-match, #resend-result-tournament-match, #confirm-result-tournament-match', function (event) {
-            var score1 = $(this).parent().find('input[name=score1]').val();
-            var score2 = $(this).parent().find('input[name=score2]').val();
-            var player = $(this).parent().find('input[name=player]').val();
-            var reply = $(this).parent().find('.ajax-reply');
-//console.log(player);
-            event.stopPropagation(); // остановка всех текущих JS событий
-            event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
-
-            if (!isInteger(score1) || !isInteger(score2)) return;
-
-            // создадим данные файлов в подходящем для отправки формате
-            var data = new FormData();
-            $.each(files, function (key, value) {
-                data.append(key, value);
-            });
-
-            // добавим переменную идентификатор запроса
-            data.append('action', 'ajax_tournament_match_results_and_fileload');
-            data.append('security', nonce);
-            data.append('score1', score1);
-            data.append('score2', score2);
-            data.append('player', player);
-            data.append('id', $('#send-result-tournament-match, #resend-result-tournament-match, #confirm-result-tournament-match', 'body').data('id'));
-
-            // AJAX запрос
-            reply.text(__('Загрузка...', 'earena_js'));
-            $('#send-result-tournament-match').text(__('Загрузка...', 'earena_js'))
-            $.ajax({
-                url: ajaxurl,
-                type: 'POST',
-                data: data,
-                cache: false,
-                dataType: 'json',
-                // отключаем обработку передаваемых данных, пусть передаются как есть
-                processData: false,
-                // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-                contentType: false,
-                // функция успешного ответа сервера
-                success: function (respond, status, jqXHR) {
-                    // ОК
-                    if (respond.success) {
-                        reply.text('');
-                        $('#send-result-tournament-match', 'body').attr('id', 'resend-result-tournament-match')
-                        $('#resend-result-tournament-match', 'body').text(__('Изменить результат', 'earena_js'))
-                        $.each(respond.data, function (key, val) {
-                            reply.append('<p>' + val + '</p>');
-                        });
-                    }
-                    // error
-                    else {
-                        reply.text(__('ОШИБКА: ', 'earena_js') + respond.data);
-                    }
-                },
-                // функция ошибки ответа сервера
-                error: function (jqXHR, status, errorThrown) {
-                    reply.text(__('ОШИБКА AJAX запроса: ', 'earena_js') + status);
-                }
-
-            });
-
-        });
-    };
+//     const adminSendMatchResult = function () {
+//         // ссылка на файл AJAX  обработчик
+//         var ajaxurl = ea_functions_object.url;
+//         var nonce = ea_functions_object.nonce;
+//
+//         var files; // переменная. будет содержать данные файлов
+//
+//         // заполняем переменную данными, при изменении значения поля file
+//         const adminUpdateFileInputValue = function () {
+// //console.log(1);
+// //files=null;
+// //console.log(2);
+//             let $fileInput = $('input[type=file]', 'body');
+//             $fileInput.on('change', function () {
+//                 files = this.files;
+//             });
+//         };
+//         adminUpdateFileInputValue();
+//         $('body').on('match-updated', adminUpdateFileInputValue);
+// //$('body').on('click', '.admin-match-results ul.menu-tab li a', adminUpdateFileInputValue);
+//
+//
+//         //ORDINARY MATCH
+//         $('body').on('click', '#send-result-match, #resend-result-match, #confirm-result-match', function (event) {
+// //console.log(files);
+//             var score1 = $(this).parent().find('input[name=score1]').val();
+//             var score2 = $(this).parent().find('input[name=score2]').val();
+//             var player = $(this).parent().find('input[name=player]').val();
+//             var reply = $(this).parent().find('.ajax-reply');
+// //console.log(player);
+//             event.stopPropagation(); // остановка всех текущих JS событий
+//             event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
+//
+//             if (!isInteger(score1) || !isInteger(score2)) {
+//                 reply.html('<span style="color:red;">' + __('Укажите счёт', 'earena_js') + '</span>');
+//                 return;
+//             }
+//             // создадим данные файлов в подходящем для отправки формате
+//             var data = new FormData();
+//
+//             $.each(files, function (key, value) {
+//                 data.append(key, value);
+//             });
+//
+//             // добавим переменную идентификатор запроса
+//             data.append('action', 'ajax_match_results_and_fileload');
+//             data.append('security', nonce);
+//             data.append('score1', score1);
+//             data.append('score2', score2);
+//             data.append('player', player);
+//             data.append('id', $('#send-result-match, #resend-result-match, #confirm-result-match', 'body').data('id'));
+//
+//
+//             // AJAX запрос
+//             reply.text(__('Загрузка...', 'earena_js'));
+//             $('#send-result-match', 'body').text(__('Загрузка...', 'earena_js'))
+//             $.ajax({
+//                 url: ajaxurl,
+//                 type: 'POST',
+//                 data: data,
+//                 cache: false,
+//                 dataType: 'json',
+//                 // отключаем обработку передаваемых данных, пусть передаются как есть
+//                 processData: false,
+//                 // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+//                 contentType: false,
+//                 // функция успешного ответа сервера
+//                 success: function (respond, status, jqXHR) {
+//                     // ОК
+//                     if (respond.success) {
+//                         reply.text('');
+//                         $('#send-result-match', 'body').attr('id', 'resend-result-match')
+//                         $('#resend-result-match', 'body').text(__('Изменить результат', 'earena_js'))
+//                         $.each(respond.data, function (key, val) {
+//                             reply.append('<p>' + val + '</p>');
+//                         });
+//                     }
+//                     // error
+//                     else {
+//                         reply.html('<span style="color:red;">' + __('ОШИБКА: ', 'earena_js') + respond.error + '</span>');
+//                     }
+//                 },
+//                 // функция ошибки ответа сервера
+//                 error: function (jqXHR, status, errorThrown) {
+//                     reply.html('<span style="color:red;">' + __('ОШИБКА AJAX запроса: ', 'earena_js') + status + '</span>');
+//                 }
+//
+//             });
+//
+//         });
+//
+//
+// //TOURNAMENT_MATCH
+//         $('body').on('click', '#send-result-tournament-match, #resend-result-tournament-match, #confirm-result-tournament-match', function (event) {
+//             var score1 = $(this).parent().find('input[name=score1]').val();
+//             var score2 = $(this).parent().find('input[name=score2]').val();
+//             var player = $(this).parent().find('input[name=player]').val();
+//             var reply = $(this).parent().find('.ajax-reply');
+// //console.log(player);
+//             event.stopPropagation(); // остановка всех текущих JS событий
+//             event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
+//
+//             if (!isInteger(score1) || !isInteger(score2)) return;
+//
+//             // создадим данные файлов в подходящем для отправки формате
+//             var data = new FormData();
+//             $.each(files, function (key, value) {
+//                 data.append(key, value);
+//             });
+//
+//             // добавим переменную идентификатор запроса
+//             data.append('action', 'ajax_tournament_match_results_and_fileload');
+//             data.append('security', nonce);
+//             data.append('score1', score1);
+//             data.append('score2', score2);
+//             data.append('player', player);
+//             data.append('id', $('#send-result-tournament-match, #resend-result-tournament-match, #confirm-result-tournament-match', 'body').data('id'));
+//
+//             // AJAX запрос
+//             reply.text(__('Загрузка...', 'earena_js'));
+//             $('#send-result-tournament-match').text(__('Загрузка...', 'earena_js'))
+//             $.ajax({
+//                 url: ajaxurl,
+//                 type: 'POST',
+//                 data: data,
+//                 cache: false,
+//                 dataType: 'json',
+//                 // отключаем обработку передаваемых данных, пусть передаются как есть
+//                 processData: false,
+//                 // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+//                 contentType: false,
+//                 // функция успешного ответа сервера
+//                 success: function (respond, status, jqXHR) {
+//                     // ОК
+//                     if (respond.success) {
+//                         reply.text('');
+//                         $('#send-result-tournament-match', 'body').attr('id', 'resend-result-tournament-match')
+//                         $('#resend-result-tournament-match', 'body').text(__('Изменить результат', 'earena_js'))
+//                         $.each(respond.data, function (key, val) {
+//                             reply.append('<p>' + val + '</p>');
+//                         });
+//                     }
+//                     // error
+//                     else {
+//                         reply.text(__('ОШИБКА: ', 'earena_js') + respond.data);
+//                     }
+//                 },
+//                 // функция ошибки ответа сервера
+//                 error: function (jqXHR, status, errorThrown) {
+//                     reply.text(__('ОШИБКА AJAX запроса: ', 'earena_js') + status);
+//                 }
+//
+//             });
+//
+//         });
+//     };
 
 
 //USER BLOCK

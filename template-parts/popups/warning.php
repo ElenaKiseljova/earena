@@ -18,7 +18,7 @@
     </div>
 
     <div class="popup__content popup__content--warning">
-      <form class="form form--popup" data-prefix="" id="form-warning" action="/" method="post">
+      <form class="form form--popup" data-prefix="add" id="form-warning" action="/" method="post">
         <div class="form__row">
           <div class="select select--warning">
 
@@ -44,6 +44,13 @@
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+        <input type="hidden" name="user" value="">
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="match_id" value="">
+        <input type="hidden" name="match_thread_id" value="">
+        <input type="hidden" name="tournament" value="">
+
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
@@ -63,8 +70,12 @@
   <template id="form-warning-success">
     <div class="popup__content popup__content--warning">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ссылка на стрим добавлена', 'earena_2' ); ?>
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
       </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы добавили успешно предупреждение!', 'earena_2' ); ?>
+      </div>
     </div>
   </template>
   <template id="form-warning-beforesend">
@@ -81,11 +92,11 @@
   <template id="form-warning-error">
     <div class="popup__content popup__content--warning">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ссылка на стрим не добавлена', 'earena_2' ); ?>
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
+        <?php _e( 'Вы не добавили предупреждение. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
       </div>
     </div>
   </template>

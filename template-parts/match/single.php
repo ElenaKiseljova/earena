@@ -23,16 +23,12 @@
 
   <template id="user-0">
     <?php
-      $is_reporter = (isset($match->reporter) && $match->player1 == (int)$match->reporter) ? true : false;
-
-      earena_2_chat_form_users_html( $match, $match_id, $ea_user, $is_reporter );
+      earena_2_chat_form_users_html( $match, $match_id, $match->player1 );
     ?>
   </template>
   <template id="user-1">
     <?php
-      $is_reporter = (isset($match->reporter) && $match->player2 == (int)$match->reporter) ? true : false;
-
-      earena_2_chat_form_users_html( $match, $match_id, $ea_user, $is_reporter );
+      earena_2_chat_form_users_html( $match, $match_id, $match->player2 );
     ?>
   </template>
 
@@ -40,13 +36,13 @@
     get_template_part( 'template-parts/tabs/users' );
   ?>
   <?php
-    $complaint = json_decode($match->complaint) ? json_decode($match->complaint) : [];
+    $complaint = json_decode($match->complaint, true) ? json_decode($match->complaint, true) : [];
 
     if (count($complaint) > 0) {
       ?>
         <div class="chat-page__complaint-container" id="complaint-container">
           <?php
-            earena_2_complaint_html($complaint);
+            earena_2_complaint_html($complaint, $match_id);
           ?>
         </div>
       <?php
@@ -54,8 +50,6 @@
   ?>
 <?php else: ?>
   <?php
-    $is_reporter = (isset($match->reporter) && $ea_user->ID == (int)$match->reporter) ? true : false;
-
-    earena_2_chat_form_users_html( $match, $match_id, $ea_user, $is_reporter );
+    earena_2_chat_form_users_html( $match, $match_id, $ea_user->ID );
   ?>
 <?php endif; ?>

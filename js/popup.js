@@ -44,33 +44,6 @@
 
       // Экспортируемый объект
       window.popup = {
-        userInfo : function (button = false, popup) {
-          //console.log('window.popup.userInfo', button, popup);
-          if (button) {
-            if (button.dataset.userId && button.dataset.userName) {
-              userVerificationId = button.dataset.userId;
-              userVerificationName = button.dataset.userName;
-            }
-          }
-
-          if (popup && userVerificationId && userVerificationName) {
-            popup.querySelectorAll('.user-name').forEach((userNameField, i) => {
-              if (userNameField.tagName === 'INPUT') {
-                userNameField.value = userVerificationName;
-              } else {
-                userNameField.textContent = userVerificationName;
-              }
-            });
-
-            popup.querySelectorAll('.user-id').forEach((userIdField, i) => {
-              if (userIdField.tagName === 'INPUT') {
-                userIdField.value = userVerificationId;
-              } else {
-                userIdField.textContent = userVerificationId;
-              }
-            });
-          }
-        },
         // Закрытие попапа
         closePopup : function (evt) {
           evt.preventDefault();
@@ -199,6 +172,41 @@
 
           closeButton.addEventListener('blur', function () {
             document.removeEventListener('keydown', onEnterPressClose);
+          });
+        },
+        userInfo : function (button = false, popup) {
+          //console.log('window.popup.userInfo', button, popup);
+          if (button) {
+            if (button.dataset.userId && button.dataset.userName) {
+              userVerificationId = button.dataset.userId;
+              userVerificationName = button.dataset.userName;
+            }
+          }
+
+          if (popup && userVerificationId && userVerificationName) {
+            popup.querySelectorAll('.user-name').forEach((userNameField, i) => {
+              if (userNameField.tagName === 'INPUT') {
+                userNameField.value = userVerificationName;
+              } else {
+                userNameField.textContent = userVerificationName;
+              }
+            });
+
+            popup.querySelectorAll('.user-id').forEach((userIdField, i) => {
+              if (userIdField.tagName === 'INPUT') {
+                userIdField.value = userVerificationId;
+              } else {
+                userIdField.textContent = userVerificationId;
+              }
+            });
+          }
+        },
+        setInputValue : function (container, inputNames = [], values = []) {
+          inputNames.forEach((inputName, i) => {
+            let input = container.querySelector(`input[name="${inputName}"]`);
+            if (input) {
+              input.value = values[i];
+            }
           });
         }
       };
@@ -431,11 +439,27 @@
 
         if (prefix === 'match') {
           if (typePopup === 'delete') {
-            let inputId = popupTemplateContainer.querySelector('input[name="id"]');
+            window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
+          }
+        }
 
-            if (inputId) {
-              inputId.value = button.dataset.id;
-            }
+        if (prefix === 'warning') {
+          if (typePopup === 'add') {
+            let inputValues = [
+              button.dataset.userId ? button.dataset.userId : null,
+              button.dataset.userName ? button.dataset.userName : null,
+              button.dataset.matchId ? button.dataset.matchId : null,
+              button.dataset.matchThreadId ? button.dataset.matchThreadId : null
+            ];
+
+            let inputNames = [
+              'user',
+              'username',
+              'match_id',
+              'match_thread_id'
+            ];
+
+            window.popup.setInputValue(popupTemplateContainer, inputNames, inputValues);
           }
         }
 

@@ -15,6 +15,13 @@
   &--message {
     padding-bottom: 0;
   }
+
+  &--matches,
+  &--tournaments {
+    &-profile {
+      padding-bottom: 0;
+    }
+  }
 }
 
 .section__wrapper {
@@ -30,8 +37,6 @@
   margin-bottom: 30px;
 
   &--tournaments-account-chat {
-    justify-content: flex-start;
-
     margin-bottom: 40px;
   }
 
@@ -183,6 +188,12 @@
     width: 510 / 1156 * 100%;
   }
 
+  &--tournaments-account-chat {
+    flex-grow: 1;
+
+    justify-content: flex-start;
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
 
@@ -214,7 +225,8 @@
     margin-bottom: -10px;
   }
 
-  &--messages {
+  &--messages,
+  &--tournaments-account-chat {
     align-items: flex-start;
   }
 

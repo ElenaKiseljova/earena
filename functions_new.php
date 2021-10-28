@@ -476,22 +476,32 @@
               abs($_COOKIE['ea_user_time_offset'] * 60)) : 0)) : '+0';
   }
 
-  // Колличество
-  function counter_matches()
+  /* ==============================================
+  ********  //Количество матчей
+  =============================================== */
+  function counter_matches($user_id = false)
   {
-      if (!is_user_logged_in()) {
-          return '';
+      if (!$user_id) {
+         return '';
       }
-      return EArena_DB::count_my_matches();
+
+      return EArena_DB::count_my_matches($user_id);
   }
 
-  function counter_tournaments()
+  /* ==============================================
+  ********  //Количество турниров
+  =============================================== */
+  function counter_tournaments($user_id = false)
   {
-      if (!is_user_logged_in()) {
-          return '';
+      if (!$user_id) {
+         return '';
       }
-      return EArena_DB::count_my_tournaments();
+      return EArena_DB::count_my_tournaments($user_id);
   }
+
+  /* ==============================================
+  ********  //Количество уведомлений от Админа
+  =============================================== */
 
   function counter_admin()
   {
@@ -1104,6 +1114,39 @@
       } else {
           return false;
       }
+  }
+
+  /* ==============================================
+  ********  //Турнир (single)
+  =============================================== */
+
+  function earena_2_tournament_page_data ($user, $id_tournament)
+  {
+    var_dump('iiiiiiiii', $user, $id_tournament);
+    global $tournament, $tournament_id, $icons, $ea_icons, $ea_user;
+
+    $ea_user = $user;
+    $tournament_id = $id_tournament;
+
+    if (empty($tournament_id)) {
+        wp_redirect(home_url('tournaments'));
+        exit;
+    }
+    $tournament = EArena_DB::get_ea_tournament($tournament_id);
+    if (!$tournament || (!is_ea_admin() && $tournament->status < 2)) {
+        wp_redirect(home_url('tournaments'));
+        exit;
+    }
+    if ((int)$tournament->type == 2) {
+        wp_redirect(add_query_arg('lc', $_REQUEST['tournament'], home_url('tournaments/lucky-cup/')));
+        exit;
+    } elseif ((int)$tournament->type == 3) {
+        wp_redirect(add_query_arg('cup', $_REQUEST['tournament'], home_url('tournaments/cup/')));
+        exit;
+    }
+
+    // Секция турнира
+    get_template_part( 'template-parts/tournament/single' );
   }
 
   /* ==============================================

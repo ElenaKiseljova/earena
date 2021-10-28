@@ -29,7 +29,7 @@
   <form class="filters__form" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : 'main'); ?>">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
-        <input class="filters__field filters__field--input" type="text" name="id" placeholder="<?php _e( 'ID матча', 'earena_2' ); ?>">
+        <input class="filters__field filters__field--input" type="text" name="id" placeholder="ID <?= $tournaments_page ? _e( 'турнира', 'earena_2' ) : ($matches_page ? _e( 'матча', 'earena_2' ) : ''); ?>">
         <button class="filters__button filters__button--search" type="button" name="button">
           <svg class="filters__icon" width="20" height="20">
             <use xlink:href="#icon-search"></use>
@@ -379,7 +379,7 @@
               <div class="checkbox checkbox--left">
                 <input class="visually-hidden" type="radio" name="sort" value="desc" id="sort-1">
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-1">
-                  <?php _e('Дальше', 'earena_2'); ?>
+                  <?php _e('Позже', 'earena_2'); ?>
                 </label>
               </div>
             </li>
@@ -387,7 +387,7 @@
               <div class="checkbox checkbox--left">
                 <input class="visually-hidden" type="radio" name="sort" value="asc" id="sort-2">
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-2">
-                  <?php _e('Ближе', 'earena_2'); ?>
+                  <?php _e('Раньше', 'earena_2'); ?>
                 </label>
               </div>
             </li>

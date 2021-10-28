@@ -1,7 +1,7 @@
 <?php
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_private;
-  $ea_user = $earena_2_user_private;
+  $ea_user = $earena_2_user_private ?? wp_get_current_user();
 
   $vip = $ea_user->get('vip') ?: false;
   $vip_time = $ea_user->get('vt') ?: 0;

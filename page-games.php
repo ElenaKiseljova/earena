@@ -39,15 +39,15 @@
       // С блоком фильтров отображение Матчей
       earena_2_get_section( 'matches', true, false );
     } elseif ( isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments' ) {
-      // С блоком фильтров отображение Турниров
-      earena_2_get_section( 'tournaments-public', true, false );
+      // Турниры
+      earena_2_get_section( 'tournaments' );
     } else {
       if ( function_exists( 'earena_2_get_section' ) ) {
         // Матчи
         earena_2_get_section( 'matches' );
 
         // Турниры
-        earena_2_get_section( 'tournaments-public' );
+        earena_2_get_section( 'tournaments' );
       }
 
       // Партнеры

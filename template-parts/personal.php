@@ -3,6 +3,9 @@
     Меню залогиненного пользователя
   */
 ?>
+<?php
+  $ea_user = wp_get_current_user();
+?>
 
 <div class="personal">
   <ul class="personal__list">
@@ -108,7 +111,7 @@
           </span>
 
           <span class="personal__link-count">
-            <?= counter_matches(); ?>
+            <?= counter_matches($ea_user->ID); ?>
           </span>
         </a>
       </li>
@@ -127,7 +130,7 @@
           </span>
 
           <span class="personal__link-count">
-            <?= counter_tournaments(); ?>
+            <?= counter_tournaments($ea_user->ID); ?>
           </span>
         </a>
       </li>

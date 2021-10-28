@@ -1,6 +1,6 @@
 <?php
   /*
-  Template Name: Главная
+    Template Name: Главная
   */
 ?>
 
@@ -25,29 +25,17 @@
 
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
-      // Главная
       earena_2_get_section( 'games' );
 
       earena_2_get_section( 'matches' );
 
-      earena_2_get_section( 'tournaments-public' );
-
-
-      if (!isset($_GET['type'])) {
-
-      } elseif (isset($_GET['type']) && $_GET['type'] === 'matches') {
-
-        // Старница всех матчей
-        earena_2_get_section( 'matches', true, 'tabs' );
-      } elseif (isset($_GET['type']) && $_GET['type'] === 'tournaments') {
-
-        // Страница всех турниров
-        earena_2_get_section( 'tournaments', true, 'tabs' );
-      }
+      earena_2_get_section( 'tournaments' );
     }
   ?>
-  <!-- Партнеры -->
-  <?php get_template_part( 'template-parts/partners' ); ?>
+  <?php
+    // Партнеры
+    get_template_part( 'template-parts/partners' );
+  ?>
 </main>
 
 <?php

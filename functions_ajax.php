@@ -302,7 +302,7 @@ function globalHeader()
 
     if (is_user_logged_in()) {
         $id = get_current_user_id();
-        $counterMatches = counter_matches();
+        $counterMatches = counter_matches($id);
         $counterTournaments = counter_tournaments();
         $counteArdmin = counter_admin();
 
@@ -569,6 +569,7 @@ function earena_2_get_filtered_tournaments()
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
     $per_page = isset($_POST['perpage']) ? (int)$_POST['perpage'] : 8;
     $tournaments_db_collection = [];
+    $is_profile = isset($_POST['is_profile']) ? true : false;
 
     if ($id) {
         $game = null;
@@ -616,22 +617,27 @@ function earena_2_get_filtered_tournaments()
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
             $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
         }
-        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
-            $sort = mb_strtoupper($_POST['sort']);
 
-            // ( array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID', $mode = 'old')
-            $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $per_page, $offset, $sort, 'date', $mode = 'new');
-        } else {
-          // ( array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID', $mode = 'old')
-          $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $per_page, $offset, 'DESC', 'ID', $mode = 'new');
+        if (isset($_POST['player_id'])) {
+            $dataFilter['player_id'] = $_POST['player_id'];
         }
+
+        $order = 'DESC';
+        $order_by = 'ID';
+        if (isset($_POST['sort']) && $_POST['sort'] !== "") {
+            $order = mb_strtoupper($_POST['sort']);
+            $order_by = 'date';
+        }
+
+        // ( array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID', $mode = 'old')
+        $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $per_page, $offset, $order, $order_by, $mode = 'new');
     }
     $game_tournaments_str = '';
 
     $count_tournaments_db_collection_html = '<span class="visually-hidden count_filtered_tournaments">' . $tournaments_db_collection['total'] . '</span>';
 
     foreach ($tournaments_db_collection['array'] as $tournament) {
-      $game_tournaments_str .= earena_2_show_tournament($tournament);
+      $game_tournaments_str .= earena_2_show_tournament($tournament, $is_profile);
     }
 
     echo $game_tournaments_str . $count_tournaments_db_collection_html;
@@ -643,8 +649,9 @@ function earena_2_show_tournament ($tournament, $profile = false) {
   $var_tournament = $tournament;
 
   // В шаблоне одноименная глобальная используется, поэтому переписываю ее значением из ф-и
-  global $tournament;
+  global $tournament, $is_profile;
   $tournament = $var_tournament;
+  $is_profile = $profile;
 
   get_template_part( 'template-parts/tournament/archive' );
   ?>

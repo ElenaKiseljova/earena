@@ -72,7 +72,7 @@
       <td class="table__column table__column--td table__column--user">
         <a class="table__user" href="#">
           <div class="table__user-image table__user-image--online">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/rating/rating-1.png" alt="Avatar">
+            <span><span><img src="<?php echo get_template_directory_uri(); ?>/assets/img/rating/rating-1.png" alt="Avatar"></span></span>
           </div>
           <h5 class="table__user-name">
             Cameronilliamson

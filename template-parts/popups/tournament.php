@@ -10,7 +10,7 @@
     }
   ?>
   <!-- Шаблон подставляется по открытию попапа -->
-  <template id="popup-tournament-tournament">
+  <template id="popup-tournament-registration">
     <div class="popup__header popup__header--tournament">
       <div class="tournament tournament--popup">
         <header class="tournament__header tournament__header--popup">

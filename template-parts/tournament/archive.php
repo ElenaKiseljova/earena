@@ -4,30 +4,21 @@
   */
 ?>
 <?php
-  global $games, $icons, $ea_icons, $tournament;
+  global $games, $icons, $ea_icons, $tournament, $is_profile;
+
+  if (!isset($is_profile)) {
+    $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  }
 
   if (!isset($games)) {
     $games = get_site_option('games');
   }
 
-  if (is_page(521) || earena_2_current_page( 'profile' )) {
-      $profile = true;
-  }
+  $ea_user = wp_get_current_user() ?? false;
 
-  $username = get_query_var('username');
-  if (empty($username) && is_user_logged_in()) {
-    $ea_user = wp_get_current_user();
-  } elseif ( $username == 1 ) {
-    wp_redirect(home_url());exit;
-  } elseif ( $username == 89 ) {
-    wp_redirect(home_url('matches'));exit;
-  } elseif ( $username == 88 || $username == 87 ) {
-    wp_redirect(home_url('tournaments'));exit;
-  } elseif (!empty($username)) {
-    $ea_user = get_user_by('slug',$username);
+  if ($ea_user) {
+    $ea_user_id = $ea_user->ID ?? null;
   }
-
-  $ea_user_id = $ea_user->ID ?? null;
 
   // Status
   $tournament_waiting = ($tournament->status < 2 ) ? true : false;
@@ -39,17 +30,20 @@
   $tournament_my = in_array($ea_user_id, json_decode($tournament->players, true) ?: []) ? true : false;
 ?>
 <div class="tournament">
-  <?php if ($tournament_present && ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) )): ?>
-    <a class="tournament__gotochat" href="">
-      <span class="visually-hidden">
-        <?php _e( 'В чате турнира сообщений', 'earena_2' ); ?>
-      </span>
-      1
-    </a>
-  <?php endif; ?>
-
   <a class="tournament__link <?php if ($tournament_end || $tournament_cancel) echo 'tournament__link--past'; if ($tournament_my) echo 'tournament__link--my'; ?>"
-     href="<?= earena_2_current_page( '/profile/tours/' ) ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/tournament/?tournament=' . $tournament->ID; ?>">
+     href="<?= $is_profile ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/tournament/?tournament=' . $tournament->ID; ?>">
+     <?php if ( $is_profile && $tournament_present ): ?>
+       <span class="tournament__matches">
+         <span class="visually-hidden">
+           <?php _e( 'Кол-во матчей', 'earena_2' ); ?>
+         </span>
+         <?php
+           $matches = EArena_DB::get_ea_my_tournament_matches($tournament->ID);
+
+           echo isset($matches) ? count($matches) : 0;
+         ?>
+       </span>
+     <?php endif; ?>
     <div class="tournament__top">
       <div class="tournament__image">
         <img src="<?= wp_get_attachment_url($tournament->cover1); ?>" alt="<?= $games[$tournament->game]['name']; ?>">

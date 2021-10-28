@@ -31,7 +31,7 @@
         init : function (formId, what = 'tournaments') {
           // Получение формы
           let filterForm = document.querySelector(`#${formId}`);
-          console.log(filterForm);
+
           if (filterForm) {
             let platformsSelected = window.platforms.getSelectedPlatforms();
             if (!platformsSelected) {
@@ -98,10 +98,11 @@
 
           let action = '';
           let perPage = 8;
+
           switch (what) {
             case 'matches':
               action = 'earena_2_get_filtered_matches';
-              perPage = (currentGameId === false) ? ((window.platforms.getOffset(what) === 0) ? 23 : 24) : 8;
+              perPage = (currentGameId === false) ? (((window.platforms.getOffset(what) === 0) && isProfile === false) ? 23 : 24) : 8;
               break;
             case 'tournaments':
               action = 'earena_2_get_filtered_tournaments';
@@ -121,9 +122,9 @@
             data['game'] = currentGameId;
           }
 
-          if (isProfile !== false) {
-            console.log(filterForm);
+          if (isProfile === true) {
             data['player_id'] = [filterForm.dataset.playerId];
+            data['is_profile'] = isProfile;
           }
 
           let dataForm = new FormData(filterForm);
@@ -139,7 +140,7 @@
 
           // Если в фильтрах на стр есть выбор платформ, тогда платформы пишутся оттуда
           if (!data['platform']) {
-            data['platform'] = platformsSelected.includes(-1) ? Array.from(Array(platformsArr.length).keys()).join(',') : platformsSelected.join(',');
+            data['platform'] = (platformsSelected.includes(-1) || isProfile === true || currentGameId !== false) ? Array.from(Array(platformsArr.length).keys()).join(',') : platformsSelected.join(',');
           }
 
           if (filterTimeoutLast) {

@@ -25,12 +25,14 @@
 
   <?php
     if ( function_exists( 'earena_2_get_section' ) ) {
-      // Страница всех турниров
-      earena_2_get_section( 'tournaments-public', true, 'tabs' );
+      // Турниры
+      earena_2_get_section( 'tournaments' );
     }
   ?>
-  <!-- Партнеры -->
-  <?php get_template_part( 'template-parts/partners' ); ?>
+  <?php
+    // Партнеры
+    get_template_part( 'template-parts/partners' );
+  ?>
 </main>
 
 <?php

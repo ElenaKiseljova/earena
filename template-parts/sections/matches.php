@@ -115,7 +115,7 @@
     </div>
   </section>
 <?php elseif ($is_profile_matches) : ?>
-  <section class="section section--matches" id="matches">
+  <section class="section section--matches section--matches-profile" id="matches">
     <header class="section__header">
       <h2 class="section__title section__title--matches section__title--page">
         <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
@@ -142,71 +142,6 @@
       <span></span>
     </div>
     <div id="isInViewPort"></div>
-
-    <!-- <div class="section__content">
-      <ul class="section__list">
-        <?php
-          // Записываю все матчи в глобальную переменную
-          $matches = $matches_all;
-          global $match_index;
-
-          $row_index = 1;
-
-          if ($is_matches_tab) {
-            for ($match_index=0; $match_index < count($matches); $match_index++) {
-              if ($matches[$match_index]['my'] === true) {
-                ?>
-                  <li class="section__item section__item--col-4">
-                    <?php get_template_part( 'template-parts/match/archive' ); ?>
-                  </li>
-                <?php
-                if ($row_index % 4 === 0) {
-                  $row_index = 1;
-                } else {
-                  $row_index++;
-                }
-              }
-            }
-
-            // Оставшееся (до 4 шт) заполняется пустыми карточками
-            while ( $row_index <= 4 && $row_index > 1 ) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive', 'empty' ); ?>
-                </li>
-              <?php
-              $row_index++;
-            }
-          } else {
-            // Матчи на стр других
-            // 4 - тестовое число, которое показывает количество матчей этой игровы
-            // А настоящее перебором основного реального массива потом получить надо или как-то по-другому
-            for ($match_index=0; $match_index < 4; $match_index++) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive' ); ?>
-                </li>
-              <?php
-              if ($row_index % 4 === 0) {
-                $row_index = 1;
-              } else {
-                $row_index++;
-              }
-            }
-
-            // Оставшееся (до 4 шт) заполняется пустыми карточками
-            while ( $row_index <= 4 && $row_index > 1 ) {
-              ?>
-                <li class="section__item section__item--col-4">
-                  <?php get_template_part( 'template-parts/match/archive', 'empty' ); ?>
-                </li>
-              <?php
-              $row_index++;
-            }
-          }
-        ?>
-      </ul>
-    </div> -->
   </section>
 <?php else : ?>
   <section class="section section--matches" id="matches">

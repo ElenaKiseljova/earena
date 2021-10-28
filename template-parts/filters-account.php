@@ -74,13 +74,13 @@
             <li class="select__item">
               <input class="visually-hidden" type="radio" name="sort" value="desc" id="sort-0">
               <label class="select__label" for="sort-0">
-                <?php _e( 'Дальше', 'earena_2' ); ?>
+                <?php _e( 'Позже', 'earena_2' ); ?>
               </label>
             </li>
             <li class="select__item">
               <input class="visually-hidden" type="radio" name="sort" value="asc" id="sort-1">
               <label class="select__label" for="sort-1">
-                <?php _e( 'Ближе', 'earena_2' ); ?>
+                <?php _e( 'Раньше', 'earena_2' ); ?>
               </label>
             </li>
           </ul>

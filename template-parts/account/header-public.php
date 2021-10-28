@@ -1,7 +1,7 @@
 <?php
   // Эта переменная используется в шаблонах 'public'
   global $earena_2_user_public;
-  $ea_user = $earena_2_user_public;
+  $ea_user = $earena_2_user_public ?? wp_get_current_user();
 
   $vip = $ea_user->get('vip');
   if ($vip) {

@@ -150,8 +150,9 @@
 
         // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
         let amountSpan = container.querySelectorAll(`.count_filtered_${what}`);
+
         if (amountSpan.length > 0) {
-          amount[what] = parseInt(amountSpan[amountSpan.length - 1].textContent, 10);
+          amount[what] = ( amountSpan[amountSpan.length - 1].textContent !== '') ? parseInt(amountSpan[amountSpan.length - 1].textContent, 10) : 0;
 
           if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataFiltered) === false) {
             container.innerHTML = '<li class="section__item section__item--empty">' + __('Ничего не найдено', 'earena_2') + '</li>';
@@ -336,6 +337,10 @@
 
           if (currentGameId !== false) {
             data['game'] = currentGameId;
+          }
+
+          if (isProfile === true) {
+            data['is_profile'] = isProfile;
           }
 
           $.ajax({

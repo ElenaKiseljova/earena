@@ -3,7 +3,7 @@
     <?php
       if ( function_exists( 'earena_2_get_section' ) ) {
         // Турниры
-        earena_2_get_section( 'tournaments-private', false, 'filters', 'tournaments' );
+        earena_2_get_section( 'tournaments' );
       }
     ?>
   </div>

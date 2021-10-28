@@ -501,10 +501,10 @@
   }
 
   add_action( 'template_redirect', function(){
-  if ( is_page(298) && ( !isset($_GET['wallet_action']) || '' === $_GET['wallet_action'] ) ) {
-    wp_redirect(add_query_arg('wallet_action', 'transactions'));
-    die();
-  }
+    if ( is_page(298) && ( !isset($_GET['wallet_action']) || '' === $_GET['wallet_action'] ) ) {
+      wp_redirect(add_query_arg('wallet_action', 'transactions'));
+      die();
+    }
   });
 
   // Покупка VIP
@@ -569,5 +569,39 @@
     }
 
     WC()->session->set( 'transaction', 'success' );
+  }
+
+  /*
+    Смена иконок платежных систем
+  */
+  add_filter('woocommerce_gateway_icon', 'truemisha_remove_payment_gateway_icon', 25, 2);
+
+  function truemisha_remove_payment_gateway_icon($icon_html, $id)
+  {
+
+      // можно даже добавить иконку для "Оплата при доставке"
+      //if( 'cod' == $id ) {
+      //	return '<img src="' . get_stylesheet_directory_uri() . '/icons/icon1.png">';
+      //}
+
+      if ('blockonomics' == $id) {
+          return '<img src="' . get_stylesheet_directory_uri() . '/images/bitcoin.png">';
+      }
+
+      if ('paykeeper' == $id) {
+          return '<img src="' . get_stylesheet_directory_uri() . '/images/visa_mastercard_wordpress.png">';
+      }
+
+      if ('rbspayment' == $id) {
+          return '<img src="' . get_stylesheet_directory_uri() . '/images/sber-checkout2.png" style="margin-right: 10px;"><img src="' . get_stylesheet_directory_uri() . '/images/sber-checkout1.png">';
+      }
+
+      if ('qiwi' == $id) {
+          return '<img class="qiwi-svg" src="' . get_stylesheet_directory_uri() . '/images/qiwi.svg">';
+      }
+
+
+      return $icon_html;
+
   }
 ?>

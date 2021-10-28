@@ -3,123 +3,266 @@
     Страница Турнира
   */
 ?>
+<?php
+  global $tournament, $tournament_id, $icons, $ea_icons, $ea_user;
+
+  $description = get_ea_tournament_meta ($tournament_id, 'description');
+
+  $games = get_site_option('games');
+  $tournament_name = $tournament->name;
+  add_filter('document_title_parts', function ($title) {
+      global $tournament_name;
+      $title['title'] .= ' ' . $tournament_name;
+      return $title;
+  });
+
+  if (!isset($ea_user)) {
+      $ea_user = new stdClass();
+      $ea_user->ID = 0;
+  }
+
+  $tournament_waiting = ($tournament->status < 2) ? true : false;
+  $tournament_registration = ($tournament->status >= 2 && $tournament->status < 4) ? true : false;
+  $tournament_present = ($tournament->status >= 4 && $tournament->status <= 101) ? true : false;
+  $tournament_ended = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
+  $tournament_cancel = ($tournament->status == 103) ? true : false;
+?>
 
 <section class="tournament tournament--page">
   <div class="tournament__wrapper">
     <div class="tournament__left">
-      <span class="vip vip--page">
-        vip
-      </span>
+      <?php if ($tournament->vip): ?>
+        <span class="vip vip--page">
+          vip
+        </span>
+      <?php endif; ?>
 
       <div class="tournament__image tournament__image--page" itemscope itemtype="http://schema.org/ImageObject">
         <picture class="tournament__picture">
-          <!-- <source media="(min-width: 1200px)" srcset="<?php echo get_template_directory_uri(); ?>/assets/img/tournament-page.jpg" type="image/jpg"> -->
-
-          <img itemprop="contentUrl" src="<?php echo get_template_directory_uri(); ?>/assets/img/tournament-page.jpg" alt="<?php the_title(  ); ?>">
+          <img itemprop="contentUrl" src="<?= wp_get_attachment_url($tournament->cover2); ?>" alt="<?= $tournament->name; ?>">
         </picture>
 
-        <meta itemprop="name" content="<?php the_title(  ); ?>">
+        <meta itemprop="name" content="<?= $tournament->name; ?>">
       </div>
     </div>
     <div class="tournament__right">
       <header class="tournament__header">
         <div class="platform platform--page">
           <svg class="platform__icon" width="40" height="40">
-            <use xlink:href="#icon-platform-xbox"></use>
+            <use xlink:href="#icon-platform-<?= $ea_icons['platform'][(int)$tournament->platform]; ?>"></use>
           </svg>
         </div>
         <div class="tournament__center tournament__center--page">
           <h3 class="tournament__game tournament__game--page">
-            WARZONE
+            <?= $games[$tournament->game]['name']; ?>
           </h3>
 
-          <ul class="variations variations--lock">
+          <ul class="variations <?= ($tournament->private) ? 'variations--lock' : '';?>">
             <li class="variations__item">
-              1 vs 1
+              <?php if ($tournament->team_mode > 0): ?>
+                <?= team_mode_to_string($tournament->team_mode); ?>
+              <?php else: ?>
+                <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
+              <?php endif; ?>
             </li>
           </ul>
         </div>
 
         <div class="tournament__trophy tournament__trophy--page">
-          $100 000
+          $<?= earena_2_nice_money( $tournament->prizes ); ?>
         </div>
       </header>
 
       <h1 class="tournament__name tournament__name--page">
-        <?php the_title(  ); ?>
+        <?= $tournament->name; ?>
       </h1>
 
-      <!-- Future -->
-      <div class="tournament__status tournament__status--page tournament__status--future">
-        <?php _e( 'Регистрация до', 'earena_2' ); ?> <time>25/10/2021 (13:00)</time>
-      </div>
-      <div class="tournament__info tournament__info--page">
-        <?php _e( 'Начало', 'earena_2' ); ?> <time>30/10/2021 (13:00)</time>
-      </div>
-
-      <!-- Present -->
-      <!-- <div class="tournament__status tournament__status--page tournament__status--present">
-        <?php _e( 'Проходит', 'earena_2' ); ?>
-      </div>
-      <div class="tournament__info tournament__info--page">
-        <?php _e( 'Начался', 'earena_2' ); ?> <time>30/10/2021 (13:00)</time>
-      </div> -->
-
-      <!-- Past -->
-      <!-- <div class="tournament__status tournament__status--page tournament__status--past">
-        <?php _e( 'Завершился', 'earena_2' ); ?> <time>30/10/2021 (13:00)</time>
-      </div>
-      <div class="tournament__info tournament__info--page">
-        <?php _e( 'Начался', 'earena_2' ); ?> <time>30/10/2021 (13:00)</time>
-      </div> -->
+      <?php if ($tournament_registration): ?>
+        <div class="tournament__status tournament__status--page tournament__status--future">
+          <?php _e( 'Регистрация до', 'earena_2' ); ?>
+          <?php if (!empty($tournament->end_reg_time)): ?>
+            <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->end_reg_time))); ?> (UTC<?= utc_value(); ?>)</time>
+          <?php endif; ?>
+        </div>
+        <div class="tournament__info tournament__info--page">
+          <?php _e( 'Начало', 'earena_2' ); ?>
+          <?php if (!empty($tournament->start_time)): ?>
+            <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)</time>
+          <?php endif; ?>
+        </div>
+      <?php elseif ($tournament_present) : ?>
+        <div class="tournament__status tournament__status--page tournament__status--present">
+          <?php _e( 'Проходит', 'earena_2' ); ?>
+        </div>
+        <div class="tournament__info tournament__info--page">
+          <?php _e( 'Начался', 'earena_2' ); ?>
+          <?php if (!empty($tournament->start_time)): ?>
+            <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)</time>
+          <?php endif; ?>
+        </div>
+      <?php elseif ($tournament_ended) : ?>
+        <div class="tournament__status tournament__status--page tournament__status--past">
+          <?php _e( 'Завершился', 'earena_2' ); ?>
+          <?php if (!empty($tournament->end_time)): ?>
+            <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->end_time))); ?> (UTC<?= utc_value(); ?>)</time>
+          <?php endif; ?>
+        </div>
+        <div class="tournament__info tournament__info--page">
+          <?php _e( 'Начался', 'earena_2' ); ?>
+          <?php if (!empty($tournament->start_time)): ?>
+            <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)</time>
+          <?php endif; ?>
+        </div>
+      <?php elseif ($tournament_cancel) : ?>
+        <div class="tournament__status tournament__status--page tournament__status--past">
+          <?php _e( 'Отменен', 'earena_2' ); ?>
+        </div>
+        <div class="tournament__info tournament__info--page">
+          ---
+        </div>
+      <?php elseif ($tournament_waiting): ?>
+        <div class="tournament__status tournament__status--page tournament__status--future">
+          <?php _e( 'Ожидает публикации', 'earena_2' ); ?>
+        </div>
+        <div class="tournament__info tournament__info--page">
+          ---
+        </div>
+      <?php endif; ?>
 
       <div class="players players--page">
+        <?php
+          $counter_players = count( json_decode($tournament->players, true) ?: [] );
+        ?>
         <div class="players__progress">
-          <span class="players__progress-bar" data-width="71"></span>
+          <span class="players__progress-bar" data-width="<?= ($counter_players / (int)$tournament->max_players * 100); ?>"></span>
         </div>
         <div class="players__text">
-          71/100
+          <?= $counter_players; ?>
+          /
+          <?= $tournament->max_players; ?>
         </div>
       </div>
 
-      <div class="tournament__content">
-        <?php the_content(  ); ?>
-      </div>
+      <?php if ($description): ?>
+        <div class="tournament__content">
+          <?= $description; ?>
+        </div>
+      <?php endif; ?>
 
       <footer class="tournament__bottom tournament__bottom--page">
         <div class="tournament__bottom-left tournament__bottom-left--page">
           <div class="tournament__bet tournament__bet--page">
-            $1 500
+            <?= !empty($tournament->price) ? ('$' . earena_2_nice_money( $tournament->price )) : 'Free'; ?>
           </div>
 
           <div class="tournament__id tournament__id--page">
-            ID 30204874239
+            ID <?= $tournament->ID; ?>
           </div>
         </div>
-        <!-- Future -->
-        <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="tournament">
-          <span>
-            <?php _e( 'Регистрация', 'earena_2' ); ?> ($1 500)
-          </span>
-        </button>
 
-        <!-- Present -->
-        <!-- <button class="tournament__button button button--blue openpopup" data-popup="registration" type="button" name="registration" disabled>
-          <span>
-            <?php _e( 'Проходит', 'earena_2' ); ?>
-          </span>
-        </button> -->
-        <!-- Past -->
-        <!-- <button class="tournament__button button button--gray openpopup" data-popup="registration" type="button" name="registration" disabled>
-          <span>
-            <?php _e( 'Завершен', 'earena_2' ); ?>
-          </span>
-        </button> -->
+        <?php
+          $button_data_popup = 'tournament';
+          if (!is_user_logged_in()) {
+            $button_data_popup = 'login';
+            $button_name = 'signin';
+          } elseif (is_user_logged_in() && !in_array($tournament->game, ea_my_games())) {
+            $button_name = 'noGameTour';
+          } elseif (is_user_logged_in() && !in_array($tournament->platform, ea_my_platforms($tournament->game))) {
+            $button_name = 'noPlatformTour';
+          } elseif (is_user_logged_in() && isset($ea_user) && (int)$ea_user->get('vip') < (int)$tournament->vip) {
+            $button_name = 'noVipTour';
+          } elseif ((int)$tournament->price > 0 && is_user_logged_in() && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
+            $button_name = 'no18Tour';
+          } else {
+            $button_name = 'registration';
+          }
+
+          $players = json_decode($tournament->players, true) ?: [];
+
+          if ($tournament_waiting) {
+            ?>
+              <button class="tournament__button button button--blue"
+                type="button" name="cancel" disabled>
+                <span>
+                  <?php _e( 'Ожидает публикации', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          } elseif ($tournament_registration && ((isset($ea_user) && !in_array($ea_user->ID, $players)) || !is_user_logged_in())) {
+            ?>
+              <button class="tournament__button button button--blue openpopup"
+                data-popup="<?= $button_data_popup; ?>"
+                data-id="<?= $tournament->ID; ?>"
+                data-title="<?= $tournament->name; ?>"
+                data-price="<?= $tournament->price; ?>"
+                data-private="<?= $tournament->private; ?>"
+                data-game="<?= $games[$tournament->game]['name']; ?>"
+                data-game-mode="<?= $tournament->game_mode; ?>"
+                data-team-made="<?= $tournament->team_mode > 0 ? team_mode_to_string($tournament->team_mode) : ''; ?>"
+                data-game="<?= $tournament->game; ?>.svg"
+                data-platform="<?= $tournament->platform; ?>"
+                type="button" name="<?= $button_name; ?>">
+                <span>
+                  <?php _e( 'Регистрация', 'earena_2' ); ?> (<?= !empty($tournament->price) ? ('$' . earena_2_nice_money( $tournament->price )) : 'Free'; ?>)
+                </span>
+              </button>
+            <?php
+          } elseif ($tournament_registration && isset($ea_user) && in_array($ea_user->ID, $players)) {
+            ?>
+              <button class="tournament__button button button--blue openpopup"
+                data-popup="tournament"
+                data-id="<?= $tournament->ID; ?>"
+                data-price="<?= $tournament->price; ?>"
+                type="button" name="cancel">
+                <span>
+                  <?php _e( 'Отменить регистрацию', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          } elseif ($tournament_present) {
+            ?>
+              <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                <span>
+                  <?php _e( 'Проходит', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          } elseif ($tournament_ended) {
+            ?>
+              <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                <span>
+                  <?php _e( 'Завершен', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          } elseif ($tournament_cancel) {
+            ?>
+              <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                <span>
+                  <?php _e( 'Отменен', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          }
+
+          if ($tournament_registration && is_ea_admin()) {
+            ?>
+              <button class="tournament__button tournament__button--add-player button button--blue openpopup"
+                data-popup="tournament"
+                data-id="<?= $tournament->ID; ?>"
+                type="button" name="add-player">
+                <span>
+                  <?php _e( 'Добавить игрока', 'earena_2' ); ?>
+                </span>
+              </button>
+            <?php
+          }
+        ?>
       </footer>
     </div>
 
-    <!-- Переключатели -->
     <?php
+      // Переключатели
       get_template_part( 'template-parts/toggles/tournament' );
     ?>
   </div>

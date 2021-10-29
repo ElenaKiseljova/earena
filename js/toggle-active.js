@@ -49,7 +49,7 @@
         },
 
         // Для переключения следующего эл-та по клику на предыдущий
-        multiple: function (buttonSelector, nextElementToggle = false, unActiveAnother = false, callback = false) {
+        multiple: function (buttonSelector, callback = false, unActiveAnother = false) {
           let buttons = document.querySelectorAll(buttonSelector);
 
           if (buttons.length > 0) {
@@ -62,12 +62,8 @@
 
                 button.classList.toggle('active');
 
-                if (nextElementToggle && button.nextElementSibling) {
-                  button.nextElementSibling.classList.toggle('active');
-                }
-
                 if (callback) {
-                  callback(i);
+                  callback(button, i);
                 }
               });
             });
@@ -142,16 +138,17 @@
       //                       //
 
       /* Фильтры */
-      window.toggleActive.multiple('.filters__field--select', true);
+      let toggleNextElement = function (button, index) {
+        button.nextElementSibling.classList.toggle('active');
+      };
+
+      window.toggleActive.multiple('.filters__field--select', toggleNextElement);
 
       /* Аккордеон */
-      window.toggleActive.multiple('.accordeon__button', true);
-
-      /* Табы ( платформы ) */
-      window.toggleActive.several('.tabs__button--platform');
+      window.toggleActive.multiple('.accordeon__button', toggleNextElement);
 
       /* Табы ( пользователи ) - Чат */
-      let toggleUserContent = function (index) {
+      let toggleUserContent = function (button, index) {
         let userFormContainer = document.querySelector('#container-current-user');
         let userFormTemplate = document.querySelector(`#user-${index}`);
 
@@ -179,9 +176,24 @@
       };
 
       // Вызов при загрузке страницы
-      toggleUserContent(0);
+      toggleUserContent(false, 0);
 
-      window.toggleActive.multiple('.tabs__button--users', false, true, toggleUserContent);
+      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, true);
+
+      let toggleTournamentContent = function (button, index) {
+        let tournamentTabContents = document.querySelectorAll('.toggles__content--tournament');
+
+        if (tournamentTabContents[index]) {
+          removeActiveClassElements(tournamentTabContents);
+
+          tournamentTabContents[index].classList.add('active');
+        }
+      };
+      /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
+      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, true);
+
+      /* Табы ( платформы ) */
+      window.toggleActive.several('.tabs__button--platform');
 
       /* Языки */
       let languages = document.querySelectorAll('.languages');

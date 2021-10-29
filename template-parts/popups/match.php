@@ -117,7 +117,6 @@
       </form>
     </div>
   </template>
-  <!-- Не используется -->
 
   <template id="popup-match-no-old-enough">
     <div class="popup__content popup__content--match">

@@ -362,7 +362,12 @@
             selectorClosestWrapperForm: `.popup--${prefix}`, // по умолчанию - false
           };
 
-          window.form.init(attrForm);
+          let formInitTrue = window.form.init(attrForm);
+          if (formInitTrue === false) {
+            // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
+            // если формы нет в шаблоне
+            window.form.additionButtonClosePopup(popup);
+          }
         }
 
         // Регулировка высоты попапа

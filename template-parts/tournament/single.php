@@ -69,7 +69,7 @@
         </div>
 
         <div class="tournament__trophy tournament__trophy--page">
-          $<?= earena_2_nice_money( $tournament->prizes ); ?>
+          $<?= earena_2_nice_money( max($tournament->prize, $tournament->garant) ); ?>
         </div>
       </header>
 
@@ -143,11 +143,47 @@
         </div>
       </div>
 
-      <?php if ($description): ?>
-        <div class="tournament__content">
-          <?= $description; ?>
-        </div>
-      <?php endif; ?>
+      <div class="tournament__content">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <?php _e('Регламент турнира', 'earena'); ?>
+              </td>
+              <td>
+                <?php if ($tournament->reglament == 'r1'): ?>
+                  <?= __('1 круг — матч с каждым игроком', 'earena'); ?>
+                <?php elseif ($tournament->reglament == 'r2') : ?>
+                  <?= __('2 круга — матч с каждым игроком', 'earena'); ?>
+                <?php else: ?>
+                  ???
+                <?php endif; ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php _e('Длительность раунда', 'earena'); ?>
+              </td>
+              <td>
+                <?php if (texttotime($tournament->round_time) >= 86400): ?>
+                  <?= pluralize(date('d', texttotime($tournament->round_time)) - 1/*$kostyl*/, __('день', 'earena'), __('дня', 'earena'), __('дней', 'earena')) . ', '; ?>
+                <?php elseif (texttotime($tournament->round_time) >= 3600): ?>
+                  <?= pluralize(date('H', texttotime($tournament->round_time)), __('час', 'earena'), __('часа', 'earena'), __('часов', 'earena')) . ', '; ?>
+                <?php endif; ?>
+
+                <?= pluralize(date('i', texttotime($tournament->round_time)), __('минута', 'earena'), __('минуты', 'earena'), __('минут', 'earena')); ?>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <?php if ($description): ?>
+          <p>
+            <?= $description; ?>
+          </p>
+        <?php endif; ?>
+      </div>
+
 
       <footer class="tournament__bottom tournament__bottom--page">
         <div class="tournament__bottom-left tournament__bottom-left--page">
@@ -165,14 +201,12 @@
           if (!is_user_logged_in()) {
             $button_data_popup = 'login';
             $button_name = 'signin';
-          } elseif (is_user_logged_in() && !in_array($tournament->game, ea_my_games())) {
-            $button_name = 'noGameTour';
-          } elseif (is_user_logged_in() && !in_array($tournament->platform, ea_my_platforms($tournament->game))) {
-            $button_name = 'noPlatformTour';
-          } elseif (is_user_logged_in() && isset($ea_user) && (int)$ea_user->get('vip') < (int)$tournament->vip) {
-            $button_name = 'noVipTour';
+          } elseif (is_user_logged_in() && (!in_array($tournament->platform, ea_my_platforms($tournament->game)) || !in_array($tournament->game, ea_my_games()))) {
+            $button_name = 'no-game-or-platform';
+          } elseif (is_user_logged_in() && isset($ea_user) && ((int)$ea_user->get('vip') < (int)$tournament->vip)) {
+            $button_name = 'no-vip';
           } elseif ((int)$tournament->price > 0 && is_user_logged_in() && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
-            $button_name = 'no18Tour';
+            $button_name = 'no-old-enough';
           } else {
             $button_name = 'registration';
           }

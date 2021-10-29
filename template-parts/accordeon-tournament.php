@@ -3,6 +3,15 @@
     Аккордеон (стр Тура)
   */
 ?>
+<?php
+  global $tournament, $tournament_id, $icons, $ea_icons, $ea_user;
+
+  // $tournament_waiting = ($tournament->status < 2) ? true : false;
+  // $tournament_registration = ($tournament->status >= 2 && $tournament->status < 4) ? true : false;
+  // $tournament_present = ($tournament->status >= 4 && $tournament->status <= 101) ? true : false;
+  // $tournament_ended = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
+  // $tournament_cancel = ($tournament->status == 103) ? true : false;
+?>
 
 <div class="accordeon accordeon--tournament">
   <!-- Future -->

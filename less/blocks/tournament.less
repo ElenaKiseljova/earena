@@ -98,7 +98,9 @@
 
   border-bottom: 1px solid #colors[dark_light_2];
 
-  .wp-block-table {
+  .wp-block-table,
+  table {
+    .w100();
     .caption();
 
     padding-bottom: 12px;
@@ -111,6 +113,7 @@
 
       &:nth-of-type(even) {
         color: #colors[text_black];
+        text-align: right;
       }
     }
 
@@ -130,6 +133,10 @@
 
   p + p {
     margin-bottom: 10px;
+  }
+
+  a {
+    color: #colors[link];
   }
 }
 
@@ -207,6 +214,20 @@
   height: 170px;
 
   padding: 10px 0;
+}
+
+.tournament__lables {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  z-index: 1;
+
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .tournament__image {

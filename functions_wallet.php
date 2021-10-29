@@ -571,6 +571,61 @@
     WC()->session->set( 'transaction', 'success' );
   }
 
+  /* ==============================================
+  ********  //Всякий кастомайз и полезности
+  =============================================== */
+  global $icons, $ea_icons;
+  $games = get_site_option('games');
+  $icons = ['xbox-one', 'xbox-x', 'ps4', 'ps5', 'desk', 'mob', 'xbox-one', 'xbox-x', 'ps4', 'ps5', 'desk', 'mob'];
+
+  //Автоматическое присвоение заказам статуса «Выполнен» https://misha.agency/woocommerce/avtovypolnenie-zakazov.html
+  add_filter('woocommerce_order_item_needs_processing', 'filter_function_name_6173', 10, 3);
+  function filter_function_name_6173($condition, $product, $id)
+  {
+      if ($product->get_id() == 10) {
+          return false;
+      }
+      return $condition;
+  }
+
+  add_filter('gettext', 'ea_translate_text');
+  add_filter('ngettext', 'ea_translate_text');
+  function ea_translate_text($translated)
+  {
+      $translated = str_ireplace('Подытог', 'Сумма', $translated);
+      return $translated;
+  }
+
+  add_filter('gettext_woo-wallet', 'filter_function_name_753', 10, 3);
+  function filter_function_name_753($translation, $text, $domain)
+  {
+      if ($text == 'Wallet credit through purchase #') {
+          return __('Пополнение счёта через кассу #', 'earena');
+      }
+      return $translation;
+  }
+
+  add_filter('gettext', 'ea_custom_btc_button_text', 20, 3);
+  function ea_custom_btc_button_text($translated_text, $text, $domain)
+  {
+      if ($translated_text == 'Платите с биткоин') {
+          $translated_text = __('Перейти к оплате', 'earena');
+      }
+      return $translated_text;
+  }
+
+  add_filter('woocommerce_order_button_text', 'truemisha_order_button_text');
+  function truemisha_order_button_text($button_text)
+  {
+      return __('Перейти к оплате', 'earena');
+  }
+
+  add_filter('wc_price', 'filter_function_name_928', 10, 5);
+  function filter_function_name_928($return, $price, $args, $unformatted_price, $original_price)
+  {
+      return $return . ' <span class="ef-rub-price">(' . $price * (float)get_site_option('ea_dollar_value') . ' RUB)</span>';
+  }
+
   /*
     Смена иконок платежных систем
   */

@@ -30,8 +30,19 @@
   $tournament_my = in_array($ea_user_id, json_decode($tournament->players, true) ?: []) ? true : false;
 ?>
 <div class="tournament">
+  <?php
+    if (((int)$tournament->type == 2) && !$is_profile) {
+      $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
+    } elseif (((int)$tournament->type == 3) && !$is_profile) {
+      $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
+    } elseif ($is_profile) {
+      $tournament_url = '/profile/tours/tour/?tournament=' . $tournament->ID;
+    } else {
+      $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;
+    }
+  ?>
   <a class="tournament__link <?php if ($tournament_end || $tournament_cancel) echo 'tournament__link--past'; if ($tournament_my) echo 'tournament__link--my'; ?>"
-     href="<?= $is_profile ? '/profile/tours/tour/?tournament=' . $tournament->ID : '/tournaments/tournament/?tournament=' . $tournament->ID; ?>">
+     href="<?= $tournament_url; ?>">
      <?php if ( $is_profile && $tournament_present ): ?>
        <span class="tournament__matches">
          <span class="visually-hidden">
@@ -48,12 +59,18 @@
       <div class="tournament__image">
         <img src="<?= wp_get_attachment_url($tournament->cover1); ?>" alt="<?= $games[$tournament->game]['name']; ?>">
       </div>
+      <div class="tournament__lables">
+        <?php if ( $tournament->verification ): ?>
+          <span class="verify verify--true verify--tournament">
+          </span>
+        <?php endif; ?>
 
-      <?php if ( $tournament->vip ): ?>
-        <span class="vip">
-          vip
-        </span>
-      <?php endif; ?>
+        <?php if ( $tournament->vip ): ?>
+          <span class="vip vip--tournament">
+            vip
+          </span>
+        <?php endif; ?>
+      </div>
 
       <div class="tournament__top-content">
         <?php if ( $tournament_end && !empty($tournament->winner ) ): ?>

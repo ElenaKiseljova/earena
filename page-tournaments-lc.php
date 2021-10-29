@@ -1,16 +1,15 @@
 <?php
   /*
-    Template Name: Турниры (Турнир)
+    Template Name: Турниры (Lucky CUP)
   */
 ?>
 <?php
   $ea_user = is_user_logged_in() ? wp_get_current_user() : null;
-  $tournament_id = !empty($_GET['tournament']) ? sanitize_text_field($_GET['tournament']) : 0;
-  $trn_name = EArena_DB::get_ea_tournament_field( $tournament_id, 'name' )?:'Турнир';
-
+  $lc_id = !empty($_REQUEST['lc']) ? sanitize_text_field($_REQUEST['lc']) : 0;
+  $lc_name = EArena_DB::get_ea_tournament_field( $lc_id, 'name' )?:'Lucky Cup';
   add_filter( 'document_title_parts', function ( $title ){
-    global $trn_name;
-    $title['title'] = $trn_name;
+    global $lc_name;
+    $title['title'] = $lc_name;
     return $title;
   });
 

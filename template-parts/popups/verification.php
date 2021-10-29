@@ -1,4 +1,4 @@
-<!-- Для переключения состояния - добавляется active класс  -->
+
 <div class="popup popup--verification">
   <div class="popup__template popup__template--verification" id="verification-popup">
     <!-- Шаблон подставляется по открытию попапа -->

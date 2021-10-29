@@ -58,7 +58,7 @@
   background-color: #colors[dark_light];
 
   &--rating {
-    padding: 10px 29px 13px;
+    padding: 10px 29px 16px;
   }
 }
 
@@ -89,6 +89,12 @@
 
     &:not(:last-of-type) {
       border-bottom: 1px solid #colors[dark_light_2];
+    }
+  }
+
+  &--rating {
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
     }
   }
 }
@@ -192,6 +198,9 @@
 
     justify-content: center;
     align-items: center;
+
+    width: 30px;
+    height: 30px;
 
     border-radius: 50%;
     overflow: hidden;

@@ -106,6 +106,54 @@
     </div>
   </template>
 
+  <template id="popup-tournament-no-old-enough">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Нет доступа', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          _e( 'Принимать участие в играх на деньги могут только игроки, которым исполнилось 18 лет. Вы можете принять участие только в бесплатных играх.', 'earena_2' );
+        ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="popup-tournament-no-game-or-platform">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Ошибка регистрации', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не можете принять участие в этом турнире, так как у вас нет данной игры и/или платформы. <br>Вы можете добавить ее в профиле.', 'earena_2' ); ?>
+      </div>
+
+      <a class="popup__go-to-button button button--gray" href="<?= bloginfo( 'url' ) . '/profile'?>">
+        <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
+      </a>
+    </div>
+  </template>
+  <template id="popup-tournament-no-vip">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Ошибка регистрации', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не можете принять участие в этом турнире, так как у вас нет VIP-статуса. <br>Вы можете купить его в Кошельке.', 'earena_2' ); ?>
+      </div>
+
+      <a class="popup__go-to-button button button--gray" href="<?= bloginfo( 'url' ) . '/wallet/?wallet_action=add#vip'; ?>">
+        <?php _e( 'Перейти в Кошелёк', 'earena_2' ); ?>
+      </a>
+    </div>
+  </template>
+
   <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
   <template id="form-tournament-success">
     <div class="popup__content popup__content--tournament">
@@ -116,23 +164,6 @@
       <div class="popup__information popup__information--template">
         <?php _e( 'Вы успешно зарегистрировались в турнир', 'earena_2' ); ?>
         Championship 2020 Season 2 Premium.
-      </div>
-
-      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
-        <?php _e( 'Закрыть', 'earena_2' ); ?>
-      </button>
-    </div>
-  </template>
-  <template id="form-tournament-success-no-old-enough">
-    <div class="popup__content popup__content--tournament">
-      <h2 class="popup__title popup__title--template">
-        <?php _e( 'Нет доступа', 'earena_2' ); ?>
-      </h2>
-
-      <div class="popup__information popup__information--template">
-        <?php
-          _e( 'Принимать участие в играх на деньги могут только игроки, которым исполнилось 18 лет. Вы можете принять участие только в бесплатных играх.', 'earena_2' );
-        ?>
       </div>
 
       <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
@@ -168,31 +199,6 @@
       <div class="popup__information popup__information--template">
         <?php _e( 'Ваша заявка отправляется...', 'earena_2' ); ?>
       </div>
-    </div>
-  </template>
-  <template id="form-tournament-error">
-    <div class="popup__content popup__content--tournament">
-      <h2 class="popup__title popup__title--template">
-        <?php _e( 'Ошибка регистрации', 'earena_2' ); ?>
-      </h2>
-
-      <div class="popup__information popup__information--template">
-        <?php _e( 'Вы не можете принять участие в этом турнире, так как у вас нет данной игры и/или платформы. <br>Вы можете добавить ее в профиле.', 'earena_2' ); ?>
-      </div>
-
-      <a class="popup__go-to-button button button--gray" href="#">
-        <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
-      </a>
-
-      <button class="popup__close popup__close--cross button button--popup-close">
-        <span class="visually-hidden">
-          <?php _e( 'Закрыть', 'earena_2' ); ?>
-        </span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15.4844 4.51562L4.51562 15.4844" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M15.4844 15.4844L4.51562 4.51562" stroke="#CFD8E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
     </div>
   </template>
 </div>

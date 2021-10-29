@@ -72,6 +72,10 @@
                 window.form.validateForm(attr.idForm);
               }
             });
+
+            return true;
+          } else {
+            return false;
           }
         },
         // Ф-я отправки формы

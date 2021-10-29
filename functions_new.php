@@ -1137,11 +1137,11 @@
         exit;
     }
     if ((int)$tournament->type == 2) {
-        wp_redirect(add_query_arg('lc', $_REQUEST['tournament'], home_url('tournaments/lucky-cup/')));
-        exit;
+        // wp_redirect(add_query_arg('lc', $_REQUEST['tournament'], home_url('tournaments/lucky-cup/')));
+        // exit;
     } elseif ((int)$tournament->type == 3) {
-        wp_redirect(add_query_arg('cup', $_REQUEST['tournament'], home_url('tournaments/cup/')));
-        exit;
+        // wp_redirect(add_query_arg('cup', $_REQUEST['tournament'], home_url('tournaments/cup/')));
+        // exit;
     }
 
     // Секция турнира

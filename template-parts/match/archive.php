@@ -49,12 +49,13 @@
       </h3>
       <ul class="variations <?php if ($match->private == '1') echo 'variations--lock'; ?>">
         <li class="variations__item">
-          <?php if ($match->team_mode > 0): ?>
-            <?= team_mode_to_string($match->team_mode); ?>
-          <?php else : ?>
-            <?= $match->game_mode; ?> vs <?= $match->game_mode; ?>
-          <?php endif; ?>
+          <?= $match->game_mode; ?> vs <?= $match->game_mode; ?>
         </li>
+        <?php if ($match->team_mode > 0): ?>
+          <li class="variations__item">
+            <?= team_mode_to_string($match->team_mode); ?>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
 
@@ -167,11 +168,8 @@
                 data-id="<?= $match->ID; ?>"
                 data-private="<?= $match->private; ?>"
                 data-game="<?= $games[$match->game]['name']; ?>"
-                <?php if ($match->team_mode > 0): ?>
-                  data-team="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
-                <?php else : ?>
-                  data-mode="<?= $match->game_mode . ' vs ' . $match->game_mode ?>"
-                <?php endif; ?>
+                data-team-mode="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
+                data-game-mode="<?= $match->game_mode . ' vs ' . $match->game_mode ?>"
                 data-platform="<?= $ea_icons['platform'][$match->platform]; ?>"
                 data-balance="<?= balance(); ?>"
                 data-bet="<?= $match->bet; ?>"

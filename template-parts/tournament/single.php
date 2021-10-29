@@ -31,11 +31,17 @@
 <section class="tournament tournament--page">
   <div class="tournament__wrapper">
     <div class="tournament__left">
-      <?php if ($tournament->vip): ?>
-        <span class="vip vip--page">
-          vip
-        </span>
-      <?php endif; ?>
+      <div class="tournament__labels tournament__labels--tournament-page">
+        <?php if ( $tournament->verification ): ?>
+          <span class="verify verify--true verify--tournament-page"></span>
+        <?php endif; ?>
+
+        <?php if ( $tournament->vip ): ?>
+          <span class="vip vip--tournament-page">
+            vip
+          </span>
+        <?php endif; ?>
+      </div>
 
       <div class="tournament__image tournament__image--page" itemscope itemtype="http://schema.org/ImageObject">
         <picture class="tournament__picture">
@@ -59,12 +65,13 @@
 
           <ul class="variations <?= ($tournament->private) ? 'variations--lock' : '';?>">
             <li class="variations__item">
-              <?php if ($tournament->team_mode > 0): ?>
-                <?= team_mode_to_string($tournament->team_mode); ?>
-              <?php else: ?>
-                <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
-              <?php endif; ?>
+              <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
             </li>
+            <?php if ($tournament->team_mode > 0): ?>
+              <li class="variations__item">
+                <?= team_mode_to_string($tournament->team_mode); ?>
+              </li>
+            <?php endif; ?>
           </ul>
         </div>
 
@@ -208,7 +215,7 @@
           } elseif ((int)$tournament->price > 0 && is_user_logged_in() && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
             $button_name = 'no-old-enough';
           } else {
-            $button_name = 'registration';
+            $button_name = 'join';
           }
 
           $players = json_decode($tournament->players, true) ?: [];
@@ -230,9 +237,11 @@
                 data-title="<?= $tournament->name; ?>"
                 data-price="<?= $tournament->price; ?>"
                 data-private="<?= $tournament->private; ?>"
+                data-verification="<?= $tournament->verification; ?>"
+                data-vip="<?= $tournament->vip; ?>"
                 data-game="<?= $games[$tournament->game]['name']; ?>"
                 data-game-mode="<?= $tournament->game_mode; ?>"
-                data-team-made="<?= $tournament->team_mode > 0 ? team_mode_to_string($tournament->team_mode) : ''; ?>"
+                data-team-mode="<?= $tournament->team_mode > 0 ? team_mode_to_string($tournament->team_mode) : ''; ?>"
                 data-game="<?= $tournament->game; ?>.svg"
                 data-platform="<?= $tournament->platform; ?>"
                 type="button" name="<?= $button_name; ?>">

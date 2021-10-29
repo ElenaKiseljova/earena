@@ -233,7 +233,7 @@
           // Заменяем содержимое контейнера
           popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
         } else if (popupTemplateContainer && (prefix === 'match') && (typePopup === 'join')) {
-          let getTemplateJoinFormHTML = function () {
+          let getTemplateJoinMatchFormHTML = function () {
             let hiddenInputsHTML = `
               <input type="hidden" name="id" value="${button.dataset.id}">
               <input type="hidden" name="security" value="${button.dataset.security}">
@@ -263,17 +263,28 @@
               </a>
             `;
 
+            let teamModeHTML = `
+              <li class="variations__item">
+                ${button.dataset.teamMode}
+              </li>
+            `;
+
+            let variationsHTML = `
+              <ul class="variations ${((button.dataset.private == '1') ? 'variations--lock' : '')}">
+                <li class="variations__item">
+                  ${button.dataset.gameMode}
+                </li>
+                ${((button.dataset.teamMode !== '') ? teamModeHTML : '')}
+              </ul>
+            `;
+
             let templateJoinFormHTML = `
               <div class="match match--popup">
                 <div class="match__top-left">
                   <h3 class="match__game">
                     ${button.dataset.game}
                   </h3>
-                  <ul class="variations variations--lock">
-                    <li class="variations__item">
-                      ${button.dataset.team ? button.dataset.team : button.dataset.mode}
-                    </li>
-                  </ul>
+                  ${variationsHTML}
                 </div>
 
                 <div class="platform platform--match">
@@ -336,7 +347,7 @@
             return templateJoinFormHTML;
           };
 
-          popupTemplateContainer.innerHTML = getTemplateJoinFormHTML();
+          popupTemplateContainer.innerHTML = getTemplateJoinMatchFormHTML();
         }
 
         // Проверка : Заданы ли внутренние кнопки

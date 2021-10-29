@@ -106,7 +106,7 @@
           <!-- Подстановка содержимого из шаблона -->
         </ul>
       </div>
-      <div class="preloader">
+      <div class="preloader preloader--tournaments">
         <span></span>
         <span></span>
         <span></span>

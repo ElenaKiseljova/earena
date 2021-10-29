@@ -1012,3 +1012,30 @@ function earena_2_del_moderate_callback()
         wp_die();
     }
 }
+
+/* ==============================================
+********  //Присоединиться к турниру
+=============================================== */
+add_action('wp_ajax_join_tournament', 'join_tournament_callback');
+function join_tournament_callback()
+{
+    check_ajax_referer('ea_functions_nonce', 'security');
+    $pwd = isset($_POST['tournament_pass']) ? $_POST['tournament_pass'] : '';
+    $add = add_ea_tournament_player($_POST['id'], get_current_user_id(), $pwd);
+    $arr_response['content'] = $add;
+    wp_send_json(json_encode($arr_response));
+    wp_die();
+}
+
+/* ==============================================
+********  //Покинуть турнир
+=============================================== */
+add_action('wp_ajax_leave_tournament', 'leave_tournament_callback');
+function leave_tournament_callback()
+{
+    check_ajax_referer('ea_functions_nonce', 'security');
+    $add = del_ea_tournament_player($_POST['id'], get_current_user_id());
+    $arr_response['content'] = $add;
+    wp_send_json(json_encode($arr_response));
+    wp_die();
+}

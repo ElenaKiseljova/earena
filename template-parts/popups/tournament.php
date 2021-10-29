@@ -1,4 +1,6 @@
-
+<?php
+  global $tournament, $tournament_id, $games, $icons, $ea_icons, $ea_user;
+?>
 <div class="popup popup--tournament">
   <div class="popup__template popup__template--tournament" id="tournament-popup">
     <!-- Шаблон подставляется по открытию попапа -->
@@ -10,34 +12,47 @@
     }
   ?>
   <!-- Шаблон подставляется по открытию попапа -->
-  <template id="popup-tournament-registration">
+  <template id="popup-tournament-join">
     <div class="popup__header popup__header--tournament">
       <div class="tournament tournament--popup">
         <header class="tournament__header tournament__header--popup">
           <div class="tournament__center tournament__center--popup">
             <h3 class="tournament__game tournament__game--popup">
-              WARZONE
+              <?= $games[$tournament->game]['name']; ?>
             </h3>
 
             <ul class="variations variations--lock">
               <li class="variations__item">
-                1 vs 1
+                <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
               </li>
+              <?php if ($tournament->team_mode > 0): ?>
+                <li class="variations__item">
+                  <?= team_mode_to_string($tournament->team_mode); ?>
+                </li>
+              <?php endif; ?>
             </ul>
           </div>
 
-          <span class="vip vip--popup">
-            vip
-          </span>
+          <div class="tournament__labels tournament__labels--tournament-popup">
+            <?php if ( $tournament->verification ): ?>
+              <span class="verify verify--true verify--tournament-popup"></span>
+            <?php endif; ?>
 
-          <div class="platform platform--popup">
+            <?php if ( $tournament->vip ): ?>
+              <span class="vip vip--tournament-popup">
+                vip
+              </span>
+            <?php endif; ?>
+          </div>
+
+          <div class="platform platform--tournament-popup">
             <svg class="platform__icon" width="40" height="40">
-              <use xlink:href="#icon-platform-xbox"></use>
+              <use xlink:href="#icon-platform-<?= $ea_icons['platform'][(int)$tournament->platform]; ?>"></use>
             </svg>
           </div>
         </header>
         <h2 class="tournament__name tournament__name--popup">
-          <?php the_title(  ); ?>
+          <?= $tournament->name; ?>
         </h2>
 
         <div class="pay">
@@ -48,8 +63,8 @@
                   <?php _e( 'Доступный баланс:', 'earena_2' ); ?>
                 </td>
                 <!-- Если недостаточно/достаточно средств +/- pay__column--red -->
-                <td class="pay__column pay__column--right">
-                  $1 300
+                <td class="pay__column pay__column--right <?= (balance() < (!empty($tournament->price) ? $tournament->price : 0)) ? 'pay__column--red' : ''; ?>">
+                  $<?= earena_2_nice_money(balance()); ?>
                 </td>
               </tr>
               <tr class="pay__row">
@@ -57,40 +72,42 @@
                   <?php _e( 'Со счета будет списано:', 'earena_2' ); ?>
                 </td>
                 <td class="pay__column pay__column--right">
-                  $300
+                  $<?= !empty($tournament->price) ? $tournament->price : 0; ?>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <!-- Если недостаточно средств -->
-          <!-- <p class="pay__text pay__text--red">
-            <?php _e( 'На вашем счете недостаточно средств', 'earena_2' ); ?>
-          </p>
+          <?php if (balance() < (!empty($tournament->price) ? $tournament->price : 0)): ?>
+            <p class="pay__text pay__text--red">
+              <?php _e( 'На вашем счете недостаточно средств', 'earena_2' ); ?>
+            </p>
 
-          <a class="pay__button button button--blue" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
-            <span>
-              <?php _e( 'Пополнить счет', 'earena_2' ); ?>
-            </span>
-          </a> -->
-          <!-- ---- -->
+            <a class="pay__button button button--blue" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
+              <span>
+                <?php _e( 'Пополнить счет', 'earena_2' ); ?>
+              </span>
+            </a>
+          <?php endif; ?>
         </div>
       </div>
     </div>
 
     <div class="popup__content popup__content--tournament">
-      <form class="form form--popup" data-prefix="" id="form-tournament" action="/" method="post">
-        <div class="form__row">
-          <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
-        </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+      <form class="form form--popup" data-prefix="join" id="form-tournament" action="/" method="post">
+        <?php if ($tournament->private): ?>
+          <div class="form__row">
+            <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
+          </div>
+          <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-        <p class="form__text">
-          <?php _e( 'Это приватный турнир. Введите пароль.', 'earena_2' ); ?>
-        </p>
+          <p class="form__text">
+            <?php _e( 'Это приватный турнир. Введите пароль.', 'earena_2' ); ?>
+          </p>
+        <?php endif; ?>
 
         <div class="form__buttons">
-          <button class="form__submit form__submit--buttons button button--gray" type="button" name="tournament-cancel">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close" type="button" name="cancel">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
@@ -99,6 +116,35 @@
           <button class="form__submit form__submit--buttons button button--blue" type="submit" name="tournament-submit">
             <span>
               <?php _e( 'Регистрация', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-tournament-cancel">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          $money_value = '$50';
+
+          echo sprintf( __( 'Вы действительно хотите отменить участие в турнире? <br>Средства в размере %s будут возвращены обратно на ваш счет.', 'earena_2' ), $money_value );
+        ?>
+      </div>
+
+      <form class="form form--popup" data-prefix="" id="form-tournament" action="/" method="post">
+        <div class="form__buttons">
+          <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--red" type="submit" name="tournament-submit">
+            <span>
+              <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
           </button>
         </div>
@@ -155,7 +201,7 @@
   </template>
 
   <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
-  <template id="form-tournament-success">
+  <template id="form-tournament-success-join">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Регистрация', 'earena_2' ); ?>
@@ -171,7 +217,7 @@
       </button>
     </div>
   </template>
-  <template id="form-tournament-cancel">
+  <template id="form-tournament-success-cancel">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
@@ -190,6 +236,38 @@
       </button>
     </div>
   </template>
+
+  <template id="form-tournament-error">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Регистрация', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Что-то пошло не так... <br>Пожалуйста, повторите попытку позже.', 'earena_2' );?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-tournament-error-cancel">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Что-то пошло не так... <br>Пожалуйста, повторите попытку позже.', 'earena_2' );?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+
   <template id="form-tournament-beforesend">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">

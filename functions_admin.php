@@ -300,7 +300,7 @@
   }
 
   /* ==============================================
-  ********  //Желтые карточки -> Предупреждения
+  ********  //Желтые карточки -> Предупреждения (добавить)
   =============================================== */
   add_action('wp_ajax_ea_add_yc', 'ea_add_yc_callback');
   function ea_add_yc_callback()
@@ -351,7 +351,9 @@
           wp_die();
       }
   }
-
+  /* ==============================================
+  ********  //Желтые карточки -> Предупреждения (удалить)
+  =============================================== */
   add_action('wp_ajax_ea_del_yc', 'ea_del_yc_callback');
   function ea_del_yc_callback()
   {
@@ -386,7 +388,7 @@
 
 
   /* ==============================================
-  ********  //Блокировка пользователя
+  ********  //Блокировка пользователя (добавить)
   =============================================== */
   add_action('wp_ajax_ea_add_blocked', 'ea_add_blocked_callback');
   function ea_add_blocked_callback()
@@ -411,6 +413,9 @@
       }
   }
 
+  /* ==============================================
+  ********  //Блокировка пользователя (удалить)
+  =============================================== */
   add_action('wp_ajax_ea_del_blocked', 'ea_del_blocked_callback');
   function ea_del_blocked_callback()
   {
@@ -432,5 +437,27 @@
           wp_send_json(json_encode($arr_response));
           wp_die();
       }
+  }
+
+  /* ==============================================
+  ********  //Добавить игрока к турниру
+  =============================================== */
+  add_action('wp_ajax_add_player_tournament', 'add_player_tournament_callback');
+  function add_player_tournament_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $player = $_POST['user_id'];
+      if (is_email($player)) {
+          if (email_exists($player)) {
+              $add = add_ea_tournament_player($_POST['id'], email_exists($player));
+              $arr_response['content'] = $add;
+          } else {
+              $arr_response['content'] = __('Такой адрес электронной почты не зарегистрирован');
+          }
+      } else {
+          $arr_response['content'] = __('Емейл не похож на емейл');
+      }
+      wp_send_json(json_encode($arr_response));
+      wp_die();
   }
 ?>

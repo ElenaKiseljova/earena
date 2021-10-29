@@ -7,7 +7,7 @@
 <?php
   global $tournament, $tournament_id, $icons, $ea_icons, $ea_user;
 
-  $tournament_have_tours = ($tournament->status >= 5) ? true : false;
+  $tours = json_decode($tournament->tours, true) ?: [];
 ?>
 
 <div class="toggles toggles--tournament">
@@ -16,7 +16,7 @@
       <button class="toggles__item toggles__item--tournament active" type="button" name="toggle">
         <?php _e( 'Сведения', 'earena_2' ); ?>
       </button>
-      <?php if ($tournament_have_tours): ?>
+      <?php if (!empty($tours)): ?>
         <button class="toggles__item toggles__item--tournament" type="button" name="toggle">
           <?php _e( 'Туры', 'earena_2' ); ?>
         </button>
@@ -60,7 +60,7 @@
       ?>
     </div>
   </div>
-  <?php if ($tournament_have_tours): ?>
+  <?php if (!empty($tours)): ?>
     <div class="toggles__content toggles__content--tournament">
       <div class="toggles__content-item toggles__content-item--col-1">
         <?php

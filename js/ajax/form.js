@@ -56,7 +56,7 @@
             window.form.parseCheckboxes(attr.idForm);
 
             // Возврат к предыдущему шаблону
-            window.form.cancelTemplate(attr.idForm);
+            /* window.form.cancelTemplate(attr.idForm);*/
 
             // Поиск Селектов
             window.select(attrForms[attr.idForm].FORM);
@@ -1072,7 +1072,7 @@
           }
         },
         // Возврат к предыдущему шаблону
-        cancelTemplate : (formId) => {
+        /*cancelTemplate : (formId) => {
           let form = attrForms[formId].FORM;
           let wrapperFormNode = attrForms[formId].wrapperFormNode;
 
@@ -1108,7 +1108,7 @@
             // Добавляю обработчик клика
             cancelButton.addEventListener('click', onCancel);
           }
-        }
+        }*/
       };
 
       // Запуск валидации форм, которые есть в разметке при загрузке страницы.

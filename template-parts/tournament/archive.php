@@ -59,10 +59,9 @@
       <div class="tournament__image">
         <img src="<?= wp_get_attachment_url($tournament->cover1); ?>" alt="<?= $games[$tournament->game]['name']; ?>">
       </div>
-      <div class="tournament__lables">
+      <div class="tournament__labels tournament__labels--archive">
         <?php if ( $tournament->verification ): ?>
-          <span class="verify verify--true verify--tournament">
-          </span>
+          <span class="verify verify--true verify--tournament"></span>
         <?php endif; ?>
 
         <?php if ( $tournament->vip ): ?>
@@ -173,12 +172,13 @@
         </h3>
         <ul class="variations <?php if ( $tournament->private ) echo 'variations--lock'; ?>">
           <li class="variations__item">
-            <?php if ( $tournament->team_mode > 0 ): ?>
-              <?= team_mode_to_string($tournament->team_mode); ?>
-            <?php else: ?>
-              <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
-            <?php endif; ?>
+            <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
           </li>
+          <?php if ($tournament->team_mode > 0): ?>
+            <li class="variations__item">
+              <?= team_mode_to_string($tournament->team_mode); ?>
+            </li>
+          <?php endif; ?>
         </ul>
       </div>
 

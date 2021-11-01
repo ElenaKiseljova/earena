@@ -37,6 +37,10 @@
     pointer-events: none;
   }
 
+  &.hidden {
+    pointer-events: none;
+  }
+
   &--blue,
   &.avatar-crop-submit {
     background-color: #colors[accent];
@@ -51,7 +55,8 @@
     }
 
     &:disabled,
-    &.disabled {
+    &.disabled,
+    &.hidden {
       color: #506C97;
 
       background-color: #colors[accent_disabled];

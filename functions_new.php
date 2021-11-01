@@ -61,8 +61,6 @@
     wp_enqueue_script('files-script', get_template_directory_uri() . '/assets/js/files.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('progress-script', get_template_directory_uri() . '/assets/js/progress.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-
-
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     if (is_user_logged_in() && is_page(527)) {
@@ -72,10 +70,16 @@
 
     wp_enqueue_script('select-script', get_template_directory_uri() . '/assets/js/select.min.js', $deps = array(), $ver = null, $in_footer = true );
 
+    if (earena_2_current_page( 'user' ) || earena_2_current_page( 'profile' )) {
+      wp_enqueue_script('statistics-script', get_template_directory_uri() . '/assets/js/statistics.min.js', $deps = array(), $ver = null, $in_footer = true );
+    }
+
     // С переводами
     wp_set_script_translations('platforms-script', 'earena_2');
     wp_set_script_translations('filter-script', 'earena_2');
     wp_set_script_translations('popup-script', 'earena_2');
+    wp_set_script_translations('form-script', 'earena_2');
+    wp_set_script_translations('select-script', 'earena_2');
 
     // AJAX
     $args = array(
@@ -839,7 +843,7 @@
               </div>
             <?php endif; ?>
 
-            <?php if ($stream_player_1): ?>
+            <?php if ($stream_player_1 && ($match->player1 == $user_id)): ?>
               <div class="chat-page__stream chat-page__stream--left checkbox checkbox--left">
                 <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player1; ?>" type="checkbox" name="stream1" id="stream1" <?= $match->stream1 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream1">
@@ -927,7 +931,7 @@
               </div>
             <?php endif; ?>
 
-            <?php if ($stream_player_2): ?>
+            <?php if ($stream_player_2 && ($match->player2 == $user_id)): ?>
               <div class="chat-page__stream chat-page__stream--right checkbox checkbox--right">
                 <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player2; ?>" type="checkbox" name="stream2" id="stream2" <?= $match->stream2 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="stream2">
@@ -1045,20 +1049,32 @@
   /* ==============================================
   ********  //Трансляция
   =============================================== */
-  function add_stream_link($url)
+  function earena_2_add_stream_link($url)
   {
       if ($url = check_url($url)) {
           if (getResponseCode($url)) {
               if (!update_user_meta(get_current_user_id(), 'stream', $url)) {
-                  return __("Ссылка не изменена", 'earena');
+                  $response['message'] = __("Ссылка не изменена", 'earena');
+                  $response['success'] = 0;
+
+                  return $response;
               } else {
-                  return __("Ссылка сохранена", 'earena');
+                  $response['message'] = __("Ссылка сохранена", 'earena');
+                  $response['success'] = 1;
+
+                  return $response;
               }
           } else {
-              return __("Сервер не отвечает", 'earena');
+              $response['message'] = __("Сервер не отвечает", 'earena');
+              $response['success'] = 0;
+
+              return $response;
           }
       } else {
-          return __("Некорректная ссылка", 'earena');
+          $response['message'] = __("Некорректная ссылка", 'earena');
+          $response['success'] = 0;
+
+          return $response;
       }
   }
 

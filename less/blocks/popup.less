@@ -439,6 +439,25 @@
       text-align: left!important;
     }
   }
+
+  &--game {
+    span {
+      &:last-of-type {
+        display: none;
+      }
+    }
+    &.active {
+      span {
+        &:first-of-type {
+          display: none;
+        }
+
+        &:last-of-type {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 
 .popup__button {
@@ -462,7 +481,8 @@
   &--complaint,
   &--friends,
   &--login,
-  &--tournament {
+  &--tournament,
+  &--stream  {
     width: 100%;
   }
 }

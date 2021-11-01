@@ -33,12 +33,11 @@
     <div class="popup__content popup__content--match">
       <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
-          <div class="select select--platforms">
+          <div class="select select--platforms" data-create="platforms">
 
             <button class="select__button select__button--platforms" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
             </button>
-
 
             <ul class="select__list">
               <?php foreach ($platforms as $key => $platform): ?>
@@ -54,25 +53,8 @@
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-        <div class="form__row">
-          <div class="select select--games">
-
-            <button class="select__button select__button--games" type="button" name="button">
-              <?php _e( 'Игра', 'earena_2' ); ?>
-            </button>
-
-
-            <ul class="select__list select__list--games">
-              <?php foreach ($games as $key => $game): ?>
-                <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="game" value="<?= $key; ?>" id="select-game-<?= $key; ?>" required>
-                  <label class="select__label" for="select-game-<?= $key; ?>">
-                    <?= $game['name']; ?>
-                  </label>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
+        <div class="form__row form__row--platforms">
+          <!-- Содержимое генерируется после выбора платформы -->
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -253,6 +235,21 @@
       <button class="popup__go-to-button popup__go-to-button--match button button--gray button--popup-close" type="button" name="match-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
+    </div>
+  </template>
+  <template id="form-match-error-no-game-or-platform">
+    <div class="popup__content popup__content--match">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Нет платформы', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не можете принять участие в данном матче, так как у вас нет данной игры и/или платформы. Вы можете добавить их в своем профиле.', 'earena_2' ); ?>
+      </div>
+
+      <a class="popup__go-to-button popup__go-to-button--match button button--gray" href="<?= bloginfo( 'url' ); ?>/profile">
+        <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
+      </a>
     </div>
   </template>
   <template id="form-match-error">

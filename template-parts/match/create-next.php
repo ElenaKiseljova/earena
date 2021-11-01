@@ -31,10 +31,10 @@
     </div>
 
     <div class="form__row <?= (!ea_check_user_age($ea_user->ID) ? 'no-old-enough' : ''); ?>">
-      <input class="form__field form__field--popup" id="bet" type="number" name="bet" min="<?= (ea_check_user_age($ea_user->ID)) ? $min : 0; ?>" max="<?= ((balance() > $min) && ea_check_user_age($ea_user->ID)) ? balance() : (ea_check_user_age($ea_user->ID) ? $min : 0); ?>" step="0.1" required placeholder="<?= __( 'Сумма входа ($)', 'earena_2' ); ?>" >
+      <input class="form__field form__field--popup" id="bet" type="number" name="bet" min="<?= $min; ?>" max="<?= ((balance() > $min) && ea_check_user_age($ea_user->ID)) ? balance() : (ea_check_user_age($ea_user->ID) ? balance() : 0); ?>" step="0.1" required placeholder="<?= __( 'Сумма входа ($)', 'earena_2' ); ?>" >
     </div>
     <span class="form__error form__error--popup">
-      <?= (ea_check_user_age($ea_user->ID) ? __( 'Error', 'earena_2' ) : __( 'Вам не доступны игры на деньги', 'earena_2' )); ?>
+      <?= (!ea_check_user_age($ea_user->ID) ?  __( 'Вам не доступны игры на деньги', 'earena_2' ) : (__( 'Минимальная сумма ставки $', 'earena_2' ) . $min . '<br>' . __( 'Доступный баланс: $', 'earena_2' ) . balance())); ?>
     </span>
 
     <div class="form__text form__text--match">
@@ -43,12 +43,10 @@
 
     <div class="form__row">
       <div class="select select--game-mode">
-        <!-- Для переключения состояния - добавляется active класс  -->
         <button class="select__button select__button--game-mode" type="button" name="button">
            <?= __( 'Режим игры', 'earena_2' ); ?>
         </button>
 
-        <!-- Для переключения состояния - добавляется active класс  -->
         <ul class="select__list">
           <?php foreach ($game_modes as $game_mode): ?>
             <li class="select__item">
@@ -66,12 +64,10 @@
     <?php if (count($game_team_modes) > 0): ?>
       <div class="form__row">
         <div class="select select--team-mode">
-          <!-- Для переключения состояния - добавляется active класс  -->
           <button class="select__button select__button--team-mode" type="button" name="button">
              <?= __( 'Режим команды', 'earena_2' ); ?>
           </button>
 
-          <!-- Для переключения состояния - добавляется active класс  -->
           <ul class="select__list">
             <?php foreach ($game_team_modes as $game_team_mode): ?>
               <li class="select__item">

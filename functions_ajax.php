@@ -121,13 +121,14 @@ function getVIPAction()
     die();
 }
 
-add_action('wp_ajax_setTranslation', 'setTranslationAction');
-add_action('wp_ajax_nopriv_setTranslation', 'setTranslationAction');
+add_action('wp_ajax_earena_2_set_translation', 'earena_2_set_translation');
+add_action('wp_ajax_nopriv_earena_2_set_translation', 'earena_2_set_translation');
 
-function setTranslationAction()
+function earena_2_set_translation()
 {
     if (is_user_logged_in() && isset($_POST['url'])) {
-        print add_stream_link($_POST['url']);
+      $response = json_encode( earena_2_add_stream_link($_POST['url']) );
+      wp_send_json( $response );
     }
     die();
 }
@@ -913,7 +914,8 @@ function join_match_callback()
 //	$args = array('id' => $_POST['id'],);
     ob_start();
     $arr_response['match_id'] = (int) $_POST['id'];
-    $arr_response['success'] = join_match_function();
+    $arr_response['status'] = join_match_function();
+    $arr_response['balance'] = balance();
     $arr_response['content'] = ob_get_contents();
     ob_end_clean();
     wp_send_json(json_encode($arr_response));

@@ -302,7 +302,7 @@
                         <td class="pay__column">
                           ${__( 'Доступный баланс:', 'earena_2' )}
                         </td>
-                        <td class="pay__column pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
+                        <td class="pay__column pay__column--balance pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
                           ${('$' + button.dataset.balance)}
                         </td>
                       </tr>
@@ -331,7 +331,7 @@
                       </span>
                     </button>
 
-                    <button class="form__submit form__submit--buttons button button--blue" type="submit" name="match-submit">
+                    <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden' : ''}"" type="submit" name="match-submit ${(button.dataset.balance < button.dataset.bet) ? 'disabled' : ''}">
                       <span>
                         ${__( 'Принять', 'earena_2' )}
                       </span>
@@ -396,6 +396,13 @@
         scrollContorllFunction();
 
         if (prefix === 'game') {
+          let nicknamesTemplate = button.querySelector('[id*="nicknames"]');
+          let formGame = popup.querySelector(`#form-${prefix}`);
+          if (nicknamesTemplate && formGame) {
+            let nicknamesContent = nicknamesTemplate.content.cloneNode(true);
+            formGame.appendChild(nicknamesContent);
+          }
+
           let gameLinks = popup.querySelectorAll('.game__link');
 
           if (gameLinks.length > 0) {
@@ -406,7 +413,6 @@
                 // Убираю класс скролла
                 popup.classList.remove('scroll-content');
 
-                let formGame = popup.querySelector('#form-game');
                 let gameList = popup.querySelector('.popup__list--game');
 
                  if (formGame && gameList && dataGames) {
@@ -415,22 +421,22 @@
 
                    // Получаем заголовок попапа
                    let popupTitle = popup.querySelector('.popup__title--game');
-
                    // Получаем название Игры
                    let gameTitle = dataGames[gameLink.dataset.game].name;
-
                    // Получаем иконку платформы
                    let popupPlatform = popup.querySelector('.platform');
-
                    // Получаем Инпут с никнеймом
-                   let nicknameInputFiled = formGame.querySelector('#game-nickname');
+                   let nicknameInputField = formGame.querySelector('#game-nickname');
+                   // Получаем подзаголовок
+                   let popupSubTitle = popup.querySelector('.popup__information--game');
 
-                   if (popupTitle && gameTitle && popupPlatform) {
+                   if (popupTitle && popupSubTitle && gameTitle && popupPlatform) {
                      popupTitle.textContent = gameTitle;
 
                      popupPlatform.classList.add('active');
+                     popupSubTitle.classList.add('active');
 
-                     if (nicknameInputFiled) {
+                     if (nicknameInputField) {
                        let oldNicknameField = formGame.querySelector(`input[name="nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]"]`);
 
                        if (oldNicknameField) {
@@ -438,7 +444,7 @@
                          oldNicknameField.remove();
                        }
 
-                       nicknameInputFiled.name = `nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]`;
+                       nicknameInputField.name = `nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]`;
                      }
                    }
                  }

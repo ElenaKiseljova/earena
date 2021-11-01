@@ -59,6 +59,17 @@
               <span>
                 <?php _e( 'Добавить игру', 'earena_2' ); ?>
               </span>
+              <template id="nicknames-<?= $key; ?>">
+                <?php
+                  foreach ($nicknames_by_platforms as $platform_id => $nicknames_by_platform) {
+                    foreach ($nicknames_by_platform as $nicknames_by_platform_game_id => $nicknames_by_platform_value) {
+                      ?>
+                        <input type="hidden" name="nicknames[<?= $nicknames_by_platform_game_id; ?>][<?= $platform_id; ?>]" value="<?= $nicknames_by_platform_value; ?>">
+                      <?php
+                    }
+                  }
+                ?>
+              </template>
             </button>
           <?php endif; ?>
         </div>

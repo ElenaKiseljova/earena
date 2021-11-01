@@ -19,6 +19,8 @@
   */
   document.addEventListener('DOMContentLoaded', () => {
     try {
+      const { __, _x, _n, _nx } = wp.i18n;
+
       let deviceHeight = window.innerHeight && document.documentElement.clientHeight ?
                         Math.min(window.innerHeight, document.documentElement.clientHeight) :
                         window.innerHeight ||
@@ -79,7 +81,7 @@
           }
         },
         // Ф-я отправки формы
-        formSubmitFunction : (formId, inputs, textareas) => {
+        formSubmitFunction : (formId) => {
           let form = attrForms[formId].FORM;
           let formPrefix = attrForms[formId].prefixForm;
           let buttonSubmit = attrForms[formId].buttonSubmit;
@@ -104,8 +106,10 @@
             let formData = {};
             let dataForm = new FormData(form);
 
+            // Получение всех инпутов
+            let inputs = form.querySelectorAll('input');
             // Собираем значения из инпутов
-            if (inputs) {
+            if (inputs.length > 0) {
               inputs.forEach(inputField => {
                 let nameInput = inputField.name;
                 let valueInput = inputField.value;
@@ -137,8 +141,10 @@
               });
             }
 
+            // Полечение всех текстовых обрастей формы
+            let textareas = form.querySelectorAll('textarea');
             // Собираем значения из  многострочных полей ввода
-            if (textareas) {
+            if (textareas.length > 0) {
               textareas.forEach((textareaField, i) => {
                 let nameTextarea = textareaField.name;
                 let valueTextarea = textareaField.value;
@@ -300,7 +306,7 @@
             if ( formId.indexOf('stream') > -1 ) {
               if (prefix.indexOf('add') > -1) {
                 // Добавление ссылки на стрим
-                formData['action'] = 'setTranslation';
+                formData['action'] = 'earena_2_set_translation';
               }
             }
 
@@ -318,8 +324,14 @@
             var onBeforeSend = (status) => {
               buttonSubmit.classList.add('sending');
 
-              // Логин
-              if ((formId.indexOf('login') > -1 && (prefix.indexOf('signin') > -1 || prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  || (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  || (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1)) {
+              // Обрываю стандартное сообщение об старте отправки формы если :
+              if (
+                  (formId.indexOf('login') > -1 && (prefix.indexOf('signin') > -1 ||
+                  prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  ||
+                  (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  ||
+                  (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1) ||
+                  (formId.indexOf('stream') > -1 && prefix.indexOf('add') > -1)
+                ) {
                 if (popupMessage) {
                   popupMessage.innerHTML = '';
                 }
@@ -423,7 +435,7 @@
 
               // MATCH
               if ( formId.indexOf('match') > -1 ) {
-                // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
+                // После успешного создания / удаления / присоединения - обновляем все матчи по клику на таб платформы
                 let resetShowResult = function () {
                   let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
 
@@ -469,7 +481,7 @@
                 // Создание шаг 2 / Удалить / Присоединиться
                 if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
                   if (response.success === 1) {
-                    // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
+                    // После успешного создания / удаления - обновляем все матчи по клику на таб платформы
                     resetShowResult();
                   } else {
                     onError(response, prefix);
@@ -481,10 +493,21 @@
                 }
 
                 if (prefix.indexOf('accept') > -1) {
-                  if ((response.content.indexOf('thanks.svg') > -1) || response.success === 1) {
-                    // После успешного создания / удаления / присоединения - выводим все матчи по клику на таб платформы
+                  /*
+                 		ACCEPT return value :
+                 		0 - показывает текст сообщения над полем пароля
+                 		1 - УСПЕХ
+                 		2 - показывает окно ОШИБКИ (матч не доступен)
+                 		3 - окно ошибки со ссылкой на Профиль
+                 		4 - замена формы попапа на форму с пополнением
+                 	*/
+
+                  if (response.status !== 0) {
+                    // После успешного (или статуса 2,3,4) присоединения - обновляем все матчи по клику на таб платформы
                     resetShowResult();
-                  } else {
+                  }
+
+                  if (response.status === 0) {
                     if (popupMessage) {
                       popupMessage.innerHTML = response.content;
 
@@ -495,7 +518,42 @@
 
                     console.log(response);
 
-                    //onError(response, prefix);
+                    return;
+                  } else if (response.status === 2) {
+                    onError(response, prefix);
+
+                    return;
+                  } else if (response.status === 3) {
+                    onError(response, 'no-game-or-platform');
+
+                    return;
+                  } else if (response.status === 4) {
+                    let pay = popup.querySelector('.pay');
+
+                    if (pay) {
+                      let payBalance = pay.querySelector('.pay__column--balance');
+                        payBalance.textContent = '$' + response.balance;
+                        payBalance.classList.add('pay__column--red');
+
+                      buttonSubmit.classList.add('hidden');
+
+                      let paySmallBalance = pay.querySelector('.pay__button');
+                      if (!paySmallBalance) {
+                        let smallBalanceHTML = `
+                          <p class="pay__text pay__text--red">
+                            ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
+                          </p>
+
+                          <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
+                            <span>
+                              ${__( 'Пополнить счет', 'earena_2' )}
+                            </span>
+                          </a>
+                        `;
+
+                        pay.insertAdjacentHTML('beforeend', smallBalanceHTML);
+                      }
+                    }
 
                     return;
                   }
@@ -589,6 +647,27 @@
                 if ((prefix.indexOf('add') > -1)) {
                   if (response.success !== 1) {
                     onError(response, prefix);
+
+                    console.log(response);
+
+                    return;
+                  }
+                }
+              }
+
+              // STREAM
+              if ( formId.indexOf('stream') > -1 ) {
+                if (prefix.indexOf('add') > -1) {
+                  response = JSON.parse(response);
+
+                  if (response.success === 0) {
+                    if (popupMessage) {
+                      popupMessage.innerHTML = response.message;
+
+                      setTimeout(function () {
+                        popupMessage.innerHTML = '';
+                      }, 2000);
+                    }
 
                     console.log(response);
 
@@ -840,7 +919,7 @@
           let allTextarea = form.querySelectorAll('textarea');
 
           // Проверка инпутов
-          if (allInputs) {
+          if (allInputs.length > 0) {
             allInputs.forEach((item, i) => {
               if (item.type !== 'submit') { // && item.type !== 'file'
                 item.autocomplete = 'off';
@@ -906,7 +985,7 @@
           }
 
           //Проверка областей текста
-          if (allTextarea) {
+          if (allTextarea.length > 0) {
             allTextarea.forEach((item, i) => {
               if (!item.validity.valid) {
                 notValid = true;
@@ -950,7 +1029,7 @@
             if (inputEventListenerFlag[formId] === false) {
 
               // Если - нет - тогда вешаем
-              window.form.formSubmitFunction(formId, allInputs, allTextarea, buttonSubmit);
+              window.form.formSubmitFunction(formId);
             }
           }
 

@@ -3,8 +3,8 @@
 (function () {
   try {
     // Отрисовка полос прогресса
-    window.progress = function (elementSelector) {
-      let progressBars = document.querySelectorAll(elementSelector);
+    window.progress = function (elementSelector, container = document) {
+      let progressBars = container.querySelectorAll(elementSelector);
 
       if (progressBars && progressBars.length > 0) {
         progressBars.forEach((progressBar, i) => {

@@ -91,7 +91,7 @@
             earena_2_get_popup( 'stream' );
 
             // Попап Удалить историю переписки
-            earena_2_get_popup( 'history' );
+            // earena_2_get_popup( 'history' );
 
             // Попап Игры
             earena_2_get_popup( 'game' );

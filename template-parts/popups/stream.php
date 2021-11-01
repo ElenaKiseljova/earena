@@ -30,7 +30,7 @@
           <input class="form__field form__field--popup" id="stream-source" type="text" name="url" required placeholder="<?php _e( 'Ссылка на источник', 'earena_2' ); ?>" >
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
-
+        <div class="popup__ajax-message"></div>
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
             <?php _e( 'Отменить', 'earena_2' ); ?>
@@ -56,6 +56,10 @@
       <div class="popup__information popup__information--template">
         <?php _e( 'Ссылка на трансляцию успешно добавлена/изменена', 'earena_2' ); ?>
       </div>
+
+      <button class="popup__go-to-button popup__go-to-button--stream button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
     </div>
   </template>
   <template id="form-stream-beforesend">
@@ -78,6 +82,10 @@
       <div class="popup__information popup__information--template">
         <?php _e( 'Ссылка на трансляцию не добавлена/изменена. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
       </div>
+
+      <button class="popup__go-to-button popup__go-to-button--stream button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
     </div>
   </template>
 </div>

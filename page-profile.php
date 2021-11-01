@@ -30,25 +30,6 @@
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_private;
   $earena_2_user_private = $ea_user;
-
-  //		$rating = $ea_user->get('rating');
-  //		$month_ratings = EArena_DB::get_ea_month_ratings($ea_user->ID);
-
-  $m_wins = EArena_DB::get_ea_matches_win($ea_user->ID);
-  $m_loses = EArena_DB::get_ea_matches_lose($ea_user->ID);
-
-  $t_wins = EArena_DB::get_ea_tournament_matches_win($ea_user->ID);
-  $t_loses = EArena_DB::get_ea_tournament_matches_lose($ea_user->ID);
-  $t_draw = EArena_DB::get_ea_tournament_matches_draw($ea_user->ID);
-
-  $gf = EArena_DB::get_ea_matches_goals_from($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_from($ea_user->ID);
-  $gt = EArena_DB::get_ea_matches_goals_to($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_to($ea_user->ID);
-
-  $user_stat = ea_get_user_stat($ea_user->ID);
-
-  // Эта переменная используется в шаблонах 'private'
-  global $earena_2_user_stat_private;
-  $earena_2_user_stat_private = $user_stat;
 ?>
 
 <?php

@@ -251,6 +251,9 @@
 
         return dataFiltered;
       },
+      getFilteredPlatforms : function (data) {
+        return data['platforms'];
+      },
       // Ф-я получения активных платформ и подстановки их шаблона игр/матчей/турниров
       getSelectedPlatforms : function () {
         // what - может принимать значения : games/matches/tournaments

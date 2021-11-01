@@ -7,6 +7,10 @@
 
 .select {
   position: relative;
+
+  &--game-statistics {
+    margin-bottom: 13px;
+  }
 }
 
 .select__button {
@@ -93,11 +97,13 @@
   list-style: none;
 
   &--games,
-  &--country {
+  &--country,
+  &--game-statistics {
     overflow: auto;
   }
 
-  &--games {
+  &--games,
+  &--game-statistics {
     max-height: 110px;
   }
 

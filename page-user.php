@@ -27,45 +27,6 @@
   // Эта переменная используется в шаблонах 'public'
   global $earena_2_user_public;
   $earena_2_user_public = $ea_user;
-
-  //		$rating = $ea_user->get('rating');
-  //		$month_ratings = EArena_DB::get_ea_month_ratings($ea_user->ID);
-
-  $m_wins = EArena_DB::get_ea_matches_win($ea_user->ID);
-  $m_loses = EArena_DB::get_ea_matches_lose($ea_user->ID);
-
-  $t_wins = EArena_DB::get_ea_tournament_matches_win($ea_user->ID);
-  $t_loses = EArena_DB::get_ea_tournament_matches_lose($ea_user->ID);
-  $t_draw = EArena_DB::get_ea_tournament_matches_draw($ea_user->ID);
-
-  $gf = EArena_DB::get_ea_matches_goals_from($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_from($ea_user->ID);
-  $gt = EArena_DB::get_ea_matches_goals_to($ea_user->ID)+EArena_DB::get_ea_tournament_matches_goals_to($ea_user->ID);
-
-
-  //    $ea_user = wp_get_current_user();
-  $nicknames = $ea_user->get('nicknames')?:[[[]]];
-  $nicknames_by_platforms = [];
-  foreach( $nicknames as $game=>$platforms ) {
-      foreach( $platforms as $platform=>$nickname ) {
-          $nicknames_by_platforms[$platform][$game] = $nickname;
-      }
-  }
-
-  $games = get_site_option( 'games' );
-  $games_by_platforms = [];
-  foreach( array_column($games,'platforms') as $game=>$platforms ) {
-      foreach( $platforms as $platform ) {
-          $games_by_platforms[$platform][] = $game;
-      }
-  }
-
-  $stream = $ea_user->get('stream')?:'';
-
-  $user_stat = ea_get_user_stat($ea_user->ID);
-
-  // Эта переменная используется в шаблонах 'public'
-  global $earena_2_user_stat_public;
-  $earena_2_user_stat_public = $user_stat;
 ?>
 
 <?php

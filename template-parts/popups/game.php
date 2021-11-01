@@ -26,9 +26,12 @@
           <?= $platform; ?>
         </h2>
 
-        <div class="popup__information">
+        <div class="popup__information popup__information--game">
           <span>
             <?php _e( 'Выберите игру', 'earena_2' ); ?>
+          </span>
+          <span>
+            <?php _e( 'Укажите ваш никнейм в игре', 'earena_2' ); ?>
           </span>
         </div>
 
@@ -58,15 +61,6 @@
         </ul>
 
         <form class="form form--popup" data-prefix="" id="form-game" action="/" method="post">
-          <?php
-            foreach ($nicknames_by_platforms as $platform_id => $nicknames_by_platform) {
-              foreach ($nicknames_by_platform as $nicknames_by_platform_game_id => $nicknames_by_platform_value) {
-                ?>
-                  <input type="hidden" name="nicknames[<?= $nicknames_by_platform_game_id; ?>][<?= $platform_id; ?>]" value="<?= $nicknames_by_platform_value; ?>">
-                <?php
-              }
-            }
-          ?>
           <div class="form__row">
             <input class="form__field form__field--popup" id="game-nickname" type="text" name="game-nickname" required placeholder="<?php _e( 'Ваш никнейм', 'earena_2' ); ?>" >
           </div>

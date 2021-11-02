@@ -52,7 +52,7 @@
           ?>
             <tr class="table__row table__row--rating <?= (!empty($players[$i]) && (int)$players[$i] == $ea_user->ID) ? 'table__row--your' : ''; ?>">
               <td class="table__column table__column--1 table__column--td table__column--small">
-                <?= ++$i; ?>
+                <?= ($i + 1); ?>
               </td>
               <td class="table__column table__column--2 table__column--td table__column--small">
                 <?php if (!empty($players[$i])): ?>
@@ -86,6 +86,7 @@
         }
       } elseif ($tournament_schedule_complete || $tournament_ended || $tournament_cancel) {
         $score = json_decode($tournament->score, true) ?: [];
+
         array_multisort(
             array_column($score, 'score'), SORT_DESC,
             array_column($score, 'win'), SORT_DESC,

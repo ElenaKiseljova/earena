@@ -202,7 +202,9 @@
           if ( filterListResult && itemInput.checked ) {
             filterListResult.insertAdjacentHTML('beforeend', templeteResultItem(itemInput.id, itemInput.nextElementSibling.textContent));
           } else if ( filterListResult && !itemInput.checked ) {
-            filterListResult.querySelector(`label[for='${itemInput.id}']`).closest('.filters__item--result').remove();
+            if (filterListResult.querySelector(`label[for='${itemInput.id}']`)) {
+              filterListResult.querySelector(`label[for='${itemInput.id}']`).closest('.filters__item--result').remove();
+            }
           }
         },
         formReset: function (filterForm) {

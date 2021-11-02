@@ -148,7 +148,7 @@
           <?php _e( 'Отменён', 'earena_2' ); ?>
         </div>
         <div class="tournament__info">
-          <?php _e( 'Не начался', 'earena_2' ); ?>
+          ---
         </div>
       <?php endif; ?>
 
@@ -166,7 +166,7 @@
     </div>
 
     <div class="tournament__bottom">
-      <div class="tournament__bottom-left">
+      <div class="tournament__bottom-left tournament__bottom-left--archive">
         <h3 class="tournament__game">
           <?= $games[$tournament->game]['name']; ?>
         </h3>
@@ -182,17 +182,17 @@
         </ul>
       </div>
 
-      <div class="platform">
+      <div class="platform platform--tournament">
         <svg class="platform__icon" width="40" height="40">
           <use xlink:href="#icon-platform-<?= $ea_icons['platform'][(int)$tournament->platform]; ?>"></use>
         </svg>
       </div>
 
-      <div class="tournament__id">
+      <div class="tournament__id tournament__id--archive">
         ID <?= $tournament->ID; ?>
       </div>
 
-      <div class="tournament__bet">
+      <div class="tournament__bet tournament__bet--archive">
         <?= !empty($tournament->price) ? '$' . earena_2_nice_money($tournament->price) : 'Free'; ?>
       </div>
     </div>

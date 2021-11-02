@@ -81,6 +81,9 @@
           if ( earena_2_current_page('purse') || earena_2_current_page('wallet') ) {
             // Попап Кошелёк
             earena_2_get_popup( 'purse' );
+
+            // Попап VIP
+            earena_2_get_popup( 'vip' );
           }
 
           if ( earena_2_current_page('profile') && is_user_logged_in() ) {

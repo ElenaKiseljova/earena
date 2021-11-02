@@ -80,6 +80,22 @@
 
   overflow: hidden;
 
+  &--header {
+    flex-direction: row;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    width: auto;
+    min-height: unset;
+
+    padding: 0;
+
+    border-radius: 0;
+
+    background: inherit;
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
   }
@@ -140,7 +156,33 @@
 
   color: #colors[text];
 
-  border-bottom: 1px solid #colors[dark_light_2];
+  &--tournament {
+    position: relative;
+
+    padding: 10px 30px 13px 30px;
+
+    margin-bottom: -5px;
+
+    background-color: #colors[dark_light];
+
+    &::after {
+      content: '';
+
+      position: absolute;
+
+      bottom: 0;
+      left: 50%;
+
+      z-index: 1;
+
+      width: calc(100% - 60px);
+      height: 1px;
+
+      background-color: #colors[dark_light_2];
+
+      transform: translateX(-50%);
+    }
+  }
 
   @media (max-width: @mobile) {
     align-items: flex-start;
@@ -148,16 +190,19 @@
 }
 
 .chat-page__center {
-  flex-grow: 1;
+  &--header {
+    display: flex;
 
-  display: flex;
+    flex-direction: column;
 
-  flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 
-  justify-content: space-between;
-  align-items: flex-start;
+    width: auto;
 
-  margin-left: 13px;
+    margin-left: 13px;
+    margin-right: auto;
+  }
 }
 
 .chat-page__name {
@@ -172,6 +217,8 @@
 
 .chat-page__rules {
   flex-shrink: 0;
+
+  margin-left: 10px;
 
   .body();
 

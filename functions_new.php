@@ -50,7 +50,6 @@
 
     /* Ajax start */
       wp_enqueue_script('global-throttlingg-script', get_template_directory_uri() . '/assets/js/ajax/global-throttlingg.min.js', $deps = array(), $ver = null, $in_footer = true );
-      wp_enqueue_script('vip-script', get_template_directory_uri() . '/assets/js/ajax/vip.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/ajax/form.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/ajax/filter.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/ajax/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -724,6 +723,7 @@
               foreach (@$nicknames as $game => $v) {
                   $user_stat[$game]['id'] = $games[$game]['id'];
                   $user_stat[$game]['shortname'] = $games[$game]['shortname'];
+                  $user_stat[$game]['name'] = $games[$game]['name'];
                   $user_stat[$game]['m_wins'] = EArena_DB::get_ea_matches_win($ea_user->ID, $game);
                   $user_stat[$game]['m_loses'] = EArena_DB::get_ea_matches_lose($ea_user->ID, $game);
 
@@ -1152,13 +1152,13 @@
         wp_redirect(home_url('tournaments'));
         exit;
     }
-    if ((int)$tournament->type == 2) {
-        // wp_redirect(add_query_arg('lc', $_REQUEST['tournament'], home_url('tournaments/lucky-cup/')));
-        // exit;
-    } elseif ((int)$tournament->type == 3) {
-        // wp_redirect(add_query_arg('cup', $_REQUEST['tournament'], home_url('tournaments/cup/')));
-        // exit;
-    }
+
+    /* TYPE */
+    $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
+    $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
+    $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
+
+    // var_dump($tournament, '<br><br>', (!$tournament || (!is_ea_admin() && $tournament->status < 2)), '<br><br>', empty($tournament_id), '<br><br>', $is_tournament_simple, '<br><br>', $is_tournament_lucky_cup, '<br><br>', $is_tournament_cup);
 
     // Секция турнира
     get_template_part( 'template-parts/tournament/single' );

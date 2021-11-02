@@ -26,7 +26,7 @@
 <main class="page-main">
   <div id="ajax-container-tournament">
     <?php
-      earena_2_tournament_page_data($ea_user, $tournament_id);
+      earena_2_tournament_page_data($ea_user, $lc_id);
     ?>
   </div>
 

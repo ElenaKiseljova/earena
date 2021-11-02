@@ -57,9 +57,6 @@
 
             window.form.parseCheckboxes(attr.idForm);
 
-            // Возврат к предыдущему шаблону
-            /* window.form.cancelTemplate(attr.idForm);*/
-
             // Поиск Селектов
             window.select(attrForms[attr.idForm].FORM);
 
@@ -307,6 +304,14 @@
               if (prefix.indexOf('add') > -1) {
                 // Добавление ссылки на стрим
                 formData['action'] = 'earena_2_set_translation';
+              }
+            }
+
+            // VIP
+            if ( formId.indexOf('vip') > -1 ) {
+              if (prefix.indexOf('buy') > -1) {
+                // Покупка VIP
+                formData['action'] = 'getVIP';
               }
             }
 
@@ -673,6 +678,23 @@
 
                     return;
                   }
+                }
+              }
+
+              // VIP
+              if ( formId.indexOf('vip') > -1 ) {
+                response = JSON.parse(response);
+
+                if (prefix.indexOf('buy') > -1) {
+                  let popupInformation = attrForms[formId].wrapperFormNode.closest('.popup').querySelector('.popup__information--template');
+
+                  if (popupInformation) {
+                    popupInformation.innerHTML = response.message;
+                  }
+
+                  console.log(response);
+
+                  return;
                 }
               }
 
@@ -1149,51 +1171,14 @@
               window.popup.activateClosePopupButton(formClosePopup);
             });
           }
-        },
-        // Возврат к предыдущему шаблону
-        /*cancelTemplate : (formId) => {
-          let form = attrForms[formId].FORM;
-          let wrapperFormNode = attrForms[formId].wrapperFormNode;
-
-          // Кнопка отмены с заменой шаблона
-          var cancelButton = form.querySelector('button[name*="cancel"]');
-          if (cancelButton && wrapperFormNode) {
-            // Отмена регистрации на турнир
-            var onCancel = () => {
-              let templateContentCancel = document.querySelector(`#${formId}-cancel`).content;
-
-              if (wrapperFormNode && templateContentCancel) {
-                wrapperFormNode.innerHTML = '';
-
-                let cloneTemplate = templateContentCancel.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-
-                // Проверяю - надо ли добавлять активный класс родителю
-                if (attrForms[formId].CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM) {
-                  // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                  wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.add(attrForms[formId].CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM);
-                }
-
-                if (form.closest('.popup')) {
-                  // Ф-я поиска дополнительных кнопок закрытия попапов
-                  window.form.additionButtonClosePopup(form.closest('.popup'));
-                }
-              }
-
-              console.log('Canceled!');
-            };
-
-            // Добавляю обработчик клика
-            cancelButton.addEventListener('click', onCancel);
-          }
-        }*/
+        }
       };
 
-      // Запуск валидации форм, которые есть в разметке при загрузке страницы.
+      // Инициализация форм, которые есть в разметке при загрузке страницы.
       // Формы, которые подставляются из шаблонов - активируются при открытии попапа.
       // Инициализация проходит в файле popup.js и toggle-active.js
 
+      // CONTACT
       let attrFormContact = {
         idForm: 'form-contact',
         // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
@@ -1201,6 +1186,7 @@
       };
       window.form.init(attrFormContact);
 
+      // CHAT
       let attrFormChat = {
         idForm: 'form-chat',
         // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
@@ -1208,7 +1194,7 @@
       };
       window.form.init(attrFormChat);
 
-      // ADMIN complait forms
+      // COMPLAINT (ADMIN) forms
       let complaintAdminChatForms = document.querySelectorAll('form[id*="form-complaint-"]');
 
       if (complaintAdminChatForms.length > 0) {
@@ -1222,15 +1208,19 @@
         });
       }
 
-      // Закоммиченная форма была в разметке, а вот на бою - не уверена, что она есть
-      // let attrFormHistory = {
-      //   idForm: 'form-delete-history',
-      //   selectorForTemplateReplace: `#history-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
-      //   classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-      //   selectorClosestWrapperForm: '.popup--history', // по умолчанию - false
-      // };
-      //
-      // window.form.init(attrFormHistory);
+      // VIP forms
+      let vipForms = document.querySelectorAll('form[id*="form-vip-"]');
+
+      if (vipForms.length > 0) {
+        vipForms.forEach((vipForm, i) => {
+          let attrFormVip = {
+            idForm: vipForm.id,
+            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+            selectorForTemplateReplace: '#vip-popup',
+          };
+          window.form.init(attrFormVip);
+        });
+      }
     } catch (e) {
       console.log(e);
     }

@@ -571,16 +571,16 @@
   &--page {
     min-height: auto;
 
+    align-items: flex-start;
+
     padding: 0;
   }
 }
 
 .tournament__bottom-left {
-  width: 50%;
-}
-
-.tournament__bottom-left {
-  //margin-bottom: 24px;
+  &--archive {
+    width: calc(100% - 55px);
+  }
 }
 
 .tournament__game {
@@ -607,6 +607,10 @@
 
   .caption();
 
+  &--archive {
+    width: 49%;
+  }
+
   &--page {
     color: #colors[text_black];
   }
@@ -617,6 +621,12 @@
 
   color: #colors[white];
 
+  &--archive {
+    width: 49%;
+
+    text-align: right;
+  }
+
   &--page {
     margin-bottom: 2px;
   }
@@ -625,6 +635,12 @@
 .tournament__button {
   width: 200px;
   max-width: 50%;
+
+  &--edit-table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
 }
 
 .tournament__matches {

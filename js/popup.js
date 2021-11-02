@@ -115,7 +115,8 @@
                   sufixPopupName === 'friends' ||
                   sufixPopupName === 'purse' ||
                   sufixPopupName === 'contact' ||
-                  sufixPopupName === 'warning'
+                  sufixPopupName === 'warning' ||
+                  sufixPopupName === 'vip'
                 ) {
 
                 popupContentCreator(sufixPopupName, popupItem, popupButton);

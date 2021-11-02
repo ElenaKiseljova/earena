@@ -1,6 +1,6 @@
 <?php
   /*
-    Template Name: Матч (single)
+    Template Name: Матч Турнира
   */
 ?>
 
@@ -15,16 +15,19 @@
   	wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;
   } else {
   	$ea_user = wp_get_current_user();
-  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : null;
-    if ( empty($match_id) ) {
-  		wp_redirect( home_url('matches') );exit;
+  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : 0;
+  	if ( empty($match_id) ) {
+  		wp_redirect( home_url('tournaments') );exit;
   	}
-  	$match = EArena_DB::get_ea_match($match_id);
+  	$match = EArena_DB::get_ea_tournament_match($match_id);
   	if ( !$match || empty($match->player1) || empty($match->player2) ) {
-  		wp_redirect( home_url('matches') );exit;
+  		wp_redirect( add_query_arg( 'tournament', $match->tid, home_url('/tournaments/tournament/') ) );exit;
   	}
-  	if ( $ea_user->ID !== (int)$match->player1 && $ea_user->ID !== (int)$match->player2 && !is_ea_admin() ) {
-  		wp_redirect( home_url('matches') );exit;
+  	if ( $ea_user->ID !== (int)$match->player1 && $ea_user->ID !== (int)$match->player2  && !is_ea_admin()) {
+  		wp_redirect( add_query_arg( 'tournament', $match->tid, home_url('/tournaments/tournament/') ) );exit;
+  	}
+  	if( !empty($match->end_time) && strtotime($match->end_time) < time() && $match->type !== 2  && !is_ea_admin()) {
+  		wp_redirect( add_query_arg( 'tournament', $match->tid, home_url('/tournaments/tournament/') ) );exit;
   	}
   	$player1 = get_userdata($match->player1);
   	$player2 = get_userdata($match->player2);

@@ -13,9 +13,6 @@
     </header>
 
     <div class="section__content">
-      <!-- Блок для вывода р-тов из старой темы -->
-      <div class="section__result section__result--vip">
-      </div>
       <ul class="section__list">
         <li class="section__item section__item--col-3">
           <div class="vip vip--block">
@@ -26,11 +23,15 @@
               $2
             </p>
 
-            <button class="vip__button button button--orange byeVIP" data-month="1" type="button" name="vip">
-              <span>
-                <?php _e( 'Активировать за', 'earena_2' ); ?> $2
-              </span>
-            </button>
+            <form class="form form--vip" data-prefix="buy" id="form-vip-0" action="/" method="post">
+              <input type="hidden" name="month" value="1">
+
+              <button class="vip__button button button--orange openpopup" data-popup="vip" type="submit" name="buy">
+                <span>
+                  <?php _e( 'Активировать за', 'earena_2' ); ?> $2
+                </span>
+              </button>
+            </form>
           </div>
         </li>
         <li class="section__item section__item--col-3">
@@ -42,11 +43,15 @@
               $4
             </p>
 
-            <button class="vip__button button button--orange byeVIP" data-month="3" type="button" name="vip">
-              <span>
-                <?php _e( 'Активировать за', 'earena_2' ); ?> $4
-              </span>
-            </button>
+            <form class="form form--vip" data-prefix="buy" id="form-vip-1" action="/" method="post">
+              <input type="hidden" name="month" value="3">
+
+              <button class="vip__button button button--orange openpopup" data-popup="vip" type="submit" name="buy">
+                <span>
+                  <?php _e( 'Активировать за', 'earena_2' ); ?> $4
+                </span>
+              </button>
+            </form>
           </div>
         </li>
         <li class="section__item section__item--col-3">
@@ -58,11 +63,15 @@
               $10
             </p>
 
-            <button class="vip__button button button--orange byeVIP" data-month="12" type="button" name="vip">
-              <span>
-                <?php _e( 'Активировать за', 'earena_2' ); ?> $10
-              </span>
-            </button>
+            <form class="form form--vip" data-prefix="buy" id="form-vip-2" action="/" method="post">
+              <input type="hidden" name="month" value="12">
+
+              <button class="vip__button button button--orange openpopup" data-popup="vip" type="submit" name="buy">
+                <span>
+                  <?php _e( 'Активировать за', 'earena_2' ); ?> $10
+                </span>
+              </button>
+            </form>
           </div>
         </li>
       </ul>

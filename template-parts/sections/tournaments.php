@@ -17,7 +17,7 @@
             0
           </span>
         </h2>
-        <div class="section__header-righ">
+        <div class="section__header-right">
           <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
             <span>
               <?php _e('Все турниры', 'earena_2'); ?>

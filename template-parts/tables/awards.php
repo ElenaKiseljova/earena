@@ -10,6 +10,11 @@
   $tournament_schedule_complete = ($tournament->status >= 5 && $tournament->status <= 101) ? true : false;
   $tournament_ended = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
   $tournament_cancel = ($tournament->status == 103) ? true : false;
+
+  /* TYPE */
+  $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
+  $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
+  $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
 ?>
 
 <table class="table table--awards">
@@ -20,6 +25,10 @@
   <tbody class="table__body">
     <?php
       $awards = ['gold', 'silver', 'bronze', null];
+
+      if ($is_tournament_lucky_cup) {
+        $awards = ['gold', 'silver'];
+      }
     ?>
     <?php if (!$tournament_schedule_complete && !$tournament_ended && !$tournament_cancel): ?>
       <?php foreach ($awards as $award_index => $award): ?>

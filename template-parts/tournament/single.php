@@ -21,11 +21,17 @@
       $ea_user->ID = 0;
   }
 
+  /* STATUS */
   $tournament_waiting = ($tournament->status < 2) ? true : false;
   $tournament_registration = ($tournament->status >= 2 && $tournament->status < 4) ? true : false;
   $tournament_present = ($tournament->status >= 4 && $tournament->status <= 101) ? true : false;
   $tournament_ended = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
   $tournament_cancel = ($tournament->status == 103) ? true : false;
+
+  /* TYPE */
+  $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
+  $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
+  $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
 ?>
 
 <section class="tournament tournament--page">
@@ -83,7 +89,6 @@
       <h1 class="tournament__name tournament__name--page">
         <?= $tournament->name; ?>
       </h1>
-
       <?php if ($tournament_registration): ?>
         <div class="tournament__status tournament__status--page tournament__status--future">
           <?php _e( 'Регистрация до', 'earena_2' ); ?>
@@ -158,12 +163,18 @@
                 <?php _e('Регламент турнира', 'earena'); ?>
               </td>
               <td>
-                <?php if ($tournament->reglament == 'r1'): ?>
-                  <?= __('1 круг — матч с каждым игроком', 'earena'); ?>
-                <?php elseif ($tournament->reglament == 'r2') : ?>
-                  <?= __('2 круга — матч с каждым игроком', 'earena'); ?>
-                <?php else: ?>
-                  ???
+                <?php if ($is_tournament_simple): ?>
+                  <?php if ($tournament->reglament == 'r1'): ?>
+                    <?= __('1 круг — матч с каждым игроком', 'earena'); ?>
+                  <?php elseif ($tournament->reglament == 'r2') : ?>
+                    <?= __('2 круга — матч с каждым игроком', 'earena'); ?>
+                  <?php else: ?>
+                    ???
+                  <?php endif; ?>
+                <?php elseif ($is_tournament_lucky_cup) : ?>
+                  ВО-1
+                <?php elseif ($is_tournament_cup) : ?>
+                  <?= $tournament->reglament == 'bo1' ? 'BO-1' : ($tournament->reglament == 'bo3' ? 'BO-3' : '???'); ?>
                 <?php endif; ?>
               </td>
             </tr>
@@ -172,13 +183,24 @@
                 <?php _e('Длительность раунда', 'earena'); ?>
               </td>
               <td>
-                <?php if (texttotime($tournament->round_time) >= 86400): ?>
-                  <?= pluralize(date('d', texttotime($tournament->round_time)) - 1/*$kostyl*/, __('день', 'earena'), __('дня', 'earena'), __('дней', 'earena')) . ', '; ?>
-                <?php elseif (texttotime($tournament->round_time) >= 3600): ?>
-                  <?= pluralize(date('H', texttotime($tournament->round_time)), __('час', 'earena'), __('часа', 'earena'), __('часов', 'earena')) . ', '; ?>
-                <?php endif; ?>
+                <?php if ($is_tournament_simple): ?>
+                  <?php if (texttotime($tournament->round_time) >= 86400): ?>
+                    <?= pluralize(date('d', texttotime($tournament->round_time)) - 1/*$kostyl*/, __('день', 'earena'), __('дня', 'earena'), __('дней', 'earena')) . ', '; ?>
+                  <?php elseif (texttotime($tournament->round_time) >= 3600): ?>
+                    <?= pluralize(date('H', texttotime($tournament->round_time)), __('час', 'earena'), __('часа', 'earena'), __('часов', 'earena')) . ', '; ?>
+                  <?php endif; ?>
 
-                <?= pluralize(date('i', texttotime($tournament->round_time)), __('минута', 'earena'), __('минуты', 'earena'), __('минут', 'earena')); ?>
+                  <?= pluralize(date('i', texttotime($tournament->round_time)), __('минута', 'earena'), __('минуты', 'earena'), __('минут', 'earena')); ?>
+                <?php elseif ($is_tournament_lucky_cup) : ?>
+                  Fast
+                <?php elseif ($is_tournament_cup) : ?>
+                  <?= (texttotime($tournament->round_time) >= 86400 ? pluralize(date('d', texttotime($tournament->round_time)) - 1
+                              /*$kostyl*/, __('день', 'earena'), __('дня', 'earena'), __('дней',
+                                  'earena')) . ', ' : '') . (texttotime($tournament->round_time) >= 3600 ? pluralize(date('H',
+                              texttotime($tournament->round_time)), __('час', 'earena'), __('часа', 'earena'),
+                              __('часов', 'earena')) . ', ' : '') . pluralize(date('i', texttotime($tournament->round_time)),
+                          __('минута', 'earena'), __('минуты', 'earena'), __('минут', 'earena')); ?>
+                <?php endif; ?>
               </td>
             </tr>
           </tbody>
@@ -220,77 +242,77 @@
 
           $players = json_decode($tournament->players, true) ?: [];
 
-          if ($tournament_waiting) {
+          if (!is_ea_admin()) {
+            if ($tournament_waiting) {
+              ?>
+                <button class="tournament__button button button--blue"
+                  type="button" name="cancel" disabled>
+                  <span>
+                    <?php _e( 'Ожидает публикации', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php
+            } elseif ($tournament_registration && ((isset($ea_user) && !in_array($ea_user->ID, $players)) || !is_user_logged_in())) {
+              ?>
+                <button class="tournament__button button button--blue openpopup"
+                  data-popup="<?= $button_data_popup; ?>"
+                  data-id="<?= $tournament->ID; ?>"
+                  data-title="<?= $tournament->name; ?>"
+                  data-price="<?= $tournament->price; ?>"
+                  data-private="<?= $tournament->private; ?>"
+                  data-verification="<?= $tournament->verification; ?>"
+                  data-vip="<?= $tournament->vip; ?>"
+                  data-game="<?= $games[$tournament->game]['name']; ?>"
+                  data-game-mode="<?= $tournament->game_mode; ?>"
+                  data-team-mode="<?= $tournament->team_mode > 0 ? team_mode_to_string($tournament->team_mode) : ''; ?>"
+                  data-game="<?= $tournament->game; ?>.svg"
+                  data-platform="<?= $tournament->platform; ?>"
+                  type="button" name="<?= $button_name; ?>">
+                  <span>
+                    <?php _e( 'Регистрация', 'earena_2' ); ?> (<?= !empty($tournament->price) ? ('$' . earena_2_nice_money( $tournament->price )) : 'Free'; ?>)
+                  </span>
+                </button>
+              <?php
+            } elseif ($tournament_registration && isset($ea_user) && in_array($ea_user->ID, $players)) {
+              ?>
+                <button class="tournament__button button button--blue openpopup"
+                  data-popup="tournament"
+                  data-id="<?= $tournament->ID; ?>"
+                  data-price="<?= $tournament->price; ?>"
+                  type="button" name="cancel">
+                  <span>
+                    <?php _e( 'Отменить регистрацию', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php
+            } elseif ($tournament_present) {
+              ?>
+                <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                  <span>
+                    <?php _e( 'Проходит', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php
+            } elseif ($tournament_ended) {
+              ?>
+                <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                  <span>
+                    <?php _e( 'Завершен', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php
+            } elseif ($tournament_cancel) {
+              ?>
+                <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
+                  <span>
+                    <?php _e( 'Отменен', 'earena_2' ); ?>
+                  </span>
+                </button>
+              <?php
+            }
+          } else if ($tournament_registration && is_ea_admin()) {
             ?>
-              <button class="tournament__button button button--blue"
-                type="button" name="cancel" disabled>
-                <span>
-                  <?php _e( 'Ожидает публикации', 'earena_2' ); ?>
-                </span>
-              </button>
-            <?php
-          } elseif ($tournament_registration && ((isset($ea_user) && !in_array($ea_user->ID, $players)) || !is_user_logged_in())) {
-            ?>
-              <button class="tournament__button button button--blue openpopup"
-                data-popup="<?= $button_data_popup; ?>"
-                data-id="<?= $tournament->ID; ?>"
-                data-title="<?= $tournament->name; ?>"
-                data-price="<?= $tournament->price; ?>"
-                data-private="<?= $tournament->private; ?>"
-                data-verification="<?= $tournament->verification; ?>"
-                data-vip="<?= $tournament->vip; ?>"
-                data-game="<?= $games[$tournament->game]['name']; ?>"
-                data-game-mode="<?= $tournament->game_mode; ?>"
-                data-team-mode="<?= $tournament->team_mode > 0 ? team_mode_to_string($tournament->team_mode) : ''; ?>"
-                data-game="<?= $tournament->game; ?>.svg"
-                data-platform="<?= $tournament->platform; ?>"
-                type="button" name="<?= $button_name; ?>">
-                <span>
-                  <?php _e( 'Регистрация', 'earena_2' ); ?> (<?= !empty($tournament->price) ? ('$' . earena_2_nice_money( $tournament->price )) : 'Free'; ?>)
-                </span>
-              </button>
-            <?php
-          } elseif ($tournament_registration && isset($ea_user) && in_array($ea_user->ID, $players)) {
-            ?>
-              <button class="tournament__button button button--blue openpopup"
-                data-popup="tournament"
-                data-id="<?= $tournament->ID; ?>"
-                data-price="<?= $tournament->price; ?>"
-                type="button" name="cancel">
-                <span>
-                  <?php _e( 'Отменить регистрацию', 'earena_2' ); ?>
-                </span>
-              </button>
-            <?php
-          } elseif ($tournament_present) {
-            ?>
-              <button class="tournament__button button button--blue openpopup" data-popup="tournament" type="button" name="registration" disabled>
-                <span>
-                  <?php _e( 'Проходит', 'earena_2' ); ?>
-                </span>
-              </button>
-            <?php
-          } elseif ($tournament_ended) {
-            ?>
-              <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
-                <span>
-                  <?php _e( 'Завершен', 'earena_2' ); ?>
-                </span>
-              </button>
-            <?php
-          } elseif ($tournament_cancel) {
-            ?>
-              <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
-                <span>
-                  <?php _e( 'Отменен', 'earena_2' ); ?>
-                </span>
-              </button>
-            <?php
-          }
-
-          if ($tournament_registration && is_ea_admin()) {
-            ?>
-              <button class="tournament__button tournament__button--add-player button button--blue openpopup"
+              <button class="tournament__button tournament__button--add-player button button--green openpopup"
                 data-popup="tournament"
                 data-id="<?= $tournament->ID; ?>"
                 type="button" name="add-player">

@@ -136,15 +136,41 @@
         ?>
       </div>
 
-      <form class="form form--popup" data-prefix="" id="form-tournament" action="/" method="post">
+      <form class="form form--popup" data-prefix="cancel" id="form-tournament" action="/" method="post">
         <div class="form__buttons">
-          <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close">
             <?php _e( 'Закрыть', 'earena_2' ); ?>
           </button>
 
           <button class="form__submit form__submit--buttons button button--red" type="submit" name="tournament-submit">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-tournament-add-player">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить игрока', 'earena_2' ); ?>
+      </h2>
+
+      <form class="form form--popup" data-prefix="add-player" id="form-tournament" action="/" method="post">
+        <div class="form__row">
+          <input class="form__field form__field--popup" id="email-player" type="email" name="email" required placeholder="<?php _e( 'Email игрока', 'earena_2' ); ?>" >
+        </div>
+        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+        <div class="popup__ajax-message"></div>
+        <div class="form__buttons form__buttons--add-player">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close">
+            <?php _e( 'Отменить', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--blue" type="submit" name="tournament-submit">
+            <span>
+              <?php _e( 'Добавить', 'earena_2' ); ?>
             </span>
           </button>
         </div>

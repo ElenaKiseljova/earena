@@ -856,23 +856,6 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
     }
 
     $status = friends_check_friendship_status(get_current_user_id(), $user_id);
-    // Для теста выводим значение
-    ?>
-      <pre class="visually-hidden d-none">
-        <?php print_r($status); ?>
-      </pre>
-    <?php
-    /*function user_link_class($status, $status_name_array)
-    {
-        $is_equal = false;
-        foreach ($status_name_array as $status_name) {
-            if ($status === $status_name) {
-                $is_equal = true;
-            }
-        }
-
-        return $is_equal ? '' : ' d-none';
-    }*/
 
     switch ($status) {
       case 'is_friend':
@@ -926,7 +909,6 @@ function earena_2_page_profile_public_friends_buttons($user_id = 0)
       <?php _e( 'Сообщение', 'earena_2' ); ?>
     </a>
   <?php
-  //echo ea_user_switching($user_id);
 }
 
 /* ==============================================

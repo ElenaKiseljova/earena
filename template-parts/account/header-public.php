@@ -56,11 +56,30 @@
           </div>
         <?php endif; ?>
 
-        <div class="user__rating user__rating--account user__rating--account-public">
-          <span>
-            <?php _e( 'Рейтинг', 'earena_2' ); ?>
-          </span>: <?= rating(); ?>
-        </div>
+        <?php if ( is_ea_admin() ): ?>
+          <div class="user__money user__money--account">
+            <span class="user__money-amount user__money-amount--account">
+              $<span><?= earena_2_nice_money(earena_2_balance($ea_user->ID)); ?></span>
+            </span>
+          </div>
+
+          <div class="user__rating user__rating--account">
+            <span>
+              <?php _e( 'Рейтинг', 'earena_2' ); ?>
+            </span>: <?= earena_2_rating($ea_user->ID); ?>
+          </div>
+        <?php else: ?>
+          <div class="user__rating user__rating--account user__rating--account-public">
+            <span>
+              <?php _e( 'Рейтинг', 'earena_2' ); ?>
+            </span>: <?= earena_2_rating($ea_user->ID); ?>
+          </div>
+        <?php endif; ?>
+        <?php if ( is_ea_admin() ): ?>
+          <a class="account__email" href="mailto:<?= $ea_user->user_email; ?>">
+            <?= $ea_user->user_email; ?>
+          </a>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -79,8 +98,24 @@
 
     <div class="account__buttons">
       <?php
-        // Выводит кнопки Удалить из друзей / Добавить в друзья и Сообщение
-        earena_2_page_profile_public_friends_buttons($ea_user->ID);
+        if ( is_ea_admin() ) {
+          ?>
+            <button class="button button--green openpopup" data-popup="balance" name="topup">
+              <span>
+                <?php _e( 'Пополнить счет', 'earena_2' ); ?>
+              </span>
+            </button>
+
+            <button class="account__vip button button--orange openpopup" data-popup="vip" name="gift">
+              <span>
+                <?php _e( 'Выдать VIP', 'earena_2' ); ?>
+              </span>
+            </button>
+          <?php
+        } else {
+          // Выводит кнопки Удалить из друзей / Добавить в друзья и Сообщение
+          earena_2_page_profile_public_friends_buttons($ea_user->ID);
+        }
       ?>
     </div>
   </div>

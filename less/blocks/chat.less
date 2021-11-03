@@ -175,8 +175,6 @@
 }
 
 #chat {
-  .w100();
-
   .bp-messages-wrap {
     border-radius: 0;
     border: none;
@@ -300,6 +298,10 @@
           display: none;
         }
       }
+
+      @media (max-width: @mobile) {
+        padding-left: 10px;
+      }
     }
 
     .participants {
@@ -375,47 +377,6 @@
           background-color: #colors[dark_light];
           & > * {
             background-color: #colors[dark_light];
-          }
-        }
-
-        &.unread {
-          background-color: #222D43;
-
-          &:hover,
-          &:focus {
-            background-color: #222D43;
-            & > * {
-              background-color: #222D43;
-            }
-          }
-
-          & > .info p {
-            background-color: #303E58;
-          }
-
-          .unread-count {
-            position: absolute;
-
-            bottom: 0;
-            right: 0;
-
-            z-index: 1;
-
-            display: flex;
-
-            justify-content: center;
-            align-items: center;
-
-            width: 21px;
-            height: 21px;
-
-            .caption_2();
-
-            color: #colors[white];
-
-            border-radius: 50%;
-
-            background-color: #colors[accent];
           }
         }
 
@@ -499,6 +460,16 @@
                 overflow: visible;
 
                 span.avatar {
+                  position: static;
+                  padding: 0!important;
+                  margin: 0!important;
+                  width: 0;
+                  height: 0;
+                  min-width: 0px!important;
+                  min-height: 0px!important;
+                }
+
+                img.avatar {
                   position: absolute;
                   left: -50px;
                   top: 50%;
@@ -512,13 +483,6 @@
                   margin: 0!important;
 
                   border-radius: 50%!important;
-                  overflow: hidden;
-
-                  img {
-                    width: 100%;
-                    height: auto;
-                    margin: 0px;
-                  }
                 }
               }
             }
@@ -710,6 +674,49 @@
           }
         }
 
+        &.unread {
+          background-color: #222D43;
+
+          &:hover,
+          &:focus {
+            background-color: #222D43;
+            & > * {
+              background-color: #222D43;
+            }
+          }
+
+          & > .info {
+            p {
+              background-color: #303E58;
+            }
+          }
+
+          .unread-count {
+            position: absolute;
+
+            bottom: 0;
+            right: 0;
+
+            z-index: 1;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            width: 21px;
+            height: 21px;
+
+            .caption_2();
+
+            color: #colors[white];
+
+            border-radius: 50%;
+
+            background-color: #colors[accent];
+          }
+        }
+
         @media (max-width: @mobile) {
           flex-direction: column;
 
@@ -778,8 +785,53 @@
               }
             }
 
+            & > h4 {
+              margin-left: auto;
+            }
+
             & > p {
               width: 100%;
+
+              white-space: normal;
+            }
+          }
+
+          .pic {
+            &.group {
+              width: 100%;
+              height: auto;
+              margin-bottom: 10px;
+
+              & + .info {
+                h4 {
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                }
+
+                p {
+                  width: calc(100% - 40px);
+
+                  white-space: normal;
+
+                  img.avatar {
+                    left: -40px;
+
+                    display: flex;
+
+                    justify-content: center;
+                    align-items: center;
+
+                    width: 30px;
+                    min-height: 30px!important;
+                    min-width: 30px!important;
+
+                    img {
+                      width: 100%;
+                      height: auto;
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -1113,6 +1165,8 @@
   }
 
   &.page-chat {
+    .w100();
+
     .bp-messages-wrap,
     .reply {
       background-color: #colors[dark_light];

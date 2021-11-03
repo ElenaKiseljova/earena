@@ -87,7 +87,6 @@
     </ul>
 
     <div class="account__buttons">
-      <!-- Пополнить счет -->
       <a class="button button--green" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
         <span>
           <?php _e( 'Пополнить счет', 'earena_2' ); ?>

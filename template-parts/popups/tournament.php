@@ -1,5 +1,7 @@
 <?php
   global $tournament, $tournament_id, $games, $icons, $ea_icons, $ea_user;
+
+  $tournament_id = $tournament_id ?? null;
 ?>
 <div class="popup popup--tournament">
   <div class="popup__template popup__template--tournament" id="tournament-popup">
@@ -95,9 +97,10 @@
 
     <div class="popup__content popup__content--tournament">
       <form class="form form--popup" data-prefix="join" id="form-tournament" action="/" method="post">
+        <div class="popup__ajax-message"></div>
         <?php if ($tournament->private): ?>
           <div class="form__row">
-            <input class="form__field form__field--popup" id="password" type="password" name="password" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
+            <input class="form__field form__field--popup" id="password" type="password" name="tournament_pass" required placeholder="<?php _e( 'Пароль', 'earena_2' ); ?>">
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -105,6 +108,10 @@
             <?php _e( 'Это приватный турнир. Введите пароль.', 'earena_2' ); ?>
           </p>
         <?php endif; ?>
+
+        <input type="hidden" name="tournament_price" value="<?= !empty($tournament->price) ? earena_2_nice_money( $tournament->price ) : 'Free'; ?>">
+        <input type="hidden" name="tournament_id" value="<?= $tournament_id; ?>">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
 
         <div class="form__buttons">
           <button class="form__submit form__submit--buttons button button--gray button--popup-close" type="button" name="cancel">
@@ -130,13 +137,21 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          $money_value = '$50';
+          if (!empty($tournament->price)) {
+            $money_value = earena_2_nice_money( $tournament->price );
 
-          echo sprintf( __( 'Вы действительно хотите отменить участие в турнире? <br>Средства в размере %s будут возвращены обратно на ваш счет.', 'earena_2' ), $money_value );
+            echo sprintf( __( 'Вы действительно хотите отменить участие в турнире? <br>Средства в размере $%s будут возвращены обратно на ваш счет.', 'earena_2' ), $money_value );
+          } else {
+            _e( 'Вы действительно хотите отменить участие в турнире? Участие в турнире - бесплатное.', 'earena_2' );
+          }
         ?>
       </div>
 
       <form class="form form--popup" data-prefix="cancel" id="form-tournament" action="/" method="post">
+        <input type="hidden" name="tournament_price" value="<?= !empty($tournament->price) ? earena_2_nice_money( $tournament->price ) : 'Free'; ?>">
+        <input type="hidden" name="tournament_id" value="<?= $tournament_id; ?>">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
         <div class="form__buttons">
           <button class="form__submit form__submit--buttons button button--gray button--popup-close">
             <?php _e( 'Закрыть', 'earena_2' ); ?>
@@ -159,9 +174,13 @@
 
       <form class="form form--popup" data-prefix="add-player" id="form-tournament" action="/" method="post">
         <div class="form__row">
-          <input class="form__field form__field--popup" id="email-player" type="email" name="email" required placeholder="<?php _e( 'Email игрока', 'earena_2' ); ?>" >
+          <input class="form__field form__field--popup" id="user-email" type="email" name="user_email" required placeholder="<?php _e( 'Email игрокаа', 'earena_2' ); ?>" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}">
         </div>
         <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+
+        <input type="hidden" name="tournament_id" value="<?= $tournament_id; ?>">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
         <div class="popup__ajax-message"></div>
         <div class="form__buttons form__buttons--add-player">
           <button class="form__submit form__submit--buttons button button--gray button--popup-close">
@@ -234,8 +253,7 @@
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Вы успешно зарегистрировались в турнир', 'earena_2' ); ?>
-        Championship 2020 Season 2 Premium.
+        <?php _e( 'Вы успешно зарегистрировались в турнир ', 'earena_2' ); ?><?= $tournament->name; ?>.
       </div>
 
       <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
@@ -251,10 +269,29 @@
 
       <div class="popup__information popup__information--template">
         <?php
-          $money_value = '$50';
+          if (!empty($tournament->price)) {
+            $money_value = earena_2_nice_money( $tournament->price );
 
-          echo sprintf( __( 'Вы отменили участие в турнире. <br>Средства в размере %s были возвращены обратно на ваш счет.', 'earena_2' ), $money_value );
+            echo sprintf( __( 'Вы отменили участие в турнире. <br>Средства в размере $%s были возвращены обратно на ваш счет.', 'earena_2' ), $money_value );
+          } else {
+            _e( 'Вы отменили участие в турнире.', 'earena_2' );
+          }
         ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-tournament-success-add-player">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить игрока', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы успешно добавили игрока к турниру!', 'earena_2' );?>
       </div>
 
       <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
@@ -293,6 +330,22 @@
       </button>
     </div>
   </template>
+  <template id="form-tournament-error-add-player">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Добавить игрока', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Что-то пошло не так... <br>Пожалуйста, повторите попытку позже.', 'earena_2' );?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+
 
   <template id="form-tournament-beforesend">
     <div class="popup__content popup__content--tournament">

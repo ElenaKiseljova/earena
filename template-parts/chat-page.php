@@ -4,7 +4,7 @@
   $games = get_site_option( 'games' );
 
   $is_matches_chat = earena_2_current_page( 'matches' );
-  $is_tournaments_chat = earena_2_current_page( 'tournaments') ;
+  $is_tournaments_chat = earena_2_current_page( 'tournaments');
 
   $tournament = false;
   $tournament_id = ($match->tid) ?? false;
@@ -84,7 +84,13 @@
           </h2>
 
           <div class="chat-page__round">
-            3 <?php _e( 'тур', 'earena_2' ); ?>
+            <?php if ((int)$match->type == 2): ?>
+              <?= ((int)$match->tour == 2 ? __('Финал', 'earena') : '1/2'); ?>
+            <?php elseif ((int)$match->type == 3): ?>
+              <?= ($match->tour + 1); ?><?php _e('раунд', 'earena'); ?>
+            <?php else : ?>
+              <?= ($match->tour + 1); ?> <?php _e( 'тур', 'earena_2' ); ?>
+            <?php endif; ?>
           </div>
           <div class="chat-page__type">
             <?php if ((int)$tournament->type == 2): ?>
@@ -96,7 +102,17 @@
             <?php endif; ?>
           </div>
           <div class="chat-page__date">
-            <?php _e( 'Сыграть до', 'earena_2' ); ?> <time>15.11.2020</time>
+            <?php if ((int)$match->type == 3): ?>
+              <?php _e( 'Сыграть до', 'earena_2' ); ?>
+              <time>
+                <?= date('d.m.Y H:i', utc_to_usertime(strtotime($match->end_time))); ?>
+              </time>
+            <?php else : ?>
+              <?php _e( 'Сыграть до', 'earena_2' ); ?>
+              <time>
+                <?= date('d.m.Y H:i', utc_to_usertime(strtotime($match->end_time))); ?>
+              </time>
+            <?php endif; ?>
           </div>
         </div>
       <?php endif; ?>

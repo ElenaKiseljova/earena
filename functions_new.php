@@ -812,6 +812,12 @@
 
     $is_reporter = (isset($match->reporter) && $user_id == (int)$match->reporter) ? true : false;
     $is_result = (isset($match->score1) && isset($match->score2)) ? true : false;
+
+    $bo3 = false;
+    $match_tournament = $match->tid;
+    if ($match_tournament) {
+      $bo3 = EArena_DB::get_ea_tournament_field($match->tid, 'reglament') == 'bo3';
+    }
     ?>
       <div class="chat-page__inner">
         <form class="form form--chat" data-prefix="" id="form-chat" action="index.html" method="post">
@@ -839,7 +845,7 @@
                 <label class="visually-hidden" for="score1">
                   <?php _e( 'Результат первого участника', 'earena_2' ) ?>
                 </label>
-                <input class="form__field form__field--chat" type="number" min="0" id="score1" name="score1" required value="<?= isset($match->score1) ? $match->score1 : ''; ?>">
+                <input class="form__field form__field--chat" type="number" min="0" <?= $bo3 ? 'max="2"' : ''; ?> id="score1" name="score1" required value="<?= isset($match->score1) ? $match->score1 : ''; ?>">
               </div>
             <?php endif; ?>
 
@@ -927,7 +933,7 @@
                 <label class="visually-hidden" for="score2">
                   <?php _e( 'Результат первого участника', 'earena_2' ) ?>
                 </label>
-                <input class="form__field form__field--chat" type="number" min="0" id="score2" name="score2" required value="<?= isset($match->score2) ? $match->score2 : ''; ?>">
+                <input class="form__field form__field--chat" type="number" min="0" <?= $bo3 ? 'max="2"' : ''; ?> id="score2" name="score2" required value="<?= isset($match->score2) ? $match->score2 : ''; ?>">
               </div>
             <?php endif; ?>
 
@@ -1016,6 +1022,7 @@
 
   function earena_2_complaint_html($complaint, $match_id) {
     $match = EArena_DB::get_ea_match($match_id);
+    $match_tournament = $match->tid ?? false;
     ?>
       <ul class="chat-page__complaint">
         <?php $complaint_index = 0; ?>
@@ -1030,7 +1037,7 @@
             </div>
             <form class="form form--complaint" data-prefix="delete" id="form-complaint-<?= $complaint_index; ?>" action="index.html" method="post">
               <input type="hidden" name="complaint_index" value="<?= $complaint_index; ?>">
-              <input type="hidden" name="tournament" value="0">
+              <input type="hidden" name="tournament" value="<?= $match_tournament ? 1 : 0; ?>">
               <input type="hidden" name="match_thread_id" value="<?= $match->thread_id; ?>">
               <input type="hidden" name="match_id" value="<?= $match->ID; ?>">
               <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">

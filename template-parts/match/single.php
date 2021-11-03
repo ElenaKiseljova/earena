@@ -1,18 +1,48 @@
 <?php
   global $match, $match_id, $ea_user;
 
+  $is_matches_chat = earena_2_current_page( 'matches' );
+  $is_tournaments_chat = earena_2_current_page( 'tournaments');
+
   if (empty($match_id)) {
+    if ($is_matches_chat) {
       wp_redirect(home_url('matches'));
       exit;
+    }
+
+    if ($is_tournaments_chat) {
+      wp_redirect(home_url('tournaments'));
+      exit;
+    }
   }
+
   $match = EArena_DB::get_ea_match($match_id);
   if (!$match || empty($match->player1) || empty($match->player2)) {
+    if ($is_matches_chat) {
       wp_redirect(home_url('matches'));
       exit;
+    }
+    if ($is_tournaments_chat) {
+      wp_redirect(home_url('tournaments'));
+      exit;
+    }
   }
   if ($ea_user->ID !== (int)$match->player1 && $ea_user->ID !== (int)$match->player2 && !is_ea_admin()) {
+    if ($is_matches_chat) {
       wp_redirect(home_url('matches'));
       exit;
+    }
+    if ($is_tournaments_chat) {
+      wp_redirect(home_url('tournaments'));
+      exit;
+    }
+  }
+
+  if ($is_tournaments_chat) {
+    if (!empty($match->end_time) && strtotime($match->end_time) < time() && $match->type !== 2 && !is_ea_admin()) {
+      wp_redirect(add_query_arg('tournament', $match->tid, home_url('/tournaments/tournament/')));
+      exit;
+    }
   }
 ?>
 

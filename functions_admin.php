@@ -442,22 +442,26 @@
   /* ==============================================
   ********  //Добавить игрока к турниру
   =============================================== */
-  add_action('wp_ajax_add_player_tournament', 'add_player_tournament_callback');
-  function add_player_tournament_callback()
+  add_action('wp_ajax_earena_2_add_player_tournament', 'earena_2_add_player_tournament_callback');
+  function earena_2_add_player_tournament_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $player = $_POST['user_id'];
-      if (is_email($player)) {
-          if (email_exists($player)) {
-              $add = add_ea_tournament_player($_POST['id'], email_exists($player));
-              $arr_response['content'] = $add;
+      $player_email = $_POST['user_email'];
+      if (is_email($player_email)) {
+          if (email_exists($player_email)) {
+              $add_status = add_ea_tournament_player($_POST['tournament_id'], email_exists($player_email));
+              if ($add_status == 1) {
+                wp_send_json_success( $add );
+              } else {
+                wp_send_json_error( __('Такой адрес электронной почты уже добавлен!', 'earena_2') );
+              }
           } else {
-              $arr_response['content'] = __('Такой адрес электронной почты не зарегистрирован');
+            wp_send_json_error( __('Такой адрес электронной почты не зарегистрирован', 'earena_2') );
           }
       } else {
-          $arr_response['content'] = __('Емейл не похож на емейл');
+        wp_send_json_error( __('Емейл не похож на емейл', 'earena_2') );
       }
-      wp_send_json(json_encode($arr_response));
+
       wp_die();
   }
 ?>

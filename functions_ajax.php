@@ -1018,26 +1018,71 @@ function earena_2_del_moderate_callback()
 /* ==============================================
 ********  //Присоединиться к турниру
 =============================================== */
-add_action('wp_ajax_join_tournament', 'join_tournament_callback');
-function join_tournament_callback()
+add_action('wp_ajax_earena_2_join_tournament', 'earena_2_join_tournament_callback');
+function earena_2_join_tournament_callback()
 {
     check_ajax_referer('ea_functions_nonce', 'security');
-    $pwd = isset($_POST['tournament_pass']) ? $_POST['tournament_pass'] : '';
-    $add = add_ea_tournament_player($_POST['id'], get_current_user_id(), $pwd);
-    $arr_response['content'] = $add;
-    wp_send_json(json_encode($arr_response));
+    $tournament_price = htmlspecialchars($_POST['tournament_price']) ?? 0;
+    $tournament_pass = isset($_POST['tournament_pass']) ? $_POST['tournament_pass'] : '';
+
+    $add_status = add_ea_tournament_player($_POST['tournament_id'], get_current_user_id(), $tournament_pass);
+
+    if ($add_status == 1 && $tournament_price != 0) {
+      wp_send_json_success( __('Вы успешно зарегистрированы в турнире.<br/>Средства в размере $', 'earena_js') . $tournament_price . __(' были списаны с Вашего счёта.', 'earena_js') );
+    } else if ($add_status == 1 && $tournament_price == 0) {
+      wp_send_json_success( __('Вы успешно зарегистрированы в турнире.', 'earena_js') );
+    }
+
+    if ($add_status == -4) {
+      wp_send_json_error( __('Игроки, которым нет 18-ти лет не могут участвовать в играх на деньги. Для игры доступны только бесплатные турниры.', 'earena_js') );
+    }
+
+    if ($add_status == -3) {
+      wp_send_json_error( __('Не удалось идентифицировать пользователя. Обновите страницу.', 'earena_js') );
+    }
+
+    if ($add_status == -2) {
+      $response = [
+        'error_pass' => true,
+        'message' => __('Неверный пароль.', 'earena_js')
+      ];
+      wp_send_json_error( $response );
+    }
+
+    if ($add_status == -1) {
+      wp_send_json_error( __('Не получилось списать средства.', 'earena_js') );
+    }
+
+    if ($add_status == 0) {
+      wp_send_json_error( __('Что-то пошло не так... <br>Попробуйте снова позже или обратитесь в техподдержку.', 'earena_js') );
+    }
+
     wp_die();
 }
 
 /* ==============================================
 ********  //Покинуть турнир
 =============================================== */
-add_action('wp_ajax_leave_tournament', 'leave_tournament_callback');
-function leave_tournament_callback()
+add_action('wp_ajax_earena_2_leave_tournament', 'earena_2_leave_tournament_callback');
+function earena_2_leave_tournament_callback()
 {
     check_ajax_referer('ea_functions_nonce', 'security');
-    $add = del_ea_tournament_player($_POST['id'], get_current_user_id());
-    $arr_response['content'] = $add;
-    wp_send_json(json_encode($arr_response));
+    $tournament_price = htmlspecialchars($_POST['tournament_price']) ?? 0;
+
+    $leave_status = del_ea_tournament_player($_POST['tournament_id'], get_current_user_id());
+    if ($leave_status == 1 && $tournament_price !== 0) {
+      wp_send_json_success( __('Вы отменили участие в турнире.<br/>Средства в размере $', 'earena_js') . $tournament_price . __(' были возвращены обратно на ваш счёт.', 'earena_js') );
+    } else if ($leave_status == 1 && $tournament_price == 0) {
+      wp_send_json_success( __('Вы успешно отменили участие в турнире.', 'earena_js') );
+    }
+
+    if ($leave_status == -1) {
+      wp_send_json_error( __('Не получилось вернуть средства. <br>Пожалуйста, повторите попытку позже или обратитесь в техподдержку.', 'earena_js') );
+    }
+
+    if ($leave_status == 0) {
+      wp_send_json_error( __('Что-то пошло не так... <br>Пожалуйста, повторите попытку позже или обратитесь в техподдержку.', 'earena_js') );
+    }
+
     wp_die();
 }

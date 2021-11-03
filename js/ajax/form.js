@@ -242,6 +242,24 @@
               }
             }
 
+            // TOURNAMENT
+            if ( formId.indexOf('tournament') > -1 ) {
+              if (prefix.indexOf('add-player') > -1) {
+                // (АДМИН) Добавление игрока к Турниру
+                formData['action'] = 'earena_2_add_player_tournament';
+              }
+
+              if (prefix.indexOf('cancel') > -1) {
+                // Отменна регистрации на Турнир
+                formData['action'] = 'earena_2_leave_tournament';
+              }
+
+              if (prefix.indexOf('join') > -1) {
+                // Регистрация на Турнир
+                formData['action'] = 'earena_2_join_tournament';
+              }
+            }
+
             // CHAT
             if ( formId.indexOf('chat') > -1 ) {
               dataForm.append('action', 'ajax_match_results_and_fileload');
@@ -254,7 +272,7 @@
                 formData['action'] = 'moderate_match';
               }
 
-              // Создать
+              // (АДМИН) Удалить
               if (prefix.indexOf('delete') > -1) {
                 formData['action'] = 'earena_2_del_moderate';
               }
@@ -268,13 +286,13 @@
 
             // VERIFICATION
             if ( formId.indexOf('verification') > -1) {
-              // Подтверждение верификации
+              // (АДМИН) Подтверждение верификации
               if (prefix.indexOf('apply') > -1) {
                 // Ф-я подтверждения верификации
                 formData['action'] = 'earena_2_apply_verification_request';
               }
 
-              // Отказ в верификации
+              // (АДМИН) Отказ в верификации
               if (prefix.indexOf('reject') > -1) {
                 // Ф-я отказа в верификации
                 formData['action'] = 'earena_2_remove_verification_request';
@@ -294,7 +312,7 @@
             // WARNING
             if ( formId.indexOf('warning') > -1 ) {
               if (prefix.indexOf('add') > -1) {
-                // Добавление предупреждения
+                // (АДМИН) Добавление предупреждения
                 formData['action'] = 'ea_add_yc';
               }
             }
@@ -319,11 +337,6 @@
 
             // Popup message
             let popup = form.closest('.popup');
-            let popupMessage;
-
-            if (popup) {
-              popupMessage = popup.querySelector('.popup__ajax-message');
-            }
 
             // Обработчик старта отправки
             var onBeforeSend = (status) => {
@@ -335,11 +348,10 @@
                   prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  ||
                   (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  ||
                   (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1) ||
-                  (formId.indexOf('stream') > -1 && prefix.indexOf('add') > -1)
+                  (formId.indexOf('stream') > -1 && prefix.indexOf('add') > -1) ||
+                  (formId.indexOf('tournament') > -1 && prefix.indexOf('join') > -1)
                 ) {
-                if (popupMessage) {
-                  popupMessage.innerHTML = '';
-                }
+                window.form.showAJAXMessage(popup);
 
                 return;
               }
@@ -375,13 +387,7 @@
                   if (response.data.loggedin === true) {
                     document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&login-status=success') : (earena_2_ajax.redirecturl + '?login-status=success');
                   } else {
-                    if (popupMessage) {
-                      popupMessage.innerHTML = response.data.message;
-
-                      setTimeout(function () {
-                        popupMessage.innerHTML = '';
-                      }, 2000);
-                    }
+                    window.form.showAJAXMessage(popup, response.data.message, 2000);
 
                     return;
                   }
@@ -394,14 +400,12 @@
                   } else {
                     let message = '';
 
-                    if (popupMessage) {
-                      $.each(response.data.errors, function (key, val) {
-                          console.log(key + ' : '+ val);
-                          message += val + '<br>';
+                    $.each(response.data.errors, function (key, val) {
+                      console.log(key + ' : '+ val);
+                      message += val + '<br>';
+                    });
 
-                          popupMessage.innerHTML = message;
-                      });
-                    }
+                    window.form.showAJAXMessage(popup, message);
 
                     return;
                   }
@@ -410,9 +414,7 @@
                 // Сброс
                 if (prefix.indexOf('reset') > -1) {
                   if (response.data.error) {
-                    if (popupMessage) {
-                      popupMessage.innerHTML = response.data.error;
-                    }
+                    window.form.showAJAXMessage(popup, response.data.error);
 
                     return;
                   }
@@ -425,13 +427,7 @@
               if ( formId.indexOf('verification') > -1 ) {
                 if (prefix.indexOf('request') > -1) {
                   if (response.success === false) {
-                    if (popupMessage) {
-                      popupMessage.innerHTML = response.data;
-
-                      setTimeout(function () {
-                        popupMessage.innerHTML = '';
-                      }, 2000);
-                    }
+                    window.form.showAJAXMessage(popup, response.data, 2000);
 
                     return;
                   }
@@ -513,13 +509,7 @@
                   }
 
                   if (response.status === 0) {
-                    if (popupMessage) {
-                      popupMessage.innerHTML = response.content;
-
-                      setTimeout(function () {
-                        popupMessage.innerHTML = '';
-                      }, 2000);
-                    }
+                    window.form.showAJAXMessage(popup, response.content, 2000);
 
                     console.log(response);
 
@@ -565,12 +555,25 @@
                 }
               }
 
+              // TOURNAMENT
+              if ( formId.indexOf('tournament') > -1 ) {
+                if ((prefix.indexOf('add-player') > -1) || prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1) {
+                  if (response.success === false && !response.data.error_pass) {
+                    onError(response, prefix);
+
+                    return;
+                  } else if (response.success === false && response.data.error_pass) {
+                    window.form.showAJAXMessage(popup, response.data.message, 2000);
+
+                    console.log(response);
+                    return;
+                  }
+                }
+              }
+
               // CHAT
               if ( formId.indexOf('chat') > -1 ) {
-                setTimeout(function () {
-                  // Перезагрузить текущую страницу
-                  document.location.reload();
-                }, 200);
+                window.form.reloadPage();
 
                 return;
               }
@@ -666,13 +669,7 @@
                   response = JSON.parse(response);
 
                   if (response.success === 0) {
-                    if (popupMessage) {
-                      popupMessage.innerHTML = response.message;
-
-                      setTimeout(function () {
-                        popupMessage.innerHTML = '';
-                      }, 2000);
-                    }
+                    window.form.showAJAXMessage(popup, response.message, 2000);
 
                     console.log(response);
 
@@ -686,11 +683,7 @@
                 response = JSON.parse(response);
 
                 if (prefix.indexOf('buy') > -1) {
-                  let popupInformation = attrForms[formId].wrapperFormNode.closest('.popup').querySelector('.popup__information--template');
-
-                  if (popupInformation) {
-                    popupInformation.innerHTML = response.message;
-                  }
+                  window.form.showResponseText(attrForms[formId].wrapperFormNode.closest('.popup'), response.message);
 
                   console.log(response);
 
@@ -718,13 +711,12 @@
               if ( formId.indexOf('login') > -1 ) {
                 // Восстановление
                 if (prefix.indexOf('forgot') > -1) {
-                  let popupInformation = popup.querySelector('.popup__information--template');
                   if (response.data.retrieve_password == true) {
-                    popupInformation.innerHTML = response.data.message;
+                    window.form.showResponseText(popup, response.data.message);
 
                     console.log('Успех', response.data.message);
                   } else {
-                    popupInformation.innerHTML = response.data.message;
+                    window.form.showResponseText(popup, response.data.message);
 
                     console.log('Ошибка', response.data.message);
                   }
@@ -732,7 +724,7 @@
 
                 // Сброс
                 if (prefix.indexOf('reset') > -1 && response.data.message) {
-                  $('.popup__information--template').html(response.data.message);
+                  window.form.showResponseText(popup, response.data.message);
                 }
               }
 
@@ -745,14 +737,9 @@
                   if (response.success === 1) {
                     window.popup.userInfo(false, popup);
 
-                    setTimeout(function () {
-                      // Перезагрузить текущую страницу
-                      document.location.reload();
-                    }, 200);
+                    window.form.reloadPage();
                   } else {
-                    let popupInformation = popup.querySelector('.popup__information--template');
-
-                    popupInformation.innerHTML = response.content;
+                    window.form.showResponseText(popup, response.content);
                   }
                 }
               }
@@ -790,14 +777,22 @@
                 }
               }
 
+              // TOURNAMENT
+              if ( formId.indexOf('tournament') > -1 ) {
+                if (prefix.indexOf('add-player') > -1) {
+                  window.form.reloadPage();
+                }
+
+                if (prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1) {
+                  window.form.reloadPage(200, true);
+                }
+              }
+
               // WARNING
               if ( formId.indexOf('warning') > -1 ) {
                 // Добавление
                 if ((prefix.indexOf('add') > -1)) {
-                  let popupInformation = popup.querySelector('.popup__information--template');
-                  if (popupInformation) {
-                    popupInformation.innerHTML = response.content;
-                  }
+                  window.form.showResponseText(popup, response.content);
                 }
               }
 
@@ -851,11 +846,15 @@
 
                 wrapperFormNode.appendChild(cloneTemplate);
 
-                if (((prefix.indexOf('accept') > -1) && (formId.indexOf('match') > -1)) || ((prefix.indexOf('add') > -1) && (formId.indexOf('warning') > -1))) {
-                  let popupInformation = popup.querySelector('.popup__information--template');
-                  if (popupInformation) {
-                    popupInformation.innerHTML = response.content;
-                  }
+                // MATCH // WARNING // TOURNAMENT
+                if (
+                    ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
+                    ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1)) ||
+                    ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1))
+                ) {
+                  let text = response.content ? response.content : (response.data ? response.data : false);
+
+                  window.form.showResponseText(popup, text);
                 }
               }
 
@@ -1112,10 +1111,7 @@
                             // Повторная инициализация формы
                             window.form.init(attrForms[formId]._SETTINGS);
                           } else {
-                            setTimeout(function () {
-                              // Перезагрузить текущую страницу
-                              document.location.reload();
-                            }, 200);
+                            window.form.reloadPage();
                           }
                         }
 
@@ -1170,6 +1166,46 @@
               // Активация кнопки
               window.popup.activateClosePopupButton(formClosePopup);
             });
+          }
+        },
+        reloadPage : function (timeout = 200, startByClick = false) {
+          if (startByClick) {
+            let onDocumentClick = function (evt) {
+              console.log('click body');
+              setTimeout(function () {
+                // Перезагрузить текущую страницу
+                document.location.reload();
+              }, timeout);
+
+              document.removeEventListener('click', onDocumentClick);
+            };
+
+            document.addEventListener('click', onDocumentClick);
+          } else {
+            setTimeout(function () {
+              // Перезагрузить текущую страницу
+              document.location.reload();
+            }, timeout);
+          }
+        },
+        showResponseText : function (container, message = '') {
+          let popupInformation = container.querySelector('.popup__information--template');
+
+          if (popupInformation) {
+            popupInformation.innerHTML = message;
+          }
+        },
+        showAJAXMessage : function (container, message = '', timeoutClean = false) {
+          let popupAJAXMessageElement = container.querySelector('.popup__ajax-message');
+
+          if (popupAJAXMessageElement) {
+            popupAJAXMessageElement.innerHTML = message;
+
+            if (timeoutClean) {
+              setTimeout(function () {
+                popupAJAXMessageElement.innerHTML = '';
+              }, timeoutClean);
+            }
           }
         }
       };

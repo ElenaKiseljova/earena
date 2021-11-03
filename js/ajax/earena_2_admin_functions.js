@@ -3,6 +3,8 @@
  */
 
 jQuery('document').ready(function($) {
+  const {__, _x, _n, _nx} = wp.i18n;
+
   //SEARCH USERS
   const adminSearchUsers = function () {
     var reply = $('.search__result', 'body');

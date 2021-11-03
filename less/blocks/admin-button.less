@@ -1,0 +1,50 @@
+.admin-button {
+  .button_reset();
+
+  width: 40px;
+  height: 40px;
+
+  background-color: #colors[dark_light_2];
+  border-radius: 5px;
+
+  transition: background-color 0.3s;
+
+  &:hover,
+  &:focus {
+    background-color: #colors[dark];
+
+    transition: background-color 0.3s;
+  }
+
+  &--warning {
+    .bg_icon('../img/warning.svg');
+    background-size: 25 / 40 * 100%;
+
+    &:hover,
+    &:focus {
+      background-color: #colors[red];
+    }
+  }
+
+  &--switch {
+    .bg_icon('../img/switch.svg');
+    background-size: 22 / 40 * 100%;
+  }
+
+  &--message {
+    .bg_icon('../img/message.svg');
+    background-size: 26 / 40 * 100%;
+  }
+
+  &--block {
+    background-color: #colors[red];
+
+    .bg_icon('../img/block.svg');
+    background-size: 22 / 40 * 100%;
+
+    &:hover,
+    &:focus {
+      background-color: #681212;
+    }
+  }
+}

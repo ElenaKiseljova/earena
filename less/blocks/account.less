@@ -28,9 +28,7 @@
   }
 
   &--blocked {
-    background-color: #4E1212;
-
-    pointer-events: none;
+    background-color: #681212;
   }
 
   @media (max-width: @mobile) {
@@ -86,12 +84,21 @@
   justify-content: flex-end;
   align-items: center;
 
+  min-width: 162px;
+
   padding: 0;
   margin: 0;
 
-  margin-bottom: 28px;
-
   list-style: none;
+
+  @media (max-width: @mobile) {
+    width: 100%;
+    min-width: auto;
+
+    justify-content: center;
+
+    margin-top: 15px;
+  }
 }
 
 .account__emoji-item {
@@ -125,18 +132,31 @@
   padding: 0;
   margin: 0;
 
+  &--top {
+    margin-bottom: 28px;
+  }
+
   @media (max-width: @mobile) {
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: stretch;
-
     width: 100%;
 
     max-width: 400px;
 
     margin-left: auto;
     margin-right: auto;
+
+    &--top {
+      flex-wrap: wrap;
+
+      justify-content: space-between;
+      align-content: flex-start;
+    }
+
+    &--bottom {
+      flex-direction: column;
+
+      justify-content: flex-start;
+      align-items: stretch;
+    }
   }
 }
 
@@ -151,6 +171,11 @@
     margin-right: 0;
     margin-bottom: 15px;
   }
+}
+
+.account__vip,
+.account__topup {
+  min-width: 146px;
 }
 
 .account__vip {
@@ -221,4 +246,8 @@
       width: calc(100% - 20px);
     }
   }
+}
+
+.account__admin-button {
+  margin-left: 10px;
 }

@@ -24,10 +24,10 @@
   }
 ?>
 
-<header class="account__header <?php if ($vip && !$blocked) {echo 'account__header--vip';} else if ($blocked) {echo 'account__header--blocked';} ?>">
+<header class="account__header <?= ($vip && !$blocked) ? 'account__header--vip' : ($blocked ? 'account__header--blocked' : ''); ?>">
   <div class="account__left">
     <div class="user user--account">
-      <div class="user__image-wrapper user__image-wrapper--account <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
+      <div class="user__image-wrapper user__image-wrapper--account <?= $verified ? 'user__image-wrapper--verified' : ''; ?>">
         <?php earena_2_verification_html($verified, 'public'); ?>
 
         <div class="user__avatar user__avatar--account">
@@ -84,23 +84,67 @@
     </div>
   </div>
   <div class="account__right">
-    <ul class="account__emoji">
-      <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-good.svg" alt="<?php _e( 'Нет предупреждений', 'earena_2' ); ?>">
-      </li>
-      <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-not-so-bad.svg" alt="<?php _e( 'Есть предупреждения', 'earena_2' ); ?>">
-      </li>
-      <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-bad.svg" alt="<?php _e( 'Пользователь заблокирован', 'earena_2' ); ?>">
-      </li>
-    </ul>
+    <div class="account__buttons account__buttons--top">
+      <?php if ( is_ea_admin() ): ?>
+        <?php if (!$blocked): ?>
+          <?= earena_2_user_switching($ea_user->ID); ?>
 
-    <div class="account__buttons">
+          <a class="account__admin-button admin-button admin-button--message" href="<?= home_url('/profile/messages/?new-message&fast=1&to='.$ea_user->user_nicename); ?>">
+            <span class="visually-hidden">
+              <?php _e( 'Перейти в чат с Игроком', 'earena_2' ) ?>
+            </span>
+          </a>
+          <button class="account__admin-button admin-button admin-button--warning openpopup"
+            data-popup="warning"
+            data-user-id="<?= $ea_user->ID; ?>"
+            data-user-name="<?= $ea_user->user_nicename; ?>"
+            type="button" name="add">
+            <span class="visually-hidden">
+              <?php _e( 'Добавить предупреждение', 'earena_2' ) ?>
+            </span>
+          </button>
+          <button class="account__admin-button admin-button admin-button--block openpopup"
+            data-popup="block"
+            data-user-id="<?= $ea_user->ID; ?>"
+            data-user-name="<?= $ea_user->user_nicename; ?>"
+            type="button" name="add">
+            <span class="visually-hidden">
+              <?php _e( 'Заблокировать Игрока', 'earena_2' ) ?>
+            </span>
+          </button>
+        <?php else: ?>
+          <button class="account__admin-button admin-button admin-button--block openpopup"
+            data-popup="block"
+            data-user-id="<?= $ea_user->ID; ?>"
+            data-user-name="<?= $ea_user->user_nicename; ?>"
+            type="button" name="delete">
+            <span class="visually-hidden">
+              <?php _e( 'Разблокировать Игрока', 'earena_2' ) ?>
+            </span>
+          </button>
+        <?php endif; ?>
+      <?php endif; ?>
+
+      <?php if (!$blocked): ?>
+        <ul class="account__emoji">
+          <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-good.svg" alt="<?php _e( 'Нет предупреждений', 'earena_2' ); ?>">
+          </li>
+          <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-not-so-bad.svg" alt="<?php _e( 'Есть предупреждения', 'earena_2' ); ?>">
+          </li>
+          <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-bad.svg" alt="<?php _e( 'Пользователь заблокирован', 'earena_2' ); ?>">
+          </li>
+        </ul>
+      <?php endif; ?>
+    </div>
+
+    <div class="account__buttons account__buttons--bottom">
       <?php
-        if ( is_ea_admin() ) {
+        if ( is_ea_admin() && !$blocked ) {
           ?>
-            <button class="button button--green openpopup" data-popup="balance" name="topup">
+            <button class="account__topup button button--green openpopup" data-popup="balance" name="topup">
               <span>
                 <?php _e( 'Пополнить счет', 'earena_2' ); ?>
               </span>
@@ -112,7 +156,7 @@
               </span>
             </button>
           <?php
-        } else {
+        } else if ( !is_ea_admin() && !$blocked) {
           // Выводит кнопки Удалить из друзей / Добавить в друзья и Сообщение
           earena_2_page_profile_public_friends_buttons($ea_user->ID);
         }

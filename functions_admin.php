@@ -464,4 +464,33 @@
 
       wp_die();
   }
+
+  /* ==============================================
+  ********  //Переключение в профиль игрока
+  =============================================== */
+  function earena_2_user_switching($user_id = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      $user = get_userdata($user_id > 0 ? $user_id : get_current_user_id());
+      if (!$user) {
+          return;
+      }
+      $link = user_switching::maybe_switch_url($user);
+      if (!$link) {
+          return;
+      }
+      $link = add_query_arg(array(
+          'redirect_to' => urlencode(bp_core_get_user_domain($user->ID)),
+      ), $link);
+
+      ?>
+        <a class="account__admin-button admin-button admin-button--switch" href="<?= esc_url($link); ?>">
+          <span class="visually-hidden">
+            <?php _e( 'Переключиться на Игрока', 'earena_2' ) ?>
+          </span>
+        </a>
+      <?php
+  }
 ?>

@@ -115,7 +115,7 @@
             earena_2_get_popup( 'contact' );
           }
 
-          if ( earena_2_current_page( 'match' ) && isset($_GET['match'])) {
+          if ( (earena_2_current_page( 'match' ) && isset($_GET['match'])) || ( is_ea_admin() && earena_2_current_page( 'user' ) )) {
             // Попап Предупреждения
             earena_2_get_popup( 'warning' );
           }

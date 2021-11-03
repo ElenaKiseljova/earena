@@ -278,32 +278,6 @@
   }
 }
 
-.chat-page__warning {
-  .button_reset();
-
-  width: 40px;
-  height: 40px;
-
-  background-color: #colors[dark_light_2];
-  border-radius: 5px;
-
-  .bg_icon('../img/warning.svg');
-  background-size: 25 / 40 * 100%;
-
-  transition: background-color 0.3s;
-
-  &:hover,
-  &:focus {
-    background-color: #colors[red];
-
-    transition: background-color 0.3s;
-  }
-
-  @media (max-width: @mobile) {
-    order: 1;
-  }
-}
-
 .chat-page__complaint {
   list-style: none;
 }
@@ -340,4 +314,10 @@
   .body();
 
   color: #colors[text];
+}
+
+.chat-page__warning {
+  @media (max-width: @mobile) {
+    order: 1;
+  }
 }

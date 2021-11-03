@@ -22,10 +22,10 @@
   }
 ?>
 
-<header class="account__header <?php if ($vip && !$blocked) {echo 'account__header--vip';} else if ($blocked) {echo 'account__header--blocked';} ?>">
+<header class="account__header <?= ($vip && !$blocked) ? 'account__header--vip' : ($blocked ? 'account__header--blocked' : ''); ?>">
   <div class="account__left">
     <div class="user user--account">
-      <div class="user__image-wrapper user__image-wrapper--account <?php if ($verified) echo 'user__image-wrapper--verified'; ?>">
+      <div class="user__image-wrapper user__image-wrapper--account <?= $verified ? 'user__image-wrapper--verified' : ''; ?>">
         <?php earena_2_verification_html($verified, 'private'); ?>
 
         <div class="user__avatar user__avatar--account">
@@ -74,38 +74,42 @@
     </div>
   </div>
   <div class="account__right">
-    <ul class="account__emoji">
-      <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-good.svg" alt="<?php _e( 'Нет предупреждений', 'earena_2' ); ?>">
-      </li>
-      <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-not-so-bad.svg" alt="<?php _e( 'Есть предупреждения', 'earena_2' ); ?>">
-      </li>
-      <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
-        <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-bad.svg" alt="<?php _e( 'Пользователь заблокирован', 'earena_2' ); ?>">
-      </li>
-    </ul>
+    <?php if (!$blocked): ?>
+      <div class="account__buttons account__buttons--top">
+        <ul class="account__emoji">
+          <li class="account__emoji-item <?php echo $yellow_cards < 1 ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-good.svg" alt="<?php _e( 'Нет предупреждений', 'earena_2' ); ?>">
+          </li>
+          <li class="account__emoji-item <?php echo ($yellow_cards < 3 && $yellow_cards > 0) ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-not-so-bad.svg" alt="<?php _e( 'Есть предупреждения', 'earena_2' ); ?>">
+          </li>
+          <li class="account__emoji-item <?php echo $yellow_cards >= 3 ? 'active' : ''; ?>">
+            <img width="30" height="30" src="<?php echo get_template_directory_uri(); ?>/assets/img/smile-bad.svg" alt="<?php _e( 'Пользователь заблокирован', 'earena_2' ); ?>">
+          </li>
+        </ul>
+      </div>
 
-    <div class="account__buttons">
-      <a class="button button--green" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
-        <span>
-          <?php _e( 'Пополнить счет', 'earena_2' ); ?>
-        </span>
-      </a>
-
-      <?php if ($vip): ?>
-        <div class="account__vip account__vip--active button button--orange">
+      <div class="account__buttons account__buttons--bottom">
+        <a class="account__topup button button--green" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">
           <span>
-            <?php _e( 'VIP статус до', 'earena_2' ); ?> <time><?= date("d.m.Y", $vip_time); ?></time>
-          </span>
-        </div>
-      <?php else : ?>
-        <a class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add#vip">
-          <span>
-            <?php _e( 'VIP статус', 'earena_2' ); ?>
+            <?php _e( 'Пополнить счет', 'earena_2' ); ?>
           </span>
         </a>
-      <?php endif; ?>
-    </div>
+
+        <?php if ($vip): ?>
+          <div class="account__vip account__vip--active button button--orange">
+            <span>
+              <?php _e( 'VIP статус до', 'earena_2' ); ?> <time><?= date("d.m.Y", $vip_time); ?></time>
+            </span>
+          </div>
+        <?php else : ?>
+          <a class="account__vip <?php if ($vip) echo 'account__vip--active'; ?> button button--orange" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add#vip">
+            <span>
+              <?php _e( 'VIP статус', 'earena_2' ); ?>
+            </span>
+          </a>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
   </div>
 </header>

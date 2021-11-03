@@ -961,7 +961,7 @@
 
           <div class="form__bottom form__bottom--chat">
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning openpopup"
+              <button class="chat-page__warning admin-button admin-button--warning openpopup"
                 data-popup="warning"
                 data-user-id="<?= $match->player1; ?>"
                 data-user-name="<?= earena_2_get_nickname_by_id( $match->player1 ); ?>"
@@ -997,7 +997,7 @@
             <?php endif; ?>
 
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning openpopup"
+              <button class="chat-page__warning admin-button admin-button--warning openpopup"
                 data-popup="warning"
                 data-user-id="<?= $match->player2; ?>"
                 data-user-name="<?= earena_2_get_nickname_by_id( $match->player2 ); ?>"

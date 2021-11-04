@@ -7,8 +7,8 @@ jQuery(document).ready(function ($) {
 
     const initObj = {
         0: ['.page-header .time span'],
-        1: [],//не существует в новой теме
-        2: ['.user__money-amount span'],
+        1: [],
+        2: ['.user__money-amount--header span'],
         3: ['.header-main .nums .num-green', '.mobile-menu-wrap .nums .num-green', '.dropdown-menu .num-green', '.logged-in-menu-bottom .num-green', '.menu-profile .num-green'],
         4: ['.header-main .nums .num-red', '.mobile-menu-wrap .nums .num-red'],
         5: ['.header-main .nums .num-blue', '.mobile-menu-wrap .nums .num-blue', '.dropdown-menu .num-blue', '.logged-in-menu-bottom .num-blue', '.menu-profile .num-blue'],

@@ -1,7 +1,9 @@
 <?php
   $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
   $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
-  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
+
+  $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
+  $is_profile_admin_matches = ((earena_2_current_page( 'matches')) && $is_profile_admin) ? true : false;
 ?>
 <?php if (earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
@@ -80,7 +82,7 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif ( earena_2_current_page( 'matches' ) && !$is_profile ) : ?>
+<?php elseif ( earena_2_current_page( 'matches' ) && !$is_profile && !$is_profile_admin ) : ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
       <header class="section__header">
@@ -142,6 +144,25 @@
       <span></span>
     </div>
     <div id="isInViewPort"></div>
+  </section>
+<?php elseif ($is_profile_admin_matches) : ?>
+  <section class="section section--matches" id="matches">
+    <header class="section__header section__header--matches-admin">
+      <?php
+        get_template_part( 'template-parts/tabs/admin', 'matches' );
+      ?>
+    </header>
+
+    <div class="section__content section__content--matches-admin active">
+      <ul class="section__list">
+        <?= earena_2_show_admin_matches_moderate(); ?>
+      </ul>
+    </div>
+    <div class="section__content section__content--matches-admin">
+      <ul class="section__list">
+        <?= earena_2_show_admin_matches_not_confirmed(); ?>
+      </ul>
+    </div>
   </section>
 <?php else : ?>
   <section class="section section--matches" id="matches">

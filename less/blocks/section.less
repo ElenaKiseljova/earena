@@ -40,6 +40,10 @@
     margin-bottom: 40px;
   }
 
+  &--matches-admin {
+    margin-bottom: 20px;
+  }
+
   @media (max-width: @mobile) {
     flex-direction: column;
 
@@ -55,6 +59,14 @@
     width: 100%!important;
     padding: 0!important;
     margin: 0!important;
+  }
+
+  &--matches-admin {
+    display: none;
+
+    &.active {
+      display: block;
+    }
   }
 }
 

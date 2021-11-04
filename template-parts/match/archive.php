@@ -197,9 +197,14 @@
         </button>
       <?php elseif ($match_present && $match_my == false): ?>
         <?php if (is_ea_admin()): ?>
-          <a class="button button--blue" href="<?= bloginfo( 'url' )?>/matches/match/?match=<?= $match->ID; ?>">
+          <a class="button button--gray" href="<?= bloginfo( 'url' )?>/matches/match/?match=<?= $match->ID; ?>">
+            <?php if (ea_count_unread($match->thread_id) > 0): ?>
+              <span class="button__chat button__chat--left">
+                <?=  ea_count_unread($match->thread_id); ?>
+              </span>
+            <?php endif; ?>
             <span>
-              <?php _e( 'Проходит', 'earena_2' ); ?>
+              <?php _e( 'В чат', 'earena_2' ); ?>
             </span>
           </a>
         <?php else: ?>

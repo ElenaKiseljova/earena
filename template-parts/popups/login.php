@@ -331,7 +331,7 @@
           <?php _e( 'Чтобы начать соревноваться <br> с другими игроками необходимо <br> добавить игры в свою учетную запись.', 'earena_2' ); ?>
         </div>
 
-        <a class="popup__add-button button button--blue" href="/profile">
+        <a class="popup__go-to-button popup__go-to-button--login button button--blue" href="/profile">
           <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
         </a>
       </div>

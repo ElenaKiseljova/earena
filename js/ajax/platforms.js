@@ -70,9 +70,12 @@
         // Количество колонок
         let column = 4;
 
+        let dataFilteredTotal = 0;
+
         if (what === 'games') {
           // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
           amount[what] = dataFiltered.length;
+          dataFilteredTotal = amount[what];
 
           column = 6;
 
@@ -84,32 +87,20 @@
                    `;
           }).join(' ');
         } else {
-          if (window.platforms.createMatchHTMLTemplate(what, dataFiltered) !== false) {
-            // Добавляю кнопку создания матча в список матчей
-            dataFiltered = window.platforms.createMatchHTMLTemplate(what, dataFiltered);
+          dataFiltered = JSON.parse(dataFiltered);
+
+          console.log(dataFiltered.data);
+
+          dataFilteredTotal = dataFiltered.total ?? 0;
+
+          dataTemplate = dataFiltered.data ?? '';
+          amount[what] = dataFiltered.amount ?? 0;
+
+          // Добавляю кнопку создания матча в список матчей
+          if (window.platforms.createMatchHTMLTemplate(what, dataTemplate, column) !== false) {
+            dataTemplate = window.platforms.createMatchHTMLTemplate(what, dataTemplate, column);
+            amount[what]++;
           }
-
-          dataFiltered = dataFiltered.split('~~~');
-          //console.log(dataFiltered.length);
-
-          // Получаем кол-во полученных элементов
-          amount[what] = dataFiltered.length - 1;
-
-          dataTemplate = dataFiltered.map(function(dataFilteredItem, index) {
-            if (index === (dataFiltered.length - 1)) {
-              return `
-                      <li class="visually-hidden">
-                        ${dataFilteredItem}
-                      </li>
-                     `;
-            } else {
-              return `
-                      <li class="section__item section__item--col-${column}">
-                        ${dataFilteredItem}
-                      </li>
-                     `;
-            }
-          }).join(' ');
         }
 
         // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
@@ -148,63 +139,58 @@
         // Отрисовка полос прогресса
         window.progress('.players__progress-bar');
 
-        // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
-        let amountSpan = container.querySelectorAll(`.count_filtered_${what}`);
-
-        if (amountSpan.length > 0) {
-          amount[what] = ( amountSpan[amountSpan.length - 1].textContent !== '') ? parseInt(amountSpan[amountSpan.length - 1].textContent, 10) : 0;
-
-          if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataFiltered) === false) {
-            container.innerHTML = '<li class="section__item section__item--empty">' + __('Ничего не найдено', 'earena_2') + '</li>';
-          }
+        if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataTemplate, column) === false) {
+          container.innerHTML = '<li class="section__item section__item--empty">' + __('Ничего не найдено', 'earena_2') + '</li>';
         }
 
-        window.platforms.showFilteredAmount(what, amount[what]);
+        window.platforms.showFilteredAmount(what, dataFilteredTotal);
 
         console.log('Created: ', what);
       },
-      createMatchHTMLTemplate : function (what, response) {
+      createMatchHTMLTemplate : function (what, response, column) {
         if (filtersSection && currentGameId === false && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
-          // ~~~ - тильды для обертки карточки создания матча в элемент списка при парсинге response в window.platforms.createList()
           let matchHTMLTemplate = function () {
             if (is_ea_admin === false && is_user_logged_in === true) {
               return `
-                <div class="match match--create">
-                  <div class="match__image">
-                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
-                  </div>
+                <li class="section__item section__item--col-${column}">
+                  <div class="match match--create">
+                    <div class="match__image">
+                      <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                    </div>
 
-                  <button class="match__create openpopup" data-popup="match" type="button" name="create">
-                    ${__( 'Создать <br> новый матч', 'earena_2' )}
-                  </button>
-                </div>
-                ~~~
+                    <button class="match__create openpopup" data-popup="match" type="button" name="create">
+                      ${__( 'Создать <br> новый матч', 'earena_2' )}
+                    </button>
+                  </div>
+                </li>
                 `;
             } else if (is_ea_admin === true) {
               return `
-                <div class="match match--create">
-                  <div class="match__image">
-                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
-                  </div>
+                <li class="section__item section__item--col-${column}">
+                  <div class="match match--create">
+                    <div class="match__image">
+                      <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                    </div>
 
-                  <button class="match__create openpopup" data-popup="match" type="button" name="create" disabled>
-                    ${__( 'Администратор не может<br/>создать свой матч', 'earena_2' )}
-                  </button>
-                </div>
-                ~~~
+                    <button class="match__create openpopup" data-popup="match" type="button" name="create" disabled>
+                      ${__( 'Администратор не может<br/>создать свой матч', 'earena_2' )}
+                    </button>
+                  </div>
+                </li>
                 `;
             } else {
               return `
-                <div class="match match--create">
-                  <div class="match__image">
-                    <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
-                  </div>
+                <li class="section__item section__item--col-${column}">
+                  <div class="match match--create">
+                    <div class="match__image">
+                      <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
+                    </div>
 
-                  <button class="match__create openpopup" data-popup="login" type="button" name="signin">
-                    ${__( 'Создать <br> новый матч', 'earena_2' )}
-                  </button>
-                </div>
-                ~~~
+                    <button class="match__create openpopup" data-popup="login" type="button" name="signin">
+                      ${__( 'Создать <br> новый матч', 'earena_2' )}
+                    </button>
+                  </div>
+                </li>
                 `;
             }
           }

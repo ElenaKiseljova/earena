@@ -47,9 +47,12 @@
         <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
         <input type="hidden" name="user" value="">
         <input type="hidden" name="username" value="">
-        <input type="hidden" name="match_id" value="">
-        <input type="hidden" name="match_thread_id" value="">
-        <input type="hidden" name="tournament" value="">
+
+        <?php if ( isset($_GET['match']) ): ?>
+          <input type="hidden" name="match_id" value="">
+          <input type="hidden" name="match_thread_id" value="">
+          <input type="hidden" name="tournament" value="">
+        <?php endif; ?>
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
@@ -65,9 +68,40 @@
       </form>
     </div>
   </template>
+  <template id="popup-warning-delete">
+    <div class="popup__header popup__header--warning">
+      <h2 class="popup__title popup__title--warning">
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
+      </h2>
+    </div>
+
+    <div class="popup__content popup__content--warning">
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы действительно хотите удалить Предупреждение?', 'earena_2' ); ?>
+      </div>
+
+      <form class="form form--popup" data-prefix="delete" id="form-warning" action="/" method="post">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+        <input type="hidden" name="user" value="">
+        <input type="hidden" name="username" value="">
+
+        <div class="form__buttons">
+          <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close">
+            <?php _e( 'Отменить', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--green" type="submit" name="warning-submit-next">
+            <span>
+              <?php _e( 'Удалить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
 
   <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
-  <template id="form-warning-success">
+  <template id="form-warning-success-add">
     <div class="popup__content popup__content--warning">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Предупреждение', 'earena_2' ); ?>
@@ -76,6 +110,55 @@
       <div class="popup__information popup__information--template">
         <?php _e( 'Вы добавили успешно предупреждение!', 'earena_2' ); ?>
       </div>
+
+      <button class="popup__go-to-button popup__go-to-button--vip button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-warning-success-delete">
+    <div class="popup__content popup__content--warning">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы удалили успешно предупреждение!', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--vip button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-warning-error-add">
+    <div class="popup__content popup__content--warning">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не добавили предупреждение. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--vip button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+  <template id="form-warning-error-delete">
+    <div class="popup__content popup__content--warning">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Предупреждение', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не удалили предупреждение. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--vip button button--gray button--popup-close" type="button" name="match-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
     </div>
   </template>
   <template id="form-warning-beforesend">
@@ -86,17 +169,6 @@
 
       <div class="popup__information popup__information--template">
         <?php _e( 'Ваша заявка отправляется...', 'earena_2' ); ?>
-      </div>
-    </div>
-  </template>
-  <template id="form-warning-error">
-    <div class="popup__content popup__content--warning">
-      <h2 class="popup__title popup__title--template">
-        <?php _e( 'Предупреждение', 'earena_2' ); ?>
-      </h2>
-
-      <div class="popup__information popup__information--template">
-        <?php _e( 'Вы не добавили предупреждение. <br>Пожалуйста, попробуйте повторить позже.', 'earena_2' ); ?>
       </div>
     </div>
   </template>

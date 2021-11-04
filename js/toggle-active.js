@@ -192,6 +192,18 @@
       /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
       window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, true);
 
+      let toggleAdminMatchesContent = function (button, index) {
+        let adminMatchesTabContents = document.querySelectorAll('.section__content--matches-admin');
+
+        if (adminMatchesTabContents[index]) {
+          removeActiveClassElements(adminMatchesTabContents);
+
+          adminMatchesTabContents[index].classList.add('active');
+        }
+      };
+      /* Переключатели на стр Матче Админа */
+      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminMatchesContent, true);
+
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');
 

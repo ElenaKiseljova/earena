@@ -21,7 +21,7 @@
         <?php _e( 'Спасибо за то, что помогаете делать нашу платформу лучше.<br>Наши специалисты ответят на ваш запрос как можно скорее.', 'earena_2' ); ?>
       </div>
 
-      <button class="popup__add-button popup__add-button--contact button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--contact button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
@@ -36,7 +36,7 @@
         <?php _e( 'Что-то пошло не так. Пожалуйста, повторите попытку позже...', 'earena_2' ); ?>
       </div>
 
-      <button class="popup__add-button popup__add-button--contact button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--contact button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

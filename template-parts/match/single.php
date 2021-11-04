@@ -63,7 +63,8 @@
   </template>
 
   <?php
-    get_template_part( 'template-parts/tabs/users' );
+    // Переключение пользователей
+    get_template_part( 'template-parts/tabs/admin', 'users' );
   ?>
   <?php
     $complaint = json_decode($match->complaint, true) ? json_decode($match->complaint, true) : [];

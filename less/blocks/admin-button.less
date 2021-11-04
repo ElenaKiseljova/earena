@@ -17,12 +17,24 @@
   }
 
   &--warning {
-    .bg_icon('../img/warning.svg');
-    background-size: 25 / 40 * 100%;
+    &-add,
+    &-delete {
+      .bg_icon('../img/warning.svg');
+      background-size: 25 / 40 * 100%;
+    }
 
-    &:hover,
-    &:focus {
-      background-color: #colors[red];
+    &-add {
+      &:hover,
+      &:focus {
+        background-color: #colors[red];
+      }
+    }
+
+    &-delete {
+      &:hover,
+      &:focus {
+        background-color: #colors[green];
+      }
     }
   }
 

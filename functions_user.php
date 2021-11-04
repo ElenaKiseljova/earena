@@ -1069,7 +1069,7 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
 }
 
 /* ==============================================
-********  //Друзья - Данные таба Провиль в профиле (публичный?)
+********  //Друзья - Данные таба Профиль в профиле (публичный?)
 =============================================== */
 
 function earena_2_page_profile_public_friends_data($user_id = 0, $length = 0, $offset = 0)

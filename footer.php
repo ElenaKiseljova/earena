@@ -78,7 +78,7 @@
           // Попап Матча
           earena_2_get_popup( 'match' );
 
-          if ( earena_2_current_page('purse') || earena_2_current_page('wallet') ) {
+          if ( earena_2_current_page('purse') || earena_2_current_page('wallet') || (is_ea_admin() && earena_2_current_page('user')) ) {
             // Попап Кошелёк
             earena_2_get_popup( 'purse' );
 
@@ -108,6 +108,14 @@
           if ( (earena_2_current_page('profile') || earena_2_current_page('admin')) && is_user_logged_in() ) {
             // Попап Верификация
             earena_2_get_popup( 'verification' );
+          }
+
+          if ( earena_2_current_page('user') && is_ea_admin() ) {
+            // Попап Блокировки
+            earena_2_get_popup( 'block' );
+
+            // Попап Баланса
+            earena_2_get_popup( 'balance' );
           }
 
           if ( is_page(5724) || earena_2_current_page( 'nuzhna-pomoshh' ) ) {

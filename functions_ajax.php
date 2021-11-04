@@ -465,6 +465,7 @@ function earena_2_get_filtered_matches()
     $id = (isset($_POST['id']) && $_POST['id'] && $_POST['id'] !== null && $_POST['id'] !== "null" && $_POST['id'] > "") ? $_POST['id'] : false;
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
     $per_page = isset($_POST['perpage']) ? (int)$_POST['perpage'] : 8;
+    $is_profile = isset($_POST['is_profile']) ? true : false;
 
     $matches_db_collection = [];
 
@@ -530,15 +531,29 @@ function earena_2_get_filtered_matches()
         // (array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID')
         $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, $per_page, $offset, $order, $order_by, $mode = 'new');
     }
-    $game_matches_str = '';
 
-    $count_matches_db_collection_html = '<span class="visually-hidden count_filtered_matches">' . $matches_db_collection['total'] . '</span>';
+    $response = [];
 
-    foreach ($matches_db_collection['array'] as $matches) {
-      $game_matches_str .= earena_2_show_match($matches);
+    ob_start();
+
+    $game_count = 0;
+    foreach ($matches_db_collection['array'] as $match) {
+      ?>
+        <li class="section__item section__item--col-4">
+          <?php earena_2_show_match($match, $is_profile); ?>
+        </li>
+      <?php
+      $game_count++;
     }
 
-    echo $game_matches_str . $count_matches_db_collection_html;
+    $response['success'] = 1;
+    $response['amount'] = $game_count;
+    $response['total'] = $matches_db_collection['total'];
+    $response['data'] = ob_get_contents();
+
+    ob_end_clean();
+
+    wp_send_json( json_encode($response) );
 
     die();
 }
@@ -551,10 +566,6 @@ function earena_2_show_match ($match, $profile = false) {
   $match = $var_match;
 
   get_template_part( 'template-parts/match/archive' );
-  ?>
-  ~~~
-  <?php
-  // ~~~ - эти тильды ВАЖНЫ (используются для разбиения стрроки на массив в js)
 }
 
 /* ==============================================
@@ -633,15 +644,29 @@ function earena_2_get_filtered_tournaments()
         // ( array $filters, $length = 0, $offset = 0, $order = 'DESC', $order_by = 'ID', $mode = 'old')
         $tournaments_db_collection = EArena_DB::get_ea_tournaments_by_filters($dataFilter, $per_page, $offset, $order, $order_by, $mode = 'new');
     }
-    $game_tournaments_str = '';
 
-    $count_tournaments_db_collection_html = '<span class="visually-hidden count_filtered_tournaments">' . $tournaments_db_collection['total'] . '</span>';
+    $response = [];
 
+    ob_start();
+
+    $game_count = 0;
     foreach ($tournaments_db_collection['array'] as $tournament) {
-      $game_tournaments_str .= earena_2_show_tournament($tournament, $is_profile);
+      ?>
+        <li class="section__item section__item--col-4">
+          <?php earena_2_show_tournament($tournament, $is_profile); ?>
+        </li>
+      <?php
+      $game_count++;
     }
 
-    echo $game_tournaments_str . $count_tournaments_db_collection_html;
+    $response['success'] = 1;
+    $response['amount'] = $game_count;
+    $response['total'] = $tournaments_db_collection['total'];
+    $response['data'] = ob_get_contents();
+
+    ob_end_clean();
+
+    wp_send_json( json_encode($response) );
 
     die();
 }
@@ -655,10 +680,6 @@ function earena_2_show_tournament ($tournament, $profile = false) {
   $is_profile = $profile;
 
   get_template_part( 'template-parts/tournament/archive' );
-  ?>
-  ~~~
-  <?php
-  // ~~~ - эти тильды ВАЖНЫ (используются для разбиения стрроки на массив в js)
 }
 
 //

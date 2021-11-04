@@ -101,10 +101,14 @@
 
           if (popupItem) {
             popupButton.addEventListener('click', function () {
+              // У формы логирования есть дополнительные кнопки, которые меняют шаблон
+              // Поэтому для нее задан еще один параметр
               if (sufixPopupName === 'login') {
                 popupContentCreator(sufixPopupName, popupItem, popupButton, '.popup__button--information');
               }
 
+              // Подстановка шаблона при открытии - не дефолтное поведение при открытии попапа.
+              // Поэтому здесь перечислены те попапы, к которым эта ф-я применяется
               if (
                   sufixPopupName === 'complaint' ||
                   sufixPopupName === 'tournament' ||
@@ -116,6 +120,8 @@
                   sufixPopupName === 'purse' ||
                   sufixPopupName === 'contact' ||
                   sufixPopupName === 'warning' ||
+                  sufixPopupName === 'block' ||
+                  sufixPopupName === 'balance' ||
                   sufixPopupName === 'vip'
                 ) {
 
@@ -380,6 +386,10 @@
             // если формы нет в шаблоне
             window.form.additionButtonClosePopup(popup);
           }
+        } else if (prefix === 'contact' || prefix === 'chat') {
+          // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
+          // если формы нет в шаблоне
+          window.form.additionButtonClosePopup(popup);
         }
 
         // Регулировка высоты попапа
@@ -467,7 +477,7 @@
         }
 
         if (prefix === 'warning') {
-          if (typePopup === 'add') {
+          if (typePopup === 'add' || typePopup === 'delete') {
             let inputValues = [
               button.dataset.userId ? button.dataset.userId : null,
               button.dataset.userName ? button.dataset.userName : null,

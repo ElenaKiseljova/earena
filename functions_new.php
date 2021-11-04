@@ -516,39 +516,9 @@
       return ea_count_unread($thread_id);
   }
 
-  function count_admin_matches_moderate()
-  {
-      if (!is_ea_admin()) {
-          return;
-      }
-      return EArena_DB::count_ea_admin_matches_moderate();
-  }
-
-  function count_admin_tournaments_moderate($type = 0)
-  {
-      if (!is_ea_admin()) {
-          return;
-      }
-      return EArena_DB::count_ea_admin_tournaments_moderate($type) ?: 0;
-  }
-
-  function count_admin_tournaments_not_confirmed($type = 0)
-  {
-      if (!is_ea_admin()) {
-          return;
-      }
-      return EArena_DB::count_ea_admin_tournaments_not_confirmed($type) ?: 0;
-  }
-
-  function count_admin_tournaments($type = 0)
-  {
-      if (!is_ea_admin()) {
-          return;
-      }
-      return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
-  }
-
-  // Games
+  /* ==============================================
+  ********  //Количество игр
+  =============================================== */
   function ea_count_games()
   {
   	$res = wp_cache_get( 'ea_count_games','ea' );
@@ -653,9 +623,9 @@
       }
   }
 
-  /*
-    ***** Ф-я получения имени подльзователя по ИД
-  */
+  /* ==============================================
+  ********  //Ф-я получения имени подльзователя по ИД
+  =============================================== */
   function earena_2_get_nickname_by_id ($id = 0)
   {
     if ($id > 0) {
@@ -961,7 +931,7 @@
 
           <div class="form__bottom form__bottom--chat">
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning admin-button admin-button--warning openpopup"
+              <button class="chat-page__warning admin-button admin-button--warning-add openpopup"
                 data-popup="warning"
                 data-user-id="<?= $match->player1; ?>"
                 data-user-name="<?= earena_2_get_nickname_by_id( $match->player1 ); ?>"
@@ -997,7 +967,7 @@
             <?php endif; ?>
 
             <?php if (is_ea_admin()): ?>
-              <button class="chat-page__warning admin-button admin-button--warning openpopup"
+              <button class="chat-page__warning admin-button admin-button--warning-add openpopup"
                 data-popup="warning"
                 data-user-id="<?= $match->player2; ?>"
                 data-user-name="<?= earena_2_get_nickname_by_id( $match->player2 ); ?>"

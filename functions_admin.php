@@ -493,4 +493,109 @@
         </a>
       <?php
   }
+
+  /* ==============================================
+  ********  //VIP в подарок
+  =============================================== */
+  add_action('wp_ajax_ea_add_vip', 'ea_add_vip_callback');
+  function ea_add_vip_callback()
+  {
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $ea_user = $_POST['user'];
+      $time = (!empty(get_user_meta($ea_user, 'vt', true)) && get_user_meta($ea_user, 'vt',
+              true) > time()) ? get_user_meta($ea_user, 'vt', true) : time();
+      $process = $time > time() ? __('продлен', 'earena') : __('добавлен', 'earena');
+      $vt = mktime(23, 59, 59, date("m", $time) + 1, date("d", $time), date("Y", $time));
+      if (update_user_meta($ea_user, 'vt', $vt)) {
+          update_user_meta($ea_user, 'vip', true);
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
+          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          $message = $username . ', вам ' . $process . __(' VIP статус на 1 месяц.', 'earena');
+          ea_admin_tech_msg($message, $thread_id);
+          $arr_response['success'] = 1;
+          $arr_response['content'] = 'VIP ' . $process . '. ' . __('До', 'earena') . ' ' . date('d-m-Y', $vt);
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('VIP не добавлен.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+  /* ==============================================
+  ********  //Количество матчей на модерации
+  =============================================== */
+
+  function count_admin_matches_moderate()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_matches_moderate();
+  }
+
+  function count_admin_matches_not_confirmed()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::get_ea_admin_matches_not_confirmed(0, 0, 'DESC') ? count(EArena_DB::get_ea_admin_matches_not_confirmed(0, 0, 'DESC')) : 0;
+  }
+
+  function count_admin_tournaments_moderate($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_tournaments_moderate($type) ?: 0;
+  }
+
+  function count_admin_tournaments_not_confirmed($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return EArena_DB::count_ea_admin_tournaments_not_confirmed($type) ?: 0;
+  }
+
+  function count_admin_tournaments($type = 0)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      return count_admin_tournaments_moderate($type) + count_admin_tournaments_not_confirmed($type);
+  }
+
+  function earena_2_show_admin_matches_moderate($length = 0, $offset = 0, $order = 'DESC', $profile = true)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      $matches = EArena_DB::get_ea_admin_matches_moderate($length, $offset, $order);
+      foreach ($matches as $match) {
+        ?>
+          <li class="section__item section__item--col-4">
+            <?php earena_2_show_match($match, $profile); ?>
+          </li>
+        <?php
+      }
+  }
+
+  function earena_2_show_admin_matches_not_confirmed($length = 0, $offset = 0, $order = 'DESC', $profile = true)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      $matches = EArena_DB::get_ea_admin_matches_not_confirmed($length, $offset, $order);
+      foreach ($matches as $match) {
+        ?>
+          <li class="section__item section__item--col-4">
+            <?php earena_2_show_match($match, $profile); ?>
+          </li>
+        <?php
+      }
+  }
 ?>

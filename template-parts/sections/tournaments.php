@@ -1,8 +1,9 @@
 <?php
   $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
-  $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
   $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
-  $is_profile_friends = ((earena_2_current_page( 'friends') || (isset($_GET['toggles']) && $_GET['toggles'] === 'friends')) && $is_profile) ? true : false;
+
+  $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
+  $is_profile_admin_tournaments = (earena_2_current_page( 'tours' ) && $is_profile_admin) ? true : false;
 ?>
 <?php if ( earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
@@ -79,7 +80,7 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif (earena_2_current_page( 'tournaments' ) && !$is_profile) : ?>
+<?php elseif ((earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' )) && !$is_profile && !$is_profile_admin) : ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
       <header class="section__header">
@@ -175,6 +176,8 @@
       <div id="isInViewPort"></div>
     <?php endif; ?>
   </section>
+<?php elseif ($is_profile_admin_tournaments) : ?>
+  Админские турниры
 <?php else: ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">

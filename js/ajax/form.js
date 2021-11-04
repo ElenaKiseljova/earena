@@ -315,6 +315,11 @@
                 // (АДМИН) Добавление предупреждения
                 formData['action'] = 'ea_add_yc';
               }
+
+              if (prefix.indexOf('delete') > -1) {
+                // (АДМИН) Удаление предупреждения
+                formData['action'] = 'ea_del_yc';
+              }
             }
 
             // STREAM
@@ -330,6 +335,32 @@
               if (prefix.indexOf('buy') > -1) {
                 // Покупка VIP
                 formData['action'] = 'getVIP';
+              }
+
+              if (prefix.indexOf('gift') > -1) {
+                // VIP в подарок
+                formData['action'] = 'ea_add_vip';
+              }
+            }
+
+            // BALANCE
+            if ( formId.indexOf('balance') > -1 ) {
+              if (prefix.indexOf('add') > -1) {
+                // Пополнение баланса
+                formData['action'] = 'ea_add_money_by_admin';
+              }
+            }
+
+            // BLOCK
+            if ( formId.indexOf('block') > -1 ) {
+              if (prefix.indexOf('add') > -1) {
+                // (АДМИН) Добавление блокировки
+                formData['action'] = 'ea_add_blocked';
+              }
+
+              if (prefix.indexOf('delete') > -1) {
+                // (АДМИН) Удаление блокировки
+                formData['action'] = 'ea_del_blocked';
               }
             }
 
@@ -573,9 +604,11 @@
 
               // CHAT
               if ( formId.indexOf('chat') > -1 ) {
-                window.form.reloadPage();
+                if (response.success === true) {
+                  window.form.reloadPage();
 
-                return;
+                  return;
+                }
               }
 
               // CONTACT
@@ -652,7 +685,7 @@
                 response = JSON.parse(response);
 
                 // Добавление
-                if ((prefix.indexOf('add') > -1)) {
+                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
                   if (response.success !== 1) {
                     onError(response, prefix);
 
@@ -688,6 +721,47 @@
                   console.log(response);
 
                   return;
+                }
+
+                if (prefix.indexOf('gift') > -1) {
+                  if (response.success !== 1) {
+                    onError(response, prefix);
+
+                    console.log(response);
+
+                    return;
+                  }
+                }
+              }
+
+              // BLOCK
+              if ( formId.indexOf('block') > -1 ) {
+                response = JSON.parse(response);
+
+                // Добавление
+                if ((prefix.indexOf('add') > -1)) {
+                  if (response.success !== 1) {
+                    onError(response, prefix);
+
+                    console.log(response);
+
+                    return;
+                  }
+                }
+              }
+
+              // BALANCE
+              if ( formId.indexOf('balance') > -1 ) {
+                response = JSON.parse(response);
+
+                if (prefix.indexOf('add') > -1) {
+                  if (response.success !== 1) {
+                    onError(response, prefix);
+
+                    console.log(response);
+
+                    return;
+                  }
                 }
               }
 
@@ -728,16 +802,20 @@
                 }
               }
 
-              // Верификация (принять/отклонить) или
-              // Друзья (принять/отклонить/удалить) - ПЕРЕЗАГРУЗКА
+              // VERIFICATION (принять/отклонить)
+              // FRIENDS (принять/отклонить/удалить)
               if ( (formId.indexOf('verification') > -1 ) || formId.indexOf('friends') > -1) {
-                if ((prefix.indexOf('apply') > -1) || (prefix.indexOf('reject') > -1) || (prefix.indexOf('delete') > -1)) {
+                if (
+                    (prefix.indexOf('apply') > -1) ||
+                    (prefix.indexOf('reject') > -1) ||
+                    (prefix.indexOf('delete') > -1)
+                  ) {
                   response = JSON.parse(response);
 
                   if (response.success === 1) {
                     window.popup.userInfo(false, popup);
 
-                    window.form.reloadPage();
+                    window.form.reloadPage(200, true);
                   } else {
                     window.form.showResponseText(popup, response.content);
                   }
@@ -790,9 +868,13 @@
 
               // WARNING
               if ( formId.indexOf('warning') > -1 ) {
-                // Добавление
-                if ((prefix.indexOf('add') > -1)) {
+                // Добавление/Удаление
+                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
                   window.form.showResponseText(popup, response.content);
+
+                  if (isProfile) {
+                    window.form.reloadPage(false, true);
+                  }
                 }
               }
 
@@ -805,6 +887,25 @@
                     streamLink.href = formData['url'];
                     streamLink.textContent = formData['url'];
                   }
+                }
+              }
+
+              // BLOCK
+              if ( formId.indexOf('block') > -1 ) {
+                window.form.reloadPage(false, true);
+              }
+
+              // BALANCE
+              if ( formId.indexOf('balance') > -1 ) {
+                window.form.reloadPage(false, true);
+              }
+
+              // VIP
+              if ( formId.indexOf('vip') > -1 ) {
+                if (prefix.indexOf('gift') > -1) {
+                  window.form.showResponseText(popup, response.content);
+
+                  window.form.reloadPage(false, true);
                 }
               }
 
@@ -849,7 +950,7 @@
                 // MATCH // WARNING // TOURNAMENT
                 if (
                     ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
-                    ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1)) ||
+                    ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1 || prefix.indexOf('delete') > -1)) ||
                     ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1))
                 ) {
                   let text = response.content ? response.content : (response.data ? response.data : false);
@@ -1169,9 +1270,14 @@
           }
         },
         reloadPage : function (timeout = 200, startByClick = false) {
-          if (startByClick) {
+          // (timeout = false) - перезагрузка без ожидания
+          if (timeout && !startByClick) {
+            setTimeout(function () {
+              // Перезагрузить текущую страницу
+              document.location.reload();
+            }, timeout);
+          } else if (timeout && startByClick) {
             let onDocumentClick = function (evt) {
-              console.log('click body');
               setTimeout(function () {
                 // Перезагрузить текущую страницу
                 document.location.reload();
@@ -1181,11 +1287,17 @@
             };
 
             document.addEventListener('click', onDocumentClick);
-          } else {
-            setTimeout(function () {
-              // Перезагрузить текущую страницу
+          } else if (!timeout && startByClick) {
+            let onDocumentClick = function (evt) {
               document.location.reload();
-            }, timeout);
+
+              document.removeEventListener('click', onDocumentClick);
+            };
+
+            document.addEventListener('click', onDocumentClick);
+          } else if (!timeout && !startByClick) {
+            // Перезагрузить текущую страницу
+            document.location.reload();
           }
         },
         showResponseText : function (container, message = '') {

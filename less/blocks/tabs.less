@@ -10,7 +10,8 @@
   color: #colors[text];
 
   &--wallet,
-  &--users {
+  &--users,
+  &--matches-admin {
     width: 100%;
   }
 
@@ -29,6 +30,8 @@
 }
 
 .tabs__button {
+  position: relative;
+
   .button_reset();
 
   font: inherit;
@@ -82,7 +85,8 @@
   }
 
   &--wallet,
-  &--users {
+  &--users,
+  &--matches-admin {
     padding-top: 9px;
     padding-bottom: 10px;
   }
@@ -91,7 +95,8 @@
     min-width: 25%;
   }
 
-  &--users {
+  &--users,
+  &--matches-admin {
     width: 50%;
   }
 
@@ -107,6 +112,35 @@
       }
     }
   }
+}
+
+.tabs__count {
+  position: absolute;
+
+  top: 50%;
+  right: 10px;
+
+  z-index: 1;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 27px;
+  height: 27px;
+
+  padding: 3px;
+
+  .body_bold();
+
+  color: #colors[white];
+
+  border-radius: 50%;
+
+  background-color: #colors[red];
+
+  transform: translateY(-50%);
 }
 
 .tabs__icon {

@@ -415,11 +415,19 @@
     margin-top: 10px;
   }
 
-  a {
+  a:not(.content__button) {
     color: #colors[link];
+  }
+
+  a.content__button {
+    display: inline-block;
   }
 
   &--nothumbnail {
     margin-top: 40px;
   }
+}
+
+.content__button {
+  margin-top: 20px;
 }

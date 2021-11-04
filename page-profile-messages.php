@@ -34,20 +34,37 @@
 <main class="page-main">
   <section class="account">
     <div class="account__wrapper">
-      <?php
-        // Шапка Аккаунта
-        get_template_part( 'template-parts/account/header', 'private' );
-      ?>
+      <?php if (is_ea_admin()): ?>
+        <?php
+          // Шапка Аккаунта
+          get_template_part( 'template-parts/account/header', 'admin' );
+        ?>
 
-      <?php
-        // Переключатели
-        get_template_part( 'template-parts/toggles/account', 'private' );
-      ?>
+        <?php
+          // Переключатели
+          get_template_part( 'template-parts/toggles/account', 'admin' );
+        ?>
 
-      <?php
-        // Контент Аккаунта
-        get_template_part( 'template-parts/account/content', 'messages' );
-      ?>
+        <?php
+          // Контент Аккаунта
+          get_template_part( 'template-parts/account/content', 'messages' );
+        ?>
+      <?php else: ?>
+        <?php
+          // Шапка Аккаунта
+          get_template_part( 'template-parts/account/header', 'private' );
+        ?>
+
+        <?php
+          // Переключатели
+          get_template_part( 'template-parts/toggles/account', 'private' );
+        ?>
+
+        <?php
+          // Контент Аккаунта
+          get_template_part( 'template-parts/account/content', 'messages' );
+        ?>
+      <?php endif; ?>
     </div>
   </section>
 

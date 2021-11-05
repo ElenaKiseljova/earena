@@ -25,7 +25,7 @@
           </span>
 
           <span class="personal__link-count">
-            <?= count_admin_matches_moderate(); ?>
+            <?= count_admin_matches_moderate() + count_admin_matches_not_confirmed(); ?>
           </span>
         </a>
       </li>

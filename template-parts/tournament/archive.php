@@ -41,7 +41,7 @@
       $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;
     }
   ?>
-  <a class="tournament__link <?php if ($tournament_end || $tournament_cancel) echo 'tournament__link--past'; if ($tournament_my) echo 'tournament__link--my'; ?>"
+  <a class="tournament__link <?= ($tournament_end || $tournament_cancel) ? 'tournament__link--past' : ''; ?> <?= $tournament_my ? 'tournament__link--my' : ''; ?>"
      href="<?= $tournament_url; ?>">
      <?php if ( $is_profile && $tournament_present ): ?>
        <span class="tournament__matches">

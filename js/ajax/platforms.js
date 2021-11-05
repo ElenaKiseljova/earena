@@ -27,8 +27,15 @@
       'matches' : 0
     };
 
-    // Количество найденных элементов
+    // Количество выведенных элементов
     let amount = {
+      'games' : 0,
+      'tournaments' : 0,
+      'matches' : 0
+    };
+
+    // Количество отфильтрованных элементов
+    let total = {
       'games' : 0,
       'tournaments' : 0,
       'matches' : 0
@@ -38,8 +45,9 @@
     let filtersSections = document.querySelectorAll('.filters');
     let filtersSection = (filtersSections.length > 0) ? true : false;
 
-    // Экспортируется в файл toggle-active.js
+    // Экспортируется в файл toggle-active.js, filter.js
     window.platforms = {
+      // what - может принимать значения : games/matches/tournaments
       drawSelected : function (what) {
         let platformsSelected = window.platforms.getSelectedPlatforms();
 
@@ -70,12 +78,10 @@
         // Количество колонок
         let column = 4;
 
-        let dataFilteredTotal = 0;
-
         if (what === 'games') {
           // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
           amount[what] = dataFiltered.length;
-          dataFilteredTotal = amount[what];
+          total[what] = dataFiltered.length;
 
           column = 6;
 
@@ -89,9 +95,7 @@
         } else {
           dataFiltered = JSON.parse(dataFiltered);
 
-          console.log(dataFiltered.data);
-
-          dataFilteredTotal = dataFiltered.total ?? 0;
+          total[what] = parseInt(dataFiltered.total, 10) ?? 0;
 
           dataTemplate = dataFiltered.data ?? '';
           amount[what] = dataFiltered.amount ?? 0;
@@ -139,11 +143,11 @@
         // Отрисовка полос прогресса
         window.progress('.players__progress-bar');
 
-        if (amount[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataTemplate, column) === false) {
+        if (total[what] === 0 && window.platforms.createMatchHTMLTemplate(what, dataTemplate, column) === false) {
           container.innerHTML = '<li class="section__item section__item--empty">' + __('Ничего не найдено', 'earena_2') + '</li>';
         }
 
-        window.platforms.showFilteredAmount(what, dataFilteredTotal);
+        window.platforms.showFilteredAmount(what, total[what]);
 
         console.log('Created: ', what);
       },
@@ -202,8 +206,8 @@
           return false;
         }
       },
-      getAmount : function (what) {
-        return amount[what];
+      getTotal : function (what) {
+        return total[what];
       },
       getOffset : function (what) {
         return offset[what];
@@ -242,8 +246,6 @@
       },
       // Ф-я получения активных платформ и подстановки их шаблона игр/матчей/турниров
       getSelectedPlatforms : function () {
-        // what - может принимать значения : games/matches/tournaments
-
         // Массив с выбранными платформами
         let platformsSelected = [];
 
@@ -364,8 +366,6 @@
         }
       },
       showFilteredAmount : function (what, amount) {
-        // what - может принимать значения : games/matches/tournaments
-
         let titleAmountWhat =  document.querySelector(`.section__title--${what} .section__amount`);
 
         if (titleAmountWhat) {

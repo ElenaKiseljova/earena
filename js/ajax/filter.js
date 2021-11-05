@@ -234,20 +234,24 @@
           let isInViewPort = document.querySelector( '#isInViewPort' );
 
           let elementIsInView = function (el) {
-            let scroll = window.scrollY || window.pageYOffset;
-            let boundsTop = el.getBoundingClientRect().top + scroll;
+            if (el) {
+              let scroll = window.scrollY || window.pageYOffset;
+              let boundsTop = el.getBoundingClientRect().top + scroll;
 
-            let viewport = {
-              top: scroll,
-              bottom: scroll + document.documentElement.clientHeight,
-            }
+              let viewport = {
+                top: scroll,
+                bottom: scroll + document.documentElement.clientHeight,
+              }
 
-            let bounds = {
-              top: boundsTop,
-              bottom: boundsTop + el.clientHeight,
+              let bounds = {
+                top: boundsTop,
+                bottom: boundsTop + el.clientHeight,
+              }
+              return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
+                || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
+            } else {
+              console.log('Нет такого элемента');
             }
-            return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
-              || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
           };
 
           let onScroll = () => {
@@ -256,8 +260,8 @@
             }
 
             scrollTimeoutLast = setTimeout(function () {
-              console.log(window.platforms.getAmount(what), window.platforms.getOffset(what));
-              if (elementIsInView(isInViewPort) && window.platforms.getOffset(what) > 0 && window.platforms.getAmount(what) > window.platforms.getOffset(what)) {
+              console.log(window.platforms.getTotal(what), window.platforms.getOffset(what));
+              if (elementIsInView(isInViewPort) && window.platforms.getOffset(what) > 0 && window.platforms.getTotal(what) > window.platforms.getOffset(what)) {
                 if (loadFlag === false && filterForm && what && container) {
                   window.filter.getDataAjax(filterForm, what, container);
                 } else {

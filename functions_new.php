@@ -784,7 +784,7 @@
     $is_result = (isset($match->score1) && isset($match->score2)) ? true : false;
 
     $bo3 = false;
-    $match_tournament = $match->tid;
+    $match_tournament = $match->tid ?? false;
     if ($match_tournament) {
       $bo3 = EArena_DB::get_ea_tournament_field($match->tid, 'reglament') == 'bo3';
     }

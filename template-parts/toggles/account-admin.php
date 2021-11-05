@@ -13,7 +13,7 @@
   <header class="toggles__header toggles__header--admin">
     <div class="toggles__list">
       <a href="<?php echo get_page_link(649); ?>" class="toggles__item toggles__item--account <?php if(is_page(649)) echo 'active'; ?>">
-        <?php _e( 'Матчи', 'earena_2' ); ?> (<?= count_admin_matches_moderate();?>)
+        <?php _e( 'Матчи', 'earena_2' ); ?> (<?= count_admin_matches_moderate() + count_admin_matches_not_confirmed(); ?>)
       </a>
       <a href="<?php echo get_page_link(643); ?>" class="toggles__item toggles__item--account <?php if(is_page(643)) echo 'active'; ?>">
         <?php _e( 'Турниры', 'earena_2' ); ?> (<?= count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3); ?>)

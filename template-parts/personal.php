@@ -44,7 +44,7 @@
           </span>
 
           <span class="personal__link-count">
-            <?= count_admin_tournaments(1); ?>
+            <?= count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3); ?>
           </span>
         </a>
       </li>

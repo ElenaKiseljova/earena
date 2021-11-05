@@ -38,7 +38,6 @@
         ?>
       </div>
 
-
       <!-- Header -->
       <header class="page-header">
         <div class="page-header__top <?php echo is_ea_admin() ? 'page-header__top--admin' : ''; ?>">

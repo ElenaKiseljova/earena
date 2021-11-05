@@ -146,19 +146,24 @@
     <div id="isInViewPort"></div>
   </section>
 <?php elseif ($is_profile_admin_matches) : ?>
+  <?php
+    global $tab_active_index;
+    $tab_active_index = isset($_COOKIE['admin_tab_active_index']) ? $_COOKIE['admin_tab_active_index'] : 0;
+  ?>
   <section class="section section--matches" id="matches">
     <header class="section__header section__header--matches-admin">
       <?php
+        // Табы (Жалоб и Неподтвержденных матчей)
         get_template_part( 'template-parts/tabs/admin', 'matches' );
       ?>
     </header>
 
-    <div class="section__content section__content--matches-admin active">
+    <div class="section__content section__content--matches-admin <?= ($tab_active_index == '0') ? 'active' : ''; ?>">
       <ul class="section__list">
         <?= earena_2_show_admin_matches_moderate(); ?>
       </ul>
     </div>
-    <div class="section__content section__content--matches-admin">
+    <div class="section__content section__content--matches-admin <?= ($tab_active_index == '1') ? 'active' : ''; ?>">
       <ul class="section__list">
         <?= earena_2_show_admin_matches_not_confirmed(); ?>
       </ul>

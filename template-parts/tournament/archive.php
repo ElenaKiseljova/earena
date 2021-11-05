@@ -7,8 +7,10 @@
   global $games, $icons, $ea_icons, $tournament, $is_profile;
 
   if (!isset($is_profile)) {
-    $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+    $is_profile = (earena_2_current_page( 'profile' )) ? true : false;
   }
+
+  $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
 
   if (!isset($games)) {
     $games = get_site_option('games');
@@ -35,26 +37,43 @@
       $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
     } elseif (((int)$tournament->type == 3) && !$is_profile) {
       $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
-    } elseif ($is_profile) {
+    } elseif ($is_profile && !is_ea_admin()) {
       $tournament_url = '/profile/tours/tour/?tournament=' . $tournament->ID;
+    } elseif ($is_profile && is_ea_admin()) {
+      $tournament_url = '/admin/tours/tour/?tournament=' . $tournament->ID;
     } else {
       $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;
     }
   ?>
   <a class="tournament__link <?= ($tournament_end || $tournament_cancel) ? 'tournament__link--past' : ''; ?> <?= $tournament_my ? 'tournament__link--my' : ''; ?>"
      href="<?= $tournament_url; ?>">
-     <?php if ( $is_profile && $tournament_present ): ?>
-       <span class="tournament__matches">
-         <span class="visually-hidden">
-           <?php _e( 'Кол-во матчей', 'earena_2' ); ?>
-         </span>
-         <?php
-           $matches = EArena_DB::get_ea_my_tournament_matches($tournament->ID);
-
-           echo isset($matches) ? count($matches) : 0;
-         ?>
-       </span>
-     <?php endif; ?>
+     <?php
+       if ($is_profile && !is_ea_admin()) {
+         $matches = EArena_DB::get_ea_my_tournament_matches($tournament->ID) ?? [];
+         if (!empty($matches)) {
+           ?>
+             <span class="tournament__matches">
+               <span class="visually-hidden">
+                 <?php _e( 'Кол-во матчей', 'earena_2' ); ?>
+               </span>
+               <?= count($matches); ?>
+             </span>
+           <?php
+         }
+       } else if ($is_profile_admin) {
+         $matches_not_confirmed = EArena_DB::get_ea_admin_tournament_matches_not_confirmed($tournament->ID) ?? [];
+         if (!empty($matches_not_confirmed)) {
+           ?>
+             <span class="tournament__matches">
+               <span class="visually-hidden">
+                 <?php _e( 'Кол-во не подтвержденных матчей', 'earena_2' ); ?>
+               </span>
+               <?= count($matches_not_confirmed); ?>
+             </span>
+           <?php
+         }
+       }
+     ?>
     <div class="tournament__top">
       <div class="tournament__image">
         <img src="<?= wp_get_attachment_url($tournament->cover1); ?>" alt="<?= $games[$tournament->game]['name']; ?>">

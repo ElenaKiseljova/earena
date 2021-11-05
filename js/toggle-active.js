@@ -49,7 +49,7 @@
         },
 
         // Для переключения следующего эл-та по клику на предыдущий
-        multiple: function (buttonSelector, callback = false, unActiveAnother = false) {
+        multiple: function (buttonSelector, callback = false, toggleNextElement = false, unActiveAnother = false, what = false) {
           let buttons = document.querySelectorAll(buttonSelector);
 
           if (buttons.length > 0) {
@@ -63,7 +63,11 @@
                 button.classList.toggle('active');
 
                 if (callback) {
-                  callback(button, i);
+                  callback(i, what);
+                }
+
+                if (toggleNextElement) {
+                  button.nextElementSibling.classList.toggle('active');
                 }
               });
             });
@@ -81,7 +85,7 @@
             let flagAllSelected = 0;
 
             buttons.forEach((button, i) => {
-              flagAllSelected = button.classList.contains('active') ?( flagAllSelected + 1) : flagAllSelected;
+              flagAllSelected = button.classList.contains('active') ? (flagAllSelected + 1) : flagAllSelected;
 
               button.addEventListener('click', function () {
                 if (parseInt(button.dataset.tabType, 10) === -1 || button.dataset.tabType === -1) {
@@ -138,17 +142,13 @@
       //                       //
 
       /* Фильтры */
-      let toggleNextElement = function (button, index) {
-        button.nextElementSibling.classList.toggle('active');
-      };
-
-      window.toggleActive.multiple('.filters__field--select', toggleNextElement);
+      window.toggleActive.multiple('.filters__field--select', false, true);
 
       /* Аккордеон */
-      window.toggleActive.multiple('.accordeon__button', toggleNextElement);
+      window.toggleActive.multiple('.accordeon__button', false, true);
 
       /* Табы ( пользователи ) - Чат */
-      let toggleUserContent = function (button, index) {
+      let toggleUserContent = function (index) {
         let userFormContainer = document.querySelector('#container-current-user');
         let userFormTemplate = document.querySelector(`#user-${index}`);
 
@@ -176,11 +176,11 @@
       };
 
       // Вызов при загрузке страницы
-      toggleUserContent(false, 0);
+      toggleUserContent(0);
 
-      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, true);
+      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, false, true);
 
-      let toggleTournamentContent = function (button, index) {
+      let toggleTournamentContent = function (index) {
         let tournamentTabContents = document.querySelectorAll('.toggles__content--tournament');
 
         if (tournamentTabContents[index]) {
@@ -190,19 +190,23 @@
         }
       };
       /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
-      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, true);
+      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, false, true);
 
-      let toggleAdminMatchesContent = function (button, index) {
-        let adminMatchesTabContents = document.querySelectorAll('.section__content--matches-admin');
+      let toggleAdminContent = function (index, what) {
+        let adminTabContents = document.querySelectorAll(`.section__content--${what}-admin`);
 
-        if (adminMatchesTabContents[index]) {
-          removeActiveClassElements(adminMatchesTabContents);
+        if (adminTabContents[index]) {
+          removeActiveClassElements(adminTabContents);
 
-          adminMatchesTabContents[index].classList.add('active');
+          adminTabContents[index].classList.add('active');
+
+          window.cookieEdit.set('admin_tab_active_index', index);
         }
       };
-      /* Переключатели на стр Матче Админа */
-      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminMatchesContent, true);
+      /* Переключатели на стр Матчей Админа */
+      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, 'matches');
+      /* Переключатели на стр Турниров Админа */
+      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, 'tournaments');
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');

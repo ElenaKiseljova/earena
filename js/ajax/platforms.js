@@ -259,7 +259,7 @@
           //console.log(platformsSelected);
 
           setTimeout(() => {
-            window.platforms.setCookie('ea_current_platform', platformsSelected);
+            window.cookieEdit.set('ea_current_platform', platformsSelected);
           }, 300);
 
           return platformsSelected;
@@ -267,37 +267,14 @@
           return false;
         }
       },
-      setCookie : function (name, value, options = {}) {
-        options = {
-          path: '/',
-        }
-
-        if (options.expires instanceof Date) {
-          options.expires = options.expires.toUTCString();
-        }
-
-        let updatedCookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
-
-        for (let optionKey in options) {
-          updatedCookie += '; ' + optionKey;
-          let optionValue = options[optionKey];
-          if (optionValue !== true) {
-            updatedCookie += '=' + optionValue;
-          }
-        }
-        document.cookie = updatedCookie;
-      },
       getCookiesPlatforms : function () {
-        let cookieObj = document.cookie.split('; ').reduce((prev, current) => {
-          const [name, ...value] = current.split('=');
-          prev[name] = value.join('=');
-          return prev;
-        }, {});
-        if (!cookieObj.ea_current_platform) {
-          window.platforms.setCookie('ea_current_platform', window.platforms.getSelectedPlatforms());
+        let cookiesPlatforms = window.cookieEdit.get('ea_current_platform');
+
+        if (!cookiesPlatforms) {
+          window.cookieEdit.set('ea_current_platform', window.platforms.getSelectedPlatforms());
           return window.platforms.getSelectedPlatforms();
         }
-        let cookiesPlatforms = cookieObj.ea_current_platform.split('%2C');
+
         cookiesPlatforms = cookiesPlatforms.map(elem => {return parseInt(elem)});
         if (cookiesPlatforms.includes(-1)) {
           cookiesPlatforms = Array.from(Array(platformsArr.length).keys());

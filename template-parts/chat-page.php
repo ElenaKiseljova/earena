@@ -80,7 +80,19 @@
       <?php if (!empty($tournament)): ?>
         <div class="chat-page__top chat-page__top--tournament">
           <h2 class="chat-page__name">
-            <?= $tournament->name; ?>
+            <?php
+              $tournament_url = '';
+              if (((int)$tournament->type == 2)) {
+                $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
+              } elseif (((int)$tournament->type == 3)) {
+                $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
+              } else {
+                $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;
+              }
+            ?>
+            <a href="<?= bloginfo( 'url' ) . $tournament_url; ?>">
+              <?= $tournament->name; ?>
+            </a>
           </h2>
 
           <div class="chat-page__round">

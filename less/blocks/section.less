@@ -40,8 +40,15 @@
     margin-bottom: 40px;
   }
 
-  &--matches-admin {
+  &--matches-admin,
+  &--tournaments-admin {
     margin-bottom: 20px;
+  }
+
+  &--tournaments-admin {
+    flex-direction: column;
+
+    justify-content: flex-start;
   }
 
   @media (max-width: @mobile) {
@@ -61,7 +68,8 @@
     margin: 0!important;
   }
 
-  &--matches-admin {
+  &--matches-admin,
+  &--tournaments-admin {
     display: none;
 
     &.active {

@@ -11,7 +11,9 @@
 
   &--wallet,
   &--users,
-  &--matches-admin {
+  &--matches-admin,
+  &--tournaments-admin,
+  &--tournaments-link-admin {
     width: 100%;
   }
 
@@ -20,11 +22,21 @@
     margin-bottom: 20px;
   }
 
+  &--tournaments-link-admin  {
+    margin-bottom: 30px;
+  }
+
   @media (max-width: @mobile) {
     margin-top: 20px;
 
     &--wallet {
       flex-wrap: wrap;
+    }
+
+    &--matches-admin,
+    &--tournaments-admin,
+    &--tournaments-link-admin   {
+      margin-top: 0;
     }
   }
 }
@@ -86,7 +98,9 @@
 
   &--wallet,
   &--users,
-  &--matches-admin {
+  &--matches-admin,
+  &--tournaments-admin,
+  &--tournaments-link-admin {
     padding-top: 9px;
     padding-bottom: 10px;
   }
@@ -96,8 +110,13 @@
   }
 
   &--users,
+  &--tournaments-admin,
   &--matches-admin {
     width: 50%;
+  }
+
+  &--tournaments-link-admin {
+    width: 33.333%;
   }
 
   @media (max-width: @mobile) {

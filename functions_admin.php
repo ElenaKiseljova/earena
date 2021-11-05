@@ -598,4 +598,35 @@
         <?php
       }
   }
+
+  function earena_2_show_admin_tournaments_moderate($type = 0, $length = 0, $offset = 0, $order = 'DESC', $is_profile = false)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      $tournaments = EArena_DB::get_ea_admin_tournaments_moderate($type, $length, $offset, $order);
+      foreach ($tournaments as $tournament) {
+        ?>
+          <li class="section__item section__item--col-4">
+            <?php earena_2_show_tournament($tournament, $is_profile); ?>
+          </li>
+        <?php
+      }
+  }
+
+  function earena_2_show_admin_tournaments_not_confirmed($type = 0, $length = 0, $offset = 0, $order = 'DESC', $is_profile = false)
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      $tournaments = EArena_DB::get_ea_admin_tournaments_not_confirmed($type, $length, $offset, $order);
+
+      foreach ($tournaments as $tournament) {
+        ?>
+          <li class="section__item section__item--col-4">
+            <?php earena_2_show_tournament($tournament, $is_profile); ?>
+          </li>
+        <?php
+      }
+  }
 ?>

@@ -4,7 +4,7 @@
   */
 ?>
 <?php
-  global $ea_user, $tournament, $tournament_id, $tname, $matches;
+  global $ea_user, $tournament_id, $tname, $matches;
 ?>
 
 <div class="accordeon accordeon--tournaments-account-chat">

@@ -28,6 +28,7 @@
 
       var ea_icons = <?= json_encode( $ea_icons ) ?>;
       var platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
+      var isAdminTournamentsList = <?= is_page(555) ? 'true' : 'false'; ?>;
     </script>
     <div class="container">
 

@@ -107,18 +107,21 @@
           }
         }
 
-        // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
-        let templateEmpty = templates[what](false, true);
-        let itemsCount  = amount[what];
+        // Проверка на то, что запрошен не список турниров для админа
+        if (isAdminTournamentsList === false) {
+          // Если кол-во Игр/Матчей/Турниров не кратно column - заполняется пустыми карточками
+          let templateEmpty = templates[what](false, true);
+          let itemsCount  = amount[what];
 
-        while ((itemsCount % column) !== 0) {
-          dataTemplate += `
-                  <li class="section__item section__item--col-${column}">
-                    ${templateEmpty}
-                  </li>
-                 `;
+          while ((itemsCount % column) !== 0) {
+            dataTemplate += `
+                    <li class="section__item section__item--col-${column}">
+                      ${templateEmpty}
+                    </li>
+                   `;
 
-          itemsCount++;
+            itemsCount++;
+          }
         }
 
         if (window.platforms.getOffset(what) === 0) {

@@ -1143,6 +1143,7 @@
     get_template_part( 'template-parts/tournament/single' );
   }
 
+
   /*INCLUDE SETTINGS EARENA FUNCTIONS.PHP*/
   require_once( get_template_directory() . '/functions_settings.php' );
 

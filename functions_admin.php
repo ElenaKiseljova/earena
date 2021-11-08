@@ -629,4 +629,62 @@
         <?php
       }
   }
+
+  /* ==============================================
+  ********  //Список турниров (Админ)
+  =============================================== */
+
+  function ea_tournaments_admin_list($length)
+  {
+  	$res = wp_cache_get('tournaments_admin_list', 'ea');
+      if (empty($res)) {
+
+  		$page = (isset($_REQUEST['part']) && is_numeric($_REQUEST['part']) && $_REQUEST['part'] > 1) ? (int)$_REQUEST['part'] : 1;
+  		$tournaments = EArena_DB::get_ea_tournaments($length, ($length * ($page - 1)));
+  		$cron = get_option('cron');
+  		foreach ($cron as $time => $task) {
+  			if (is_array($task) && array_key_exists('ea_add_tournament_cron_task', $task)) {
+  //arr_var($task);
+  				$t = array_column($task['ea_add_tournament_cron_task'], 'args')[0][0];
+  				$t->status = 0;
+  				$t->cron_time = $time;
+  //arr_var($t);
+  				$tournaments[] = $t;
+  			}
+  		}
+  		$res = sort_nested_arrays($tournaments, array('status' => 'asc', 'ID' => 'desc'));
+
+          wp_cache_set('tournaments_admin_list', $res, 'ea', 60);
+      }
+      return $res;
+  }
+
+  /* ==============================================
+  ********  //Вывод списка турниров (Админ)
+  =============================================== */
+
+  function earena_2_show_tournaments_admin_list($length)
+  {
+      $tournaments = ea_tournaments_admin_list($length);
+
+      foreach ($tournaments as $tournament) {
+        ?>
+          <li class="section__item section__item--col-1 section__item--admin">
+            <?php
+              earena_2_show_tournament_admin_list($tournament);
+            ?>
+          </li>
+        <?php
+      }
+  }
+
+  /* ==============================================
+  ********  //Карточка Турнира для списка турниров (Админ)
+  =============================================== */
+  function earena_2_show_tournament_admin_list ($tournament_item) {
+    global $tournament;
+    $tournament = $tournament_item;
+
+    get_template_part( 'template-parts/tournament/archive', 'admin' );
+  }
 ?>

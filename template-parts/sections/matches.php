@@ -170,6 +170,7 @@
     </div>
   </section>
 <?php else : ?>
+  <!-- Главная -->
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
       <header class="section__header">

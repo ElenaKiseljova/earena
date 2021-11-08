@@ -14,6 +14,8 @@
 
   $tournaments_page = earena_2_current_page( 'tournaments' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments');
 
+  $is_admin_tournaments_list = is_page(555) ? true : false;
+
   $matches_page = earena_2_current_page( 'matches' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches');
 
   $game_id = $game_id_platforms = $game_id_game_modes = $game_id_team_modes = false;
@@ -26,10 +28,10 @@
 ?>
 
 <div class="filters">
-  <form class="filters__form" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : 'main'); ?>">
+  <form class="filters__form" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : ($is_admin_tournaments_list ? 'admin-tournaments' : 'main')); ?>">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
-        <input class="filters__field filters__field--input" type="text" name="id" placeholder="ID <?= $tournaments_page ? _e( 'турнира', 'earena_2' ) : ($matches_page ? _e( 'матча', 'earena_2' ) : ''); ?>">
+        <input class="filters__field filters__field--input" type="text" name="id" placeholder="ID <?= ($tournaments_page || $is_admin_tournaments_list) ? _e( 'турнира', 'earena_2' ) : ($matches_page ? _e( 'матча', 'earena_2' ) : ''); ?>">
         <button class="filters__button filters__button--search" type="button" name="button">
           <svg class="filters__icon" width="20" height="20">
             <use xlink:href="#icon-search"></use>
@@ -47,7 +49,7 @@
           </div>
         <?php endif; ?>
 
-        <?php if ($tournaments_page): ?>
+        <?php if ($tournaments_page || $is_admin_tournaments_list): ?>
           <!-- Приватный турнир -->
           <div class="checkbox checkbox--top">
             <input class="visually-hidden" type="checkbox" name="private" value="true" id="private-tournament">
@@ -68,7 +70,7 @@
     </div>
     <div class="filters__container filters__container--bottom">
       <?php
-        if ( ($tournaments_page || $matches_page) && !earena_2_current_page( 'games' ) ) {
+        if ( ($tournaments_page || $is_admin_tournaments_list || $matches_page) && !earena_2_current_page( 'games' ) ) {
           ?>
             <!-- Выбор игры на стр Всех матчей/турниров -->
             <div class="filters__element filters__element--col-5 <?= earena_2_current_page( 'games' ) ? 'visually-hidden' : ''; ?>">
@@ -299,13 +301,39 @@
               </label>
             </div>
           </li>
+          <?php if (is_ea_admin()): ?>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="status" value="4" id="status-4">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-4">
+                  <?php _e('Запланирован', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="status" value="5" id="status-5">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-5">
+                  <?php _e('Ожидает публикации', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="status" value="6" id="status-6">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="status-6">
+                  <?php _e('Отменен', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          <?php endif; ?>
         </ul>
         <ul class="filters__list filters__list--result">
           <!-- Шаблон пунктов списка результатов строится в filter.js -->
         </ul>
       </div>
 
-      <?php if ($tournaments_page): ?>
+      <?php if ($tournaments_page || $is_admin_tournaments_list): ?>
         <!-- Поля для стр турниров -->
         <div class="filters__element filters__element--col-5">
           <button class="filters__field filters__field--select" type="button" name="button">

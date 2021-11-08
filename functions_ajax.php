@@ -558,12 +558,9 @@ function earena_2_get_filtered_matches()
     die();
 }
 
-function earena_2_show_match ($match, $profile = false) {
-  $var_match = $match;
-
-  // В шаблоне одноименная глобальная используется, поэтому переписываю ее значением из ф-и
+function earena_2_show_match ($match_item, $profile = false) {
   global $match;
-  $match = $var_match;
+  $match = $match_item;
 
   get_template_part( 'template-parts/match/archive' );
 }
@@ -656,6 +653,7 @@ function earena_2_get_filtered_tournaments()
           <?php earena_2_show_tournament($tournament, $is_profile); ?>
         </li>
       <?php
+
       $game_count++;
     }
 
@@ -671,12 +669,9 @@ function earena_2_get_filtered_tournaments()
     die();
 }
 
-function earena_2_show_tournament ($tournament, $profile = false) {
-  $var_tournament = $tournament;
-
-  // В шаблоне одноименная глобальная используется, поэтому переписываю ее значением из ф-и
+function earena_2_show_tournament ($tournament_item, $profile = false) {
   global $tournament, $is_profile;
-  $tournament = $var_tournament;
+  $tournament = $tournament_item;
   $is_profile = $profile;
 
   get_template_part( 'template-parts/tournament/archive' );

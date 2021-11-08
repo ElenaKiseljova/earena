@@ -83,7 +83,7 @@
             window.filter.createFilterResultList(itemInput);
           }
 
-          if (filterForm && what && container) {
+          if (filterForm && what && (container || isAdminTournamentsList)) {
             window.filter.getDataAjax(filterForm, what, container);
           }
         },
@@ -148,39 +148,43 @@
           }
 
           filterTimeoutLast = setTimeout(function () {
-            $.ajax({
-              url: earena_2_ajax.url,
-              data: data,
-              type: 'POST',
-              beforeSend: (response) => {
-                if (preloader) {
-                  preloader.classList.add('active');
+            if (isAdminTournamentsList === false) {
+              $.ajax({
+                url: earena_2_ajax.url,
+                data: data,
+                type: 'POST',
+                beforeSend: (response) => {
+                  if (preloader) {
+                    preloader.classList.add('active');
 
-                  loadFlag = true;
-                }
+                    loadFlag = true;
+                  }
 
-                console.log(response.readyState, data);
-              },
-              success: (response) => {
-                //console.log('Success :',  response);
+                  console.log(response.readyState, data);
+                },
+                success: (response) => {
+                  //console.log('Success :',  response);
 
-                //console.log(response);
-                window.platforms.createList(what, response, container);
+                  //console.log(response);
+                  window.platforms.createList(what, response, container);
 
-                window.platforms.setOffset(what, (window.platforms.getOffset(what) + perPage));
+                  window.platforms.setOffset(what, (window.platforms.getOffset(what) + perPage));
 
-                if (preloader) {
-                  preloader.classList.remove('active');
+                  if (preloader) {
+                    preloader.classList.remove('active');
+
+                    loadFlag = false;
+                  }
+                },
+                error: (response) => {
+                  console.log('Error :', response);
 
                   loadFlag = false;
                 }
-              },
-              error: (response) => {
-                console.log('Error :', response);
-
-                loadFlag = false;
-              }
-            });
+              });
+            } else {
+              console.log(data);
+            }
           }, 500);
         },
         createFilterResultList: function (itemInput) {
@@ -234,24 +238,20 @@
           let isInViewPort = document.querySelector( '#isInViewPort' );
 
           let elementIsInView = function (el) {
-            if (el) {
-              let scroll = window.scrollY || window.pageYOffset;
-              let boundsTop = el.getBoundingClientRect().top + scroll;
+            let scroll = window.scrollY || window.pageYOffset;
+            let boundsTop = el.getBoundingClientRect().top + scroll;
 
-              let viewport = {
-                top: scroll,
-                bottom: scroll + document.documentElement.clientHeight,
-              }
-
-              let bounds = {
-                top: boundsTop,
-                bottom: boundsTop + el.clientHeight,
-              }
-              return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
-                || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
-            } else {
-              console.log('Нет такого элемента');
+            let viewport = {
+              top: scroll,
+              bottom: scroll + document.documentElement.clientHeight,
             }
+
+            let bounds = {
+              top: boundsTop,
+              bottom: boundsTop + el.clientHeight,
+            }
+            return (bounds.bottom >= viewport.top && bounds.bottom <= viewport.bottom)
+              || (bounds.top <= viewport.bottom && bounds.top >= viewport.top);
           };
 
           let onScroll = () => {
@@ -271,13 +271,18 @@
             }, 20);
           };
 
-          window.addEventListener('scroll', onScroll);
+          if (isInViewPort) {
+            window.addEventListener('scroll', onScroll);
+          } else {
+            console.log('Нет элемента для отслеживания.');
+          }
         }
       };
 
       // Инициализация фильтра
       window.filter.init('filters-tournaments', 'tournaments');
       window.filter.init('filters-matches', 'matches');
+      window.filter.init('filters-admin-tournaments', 'admin-tournaments');
     } catch (e) {
       console.log(e);
     }

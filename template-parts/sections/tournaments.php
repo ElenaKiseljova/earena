@@ -1,9 +1,13 @@
 <?php
+  $is_tournaments = (earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' )) ? true : false;
+
   $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
   $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
 
   $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
   $is_profile_admin_tournaments = ((earena_2_current_page( 'tours' ) || earena_2_current_page( 'cup' ) || earena_2_current_page( 'lucky-cup' ) || is_page(640) || is_page(646) || is_page(643)) && $is_profile_admin) ? true : false;
+
+  $is_admin_tournaments_list = is_page(555) ? true : false;
 ?>
 <?php if ( earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
   <?php
@@ -59,7 +63,7 @@
             <?= $count_tournaments; ?>
           </span>
         </h2>
-        <div class="section__header-right section__header-right--account-tabs">
+        <div class="section__header-right">
         </div>
       </header>
 
@@ -80,7 +84,7 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif ((earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' )) && !$is_profile && !$is_profile_admin) : ?>
+<?php elseif ($is_tournaments && !$is_profile && !$is_profile_admin) : ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
       <header class="section__header">
@@ -90,7 +94,16 @@
             0
           </span>
         </h2>
-        <div class="section__header-right section__header-right--account-tabs">
+        <?php if (is_ea_admin()): ?>
+          <a class="section__tournaments-create button button--green" href="<?= get_permalink( 552 ); ?>">
+            <?php _e( 'Создать', 'earena_2' ); ?>
+          </a>
+          <a class="section__tournaments-list button button--gray" href="<?= get_permalink( 555 ); ?>">
+            <?php _e( 'Список', 'earena_2' ); ?>
+          </a>
+        <?php endif; ?>
+
+        <div class="section__header-right">
           <?php
             // Табы игровых платформ
             get_template_part('template-parts/tabs/platform');
@@ -248,7 +261,45 @@
       </div>
     <?php endif; ?>
   </section>
+<?php elseif ($is_admin_tournaments_list) : ?>
+  <section class="section section--tournaments" id="tournaments">
+    <div class="section__wrapper">
+      <header class="section__header section__header--admin-tournaments-list">
+        <h2 class="section__title section__title--tournaments section__title--page">
+          <?php _e('Список турниров', 'earena_2'); ?>
+          <span class="section__amount">
+            0
+          </span>
+        </h2>
+
+        <div class="section__header-right">
+          <a class="button button--more" href="<?= get_permalink( 552 ); ?>">
+            <span>
+              <?php _e('К созданию турниров', 'earena_2'); ?>
+            </span>
+          </a>
+        </div>
+        <div class="section__header-bottom section__header-bottom--admin-tournaments-list">
+          <?php
+            // Табы игровых платформ
+            get_template_part('template-parts/tabs/platform');
+          ?>
+        </div>
+      </header>
+
+      <?php
+        // Фильтры
+        get_template_part('template-parts/filters');
+      ?>
+      <div class="section__content">
+        <ul class="section__list section__list--admin">
+          <?= earena_2_show_tournaments_admin_list(0); ?>
+        </ul>
+      </div>
+    </div>
+  </section>
 <?php else: ?>
+  <!-- Главная -->
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
       <header class="section__header">

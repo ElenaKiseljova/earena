@@ -9,6 +9,11 @@
 ?>
 
 <main class="page-main">
+  <!-- СЕО h1 -->
+  <h1 class="visually-hidden">
+    <?= _e( 'Админ - Матчи', 'earena_2' ); ?>
+  </h1>
+
   <section class="account">
     <div class="account__wrapper">
       <?php

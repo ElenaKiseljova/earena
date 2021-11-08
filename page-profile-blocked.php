@@ -26,7 +26,7 @@
         <header class="content__header">
           <div class="content__description">
             <h1 class="content__title content__title--havethumbnail">
-              <?php the_title(  ); ?>
+              <?php _e( 'Аккаунт заблокирован', 'earena'); ?>
             </h1>
 
             <?php if (get_field( 'page_text_subtitle' )): ?>
@@ -42,7 +42,18 @@
           </div>
         </header>
         <div class="content__inner">
-          <?php the_content(); ?>
+          <p>
+            <?php _e( 'Ваш аккаунт заблокирован!', 'earena'); ?>
+          </p>
+          <p>
+            <?php _e( 'Вы можете написать Администрации, чтобы получить детальную информацию по поводу причин блокировки.', 'earena'); ?>
+          </p>
+
+          <p>
+            <a class="content__button button button--blue" href="<?= bloginfo( 'url' ) . '/profile/administration/'; ?>">
+              <?php _e( 'Администрация', 'earena'); ?>
+            </a>
+          </p>
         </div>
       <?php else: ?>
         <div class="content__inner content__inner--nothumbnail">

@@ -51,6 +51,11 @@
 ?>
 
 <main class="page-main">
+  <!-- СЕО h1 -->
+  <h1 class="visually-hidden">
+    <?= _e( 'Турниры - Матч', 'earena_2' ); ?>
+  </h1>
+
   <?php
     // Контент страницы Чата
     get_template_part( 'template-parts/chat-page' );

@@ -15,6 +15,11 @@
 ?>
 
 <main class="page-main">
+  <!-- СЕО h1 -->
+  <h1 class="visually-hidden">
+    <?= _e( 'Админка', 'earena_2' ); ?>
+  </h1>
+
   <section class="content <?= is_checkout() ? 'content--checkout' : ''; ?>">
     <div class="content__wrapper">
       <?php if (has_post_thumbnail()): ?>

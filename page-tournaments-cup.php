@@ -24,6 +24,11 @@
 ?>
 
 <main class="page-main">
+  <!-- СЕО h1 -->
+  <h1 class="visually-hidden">
+    <?= _e( 'Турниры - Кубки', 'earena_2' ); ?>
+  </h1>
+
   <div id="ajax-container-tournament">
     <?php
       earena_2_tournament_page_data($ea_user, $cup_id);

@@ -46,9 +46,9 @@
           <?php wc_print_notices();?>
 
           <header class="section__header">
-            <h1 class="section__title section__title--wallet">
+            <h2 class="section__title section__title--wallet">
               <?php _e( 'Кошелёк', 'earena_2' ); ?>
-            </h1>
+            </h2>
 
             <div class="section__header-right section__header-right--wallet">
               <div class="tabs tabs--wallet">
@@ -165,9 +165,9 @@
                         <?php wc_print_notices();?>
 
                         <header class="section__header">
-                          <h1 class="section__title section__title--wallet">
+                          <h2 class="section__title section__title--wallet">
                             <?php _e( 'Кошелёк', 'earena_2' ); ?>
-                          </h1>
+                          </h2>
                           <div class="section__header-right section__header-right--wallet">
                             <div class="tabs tabs--wallet">
                               <?php foreach ($menu_items as $item => $menu_item) : ?>
@@ -258,9 +258,9 @@
             <?php wc_print_notices();?>
 
             <header class="section__header">
-              <h1 class="section__title section__title--wallet">
+              <h2 class="section__title section__title--wallet">
                 <?php _e( 'Кошелёк', 'earena_2' ); ?>
-              </h1>
+              </h2>
 
               <div class="section__header-right section__header-right--wallet">
                 <div class="tabs tabs--wallet">
@@ -418,9 +418,9 @@
             <?php wc_print_notices();?>
 
             <header class="section__header">
-              <h1 class="section__title section__title--wallet">
+              <h2 class="section__title section__title--wallet">
                 <?php _e( 'Кошелёк', 'earena_2' ); ?>
-              </h1>
+              </h2>
 
               <div class="section__header-right section__header-right--wallet">
                 <div class="tabs tabs--wallet">

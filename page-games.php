@@ -12,10 +12,10 @@
     return;
   }
 
-  $data = [
-    'platform' => $games[$game_id]['platforms'] ? $games[$game_id]['platforms'] : [],
-    'game' => [$game_id]
-  ];
+  // $data = [
+  //   'platform' => $games[$game_id]['platforms'] ? $games[$game_id]['platforms'] : [],
+  //   'game' => [$game_id]
+  // ];
 
   // $postslist = get_posts(array('posts_per_page' => 10, 'order' => 'DESC', 'orderby' => 'date', 'cat' => 199));
   //
@@ -29,6 +29,11 @@
 ?>
 
 <main class="page-main">
+  <!-- СЕО h1 -->
+  <h1 class="visually-hidden">
+    <?= _e( 'Игра - ', 'earena_2' ) . $games[$game_id]['name']; ?>
+  </h1>
+
   <!-- Секция Игры -->
   <?php
     get_template_part( 'template-parts/game/single' );

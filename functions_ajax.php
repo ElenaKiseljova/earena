@@ -515,10 +515,10 @@ function earena_2_get_filtered_matches()
             $dataFilter['platform'] = $platform;
         }
         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
-            $dataFilter['private'][] = $_POST['private'] === 'true' ? '1' : '0';
+            $dataFilter['private'][] = $_POST['private'] === '1' ?: '0';
         }
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
-            $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
+            $dataFilter['vip'][] = $_POST['vip'] === '1' ?: '0';
         }
 
         $order = 'DESC';
@@ -621,10 +621,10 @@ function earena_2_get_filtered_tournaments()
             $dataFilter['platform'] = $platform;
         }
         if (isset($_POST['private']) && $_POST['private'] && $_POST['private'] !== "null" && $_POST['private'] !== "false") {
-            $dataFilter['private'][] = $_POST['private'] === 'true' ? '1' : '0';
+            $dataFilter['private'][] = $_POST['private'] === '1' ?: '0';
         }
         if (isset($_POST['vip']) && $_POST['vip'] && $_POST['vip'] !== "null" && $_POST['vip'] !== "false") {
-            $dataFilter['vip'][] = $_POST['vip'] === 'true' ? '1' : '0';
+            $dataFilter['vip'][] = $_POST['vip'] === '1' ?: '0';
         }
 
         if (isset($_POST['player_id'])) {

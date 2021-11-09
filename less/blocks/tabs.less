@@ -13,7 +13,8 @@
   &--users,
   &--matches-admin,
   &--tournaments-admin,
-  &--tournaments-link-admin {
+  &--tournaments-link-admin,
+  &--tournaments-button-admin {
     width: 100%;
   }
 
@@ -112,7 +113,8 @@
   &--users,
   &--matches-admin,
   &--tournaments-admin,
-  &--tournaments-link-admin {
+  &--tournaments-link-admin,
+  &--tournaments-button-admin {
     padding-top: 9px;
     padding-bottom: 10px;
   }
@@ -127,7 +129,10 @@
     width: 50%;
   }
 
-  &--tournaments-link-admin {
+  &--tournaments-link-admin,
+  &--tournaments-button-admin {
+    flex-grow: 1;
+
     width: 33.333%;
   }
 
@@ -158,6 +163,10 @@
     &--matches-admin,
     &--tournaments-link-admin {
       width: 100%;
+    }
+
+    &--tournaments-button-admin {
+      white-space: nowrap;
     }
   }
 }

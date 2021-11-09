@@ -70,13 +70,13 @@
         ?>
       </div>
       <?php if (is_ea_admin()): ?>
-        <button class="tournament__button tournament__button--edit-table button button--blue"
+        <!-- <button class="tournament__button tournament__button--edit-table button button--blue"
           data-id="<?= $tournament->ID; ?>"
           type="button" name="edit-table">
           <span>
             <?php _e( 'Редактировать таблицу', 'earena_2' ); ?>
           </span>
-        </button>
+        </button> -->
       <?php endif; ?>
     <?php endif; ?>
   </div>

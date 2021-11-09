@@ -665,7 +665,16 @@
 
   function earena_2_show_tournaments_admin_list($length)
   {
-      $tournaments = ea_tournaments_admin_list($length);
+      $tournaments = ea_tournaments_admin_list($length) ?? [];
+
+      if (empty($tournaments)) {
+        ?>
+          <li class="section__item section__item--empty">
+            <?= __( 'Ничего не найдено', 'earena_2' ); ?>
+          </li>
+        <?php
+        return;
+      }
 
       foreach ($tournaments as $tournament) {
         ?>
@@ -687,4 +696,94 @@
 
     get_template_part( 'template-parts/tournament/archive', 'admin' );
   }
+
+  /* ==============================================
+  ********  //Удалить CRON из списка турниров (Админ)
+  =============================================== */
+  add_action('wp_ajax_ea_delete_tournament_cron', 'ea_delete_tournament_cron_callback');
+  function ea_delete_tournament_cron_callback()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $tournament = (object)unserialize(stripslashes($_POST['cron']));
+      $tournament->status = '1';
+      $crontime = (int)$_POST['crontime'];
+      /*
+      var_dump($_POST['cron']);
+      var_dump(json_decode($_POST['cron']));
+      var_dump(unserialize(stripslashes($_POST['cron'])));
+      var_dump($tournament);
+      	$timestamp = wp_next_scheduled( 'ea_add_tournament_cron_task', $tournament );
+      $timestamp2 = wp_next_scheduled( 'ea_add_tournament_cron_task', [$tournament] );
+      var_dump($tournament);	var_dump($crontime.' = '.$timestamp.' = '.$timestamp2);
+      //print_r($tournament);
+      */
+      if (wp_unschedule_event($crontime, 'ea_add_tournament_cron_task', [$tournament])) {
+          $tournament_data = array(
+              'period' => '',
+          );
+          $where = ["ID" => $tournament->ID];
+          EArena_DB::upd_ea_tournament($tournament_data, $where);
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Запланированный турнир удалён. Цепочка автосозданий разорвана.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Запланированный турнир не удалён.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+  /* ==============================================
+  ********  //Удалить Турнир из списка турниров (Админ)
+  =============================================== */
+  add_action('wp_ajax_ea_delete_tournament', 'ea_delete_tournament_callback');
+  function ea_delete_tournament_callback()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $tournament_id = (int)$_POST['id'];
+      if (EArena_DB::del_ea_tournament($tournament_id)) {
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Турнир удалён.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Турнир не удалён.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
+  /* ==============================================
+  ********  //Отменить Турнир в списке турниров (Админ)
+  =============================================== */
+  add_action('wp_ajax_ea_cancel_tournament', 'ea_cancel_tournament_callback');
+  function ea_cancel_tournament_callback()
+  {
+      if (!is_ea_admin()) {
+          return;
+      }
+      check_ajax_referer('ea_functions_nonce', 'security');
+      $tournament = EArena_DB::get_ea_tournament($_POST['id']);
+      if (ea_tournament_cancel($tournament)) {
+          $arr_response['success'] = 1;
+          $arr_response['content'] = __('Турнир отменен.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      } else {
+          $arr_response['success'] = 0;
+          $arr_response['content'] = __('Турнир не отменен.', 'earena');
+          wp_send_json(json_encode($arr_response));
+          wp_die();
+      }
+  }
+
 ?>

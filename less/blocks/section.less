@@ -52,8 +52,15 @@
     justify-content: flex-start;
   }
 
-  &--admin-tournaments-list {
+  &--admin-tournaments-list,
+  &--admin-tournaments-create {
     flex-wrap: wrap;
+
+    margin-top: 40px;
+  }
+
+  &--admin-tournaments-create {
+    margin-bottom: 50px;
   }
 
   @media (max-width: @mobile) {
@@ -93,6 +100,12 @@
   }
 }
 
+.section__header-bottom {
+  &--admin-tournaments-create {
+    margin-top: 30px;
+  }
+}
+
 .section__content {
   &--wallet {
     width: 100%!important;
@@ -101,7 +114,8 @@
   }
 
   &--matches-admin,
-  &--tournaments-admin {
+  &--tournaments-admin,
+  &--admin-tournaments-create {
     display: none;
 
     &.active {

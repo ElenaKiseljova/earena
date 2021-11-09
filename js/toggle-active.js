@@ -49,7 +49,7 @@
         },
 
         // Для переключения следующего эл-та по клику на предыдущий
-        multiple: function (buttonSelector, callback = false, toggleNextElement = false, unActiveAnother = false, what = false) {
+        multiple: function (buttonSelector, callback = false, toggleNextElement = false, unActiveAnother = false, selectorContent = false, setCookie = {}) {
           let buttons = document.querySelectorAll(buttonSelector);
 
           if (buttons.length > 0) {
@@ -63,7 +63,7 @@
                 button.classList.toggle('active');
 
                 if (callback) {
-                  callback(i, what);
+                  callback(i, selectorContent, setCookie);
                 }
 
                 if (toggleNextElement) {
@@ -131,6 +131,7 @@
                 window.platforms.drawSelected('games');
                 window.platforms.drawSelected('matches');
                 window.platforms.drawSelected('tournaments');
+                window.platforms.drawSelected('admin-tournaments');
               });
             });
           }
@@ -192,21 +193,26 @@
       /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
       window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, false, true);
 
-      let toggleAdminContent = function (index, what) {
-        let adminTabContents = document.querySelectorAll(`.section__content--${what}-admin`);
+      let toggleAdminContent = function (index, selectorContent, setCookie) {
+        let adminTabContents = document.querySelectorAll(selectorContent);
 
         if (adminTabContents[index]) {
           removeActiveClassElements(adminTabContents);
 
           adminTabContents[index].classList.add('active');
 
-          window.cookieEdit.set('admin_tab_active_index', index);
+          if (setCookie.name) {
+            window.cookieEdit.set(setCookie.name, index);
+          }
         }
       };
       /* Переключатели на стр Матчей Админа */
-      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, 'matches');
+      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, '.section__content--matches-admin', {name: 'admin_tab_active_index'});
       /* Переключатели на стр Турниров Админа */
-      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, 'tournaments');
+      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, '.section__content--tournaments-admin', {name: 'admin_tab_active_index'});
+
+      /* Переключатели на стр Создания Турнира (Админ) */
+      window.toggleActive.multiple('.tabs__button--tournaments-button-admin', toggleAdminContent, false, true, '.section__content--admin-tournaments-create');
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');

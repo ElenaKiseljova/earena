@@ -114,7 +114,7 @@
         <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
 
         <div class="form__buttons">
-          <button class="form__submit form__submit--buttons button button--gray button--popup-close" type="button" name="cancel">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close" type="button" name="leave">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>
             </span>
@@ -129,7 +129,7 @@
       </form>
     </div>
   </template>
-  <template id="popup-tournament-cancel">
+  <template id="popup-tournament-leave">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
@@ -147,7 +147,7 @@
         ?>
       </div>
 
-      <form class="form form--popup" data-prefix="cancel" id="form-tournament" action="/" method="post">
+      <form class="form form--popup" data-prefix="leave" id="form-tournament" action="/" method="post">
         <input type="hidden" name="tournament_price" value="<?= !empty($tournament->price) ? earena_2_nice_money( $tournament->price ) : 'Free'; ?>">
         <input type="hidden" name="tournament_id" value="<?= $tournament_id; ?>">
         <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
@@ -166,6 +166,7 @@
       </form>
     </div>
   </template>
+  <!-- ADMIN -->
   <template id="popup-tournament-add-player">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
@@ -196,7 +197,98 @@
       </form>
     </div>
   </template>
+  <template id="popup-tournament-cancel">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Отменить турнир', 'earena_2' ); ?>
+      </h2>
 
+      <div class="popup__information popup__information--template">
+        <?php
+          _e( 'Вы действительно хотите отменить турнир?', 'earena_2' );
+        ?>
+      </div>
+
+      <form class="form form--popup" data-prefix="cancel" id="form-tournament" action="/" method="post">
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
+        <div class="form__buttons">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--red" type="submit" name="tournament-submit">
+            <span>
+              <?php _e( 'Отменить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-tournament-delete-cron">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить турнир', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          _e( 'Вы действительно хотите удалить запланированный турнир?', 'earena_2' );
+        ?>
+      </div>
+
+      <form class="form form--popup" data-prefix="delete-cron" id="form-tournament" action="/" method="post">
+        <input type="hidden" name="cron" value="">
+        <input type="hidden" name="crontime" value="">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
+        <div class="form__buttons">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--red" type="submit" name="tournament-submit">
+            <span>
+              <?php _e( 'Удалить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <template id="popup-tournament-delete-tournament">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить турнир', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php
+          _e( 'Вы действительно хотите удалить турнир?', 'earena_2' );
+        ?>
+      </div>
+
+      <form class="form form--popup" data-prefix="delete-tournament" id="form-tournament" action="/" method="post">
+        <input type="hidden" name="id" value="">
+        <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
+
+        <div class="form__buttons">
+          <button class="form__submit form__submit--buttons button button--gray button--popup-close">
+            <?php _e( 'Закрыть', 'earena_2' ); ?>
+          </button>
+
+          <button class="form__submit form__submit--buttons button button--red" type="submit" name="tournament-submit">
+            <span>
+              <?php _e( 'Удалить', 'earena_2' ); ?>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </template>
+  <!-- Error -->
   <template id="popup-tournament-no-old-enough">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
@@ -261,7 +353,7 @@
       </button>
     </div>
   </template>
-  <template id="form-tournament-success-cancel">
+  <template id="form-tournament-success-leave">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
@@ -299,8 +391,23 @@
       </button>
     </div>
   </template>
+  <template id="form-tournament-success">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить/отменить <br>турнир', 'earena_2' ); ?>
+      </h2>
 
-  <template id="form-tournament-error">
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Турнир успешно удален/отменён! <br>После закрытия попапа страница будет перезагружена.', 'earena_2' );?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
+
+  <template id="form-tournament-error-join">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Регистрация', 'earena_2' ); ?>
@@ -315,7 +422,7 @@
       </button>
     </div>
   </template>
-  <template id="form-tournament-error-cancel">
+  <template id="form-tournament-error-leave">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Отмена регистрации', 'earena_2' ); ?>
@@ -345,7 +452,21 @@
       </button>
     </div>
   </template>
+  <template id="form-tournament-error">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Удалить/отменить <br>турнир', 'earena_2' ); ?>
+      </h2>
 
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Турнир не удален/отменён! <br>Попробуйте повторить позже...', 'earena_2' );?>
+      </div>
+
+      <button class="popup__go-to-button popup__go-to-button--tournament button button--gray button--popup-close">
+        <?php _e( 'Закрыть', 'earena_2' ); ?>
+      </button>
+    </div>
+  </template>
 
   <template id="form-tournament-beforesend">
     <div class="popup__content popup__content--tournament">

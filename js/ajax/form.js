@@ -38,8 +38,8 @@
             ID : attr.idForm,
             FORM : document.querySelector(`#${attr.idForm}`),
             SELECTOR_FOR_TEMPLATE_REPLACE : attr.selectorForTemplateReplace ? attr.selectorForTemplateReplace : '',
-            SELECTOR_CLOSEST_WRAPPER_FORM : attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false,
-            CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM : attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false,
+            SELECTOR_WRAPPER_FORM : attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false,
+            CLASS_FOR_ADD_WRAPPER_FORM : attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false,
             _SETTINGS : attr
           };
 
@@ -249,7 +249,7 @@
                 formData['action'] = 'earena_2_add_player_tournament';
               }
 
-              if (prefix.indexOf('cancel') > -1) {
+              if (prefix.indexOf('leave') > -1) {
                 // Отменна регистрации на Турнир
                 formData['action'] = 'earena_2_leave_tournament';
               }
@@ -257,6 +257,21 @@
               if (prefix.indexOf('join') > -1) {
                 // Регистрация на Турнир
                 formData['action'] = 'earena_2_join_tournament';
+              }
+
+              if (prefix.indexOf('cancel') > -1) {
+                // Отмена турнира
+                formData['action'] = 'ea_cancel_tournament';
+              }
+
+              if (prefix.indexOf('delete-cron') > -1) {
+                // Удаление запланированного турнира
+                formData['action'] = 'ea_delete_tournament_cron';
+              }
+
+              if (prefix.indexOf('delete-tournament') > -1) {
+                // Удаление турнира
+                formData['action'] = 'ea_delete_tournament';
               }
             }
 
@@ -366,7 +381,7 @@
 
             /***** END Actions AJAX *****/
 
-            // Popup message
+            // Popup
             let popup = form.closest('.popup');
 
             // Обработчик старта отправки
@@ -398,9 +413,10 @@
                 wrapperFormNode.appendChild(cloneTemplate);
 
                 // Проверяю - надо ли добавлять активный класс родителю
-                if (attrForms[formId].CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM) {
-                  // Добавляю активный класс. Если надо как-то родителя после отправки формы изменять
-                  wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.add(attrForms[formId].CLASS_FOR_ADD_CLOSEST_WRAPPER_FORM);
+                if (attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM) {
+                  // Добавляю указанный класс
+                  // Если надо как-то родителя при отправке формы изменять
+                  wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add(attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM);
                 }
               }
 
@@ -487,14 +503,14 @@
                     // Повторная инициализация формы
                     window.form.init(attrForms[formId]._SETTINGS);
 
-                    if (attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM) {
+                    if (attrForms[formId].SELECTOR_WRAPPER_FORM) {
                       // Регулировка высоты попапа
-                      if (wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).offsetHeight >= deviceHeight) {
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('scroll-content');
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('sending');
+                      if (wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).offsetHeight >= deviceHeight) {
+                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('scroll-content');
+                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('sending');
                       } else {
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.remove('scroll-content');
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_CLOSEST_WRAPPER_FORM).classList.add('sending');
+                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('scroll-content');
+                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('sending');
                       }
                     }
 
@@ -588,7 +604,7 @@
 
               // TOURNAMENT
               if ( formId.indexOf('tournament') > -1 ) {
-                if ((prefix.indexOf('add-player') > -1) || prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1) {
+                if ((prefix.indexOf('add-player') > -1) || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1) {
                   if (response.success === false && !response.data.error_pass) {
                     onError(response, prefix);
 
@@ -597,6 +613,16 @@
                     window.form.showAJAXMessage(popup, response.data.message, 2000);
 
                     console.log(response);
+                    return;
+                  }
+                }
+
+                if ((prefix.indexOf('delete-cron') > -1) || (prefix.indexOf('delete-tournament') > -1) || (prefix.indexOf('cancel') > -1)) {
+                  response = JSON.parse(response);
+
+                  if (response.success === 0) {
+                    onError(response, prefix);
+
                     return;
                   }
                 }
@@ -857,11 +883,13 @@
 
               // TOURNAMENT
               if ( formId.indexOf('tournament') > -1 ) {
-                if (prefix.indexOf('add-player') > -1) {
-                  window.form.reloadPage();
-                }
-
-                if (prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1) {
+                if (prefix.indexOf('add-player') > -1 ||
+                    prefix.indexOf('leave') > -1 ||
+                    prefix.indexOf('join') > -1 ||
+                    prefix.indexOf('delete-cron') > -1 ||
+                    prefix.indexOf('delete-tournament') > -1 ||
+                    prefix.indexOf('cancel') > -1
+                  ) {
                   window.form.reloadPage(200, true);
                 }
               }
@@ -951,7 +979,7 @@
                 if (
                     ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
                     ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1 || prefix.indexOf('delete') > -1)) ||
-                    ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('cancel') > -1 || prefix.indexOf('join') > -1))
+                    ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1))
                 ) {
                   let text = response.content ? response.content : (response.data ? response.data : false);
 

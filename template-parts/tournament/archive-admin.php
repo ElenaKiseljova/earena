@@ -29,27 +29,21 @@
   $id = uniqidReal();
   if ($tournament_planned) {
       $status_data = 4;
-      $status_text = '<span>' . __('Запланирован', 'earena') . '</span>';
   } elseif ($tournament_waiting) {
       $status_data = 5;
-      $status_text = '<span>' . __('Ожидает публикации', 'earena') . '</span>';
   } elseif ($tournament_registration) {
       $status_data = 1;
-      $status_text = '<span class="reg">' . __('Регистрация',
-              'earena') . ' (<?=count(json_decode( $tournament->players,true )?:[]);?>/<?=$tournament->max_players;?>)</span>';
   } elseif ($tournament_present) {
       $status_data = 2;
-      $status_text = '<span class="run">' . __('Проходит', 'earena') . '</span>';
   } elseif ($tournament_end) {
       $status_data = 3;
-      $status_text = '<span class="end">' . __('Завершен', 'earena') . '</span>';
   } elseif ($tournament_cancel) {
       $status_data = 6;
-      $status_text = '<span class="cancel">' . __('Отменен', 'earena') . '</span>';
   }
 
   $game_data = $tournament->game;
   $platform_data = $tournament->platform;
+
   if ($tournament->price == 0) {
       $amount_data = 0;
   } elseif ($tournament->price > 0 && $tournament->price < 10) {
@@ -62,10 +56,19 @@
       $amount_data = 4;
   }
 ?>
-<div class="tournament tournament--admin"id="<?= $id; ?>" data-id="<?= $tournament->status > 0 ? $tournament->ID : 'null'; ?>"
-     data-platform="<?= $platform_data; ?>" data-game="<?= $game_data; ?>" data-type="<?= $tournament->type; ?>"
-     data-status="<?= $status_data; ?>" data-amount="<?= $amount_data; ?>"
-     data-private="<?= $tournament->private ?: 0; ?>" data-vip="<?= $tournament->vip ?: 0; ?>">
+<div class="tournament tournament--admin"
+     id="<?= $id; ?>"
+     data-id="<?= ($tournament->status > 0) ? $tournament->ID : 'null'; ?>"
+     data-platform="<?= $platform_data; ?>"
+     data-game="<?= $game_data; ?>"
+     data-type="<?= $tournament->type; ?>"
+     data-status="<?= $status_data; ?>"
+     data-bet="<?= $amount_data; ?>"
+     data-private="<?= $tournament->private ?: 0; ?>"
+     data-vip="<?= $tournament->vip ?: 0; ?>"
+     data-game_mode="<?= $tournament->game_mode; ?>"
+     data-team_mode="<?= $tournament->team_mode; ?>"
+     >
   <?php
     if (((int)$tournament->type == 2)) {
       $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
@@ -179,7 +182,7 @@
               data-parentid="<?= $id; ?>"
               data-crontime="<?= $cron_time; ?>"
               data-cron="<?= serialize((array)$tournament); ?>"
-              type="button" name="delete" title="<?php _e( 'Удалить CRON', 'earena_2' ); ?>">
+              type="button" name="delete-cron" title="<?php _e( 'Удалить CRON', 'earena_2' ); ?>">
               <span class="visually-hidden">
                 <?php _e( 'Удалить CRON', 'earena_2' ); ?>
               </span>
@@ -191,7 +194,7 @@
               data-popup="tournament"
               data-parentid="<?= $id; ?>"
               data-id="<?= $tournament->ID; ?>"
-              type="button" name="delete" title="<?php _e( 'Удалить турнир', 'earena_2' ); ?>">
+              type="button" name="delete-tournament" title="<?php _e( 'Удалить турнир', 'earena_2' ); ?>">
               <span class="visually-hidden">
                 <?php _e( 'Удалить турнир', 'earena_2' ); ?>
               </span>
@@ -203,7 +206,7 @@
               data-popup="tournament"
               data-parentid="<?= $id; ?>"
               data-id="<?= $tournament->ID; ?>"
-              type="button" name="delete" title="<?php _e( 'Отменить турнир', 'earena_2' ); ?>">
+              type="button" name="cancel" title="<?php _e( 'Отменить турнир', 'earena_2' ); ?>">
               <span class="visually-hidden">
                 <?php _e( 'Отменить турнир', 'earena_2' ); ?>
               </span>

@@ -14,6 +14,8 @@
     ea_icons
     platformsArr
 
+    isAdminTournamentsList
+
     - глобальные переменные, которые используются для составления URI.
       Задаются в header.php
   */
@@ -83,7 +85,7 @@
             window.filter.createFilterResultList(itemInput);
           }
 
-          if (filterForm && what && (container || isAdminTournamentsList)) {
+          if (filterForm && what && container) {
             window.filter.getDataAjax(filterForm, what, container);
           }
         },
@@ -112,11 +114,13 @@
             action = '';
           }
 
-          let data = {
-            action : action,
-            offset : window.platforms.getOffset(what),
-            perpage : perPage
-          };
+          let data = {};
+
+          if (isAdminTournamentsList === false) {
+            data['action'] = action;
+            data['offset'] = window.platforms.getOffset(what);
+            data['perpage'] = perPage;
+          }
 
           if ( currentGameId !== false ) {
             data['game'] = currentGameId;
@@ -141,6 +145,12 @@
           // Если в фильтрах на стр есть выбор платформ, тогда платформы пишутся оттуда
           if (!data['platform']) {
             data['platform'] = (platformsSelected.includes(-1) || isProfile === true || currentGameId !== false) ? Array.from(Array(platformsArr.length).keys()).join(',') : platformsSelected.join(',');
+          }
+
+          for (var key in data) {
+            if (data[key].length === 0) {
+              delete data[key];
+            }
           }
 
           if (filterTimeoutLast) {
@@ -183,9 +193,29 @@
                 }
               });
             } else {
-              console.log(data);
+              window.filter.getFilteredAdminTournamentsList(data);
             }
           }, 500);
+        },
+        getFilteredAdminTournamentsList : function (data) {
+          const search = data.id ?? '';
+
+          console.log(data);
+
+          if (search != '') {
+            $('#content-platform-admin-tournaments > li').hide().filter(function () {
+              const str = $(this).children().data('id') + '';
+              return $(this).children().data('id') != null && str.includes(search);
+            }).show();
+          } else {
+            $('#content-platform-admin-tournaments > li').hide().filter(function () {
+              var show = true;
+              for (var key in data) {
+                show = show && data[key].includes($(this).children().data(key));
+              }
+              return show;
+            }).show();
+          }
         },
         createFilterResultList: function (itemInput) {
           let templeteResultItem = function (inputId, inputValue) {
@@ -274,7 +304,7 @@
           if (isInViewPort) {
             window.addEventListener('scroll', onScroll);
           } else {
-            console.log('Нет элемента для отслеживания.');
+            console.log('Элемент для отслеживания положения прокрутки не задан.');
           }
         }
       };

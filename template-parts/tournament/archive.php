@@ -11,7 +11,6 @@
   }
 
   $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
-
   if (!isset($games)) {
     $games = get_site_option('games');
   }

@@ -104,7 +104,7 @@
               // У формы логирования есть дополнительные кнопки, которые меняют шаблон
               // Поэтому для нее задан еще один параметр
               if (sufixPopupName === 'login') {
-                popupContentCreator(sufixPopupName, popupItem, popupButton, '.popup__button--information');
+                window.popup.contentCreator(sufixPopupName, popupItem, popupButton, '.popup__button--information');
               }
 
               // Подстановка шаблона при открытии - не дефолтное поведение при открытии попапа.
@@ -125,7 +125,7 @@
                   sufixPopupName === 'vip'
                 ) {
 
-                popupContentCreator(sufixPopupName, popupItem, popupButton);
+                window.popup.contentCreator(sufixPopupName, popupItem, popupButton);
               }
 
               // Дефолтное поведение
@@ -162,6 +162,7 @@
             }
           }
         },
+        // Добавление св-ва закрытия попапа по клику на указанный элемент
         activateClosePopupButton : function (closeButton) {
           closeButton.addEventListener('click', window.popup.closePopup);
 
@@ -181,6 +182,298 @@
             document.removeEventListener('keydown', onEnterPressClose);
           });
         },
+        // Ф-я подстановки содержимого попапа
+        contentCreator : function (prefix, popup, button, innerPopupButtonSelector = false) {
+          // Анализируем имя кнопки, чтобы вставить нужный шаблон в шапку и форму
+          let typePopup = button.name;
+
+          // Получаем контейнер для шаблона
+          let popupTemplateContainer = popup.querySelector(`#${prefix}-popup`);
+
+          // Получаем нужный шаблон
+          let popupCurrentTemplate = popup.querySelector(`#popup-${prefix}-${typePopup}`);
+
+          if (popupTemplateContainer && popupCurrentTemplate) {
+            // Очищаем контейнер
+            popupTemplateContainer.innerHTML = '';
+
+            // Получаем контент нужного шаблона
+            let popupCurrentTemplateContent = popupCurrentTemplate.content;
+            let cloneCurrentTemplateContent = popupCurrentTemplateContent.cloneNode(true);
+
+            // Заменяем содержимое контейнера
+            popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
+          } else if (popupTemplateContainer && (prefix === 'match') && (typePopup === 'join')) {
+            let getTemplateJoinMatchFormHTML = function () {
+              let hiddenInputsHTML = `
+                <input type="hidden" name="id" value="${button.dataset.id}">
+                <input type="hidden" name="security" value="${button.dataset.security}">
+              `;
+
+              let privateMatchHTML = `
+                <div class="popup__ajax-message"></div>
+                <div class="form__row">
+                  <input class="form__field form__field--popup" id="password" type="password" name="match_pass" required placeholder="${__( 'Пароль', 'earena_2' )}">
+                </div>
+                <span class="form__error form__error--popup">${__( 'Error', 'earena_2' )}</span>
+
+                <p class="form__text">
+                  ${__( 'Это приватный матч. Введите пароль.', 'earena_2' )}
+                </p>
+              `;
+
+              let smallBalanceHTML = `
+                <p class="pay__text pay__text--red">
+                  ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
+                </p>
+
+                <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
+                  <span>
+                    ${__( 'Пополнить счет', 'earena_2' )}
+                  </span>
+                </a>
+              `;
+
+              let teamModeHTML = `
+                <li class="variations__item">
+                  ${button.dataset.teamMode}
+                </li>
+              `;
+
+              let variationsHTML = `
+                <ul class="variations ${((button.dataset.private == '1') ? 'variations--lock' : '')}">
+                  <li class="variations__item">
+                    ${button.dataset.gameMode}
+                  </li>
+                  ${((button.dataset.teamMode !== '') ? teamModeHTML : '')}
+                </ul>
+              `;
+
+              let templateJoinFormHTML = `
+                <div class="match match--popup">
+                  <div class="match__top-left">
+                    <h3 class="match__game">
+                      ${button.dataset.game}
+                    </h3>
+                    ${variationsHTML}
+                  </div>
+
+                  <div class="platform platform--match">
+                    <svg class="platform__icon" width="40" height="40">
+                      <use xlink:href="#icon-platform-${button.dataset.platform}"></use>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="popup__content popup__content--match">
+                  <div class="pay pay--match">
+                    <table class="pay__table">
+                      <tbody class="pay__body">
+                        <tr class="pay__row">
+                          <td class="pay__column">
+                            ${__( 'Доступный баланс:', 'earena_2' )}
+                          </td>
+                          <td class="pay__column pay__column--balance pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
+                            ${('$' + button.dataset.balance)}
+                          </td>
+                        </tr>
+                        <tr class="pay__row">
+                          <td class="pay__column">
+                            ${__( 'Со счета будет списано:', 'earena_2' )}
+                          </td>
+                          <td class="pay__column pay__column--right">
+                            ${('$' + button.dataset.bet)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    ${(button.dataset.balance < button.dataset.bet) ? smallBalanceHTML : ''}
+                  </div>
+                  <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
+                    ${(button.dataset.private == '1') ? privateMatchHTML : ''}
+
+                    ${hiddenInputsHTML}
+
+                    <div class="form__buttons">
+                      <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
+                        <span>
+                          ${__( 'Отменить', 'earena_2' )}
+                        </span>
+                      </button>
+
+                      <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden' : ''}"" type="submit" name="match-submit ${(button.dataset.balance < button.dataset.bet) ? 'disabled' : ''}">
+                        <span>
+                          ${__( 'Принять', 'earena_2' )}
+                        </span>
+                      </button>
+                    </div>
+                    <p class="form__text form__text--star">
+                      ${__( 'Отменить участие в матче будет невозможно.', 'earena_2' )}
+                    </p>
+                  </form>
+                </div>
+              `;
+
+              return templateJoinFormHTML;
+            };
+
+            popupTemplateContainer.innerHTML = getTemplateJoinMatchFormHTML();
+          }
+
+          // Проверка : Заданы ли внутренние кнопки
+          if (innerPopupButtonSelector) {
+            // Смена шаблонов по клику на кнопки типа: забыл пароль/войти/зарегистрироваться
+            let innerPopupButtons = popup.querySelectorAll(innerPopupButtonSelector);
+
+            innerPopupButtons.forEach((innerPopupButton, i) => {
+              innerPopupButton.addEventListener('click', function () {
+                window.popup.contentCreator(prefix, popup, innerPopupButton, innerPopupButtonSelector);
+              });
+            });
+          }
+
+          // Проверка на то, что форма не находится на странице.
+          // Чтобы избежать дублей событий
+          if ((prefix !== 'contact') && (prefix !== 'chat')) {
+            // Инициализация формы
+            let attrForm = {
+              idForm: `form-${prefix}`,
+              selectorForTemplateReplace: `#${prefix}-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
+              classForAddClosestWrapperForm: 'sending', // по умолчанию - false
+              selectorClosestWrapperForm: `.popup--${prefix}`, // по умолчанию - false
+            };
+
+            let formInitTrue = window.form.init(attrForm);
+            if (formInitTrue === false) {
+              // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
+              // если формы нет в шаблоне
+              window.form.additionButtonClosePopup(popup);
+            }
+          } else if (prefix === 'contact' || prefix === 'chat') {
+            // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
+            // если формы нет в шаблоне
+            window.form.additionButtonClosePopup(popup);
+          }
+
+          // Регулировка высоты попапа
+          let scrollContorllFunction = function () {
+            //console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
+            if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
+              popup.classList.add('scroll-content');
+            } else {
+              if (prefix !== 'game') {
+                popup.classList.remove('scroll-content');
+              }
+            }
+          };
+
+          scrollContorllFunction();
+
+          if (prefix === 'game') {
+            let nicknamesTemplate = button.querySelector('[id*="nicknames"]');
+            let formGame = popup.querySelector(`#form-${prefix}`);
+            if (nicknamesTemplate && formGame) {
+              let nicknamesContent = nicknamesTemplate.content.cloneNode(true);
+              formGame.appendChild(nicknamesContent);
+            }
+
+            let gameLinks = popup.querySelectorAll('.game__link');
+
+            if (gameLinks.length > 0) {
+              gameLinks.forEach((gameLink, i) => {
+                gameLink.addEventListener('click', function (evt) {
+                  evt.preventDefault();
+
+                  // Убираю класс скролла
+                  popup.classList.remove('scroll-content');
+
+                  let gameList = popup.querySelector('.popup__list--game');
+
+                   if (formGame && gameList && dataGames) {
+                     formGame.classList.add('active');
+                     gameList.classList.add('active');
+
+                     // Получаем заголовок попапа
+                     let popupTitle = popup.querySelector('.popup__title--game');
+                     // Получаем название Игры
+                     let gameTitle = dataGames[gameLink.dataset.game].name;
+                     // Получаем иконку платформы
+                     let popupPlatform = popup.querySelector('.platform');
+                     // Получаем Инпут с никнеймом
+                     let nicknameInputField = formGame.querySelector('#game-nickname');
+                     // Получаем подзаголовок
+                     let popupSubTitle = popup.querySelector('.popup__information--game');
+
+                     if (popupTitle && popupSubTitle && gameTitle && popupPlatform) {
+                       popupTitle.textContent = gameTitle;
+
+                       popupPlatform.classList.add('active');
+                       popupSubTitle.classList.add('active');
+
+                       if (nicknameInputField) {
+                         let oldNicknameField = formGame.querySelector(`input[name="nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]"]`);
+
+                         if (oldNicknameField) {
+                           //console.log('Clone removed -> ', oldNicknameField);
+                           oldNicknameField.remove();
+                         }
+
+                         nicknameInputField.name = `nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]`;
+                       }
+                     }
+                   }
+                });
+              });
+            }
+          }
+
+          if (prefix === 'verification') {
+            if (typePopup === 'request') {
+              window.files(popup);
+            }
+          }
+
+          if (prefix === 'match') {
+            if (typePopup === 'delete') {
+              window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
+            }
+          }
+
+          if (prefix === 'warning') {
+            if (typePopup === 'add' || typePopup === 'delete') {
+              let inputValues = [
+                button.dataset.userId ? button.dataset.userId : null,
+                button.dataset.userName ? button.dataset.userName : null,
+                button.dataset.matchId ? button.dataset.matchId : null,
+                button.dataset.matchThreadId ? button.dataset.matchThreadId : null
+              ];
+
+              let inputNames = [
+                'user',
+                'username',
+                'match_id',
+                'match_thread_id'
+              ];
+
+              window.popup.setInputValue(popupTemplateContainer, inputNames, inputValues);
+            }
+          }
+
+          if (prefix === 'tournament') {
+            if (typePopup === 'delete-cron') {
+              window.popup.setInputValue(popupTemplateContainer, ['cron', 'crontime'], [button.dataset.cron, button.dataset.crontime]);
+            }
+
+            if (typePopup === 'delete-tournament' || typePopup === 'cancel') {
+              window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
+            }
+          }
+
+          // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)
+          window.popup.userInfo(button, popup);
+        },
+        // Подстановка информации о пользователе в попап по клику на кнопку
         userInfo : function (button = false, popup) {
           //console.log('window.popup.userInfo', button, popup);
           if (button) {
@@ -208,6 +501,7 @@
             });
           }
         },
+        // Установка значений инпутам
         setInputValue : function (container, inputNames = [], values = []) {
           inputNames.forEach((inputName, i) => {
             let input = container.querySelector(`input[name="${inputName}"]`);
@@ -218,291 +512,8 @@
         }
       };
 
-      // Ф-я подмены содержимого попапа
-      let popupContentCreator = function (prefix, popup, button, innerPopupButtonSelector = false) {
-        // Анализируем имя кнопки, чтобы вставить нужный шаблон в шапку и форму
-        let typePopup = button.name;
-
-        // Получаем контейнер для шаблона
-        let popupTemplateContainer = popup.querySelector(`#${prefix}-popup`);
-
-        // Получаем нужный шаблон
-        let popupCurrentTemplate = popup.querySelector(`#popup-${prefix}-${typePopup}`);
-
-        if (popupTemplateContainer && popupCurrentTemplate) {
-          // Очищаем контейнер
-          popupTemplateContainer.innerHTML = '';
-
-          // Получаем контент нужного шаблона
-          let popupCurrentTemplateContent = popupCurrentTemplate.content;
-          let cloneCurrentTemplateContent = popupCurrentTemplateContent.cloneNode(true);
-
-          // Заменяем содержимое контейнера
-          popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
-        } else if (popupTemplateContainer && (prefix === 'match') && (typePopup === 'join')) {
-          let getTemplateJoinMatchFormHTML = function () {
-            let hiddenInputsHTML = `
-              <input type="hidden" name="id" value="${button.dataset.id}">
-              <input type="hidden" name="security" value="${button.dataset.security}">
-            `;
-
-            let privateMatchHTML = `
-              <div class="popup__ajax-message"></div>
-              <div class="form__row">
-                <input class="form__field form__field--popup" id="password" type="password" name="match_pass" required placeholder="${__( 'Пароль', 'earena_2' )}">
-              </div>
-              <span class="form__error form__error--popup">${__( 'Error', 'earena_2' )}</span>
-
-              <p class="form__text">
-                ${__( 'Это приватный матч. Введите пароль.', 'earena_2' )}
-              </p>
-            `;
-
-            let smallBalanceHTML = `
-              <p class="pay__text pay__text--red">
-                ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
-              </p>
-
-              <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
-                <span>
-                  ${__( 'Пополнить счет', 'earena_2' )}
-                </span>
-              </a>
-            `;
-
-            let teamModeHTML = `
-              <li class="variations__item">
-                ${button.dataset.teamMode}
-              </li>
-            `;
-
-            let variationsHTML = `
-              <ul class="variations ${((button.dataset.private == '1') ? 'variations--lock' : '')}">
-                <li class="variations__item">
-                  ${button.dataset.gameMode}
-                </li>
-                ${((button.dataset.teamMode !== '') ? teamModeHTML : '')}
-              </ul>
-            `;
-
-            let templateJoinFormHTML = `
-              <div class="match match--popup">
-                <div class="match__top-left">
-                  <h3 class="match__game">
-                    ${button.dataset.game}
-                  </h3>
-                  ${variationsHTML}
-                </div>
-
-                <div class="platform platform--match">
-                  <svg class="platform__icon" width="40" height="40">
-                    <use xlink:href="#icon-platform-${button.dataset.platform}"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <div class="popup__content popup__content--match">
-                <div class="pay pay--match">
-                  <table class="pay__table">
-                    <tbody class="pay__body">
-                      <tr class="pay__row">
-                        <td class="pay__column">
-                          ${__( 'Доступный баланс:', 'earena_2' )}
-                        </td>
-                        <td class="pay__column pay__column--balance pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
-                          ${('$' + button.dataset.balance)}
-                        </td>
-                      </tr>
-                      <tr class="pay__row">
-                        <td class="pay__column">
-                          ${__( 'Со счета будет списано:', 'earena_2' )}
-                        </td>
-                        <td class="pay__column pay__column--right">
-                          ${('$' + button.dataset.bet)}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  ${(button.dataset.balance < button.dataset.bet) ? smallBalanceHTML : ''}
-                </div>
-                <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
-                  ${(button.dataset.private == '1') ? privateMatchHTML : ''}
-
-                  ${hiddenInputsHTML}
-
-                  <div class="form__buttons">
-                    <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="match-close">
-                      <span>
-                        ${__( 'Отменить', 'earena_2' )}
-                      </span>
-                    </button>
-
-                    <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden' : ''}"" type="submit" name="match-submit ${(button.dataset.balance < button.dataset.bet) ? 'disabled' : ''}">
-                      <span>
-                        ${__( 'Принять', 'earena_2' )}
-                      </span>
-                    </button>
-                  </div>
-                  <p class="form__text form__text--star">
-                    ${__( 'Отменить участие в матче будет невозможно.', 'earena_2' )}
-                  </p>
-                </form>
-              </div>
-            `;
-
-            return templateJoinFormHTML;
-          };
-
-          popupTemplateContainer.innerHTML = getTemplateJoinMatchFormHTML();
-        }
-
-        // Проверка : Заданы ли внутренние кнопки
-        if (innerPopupButtonSelector) {
-          // Смена шаблонов по клику на кнопки типа: забыл пароль/войти/зарегистрироваться
-          let innerPopupButtons = popup.querySelectorAll(innerPopupButtonSelector);
-
-          innerPopupButtons.forEach((innerPopupButton, i) => {
-            innerPopupButton.addEventListener('click', function () {
-              popupContentCreator(prefix, popup, innerPopupButton, innerPopupButtonSelector);
-            });
-          });
-        }
-
-        // Проверка на то, что форма не находится на странице.
-        // Чтобы избежать дублей событий
-        if ((prefix !== 'contact') && (prefix !== 'chat')) {
-          // Инициализация формы
-          let attrForm = {
-            idForm: `form-${prefix}`,
-            selectorForTemplateReplace: `#${prefix}-popup`, // Содержимое будет очищаться при отправке и заменяться шаблонами
-            classForAddClosestWrapperForm: 'sending', // по умолчанию - false
-            selectorClosestWrapperForm: `.popup--${prefix}`, // по умолчанию - false
-          };
-
-          let formInitTrue = window.form.init(attrForm);
-          if (formInitTrue === false) {
-            // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
-            // если формы нет в шаблоне
-            window.form.additionButtonClosePopup(popup);
-          }
-        } else if (prefix === 'contact' || prefix === 'chat') {
-          // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
-          // если формы нет в шаблоне
-          window.form.additionButtonClosePopup(popup);
-        }
-
-        // Регулировка высоты попапа
-        let scrollContorllFunction = function () {
-          //console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
-          if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
-            popup.classList.add('scroll-content');
-          } else {
-            if (prefix !== 'game') {
-              popup.classList.remove('scroll-content');
-            }
-          }
-        };
-
-        scrollContorllFunction();
-
-        if (prefix === 'game') {
-          let nicknamesTemplate = button.querySelector('[id*="nicknames"]');
-          let formGame = popup.querySelector(`#form-${prefix}`);
-          if (nicknamesTemplate && formGame) {
-            let nicknamesContent = nicknamesTemplate.content.cloneNode(true);
-            formGame.appendChild(nicknamesContent);
-          }
-
-          let gameLinks = popup.querySelectorAll('.game__link');
-
-          if (gameLinks.length > 0) {
-            gameLinks.forEach((gameLink, i) => {
-              gameLink.addEventListener('click', function (evt) {
-                evt.preventDefault();
-
-                // Убираю класс скролла
-                popup.classList.remove('scroll-content');
-
-                let gameList = popup.querySelector('.popup__list--game');
-
-                 if (formGame && gameList && dataGames) {
-                   formGame.classList.add('active');
-                   gameList.classList.add('active');
-
-                   // Получаем заголовок попапа
-                   let popupTitle = popup.querySelector('.popup__title--game');
-                   // Получаем название Игры
-                   let gameTitle = dataGames[gameLink.dataset.game].name;
-                   // Получаем иконку платформы
-                   let popupPlatform = popup.querySelector('.platform');
-                   // Получаем Инпут с никнеймом
-                   let nicknameInputField = formGame.querySelector('#game-nickname');
-                   // Получаем подзаголовок
-                   let popupSubTitle = popup.querySelector('.popup__information--game');
-
-                   if (popupTitle && popupSubTitle && gameTitle && popupPlatform) {
-                     popupTitle.textContent = gameTitle;
-
-                     popupPlatform.classList.add('active');
-                     popupSubTitle.classList.add('active');
-
-                     if (nicknameInputField) {
-                       let oldNicknameField = formGame.querySelector(`input[name="nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]"]`);
-
-                       if (oldNicknameField) {
-                         //console.log('Clone removed -> ', oldNicknameField);
-                         oldNicknameField.remove();
-                       }
-
-                       nicknameInputField.name = `nicknames[${gameLink.dataset.game}][${gameLink.dataset.platform}]`;
-                     }
-                   }
-                 }
-              });
-            });
-          }
-        }
-
-        if (prefix === 'verification') {
-          if (typePopup === 'request') {
-            window.files(popup);
-          }
-        }
-
-        if (prefix === 'match') {
-          if (typePopup === 'delete') {
-            window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
-          }
-        }
-
-        if (prefix === 'warning') {
-          if (typePopup === 'add' || typePopup === 'delete') {
-            let inputValues = [
-              button.dataset.userId ? button.dataset.userId : null,
-              button.dataset.userName ? button.dataset.userName : null,
-              button.dataset.matchId ? button.dataset.matchId : null,
-              button.dataset.matchThreadId ? button.dataset.matchThreadId : null
-            ];
-
-            let inputNames = [
-              'user',
-              'username',
-              'match_id',
-              'match_thread_id'
-            ];
-
-            window.popup.setInputValue(popupTemplateContainer, inputNames, inputValues);
-          }
-        }
-
-        // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)
-        window.popup.userInfo(button, popup);
-      };
-
-      // Все кнопки, которые открывают попапы
+      // Активация всех кнопок, что есть в DOM при загрузке страницы
       let popupButtons = document.querySelectorAll('.openpopup');
-
       if (popupButtons.length > 0) {
         // Перебираем все кнопки, которые открывают попапы
         popupButtons.forEach(function (popupButton) {
@@ -514,7 +525,6 @@
       if (OVERLAY_POPUP) {
         OVERLAY_POPUP.addEventListener('click', window.popup.closePopup);
       }
-
     } catch (e) {
       console.log(e);
     }

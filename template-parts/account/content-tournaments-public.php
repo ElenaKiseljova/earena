@@ -3,8 +3,8 @@
   global $earena_2_user_public;
   $ea_user = $earena_2_user_public ?? wp_get_current_user();
 
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
-  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
+  $is_profile_tournaments = ((is_page(521) || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
 ?>
 
 <div class="toggles__content toggles__content--account <?= $is_profile_tournaments ? 'active' : ''; ?>">

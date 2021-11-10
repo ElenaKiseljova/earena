@@ -2,19 +2,15 @@
 
 (function () {
   window.files = function (container) {
-    var inputFile = container.querySelector('input[type="file"]');
-    var previewFile = container.querySelector('.files__preview');
+    var files = container.querySelectorAll('.files');
 
-    if (inputFile && previewFile) {
-      // Скрываю инпут
-      inputFile.style.opacity = 0;
-
+    if (files.length > 0) {
       // Загружаемые допустимые форматы файлов
       var fileTypes = [
         'image/jpeg',
         'image/pjpeg',
         'image/png'
-      ]
+      ];
 
       // Проверка типов файлов
       var validFileType = function (file) {
@@ -38,83 +34,176 @@
         }
       };*/
 
-      // Ф-я добавления загруженных картинок
-      var updateImageDisplay = function () {
-        // Если есть ли что-то внутри превью
-        while ( previewFile.firstChild ) {
-          previewFile.removeChild( previewFile.firstChild );
+      // Ф-я обновления отображаемого после изменения значения инпута
+      var updateDisplay = function (inputFile, previewFile, pictureFile, colorpickerFile) {
+        if (colorpickerFile) {
+          colorpickerFile.style.backgroundColor = inputFile.value;
+          colorpickerFile.textContent = inputFile.value;
+
+          return;
+        }
+
+        if (previewFile) {
+          // Если ранее было записано что-то в превью
+          while ( previewFile.firstChild ) {
+            previewFile.removeChild( previewFile.firstChild );
+          }
+        }
+
+        if (pictureFile) {
+          // Если ранее была загружена другая картинка
+          while ( pictureFile.firstChild ) {
+            pictureFile.removeChild( pictureFile.firstChild );
+          }
         }
 
         // Массив полученных файлов
         var curFiles = inputFile.files;
 
-        //console.log(curFiles);
-
         // Нет файлов
-        // if(curFiles.length === 0) {
-        //   var para = document.createElement('p');
-        //   para.textContent = 'No files currently selected for upload';
-        //   previewFile.appendChild(para);
-        // } else {
-          var list = document.createElement('ul');
-          previewFile.appendChild(list);
-
+        if(curFiles.length === 0) {
+          // let textElement = document.createElement('p');
+          // textElement.textContent = 'No files currently selected for upload';
+          // previewFile.appendChild(textElement);
+          console.log('Ошибка загрузки: Нет файлов');
+        } else {
           // Перебираем все загруженные файлы и пушим в массив
           let curFilesArray = [];
           for(var i = 0; i < curFiles.length; i++) {
             curFilesArray.push(curFiles[i]);
           }
 
-          // Перебираем элементы массиыва
+          if (previewFile) {
+            var list = document.createElement('ul');
+            previewFile.appendChild(list);
+          }
+
+          // Перебираем элементы массива
           curFilesArray.forEach((curFilesArrayI, i) => {
-            let listItem = document.createElement('li');
-            let para = document.createElement('p');
+            if (previewFile) {
+              var listItem = document.createElement('li');
+              var textElement = document.createElement('p');
+            }
 
-            if(validFileType(curFilesArrayI)) {
-              // para.textContent = 'File name ' + curFilesArrayI.name + ', file size ' + returnFileSize(curFilesArrayI.size) + '.';
-              // var image = document.createElement('img');
-              // image.src = window.URL.createObjectURL(curFilesArrayI);
+            if (validFileType(curFilesArrayI)) {
+              if (pictureFile) {
+                let image = document.createElement('img');
+                image.src = window.URL.createObjectURL(curFilesArrayI);
+                pictureFile.appendChild(image);
+              }
 
-              // listItem.appendChild(image);
-              para.textContent = curFilesArrayI.name.split('.')[0];
+              if (previewFile) {
+                textElement.textContent = curFilesArrayI.name.split('.')[0];
 
-              listItem.appendChild(para);
-            }/* else {
-              para.textContent = 'File name ' + curFilesArrayI.name + ': Not a valid file type. Update your selection.';
-              listItem.appendChild(para);
-            }*/
+                listItem.appendChild(textElement);
+              }
+            } else {
+              // textElement.textContent = 'File name ' + curFilesArrayI.name + ': Not a valid file type. Update your selection.';
+              // listItem.appendChild(textElement);
+              console.log('Not a valid file type. Update your selection.');
+            }
 
-            list.appendChild(listItem);
+            if (previewFile) {
+              list.appendChild(listItem);
 
-            // По клику на пункт удаляем пункт и подменяет FileList на новый
-            listItem.addEventListener('click', function () {
-              listItem.remove();
+              // По клику на пункт удаляем пункт и подменяет FileList на новый
+              listItem.addEventListener('click', function () {
+                listItem.remove();
 
-              // После удаления заменяем значение загруженного файла на null, чтобы сохранить индексацию элементов массива неизменной
-              curFilesArray[i] = null;
+                // После удаления заменяем значение загруженного файла на null, чтобы сохранить индексацию элементов массива неизменной
+                curFilesArray[i] = null;
 
-              // Создаем новый объект под файлы
-              let newFileList = new DataTransfer();
+                // Создаем новый объект под файлы
+                let newFileList = new DataTransfer();
 
-              // Перебираем массив файлов заново
-              curFilesArray.forEach((curFilesArrayNew, i) => {
-                // Игнорируем удаленные элементы
-                if (curFilesArrayNew !== null) {
-                  // Записываем файл
-                  newFileList.items.add(curFilesArrayNew);
-                }
+                // Перебираем массив файлов заново
+                curFilesArray.forEach((curFilesArrayNew, i) => {
+                  // Игнорируем удаленные элементы
+                  if (curFilesArrayNew !== null) {
+                    // Записываем файл
+                    newFileList.items.add(curFilesArrayNew);
+                  }
+                });
+
+                // Переопределяем объект с загруженными файлами новым
+                inputFile.files = newFileList.files;
               });
-
-              // Переопределяем объект с загруженными файлами новым
-              inputFile.files = newFileList.files;
-
-              // console.log(inputFile.files);
-            });
+            }
           });
-        // }
+        }
       };
 
-      inputFile.addEventListener('change', updateImageDisplay);
+      files.forEach((file, i) => {
+        let inputFile = file.querySelector('.files__input');
+
+        // Список с названиями загруженных картинок
+        let previewFile = file.querySelector('.files__preview');
+
+        // Отображение загруженной картинки
+        let pictureFile = file.querySelector('.files__picture');
+
+        if (file.dataset.dropbox && pictureFile) {
+          // Drag & Drop
+          var onDragEnter = function (evt) {
+            // console.log(evt.currentTarget, 'onDragEnter');
+            pictureFile.classList.add('active');
+
+            pictureFile.removeEventListener('dragenter', onDragEnter);
+            pictureFile.addEventListener('dragleave', onDragLeave);
+          };
+
+          var onDragOver = function (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+          };
+
+          var onDragLeave = function (evt) {
+            // console.log(evt.currentTarget, 'onDragLeave');
+            pictureFile.classList.remove('active');
+
+            pictureFile.removeEventListener('dragleave', onDragLeave);
+            pictureFile.addEventListener('dragenter', onDragEnter);
+          };
+
+          var onDrop = function (evt) {
+            evt.preventDefault();
+
+            pictureFile.classList.remove('active');
+
+            let file = evt.dataTransfer.files[0];
+
+            if (validFileType(file)) {
+              // Если ранее была загружена другая картинка
+              while ( pictureFile.firstChild ) {
+                pictureFile.removeChild( pictureFile.firstChild );
+              }
+
+              let image = document.createElement('img');
+              image.src = window.URL.createObjectURL(file);
+              pictureFile.appendChild(image);
+
+              inputFile.files = evt.dataTransfer.files;
+            } else {
+              console.log('Недопустимый тип файла.');
+            }
+
+            // console.log(evt.dataTransfer, 'onDrop');
+          };
+
+          pictureFile.addEventListener('dragenter', onDragEnter);
+
+          pictureFile.addEventListener('dragover', onDragOver);
+
+          pictureFile.addEventListener('drop', onDrop);
+        }
+
+        // Отображение загруженной картинки
+        let colorpickerFile = file.querySelector('.files__colorpicker');
+
+        inputFile.addEventListener('change', function () {
+          updateDisplay(inputFile, previewFile, pictureFile, colorpickerFile);
+        });
+      });
     }
   }
 

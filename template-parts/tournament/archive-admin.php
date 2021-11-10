@@ -68,6 +68,7 @@
      data-vip="<?= $tournament->vip ?: 0; ?>"
      data-game_mode="<?= $tournament->game_mode; ?>"
      data-team_mode="<?= $tournament->team_mode; ?>"
+     data-fast="<?= $tournament->fast; ?>"
      >
   <?php
     if (((int)$tournament->type == 2)) {

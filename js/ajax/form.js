@@ -14,6 +14,8 @@
     ea_icons
     platformsArr
 
+    isAdminTournamentsList
+
     - глобальные переменные, которые используются для составления URI.
       Задаются в header.php
   */

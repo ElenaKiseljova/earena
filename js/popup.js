@@ -18,7 +18,7 @@
       Задаются в header.php
   */
 
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('DOMContentLoaded', function () {
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 

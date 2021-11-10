@@ -64,6 +64,7 @@
 
   &--create {
     justify-content: space-between;
+    align-items: stretch;
   }
 
   &--complaint {
@@ -144,8 +145,17 @@
   }
 
   &--create-info {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+
     width: 495px;
     max-width: calc(50% - 10px);
+
+    margin-bottom: 30px;
   }
 
   &--create-image {
@@ -232,12 +242,15 @@
   &--create-info {
     width: 397px;
     max-width: calc(50% - 10px);
+    margin-bottom: 30px;
   }
 
   &--create-image {
     width: 598px;
 
     max-width: calc(60% - 10px);
+
+    margin-bottom: 30px;
   }
 
   @media (max-width: @mobile) {
@@ -380,7 +393,8 @@
     margin: 0;
   }
 
-  &--message-transaction {
+  &--message-transaction,
+  &--message-create {
     flex-grow: 1;
   }
 
@@ -647,18 +661,32 @@
     resize: vertical;
 
     height: 40px;
+
+    line-height: 17px;
   }
 
   &--message-contact {
     resize: none;
 
     height: 140px;
+
+    line-height: 17px;
   }
 
   &--message-transaction {
     resize: none;
 
     height: 100%;
+
+    line-height: 17px;
+  }
+
+  &--message-create {
+    resize: none;
+
+    height: 100%;
+
+    line-height: 17px;
   }
 
   &--chat {
@@ -1004,6 +1032,10 @@
     grid-area: d;
   }
 
+  &--create {
+    margin-bottom: 20px;
+  }
+
   @media (max-width: @mobile) {
     &--wallet {
       width: 100%;
@@ -1028,6 +1060,23 @@
   &--private {
     margin-bottom: 10px;
     margin-bottom: 15px;
+  }
+
+  &--left,
+  &--right {
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 30px;
+  }
+
+  &--left {
+    justify-content: flex-start;
+  }
+
+  &--right {
+    justify-content: flex-end;
   }
 }
 
@@ -1057,6 +1106,15 @@
     line-height: 140%;
 
     white-space: nowrap;
+  }
+}
+
+.form__brands {
+  width: calc(33.33% - 5.5px);
+  margin-bottom: 30px;
+
+  @media (max-width: @mobile) {
+    width: 100%;
   }
 }
 

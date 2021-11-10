@@ -3,8 +3,8 @@
   global $earena_2_user_public;
   $ea_user = $earena_2_user_public ?? wp_get_current_user();
 
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
-  $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
+  $is_profile_matches = ((is_page(518)|| (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
 ?>
 
 <div class="toggles__content toggles__content--account <?= $is_profile_matches ? 'active' : ''; ?>">

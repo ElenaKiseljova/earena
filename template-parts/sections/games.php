@@ -3,13 +3,17 @@
 
   $ea_user = false;
 
-  if (earena_2_current_page('user')) {
+  $is_profile_private = is_page(503) || earena_2_current_page( 'profile' );
+  $is_profile_public = is_page(1169) || earena_2_current_page( 'user' );
+  $is_profile = $is_profile_private || $is_profile_public;
+
+  if ($is_profile_public) {
     // Эта переменная используется в шаблонах 'public'
     global $earena_2_user_public;
     $ea_user = $earena_2_user_public;
   }
 
-  if (earena_2_current_page('profile')) {
+  if ($is_profile_private) {
     // Эта переменная используется в шаблонах 'private'
     global $earena_2_user_private;
     $ea_user = $earena_2_user_private;
@@ -41,7 +45,7 @@
   $platforms = get_site_option( 'platforms' );
 ?>
 
-<?php if ( earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' ) || ($profile === true) ): ?>
+<?php if ( $is_profile || ($profile === true) ): ?>
   <?php foreach ($platforms as $key => $platform): ?>
     <div class="section section--games" id="games-<?= mb_strtolower($platform); ?>">
       <header class="section__header">
@@ -54,7 +58,7 @@
         </h2>
 
         <div class="section__header-right">
-          <?php if (earena_2_current_page('profile') || ($profile === true)): ?>
+          <?php if ($is_profile_private || ($profile === true)): ?>
             <button class="section__add-game button button--gray openpopup" data-popup="game" type="button" name="add-<?= mb_strtolower($platform); ?>">
               <span>
                 <?php _e( 'Добавить игру', 'earena_2' ); ?>

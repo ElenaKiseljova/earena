@@ -139,16 +139,10 @@
       };
 
       //                       //
-      // --- ИНИЦИАЛИЗАЦИЯ --- //
+      //    --- КОЛЛБЕКИ ---   //
       //                       //
 
-      /* Фильтры */
-      window.toggleActive.multiple('.filters__field--select', false, true);
-
-      /* Аккордеон */
-      window.toggleActive.multiple('.accordeon__button', false, true);
-
-      /* Табы ( пользователи ) - Чат */
+      /* Табы ( пользователи ) - Чат (Админ) */
       let toggleUserContent = function (index) {
         let userFormContainer = document.querySelector('#container-current-user');
         let userFormTemplate = document.querySelector(`#user-${index}`);
@@ -179,8 +173,7 @@
       // Вызов при загрузке страницы
       toggleUserContent(0);
 
-      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, false, true);
-
+      /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
       let toggleTournamentContent = function (index) {
         let tournamentTabContents = document.querySelectorAll('.toggles__content--tournament');
 
@@ -190,32 +183,48 @@
           tournamentTabContents[index].classList.add('active');
         }
       };
-      /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
-      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, false, true);
 
+      /* Переключатели на стр Матчей/Турниров Админа */
       let toggleAdminContent = function (index, selectorContent, setCookie) {
-        let adminTabContents = document.querySelectorAll(selectorContent);
+        if (selectorContent) {
+          let adminTabContents = document.querySelectorAll(selectorContent);
 
-        if (adminTabContents[index]) {
-          removeActiveClassElements(adminTabContents);
+          if (adminTabContents[index]) {
+            removeActiveClassElements(adminTabContents);
 
-          adminTabContents[index].classList.add('active');
-
-          if (setCookie.name) {
-            window.cookieEdit.set(setCookie.name, index);
+            adminTabContents[index].classList.add('active');
           }
         }
-      };
-      /* Переключатели на стр Матчей Админа */
-      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, '.section__content--matches-admin', {name: 'admin_tab_active_index'});
-      /* Переключатели на стр Турниров Админа */
-      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, '.section__content--tournaments-admin', {name: 'admin_tab_active_index'});
 
-      /* Переключатели на стр Создания Турнира (Админ) */
-      window.toggleActive.multiple('.tabs__button--tournaments-button-admin', toggleAdminContent, false, true, '.section__content--admin-tournaments-create');
+        if (setCookie.name) {
+          window.cookieEdit.set(setCookie.name, index);
+        }
+      };
+
+      //                       //
+      // --- ИНИЦИАЛИЗАЦИЯ --- //
+      //                       //
 
       /* Табы ( платформы ) */
       window.toggleActive.several('.tabs__button--platform');
+
+      /* Фильтры */
+      window.toggleActive.multiple('.filters__field--select', false, true);
+
+      /* Аккордеон */
+      window.toggleActive.multiple('.accordeon__button', false, true);
+
+      /* Табы ( пользователи ) - Чат (Админ) */
+      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, false, true);
+
+      /* Переключатели на стр Турнира (Кубка / Лаки Кубка) */
+      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, false, true);
+
+      /* Переключатели на стр Матчей Админа */
+      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, '.section__content--matches-admin', {name: 'admin_tab_active_index'});
+
+      /* Переключатели на стр Турниров Админа */
+      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, '.section__content--tournaments-admin', {name: 'admin_tab_active_index'});
 
       /* Языки */
       let languages = document.querySelectorAll('.languages');

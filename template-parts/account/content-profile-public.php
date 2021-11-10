@@ -3,7 +3,7 @@
   global $earena_2_user_public;
   $ea_user = $earena_2_user_public ?? wp_get_current_user();
 
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
 ?>
 
 <div class="toggles__content toggles__content--account <?= ($is_profile && !isset($_GET['toggles'])) ? 'active' : ''; ?>">

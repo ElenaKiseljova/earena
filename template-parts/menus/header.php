@@ -1,5 +1,5 @@
 <?php
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
   $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
 ?>
 <nav class="navigation navigation--header">

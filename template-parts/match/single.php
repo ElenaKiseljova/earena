@@ -1,8 +1,8 @@
 <?php
   global $match, $match_id, $ea_user;
 
-  $is_matches_chat = earena_2_current_page( 'matches' );
-  $is_tournaments_chat = earena_2_current_page( 'tournaments');
+  $is_matches_chat = is_page(274);
+  $is_tournaments_chat = is_page(907);
 
   if (empty($match_id)) {
     if ($is_matches_chat) {

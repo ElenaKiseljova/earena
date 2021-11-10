@@ -40,6 +40,11 @@
 
   // Scripts theme
   function earena_2_scripts () {
+    $is_profile = is_page(503) || is_page(1169);
+    $is_profile_affiliate = is_page(527);
+
+    $is_tournaments_create = is_page( 552 );
+
     if ( is_ea_admin() ) {
       wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
     }
@@ -51,12 +56,18 @@
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     /* Ajax start */
-      wp_enqueue_script('global-throttlingg-script', get_template_directory_uri() . '/assets/js/ajax/global-throttlingg.min.js', $deps = array(), $ver = null, $in_footer = true );
-      wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/ajax/form.min.js', $deps = array(), $ver = null, $in_footer = true );
-      wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/ajax/filter.min.js', $deps = array(), $ver = null, $in_footer = true );
-      wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/ajax/platforms.min.js', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('global-throttlingg-script', get_template_directory_uri() . '/assets/js/ajax/global-throttlingg.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+      wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/ajax/form.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+      wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/ajax/filter.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+      wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/ajax/platforms.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
     /* Ajax end */
 
+    if (is_ea_admin() && $is_tournaments_create) {
+      wp_enqueue_script('vue-script', 'https://cdn.jsdelivr.net/npm/vue@2.6.14', $deps = array(), $ver = null, $in_footer = true );
+      wp_enqueue_script('axios-script', 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js', $deps = array(), $ver = null, $in_footer = true );
+
+      wp_enqueue_script('app_create_tournament-script',get_template_directory_uri() . '/assets/js/app_create_tournament.min.js', $deps = array(), $ver = null, $in_footer = true );
+    }
 
     wp_enqueue_script('popup-script', get_template_directory_uri() . '/assets/js/popup.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('files-script', get_template_directory_uri() . '/assets/js/files.min.js', $deps = array(), $ver = null, $in_footer = true );
@@ -64,14 +75,14 @@
 
     wp_enqueue_script('toggle-active-script', get_template_directory_uri() . '/assets/js/toggle-active.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    if (is_user_logged_in() && is_page(527)) {
+    if (is_user_logged_in() && $is_profile_affiliate) {
       wp_enqueue_script('clipboard-script', 'https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
       wp_enqueue_script('update-clipboard-script', get_template_directory_uri() . '/assets/js/update-clipboard.min.js', $deps = array(), $ver = null, $in_footer = true );
     }
 
     wp_enqueue_script('select-script', get_template_directory_uri() . '/assets/js/select.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    if (earena_2_current_page( 'user' ) || earena_2_current_page( 'profile' )) {
+    if ($is_profile) {
       wp_enqueue_script('statistics-script', get_template_directory_uri() . '/assets/js/statistics.min.js', $deps = array(), $ver = null, $in_footer = true );
     }
 
@@ -81,11 +92,13 @@
     wp_set_script_translations('popup-script', 'earena_2');
     wp_set_script_translations('form-script', 'earena_2');
     wp_set_script_translations('select-script', 'earena_2');
+    wp_set_script_translations('app_create_tournament-script', 'earena_2');
 
     // AJAX
     $args = array(
       'url' => admin_url('admin-ajax.php'),
       'nonce' => wp_create_nonce('form.js_nonce'),
+      'nonce_create_tournament' => wp_create_nonce('new_tourn'),
       'user_id' => get_current_user_id(),
       'redirecturl' => $_SERVER['REQUEST_URI'],
       'redirecturl_rp' => add_query_arg('action', 'forgot', $_SERVER['REQUEST_URI']),

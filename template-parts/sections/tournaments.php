@@ -1,7 +1,9 @@
 <?php
+  $is_games = is_page( 4953 );
+
   $is_tournaments = (earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' )) ? true : false;
 
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
   $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
 
   $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
@@ -10,7 +12,7 @@
   $is_admin_tournaments_list = is_page(555) ? true : false;
   $is_admin_tournaments_create = is_page(552) ? true : false;
 ?>
-<?php if ( earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
+<?php if ($is_games && !isset($_GET['toggles'])): ?>
   <?php
     global $games, $game_id, $ea_icons;
   ?>
@@ -43,7 +45,7 @@
       </div>
     </div>
   </section>
-<?php elseif ( earena_2_current_page( 'games' ) && isset($_GET['toggles']) ) : ?>
+<?php elseif ($is_games && isset($_GET['toggles'])) : ?>
   <?php
     global $games, $game_id, $ea_icons, $tournaments;
 
@@ -298,7 +300,7 @@
   </section>
 <?php elseif ($is_admin_tournaments_create) : ?>
   <section class="section section--tournaments" id="tournaments">
-    <div class="section__wrapper">
+    <div class="section__wrapper" id="app_create_tournament">
       <header class="section__header section__header--admin-tournaments-create">
         <h2 class="section__title section__title--tournaments section__title--page">
           <?php _e('Создание турнира', 'earena_2'); ?>
@@ -319,22 +321,9 @@
         </div>
       </header>
 
-      <div class="section__content section__content--admin-tournaments-create active">
+      <div class="section__content">
         <?php
-          // Создание Кубка
-          get_template_part( 'template-parts/tournament/create', 'cup' );
-        ?>
-      </div>
-      <div class="section__content section__content--admin-tournaments-create">
-        <?php
-          // Создание Турнира
-          get_template_part( 'template-parts/tournament/create', 'tournament' );
-        ?>
-      </div>
-      <div class="section__content section__content--admin-tournaments-create">
-        <?php
-          // Создание Lucky Cup
-          get_template_part( 'template-parts/tournament/create', 'lc' );
+          get_template_part( 'template-parts/tournament/create' );
         ?>
       </div>
     </div>

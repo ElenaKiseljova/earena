@@ -370,34 +370,34 @@
             <!-- Шаблон пунктов списка результатов строится в filter.js -->
           </ul>
         </div>
-        <?php if ($tournaments_page): ?>
-          <div class="filters__element filters__element--col-5">
-            <button class="filters__field filters__field--select" type="button" name="button">
-              <?php _e( 'Скорость', 'earena_2' ); ?>
-            </button>
+        <div class="filters__element filters__element--col-5">
+          <button class="filters__field filters__field--select" type="button" name="button">
+            <?php _e( 'Скорость', 'earena_2' ); ?>
+          </button>
 
-            <ul class="filters__list filters__list--checkbox">
-              <li class="filters__item filters__item--checkbox">
-                <div class="checkbox checkbox--left">
-                  <input class="visually-hidden" type="checkbox" name="fast" value="1" id="fast-1">
-                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-1">
-                    <?php _e('Обычная', 'earena_2'); ?>
-                  </label>
-                </div>
-              </li>
-              <li class="filters__item filters__item--checkbox">
-                <div class="checkbox checkbox--left">
-                  <input class="visually-hidden" type="checkbox" name="fast" value="2" id="fast-2">
-                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-2">
-                    <?php _e('Быстрая', 'earena_2'); ?>
-                  </label>
-                </div>
-              </li>
-            </ul>
-            <ul class="filters__list filters__list--result">
-              <!-- Шаблон пунктов списка результатов строится в filter.js -->
-            </ul>
-          </div>
+          <ul class="filters__list filters__list--checkbox">
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="fast" value="1" id="fast-1">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-1">
+                  <?php _e('Обычная', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+            <li class="filters__item filters__item--checkbox">
+              <div class="checkbox checkbox--left">
+                <input class="visually-hidden" type="checkbox" name="fast" value="2" id="fast-2">
+                <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="fast-2">
+                  <?php _e('Быстрая', 'earena_2'); ?>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <ul class="filters__list filters__list--result">
+            <!-- Шаблон пунктов списка результатов строится в filter.js -->
+          </ul>
+        </div>
+        <?php if ($tournaments_page): ?>
           <div class="filters__element filters__element--col-5">
             <button class="filters__field filters__field--select" type="button" name="button">
               <?php _e( 'Дата начала', 'earena_2' ); ?>
@@ -407,7 +407,7 @@
               <li class="filters__item filters__item--checkbox">
                 <div class="checkbox checkbox--left">
                   <input class="visually-hidden" type="radio" name="sort" value="desc" id="sort-1">
-                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-1">
+                  <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="sort-1">
                     <?php _e('Позже', 'earena_2'); ?>
                   </label>
                 </div>
@@ -415,7 +415,7 @@
               <li class="filters__item filters__item--checkbox">
                 <div class="checkbox checkbox--left">
                   <input class="visually-hidden" type="radio" name="sort" value="asc" id="sort-2">
-                  <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="sort-2">
+                  <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="sort-2">
                     <?php _e('Раньше', 'earena_2'); ?>
                   </label>
                 </div>

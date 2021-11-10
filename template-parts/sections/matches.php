@@ -1,11 +1,15 @@
 <?php
-  $is_profile = (earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' )) ? true : false;
-  $is_profile_matches = ((earena_2_current_page( 'matches') || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile) ? true : false;
+  $is_games = is_page( 4953 );
 
-  $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
-  $is_profile_admin_matches = ((earena_2_current_page( 'matches')) && $is_profile_admin) ? true : false;
+  $is_matches = is_page( 271 );
+
+  $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
+  $is_profile_matches = ($is_matches || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile;
+
+  $is_profile_admin = earena_2_current_page( 'admin' ) && is_ea_admin();
+  $is_profile_admin_matches = $is_matches && $is_profile_admin;
 ?>
-<?php if (earena_2_current_page( 'games' ) && !isset($_GET['toggles']) ): ?>
+<?php if ($is_games && !isset($_GET['toggles'])): ?>
   <?php
     global $games, $game_id, $ea_icons;
   ?>
@@ -39,7 +43,7 @@
       </div>
     </div>
   </section>
-<?php elseif (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && ($_GET['toggles'] === 'matches') ): ?>
+<?php elseif ($is_games && isset($_GET['toggles']) && ($_GET['toggles'] === 'matches')): ?>
   <?php
     global $games, $game_id, $ea_icons, $matches;
 
@@ -82,7 +86,7 @@
       <div id="isInViewPort"></div>
     </div>
   </section>
-<?php elseif ( earena_2_current_page( 'matches' ) && !$is_profile && !$is_profile_admin ) : ?>
+<?php elseif ($is_matches && !$is_profile && !$is_profile_admin) : ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
       <header class="section__header">

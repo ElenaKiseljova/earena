@@ -20,6 +20,7 @@
 
       var dataGames = <?= json_encode( $games ); ?>;
       var currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;
+      var platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
 
       var isProfile = <?= (earena_2_current_page( 'user' ) || earena_2_current_page( 'profile' )) ? 'true' : 'false'; ?>;
 
@@ -27,8 +28,9 @@
       var siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
 
       var ea_icons = <?= json_encode( $ea_icons ) ?>;
-      var platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
+
       var isAdminTournamentsList = <?= is_page(555) ? 'true' : 'false'; ?>;
+      var isAdminTournamentsCreate = <?= is_page(552) ? 'true' : 'false'; ?>;
     </script>
     <div class="container">
 

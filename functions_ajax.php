@@ -303,9 +303,9 @@ function globalHeader()
 
     if (is_user_logged_in()) {
         $id = get_current_user_id();
-        $counterMatches = counter_matches($id);
-        $counterTournaments = counter_tournaments();
-        $counteArdmin = counter_admin();
+        $counterMatches = counter_matches($id) ?? 0;
+        $counterTournaments = counter_tournaments($id) ?? 0;
+        $counteArdmin = counter_admin() ?? 0;
 
         $red = $counterMatches + $counterTournaments + $counteArdmin;
         // 0 curTime

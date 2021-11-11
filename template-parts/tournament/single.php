@@ -236,6 +236,8 @@
             $button_name = 'no-vip';
           } elseif ((int)$tournament->price > 0 && is_user_logged_in() && isset($ea_user) && !ea_check_user_age($ea_user->ID)) {
             $button_name = 'no-old-enough';
+          } elseif (is_user_logged_in() && isset($ea_user) && (int)$ea_user->get('bp_verified_member') < (int)$tournament->verification) {
+            $button_name = 'no-verification-tour';
           } else {
             $button_name = 'join';
           }

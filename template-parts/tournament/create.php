@@ -133,14 +133,14 @@
       </div>
     </div>
     <div class="form__right form__right--create-info">
-      <div class="form__row form__row--create-name">
+      <div class="form__row">
         <input v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
       </div>
       <p class="form__text form__text--create">
         <?php _e( 'Комиссия, которая будет взиматься с каждого игрока за участие', 'earena_2' ); ?>
       </p>
 
-      <div class="form__row form__row--create-name">
+      <div class="form__row">
         <input v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
       </div>
       <p class="form__text form__text--create">
@@ -170,45 +170,159 @@
 
       <div class="form__section-item form__section-item--4">
         <div class="form__row">
-          <div class="select select--platforms" data-create="games">
-            <button class="select__button select__button--platforms" type="button" name="button">
+          <div class="select select--games" data-type="games" data-reset-selects="platforms,game_modes,team_modes">
+            <button class="select__button select__button--games" data-text="<?php _e( 'Игра', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Игра', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list select__list--games">
+              <li v-for="(item, index) in gamesArr" class="select__item">
+                <input v-model="game" :value="index" :id="'select-games-' + index" class="visually-hidden" type="radio" name="game" required>
+                <label class="select__label" :for="'select-games-' + index">
+                  {{item.name}}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <span class="form__error form__error--create"><?php _e( 'Выберите игру', 'earena_2' ); ?></span>
+      </div>
+      <div class="form__section-item form__section-item--4">
+        <div class="form__row">
+          <div class="select select--platforms" data-type="platforms">
+            <button class="select__button select__button--platforms" data-text="<?php _e( 'Платформа', 'earena_2' ); ?>" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
             </button>
 
             <ul class="select__list">
-              <?php foreach ($platforms as $key => $platform): ?>
-                <li class="select__item">
-                  <input class="visually-hidden" type="radio" name="platform" value="<?= $key; ?>" id="select-platform-<?= $key; ?>" required>
-                  <label class="select__label" for="select-platform-<?= $key; ?>">
-                    <?= $platform; ?>
-                  </label>
-                </li>
-              <?php endforeach; ?>
+              <li v-for="item in currentGame.platforms" class="select__item">
+                <input v-model="platform" :value="item" :id="'select-platform-' + item" class="visually-hidden" type="radio" name="platform" required>
+                <label class="select__label" :for="'select-platform-' + item">
+                  {{ platformsArr[item] }}
+                </label>
+              </li>
             </ul>
           </div>
         </div>
-        <span class="form__error form__error--create"><?php _e( 'Выберите платформу', 'earena_2' ); ?></span>
       </div>
       <div class="form__section-item form__section-item--4">
-        <div class="form__row form__row--games">
-          <!-- Содержимое перепишется после выбора платформы -->
-          <div class="select select--games">
-            <button class="select__button select__button--games" type="button" name="button" disabled>
-              <?php _e( 'Игра', 'earena_2' ); ?>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="form__section-item form__section-item--4">
-        <div class="form__row form__row--create-name">
+        <div class="form__row">
           <input v-model="price" class="form__field form__field--create" id="price" type="number" name="price" required placeholder="<?php _e( 'Сумма участия', 'earena_2' ); ?>">
         </div>
       </div>
       <div class="form__section-item form__section-item--4">
-        <div class="form__row form__row--create-name">
+        <div class="form__row">
           <input v-model="max_players" class="form__field form__field--create" id="max_players" type="number" name="max_players" required
             placeholder="<?php _e( 'Количество участников', 'earena_2' ); ?>"
             :disabled="activeTab === 3">
+        </div>
+      </div>
+    </div>
+
+    <div class="form__section">
+      <h2 class="form__section-title">
+        <?php _e( 'Режимы игры', 'earena_2' ); ?>
+      </h2>
+
+      <div class="form__section-item form__section-item--4">
+        <div class="form__row">
+          <div class="select select--game_modes" data-type="game_modes">
+            <button class="select__button select__button--game_modes" data-text="<?php _e( 'Режим игры', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Режим игры', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list">
+              <li v-for="item in currentGame.game_modes" class="select__item">
+                <input v-model="game_mode" :value="item" :id="'select-game_mode-' + item" class="visually-hidden" type="radio" name="game_mode" required>
+                <label class="select__label" :for="'select-game_mode-' + item">
+                  {{ item }} vs {{ item }}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4">
+        <div class="form__row">
+          <div class="select select--team_mode" data-type="team_modes">
+            <button class="select__button select__button--team_mode" data-text="<?php _e( 'Режим команды', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Режим команды', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list">
+              <li v-if="!currentGame.team_modes.includes(0)"
+                  v-for="mode, i in currentGame.team_modes" class="select__item">
+                <input v-model="team_mode" :value="team_modes[mode-1].value" :id="'select-team_mode-' + i" class="visually-hidden" type="radio" name="team_mode" required>
+                <label class="select__label" :for="'select-team_mode-' + i">
+                  {{team_modes[mode - 1].label}}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4">
+        <div class="form__row">
+          <div class="select select--random" data-type="random">
+            <button class="select__button select__button--random" data-text="<?php _e( 'Тип жеребьевки', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Тип жеребьевки', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list">
+              <li v-for="item in this.randomArr" class="select__item">
+                <input v-model="random" :id="'select-random-' + item.value" class="visually-hidden" type="radio" name="random" :value="item.value" required>
+                <label class="select__label" :for="'select-random-' + item.value">
+                  {{ item.label }}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4">
+        <div class="form__row">
+          <div class="select select--fast" data-type="fast">
+            <button class="select__button select__button--fast" data-text="<?php _e( 'Скорость', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Скорость', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list">
+              <li v-for="item in this.fastArr" class="select__item">
+                <input v-model="fast" :id="'select-fast-' + item.value" class="visually-hidden" type="radio" name="fast" :value="item.value" required>
+                <label class="select__label" :for="'select-fast-' + item.value">
+                  {{ item.label }}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form__section">
+      <h2 class="form__section-title">
+        <?php _e( 'Регистрация турнира', 'earena_2' ); ?>
+      </h2>
+
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+
+        </div>
+        <span class="form__error form__error--create"><?php _e( 'Выберите игру', 'earena_2' ); ?></span>
+      </div>
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+
         </div>
       </div>
     </div>

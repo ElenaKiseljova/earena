@@ -66,7 +66,7 @@
 
             if (attrForms[attr.idForm].FORM.closest('.popup')) {
               // Поиск Селектов (если форма в Попапе)
-              window.select(attrForms[attr.idForm].FORM);
+              window.select.search(attrForms[attr.idForm].FORM);
 
               // Ф-я поиска дополнительных кнопок закрытия попапов
               window.form.additionButtonClosePopup(attrForms[attr.idForm].FORM.closest('.popup'));

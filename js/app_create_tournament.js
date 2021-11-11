@@ -49,6 +49,14 @@ const app_create_tournament = new Vue({
     random: '',
     garant: '',
     fast: '',
+    randomArr: [
+      { value: 0, label: __('Простой', 'earena') },
+      { value: 1, label: __('Random', 'earena') },
+    ],
+    fastArr: [
+      { value: 0, label: __('Обычная', 'earena') },
+      { value: 1, label: __('Fast', 'earena') },
+    ],
     game_mode: '',
     team_mode: '',
     start_reg_date: '',
@@ -92,6 +100,14 @@ const app_create_tournament = new Vue({
         switch (this.activeTab) {
           case 1: {
             this.reglament = 'bo1'
+            this.randomArr = [
+              { value: 0, label: __('Простой', 'earena') },
+              { value: 1, label: __('Random', 'earena') },
+            ]
+            this.fastArr = [
+              { value: 0, label: __('Обычная', 'earena') },
+              { value: 1, label: __('Fast', 'earena') },
+            ]
             this.random = ''
             this.fast = ''
             this.max_players = ''
@@ -101,6 +117,14 @@ const app_create_tournament = new Vue({
           }
           case 2: {
             this.reglament = 'r1'
+            this.randomArr = [
+              { value: 0, label: __('Простой', 'earena') },
+              { value: 1, label: __('Random', 'earena') },
+            ]
+            this.fastArr = [
+              { value: 0, label: __('Обычная', 'earena') },
+              { value: 1, label: __('Fast', 'earena') },
+            ]
             this.random = ''
             this.fast = ''
             this.max_players = ''
@@ -109,14 +133,22 @@ const app_create_tournament = new Vue({
           }
           case 3: {
             this.reglament = 'bo1'
-            this.random = 1
-            this.fast = 1
+            this.randomArr = [
+              { value: 1, label: __('Random', 'earena') },
+            ]
+            this.fastArr = [
+              { value: 1, label: __('Fast', 'earena') },
+            ]
+            this.random = ''
+            this.fast = ''
             this.max_players = 4
             this.activeSubTab = 1
             this.universal = ''
             break
           }
         }
+
+        window.select.reActivateInputs('random,fast');
       }
     }
   },

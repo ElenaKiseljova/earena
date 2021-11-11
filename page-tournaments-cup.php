@@ -17,17 +17,27 @@
       $ea_user->ID = 0;
   }
   $description = get_ea_tournament_meta($cup_id, 'description');
+
+  $bg_header = get_ea_tournament_meta($cup_id, 'bg_header');
+  $bg_footer = get_ea_tournament_meta($cup_id, 'bg_footer');
+  $bg_color = get_ea_tournament_meta($cup_id, 'bg_color');
 ?>
 
 <?php
   get_header(  );
 ?>
 
-<main class="page-main">
+<main class="page-main" <?= isset($bg_color) ? 'style="position: relative; background-color: ' . $bg_color . '!important;"' : ''; ?>>
   <!-- СЕО h1 -->
   <h1 class="visually-hidden">
     <?= _e( 'Турниры - Кубки', 'earena_2' ); ?>
   </h1>
+
+  <?php if(isset($bg_header)): ?>
+    <div class="branding branding--header">
+      <img src="<?php echo wp_get_attachment_url($bg_header) ?>" alt="alt">
+    </div>
+  <?php endif; ?>
 
   <div id="ajax-container-tournament">
     <?php
@@ -39,6 +49,12 @@
     // Партнеры
     get_template_part( 'template-parts/partners' );
   ?>
+
+  <?php if(isset($bg_footer )): ?>
+    <div class="branding branding--footer">
+      <img src="<?php echo wp_get_attachment_url($bg_footer) ?>" alt="">
+    </div>
+  <?php endif; ?>
 </main>
 
 <?php

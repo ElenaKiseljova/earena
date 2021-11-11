@@ -1,0 +1,38 @@
+.branding {
+  position: absolute;
+
+  left: 0;
+
+  z-index: 0;
+
+  .w100();
+
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  &--header {
+    top: 0;
+
+    max-height: 620px;
+
+    img {
+      object-position: center bottom;
+    }
+  }
+
+  &--footer {
+    bottom: 0;
+
+    max-height: 310px;
+
+    img {
+      object-position: center top;
+    }
+  }
+}

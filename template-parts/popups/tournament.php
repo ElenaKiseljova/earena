@@ -288,7 +288,7 @@
       </form>
     </div>
   </template>
-  <!-- Error -->
+  <!-- Errors -->
   <template id="popup-tournament-no-old-enough">
     <div class="popup__content popup__content--tournament">
       <h2 class="popup__title popup__title--template">
@@ -333,6 +333,21 @@
 
       <a class="popup__go-to-button button button--gray" href="<?= bloginfo( 'url' ) . '/wallet/?wallet_action=add#vip'; ?>">
         <?php _e( 'Перейти в Кошелёк', 'earena_2' ); ?>
+      </a>
+    </div>
+  </template>
+  <template id="popup-tournament-no-verification-tour">
+    <div class="popup__content popup__content--tournament">
+      <h2 class="popup__title popup__title--template">
+        <?php _e( 'Ошибка регистрации', 'earena_2' ); ?>
+      </h2>
+
+      <div class="popup__information popup__information--template">
+        <?php _e( 'Вы не можете принять участие в этом турнире, так как ваш аккаунт не верифицирован. <br/>Вы можете отправить запрос на верификацию в профиле.', 'earena_2' ); ?>
+      </div>
+
+      <a class="popup__go-to-button button button--gray" href="<?= ea_user_link(get_current_user_id()); ?>">
+        <?php _e( 'Перейти в профиль', 'earena_2' ); ?>
       </a>
     </div>
   </template>

@@ -39,7 +39,7 @@
           attrForms[attr.idForm] = {
             ID : attr.idForm,
             FORM : document.querySelector(`#${attr.idForm}`),
-            SELECTOR_FOR_TEMPLATE_REPLACE : attr.selectorForTemplateReplace ? attr.selectorForTemplateReplace : '',
+            SELECTOR_FOR_TEMPLATE_REPLACE : attr.selectorForTemplateReplace ? attr.selectorForTemplateReplace : null,
             SELECTOR_WRAPPER_FORM : attr.selectorClosestWrapperForm ? attr.selectorClosestWrapperForm : false,
             CLASS_FOR_ADD_WRAPPER_FORM : attr.classForAddClosestWrapperForm ? attr.classForAddClosestWrapperForm : false,
             _SETTINGS : attr
@@ -59,10 +59,15 @@
 
             window.form.parseCheckboxes(attr.idForm);
 
-            // Поиск Селектов
-            window.select(attrForms[attr.idForm].FORM);
 
             if (attrForms[attr.idForm].FORM.closest('.popup')) {
+
+            }
+
+            if (attrForms[attr.idForm].FORM.closest('.popup')) {
+              // Поиск Селектов (если форма в Попапе)
+              window.select(attrForms[attr.idForm].FORM);
+
               // Ф-я поиска дополнительных кнопок закрытия попапов
               window.form.additionButtonClosePopup(attrForms[attr.idForm].FORM.closest('.popup'));
             }
@@ -1360,7 +1365,7 @@
       let attrFormContact = {
         idForm: 'form-contact',
         // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
-        selectorForTemplateReplace: '#support-popup',
+        selectorForTemplateReplace: '#contact-popup',
       };
       window.form.init(attrFormContact);
 
@@ -1399,6 +1404,14 @@
           window.form.init(attrFormVip);
         });
       }
+
+      // CREATE (Create Tournament - ADMIN)
+      let attrFormCreate = {
+        idForm: 'form-create',
+        // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+        // selectorForTemplateReplace: '#create-popup',
+      };
+      window.form.init(attrFormCreate);
     } catch (e) {
       console.log(e);
     }

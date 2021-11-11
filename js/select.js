@@ -30,16 +30,16 @@
     if (selects) {
       // Перебираю все селекты в контейнере
       selects.forEach((select, i) => {
-        /* Создание селекта Платформ */
-        let containerForSelectPlatform = container.querySelector('.form__row--platforms');
-        let flagCreatePlatform = (select.dataset.create === 'platforms' && containerForSelectPlatform) ? true : false;
+        /* Создание селекта Игр по выбранной Платформе */
+        let containerForSelectGames = container.querySelector('.form__row--games');
+        let flagCreateGame = (select.dataset.create === 'games' && containerForSelectGames) ? true : false;
         /* ------------------------- */
 
         let button = select.querySelector('.select__button');
         let list = select.querySelector('.select__list');
         let radioInputs = select.querySelectorAll('input[type="radio"]');
 
-        if (button && list && radioInputs) {
+        if (button && list && radioInputs.length > 0) {
           // Вызов ф-и переключения активного класса для каждого Селекта
           window.toggleActive.single(button, [list]);
 
@@ -55,7 +55,7 @@
                 button.classList.add('selected');
                 button.textContent = radioInput.nextElementSibling.textContent;
 
-                if (radioInput.name === 'platform' && flagCreatePlatform) {
+                if (radioInput.name === 'platform' && flagCreateGame) {
                   let templateSelectGamesList = window.platforms.getFilteredGames(dataGames, radioInput.value).map(function (game) {
                     let templateSelectItemHTML = `
                       <li class="select__item">
@@ -69,7 +69,7 @@
                     return templateSelectItemHTML;
                   }).join('');
 
-                  let selectPlatformsHTML = `
+                  let selectGamesHTML = `
                     <div class="select select--games">
                       <button class="select__button select__button--games" type="button" name="button">
                         ${__( 'Игра', 'earena_2' )}
@@ -81,10 +81,10 @@
                     </div>
                   `;
 
-                  containerForSelectPlatform.innerHTML = selectPlatformsHTML;
+                  containerForSelectGames.innerHTML = selectGamesHTML;
 
                   // Вызов ф-и активации селекта
-                  window.select(containerForSelectPlatform);
+                  window.select(containerForSelectGames);
                 }
 
                 if (radioInput.name === 'game-statistics') {

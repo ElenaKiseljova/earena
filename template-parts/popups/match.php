@@ -33,7 +33,7 @@
     <div class="popup__content popup__content--match">
       <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
-          <div class="select select--platforms" data-create="platforms">
+          <div class="select select--platforms" data-create="games">
 
             <button class="select__button select__button--platforms" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
@@ -51,12 +51,17 @@
             </ul>
           </div>
         </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+        <span class="form__error form__error--create"><?php _e( 'Выберите платформу', 'earena_2' ); ?></span>
 
-        <div class="form__row form__row--platforms">
-          <!-- Содержимое генерируется после выбора платформы -->
+        <div class="form__row form__row--games">
+          <!-- Содержимое перепишется после выбора платформы -->
+          <div class="select select--games">
+            <button class="select__button select__button--games" type="button" name="button" disabled>
+              <?php _e( 'Игра', 'earena_2' ); ?>
+            </button>
+          </div>
         </div>
-        <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
+        <span class="form__error form__error--popup"><?php _e( 'Сначала выберите платформу', 'earena_2' ); ?></span>
 
         <button class="form__submit form__submit--match-next button button--blue" type="submit" name="match-submit-next">
           <span>

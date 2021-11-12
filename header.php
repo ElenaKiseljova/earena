@@ -111,7 +111,7 @@
                       </a>
 
                       <div class="user__money">
-                        <span class="user__money-amount">
+                        <span class="user__money-amount user__money-amount--header">
                           $<span><?= earena_2_nice_money(balance()); ?></span>
                         </span>
                         <a class="page-header__money-add page-header__money-add--desktop" href="<?php echo bloginfo( 'url' ); ?>/wallet/?wallet_action=add">

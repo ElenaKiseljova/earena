@@ -15,12 +15,12 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  p {
-    &:not(.form__text) {
-      padding: 0;
-      margin: 0;
-    }
-  }
+  // p {
+  //   &:not(.form__text) {
+  //     padding: 0;
+  //     margin: 0;
+  //   }
+  // }
 
   &--wallet {
     flex-direction: row;
@@ -523,6 +523,20 @@
 
     margin: 0;
   }
+
+  &--universal {
+    width: 267 / 607 * 100%;
+    margin-left: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+  }
+
+  @media (max-width: @mobile) {
+    &--universal {
+      order: 2;
+      width: 100%;
+    }
+  }
 }
 
 .select2-selection__rendered {
@@ -604,6 +618,8 @@
 
   .field_reset();
 
+  max-height: 40px;
+
   padding: 10.8px 15px;
 
   font-family: #fonts[1];
@@ -647,16 +663,32 @@
     }
   }
 
-  &:disabled {
+  &:disabled,
+  &.disabled {
     opacity: 0.4;
 
     pointer-events: none;
+  }
+
+  &--chat {
+    width: 80px;
+
+    text-align: center;
+
+    color: #57616F;
   }
 
   &--contact,
   &--wallet {
     padding-top: 10.6px;
     padding-bottom: 10.6px;
+  }
+
+  &--message,
+  &--message-contact,
+  &--message-transaction,
+  &--message-create {
+    max-height: none;
   }
 
   &--message {
@@ -687,25 +719,9 @@
     resize: none;
 
     height: 100%;
+    min-height: 196px;
 
     line-height: 17px;
-  }
-
-  &--chat {
-    width: 80px;
-
-    text-align: center;
-
-    color: #57616F;
-
-    -moz-appearance:textfield;
-
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      appearance: none;
-      -webkit-appearance: none;
-      margin: 0
-    }
   }
 }
 
@@ -713,7 +729,7 @@
   position: absolute;
 
   top: 50%;
-  right: 2px;
+  right: 5px;
 
   z-index: 1;
 
@@ -1082,6 +1098,12 @@
   &--right {
     justify-content: flex-end;
   }
+
+  @media (max-width: @mobile) {
+    &--tournament-user-type {
+      justify-content: flex-start;
+    }
+  }
 }
 
 .form__vs {
@@ -1142,9 +1164,15 @@
 
   color: #colors[text];
   margin-bottom: 20px;
+
+  &--round {
+    width: calc(100% + 58px);
+    margin-right: -58px;
+  }
 }
 
 .form__section-item {
+  .w100();
   &--4 {
     width: calc(25% - 7.5px);
   }
@@ -1169,6 +1197,49 @@
     width: calc(33.33% - 9.33px);
   }
 
+  &--3-big {
+    width: 357 / 1005 * 100%
+  }
+
+  &--3-small {
+    width: 194 / 1005 * 100%
+  }
+
+  &--2-big {
+    width: 600 / 1005 * 100%
+  }
+
+  &--2-small {
+    width: 350 / 1005 * 100%
+  }
+
+  &--universal {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 34px;
+  }
+
+  &--round {
+    padding-right: 58px;
+
+    &:nth-of-type(1) {
+      background-image: url('../img/plus.svg');
+      background-position: right center;
+      background-size: 16px;
+      background-repeat: no-repeat;
+    }
+
+    &:nth-of-type(2) {
+      background-image: url('../img/equal.svg');
+      background-position: right center;
+      background-size: 15px 11px;
+      background-repeat: no-repeat;
+    }
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
 
@@ -1186,6 +1257,72 @@
       }
     }
   }
+}
+
+.form__section-tabs {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  @media (max-width: @mobile) {
+    flex-direction: column;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}
+
+.form__title,
+.form__subtitle {
+  .w100();
+}
+
+.form__title {
+  &--lucky {
+    margin-bottom: 20px;
+
+    .h2();
+
+    color: #colors[text_black];
+  }
+}
+
+.form__subtitle {
+  margin-bottom: 10px;
+
+  .h3();
+
+  &--lucky {
+    color: #colors[text];
+  }
+
+  &--round {
+    width: calc(100% + 58px);
+    margin-right: -58px;
+
+    color: #colors[text_black];
+  }
+}
+
+.form__result {
+  .w100();
+
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 40px;
+
+  letter-spacing: 0.01em;
+
+  color: #colors[white];
+
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+}
+
+.form__output {
+  margin-left: 10px;
 }
 
 // Сброс картинок календаря

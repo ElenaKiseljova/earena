@@ -31,6 +31,15 @@
     margin-top: 30px;
   }
 
+  &--tournaments-date-admin {
+    flex-shrink: 0;
+
+    width: 326 / 607 * 100%;
+
+    margin-right: 0;
+    margin-left: auto;
+  }
+
   @media (max-width: @mobile) {
     margin-top: 20px;
 
@@ -50,6 +59,15 @@
     &--tournaments-admin,
     &--tournaments-link-admin {
       margin-top: 0;
+    }
+
+    &--tournaments-date-admin {
+      order: 1;
+
+      width: 100%;
+
+      margin-top: 0;
+      margin-bottom: 20px;
     }
   }
 }
@@ -113,10 +131,15 @@
   &--users,
   &--matches-admin,
   &--tournaments-admin,
-  &--tournaments-link-admin,
-  &--tournaments-button-admin {
+  &--tournaments-link-admin {
     padding-top: 9px;
     padding-bottom: 10px;
+  }
+
+  &--tournaments-button-admin,
+  &--tournaments-date-admin {
+    padding-top: 8px;
+    padding-bottom: 9px;
   }
 
   &--wallet {
@@ -134,6 +157,10 @@
     flex-grow: 1;
 
     width: 33.333%;
+  }
+
+  &--tournaments-date-admin {
+    width: 50%;
   }
 
   &--admin-tournaments-list {
@@ -165,7 +192,8 @@
       width: 100%;
     }
 
-    &--tournaments-button-admin {
+    &--tournaments-button-admin,
+    &--tournaments-date-admin {
       white-space: nowrap;
     }
   }

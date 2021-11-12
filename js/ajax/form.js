@@ -386,6 +386,11 @@
               }
             }
 
+            // CREATE [tournament] (ADMIN)
+            if ( formId.indexOf('create') > -1 ) {
+              dataForm.append('action', 'ajax_new_tournament');
+            }
+
             /***** END Actions AJAX *****/
 
             // Popup
@@ -753,6 +758,9 @@
 
                   console.log(response);
 
+                  // globalThrottlingg
+                  $('body').trigger('vip-update');
+
                   return;
                 }
 
@@ -1012,11 +1020,15 @@
               dataForm.delete('files');
             }
 
-            if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) || ( formId.indexOf('contact') > -1) || ( formId.indexOf('chat') > -1)) {
+            if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) ||
+                ( formId.indexOf('contact') > -1) ||
+                ( formId.indexOf('chat') > -1) ||
+                ( formId.indexOf('create') > -1)
+              ) {
               // dataForm - потомок FormData() [для передачи файлов]
-              // for(var pair of dataForm.entries()) {
-              //    console.log(pair[0]+ ', '+ pair[1]);
-              // }
+              for(var pair of dataForm.entries()) {
+                 console.log(pair[0]+ ', '+ pair[1]);
+              }
 
               // Для передачи файлов
               $.ajax({
@@ -1082,16 +1094,16 @@
                 item.autocomplete = 'off';
 
                 // Проверка по возрасту
-                if (item.type === 'date') {
+                if (item.type === 'date' && formId.indexOf('login') > -1) {
                   if (item.valueAsNumber) {
                     var currentDate = new Date();
                     var birthdayUser = new Date(item.valueAsNumber);
 
                     var goodYear = (currentDate.getFullYear() - birthdayUser.getFullYear()) < 18;
-                    var googMonth = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() < birthdayUser.getMonth();
+                    var goodMonth = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() < birthdayUser.getMonth();
                     var goodDay = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() === birthdayUser.getMonth() && currentDate.getDate() < birthdayUser.getDate();
 
-                    if ( goodYear || googMonth || goodDay) {
+                    if ( goodYear || goodMonth || goodDay) {
                       //console.log(birthdayUser.getFullYear(), 'Not old enough!');
 
                       // Если проверка по возрасту не прошла

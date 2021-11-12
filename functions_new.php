@@ -98,7 +98,6 @@
     $args = array(
       'url' => admin_url('admin-ajax.php'),
       'nonce' => wp_create_nonce('form.js_nonce'),
-      'nonce_create_tournament' => wp_create_nonce('new_tourn'),
       'user_id' => get_current_user_id(),
       'redirecturl' => $_SERVER['REQUEST_URI'],
       'redirecturl_rp' => add_query_arg('action', 'forgot', $_SERVER['REQUEST_URI']),

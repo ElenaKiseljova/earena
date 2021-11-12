@@ -31,16 +31,6 @@
   */
 
   window.select = {
-    search : function (container) {
-      let selects = container.querySelectorAll('.select');
-
-      if (selects) {
-        // Перебираю все селекты в контейнере
-        selects.forEach((select, selectIndex) => {
-          window.select.init(select, container);
-        });
-      }
-    },
     init : function (select, container) {
       /* Создание селекта Игр по выбранной Платформе */
       let containerForSelectGames = container.querySelector('.form__row--games');
@@ -59,6 +49,13 @@
           window.select.activateInputs(button, radioInputs, flagCreateGame);
         }
       }
+    },
+    search : function (container) {
+      let selects = container.querySelectorAll('.select');
+      // Перебираю все селекты в контейнере
+      selects.forEach((select, selectIndex) => {
+        window.select.init(select, container);
+      });
     },
     activateInputs : function (button, radioInputs, flagCreateGame = false) {
       // Перебираю инпуты и навешиваю на них событие изменения

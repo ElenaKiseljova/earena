@@ -1,5 +1,5 @@
 /**
- * admin_functions
+ * Admin_functions
  */
 
 jQuery('document').ready(function($) {
@@ -38,4 +38,38 @@ jQuery('document').ready(function($) {
   };
 
   adminSearchUsers();
+
+  //TIME TOUR CALCULATE
+  const adminCalculateTimeTour = function () {
+    $.fn.sum = function () {
+      var sum = 0
+      $(this).each(function (index, element) {
+        if ($(element).val() != '')
+          sum += parseFloat($(element).val())
+      })
+      return sum
+    }
+
+    $('.js_day1, .js_hour1, .js_minutes1').keyup(function () {
+      var value1 = $('.js_day1').sum()
+      var value3 = $('.js_hour1').sum()
+      var value5 = $('.js_minutes1').sum()
+
+      if (value5 >= 60) {
+        var value3 = value3 + parseInt((value5 / 60), 10)
+        var value5 = value5 % 60
+      }
+
+      if (value3 >= 24) {
+        var value1 = value1 + parseInt((value3 / 24), 10)
+        var value3 = value3 % 24
+      }
+
+      $('.js_day1_main').text(value1)
+      $('.js_hour1_main').text(value3)
+      $('.js_minutes1_main').text(value5)
+    })
+  };
+
+  adminCalculateTimeTour();
 });

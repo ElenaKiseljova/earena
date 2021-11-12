@@ -27,18 +27,36 @@
 <?php
   get_header(  );
 ?>
-
-<main class="page-main" <?= isset($bg_color) ? 'style="position: relative; background-color: ' . $bg_color . '!important;"' : ''; ?>>
+<style media="screen">
+  .page-main {
+    position: relative;
+    <?php if (isset($bg_color)): ?>
+      background-color: <?= $bg_color; ?>!important;
+    <?php endif; ?>
+    <?php if (isset($bg_header) && isset($bg_footer)): ?>
+      background-image: url(<?= wp_get_attachment_url($bg_header); ?>),
+                        url(<?= wp_get_attachment_url($bg_footer); ?>);
+      background-position: center top, center bottom;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+    <?php elseif (isset($bg_header)): ?>
+      background-image: url(<?= wp_get_attachment_url($bg_header); ?>);
+      background-position: center top;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+    <?php elseif (isset($bg_footer)): ?>
+      background-image: url(<?= wp_get_attachment_url($bg_footer); ?>);
+      background-position: center bottom;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+    <?php endif; ?>
+  }
+</style>
+<main class="page-main">
   <!-- СЕО h1 -->
   <h1 class="visually-hidden">
     <?= _e( 'Турниры - Турнир', 'earena_2' ); ?>
   </h1>
-
-  <?php if(isset($bg_header)): ?>
-    <div class="branding branding--header">
-      <img src="<?php echo wp_get_attachment_url($bg_header) ?>" alt="alt">
-    </div>
-  <?php endif; ?>
 
   <div id="ajax-container-tournament">
     <?php
@@ -50,12 +68,6 @@
     // Партнеры
     get_template_part( 'template-parts/partners' );
   ?>
-
-  <?php if(isset($bg_footer )): ?>
-    <div class="branding branding--footer">
-      <img src="<?php echo wp_get_attachment_url($bg_footer) ?>" alt="">
-    </div>
-  <?php endif; ?>
 </main>
 
 <?php

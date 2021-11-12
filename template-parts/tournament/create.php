@@ -25,7 +25,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image1" name="image1" accept=".png, .jpg, .jpeg">
+        <input class="files__input visually-hidden" type="file" id="image1" name="file_1" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__right form__right--create-image">
@@ -40,7 +40,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image2" name="image2" accept=".png, .jpg, .jpeg">
+        <input class="files__input visually-hidden" type="file" id="image2" name="file_2" accept=".png, .jpg, .jpeg">
       </div>
     </div>
 
@@ -61,14 +61,14 @@
       </div>
     </div>
     <div class="form__right form__right--create-info">
-      <div class="form__checkbox form__checkbox--right">
-        <div class="checkbox checkbox--create-right">
+      <div class="form__checkbox form__checkbox--right form__checkbox--tournament-user-type">
+        <div class="checkbox checkbox--create-right checkbox--tournament-user-type">
           <input v-model="vip" class="visually-hidden" type="checkbox" name="vip" value="1" id="vip">
           <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="vip">
             <?php _e( 'VIP', 'earena_2' ); ?>
           </label>
         </div>
-        <div class="checkbox checkbox--create-right">
+        <div class="checkbox checkbox--create-right checkbox--tournament-user-type">
           <input v-model="verification" class="visually-hidden" type="checkbox" name="verification" value="1" id="verification">
           <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="verification">
             <?php _e( 'Верифицированные', 'earena_2' ); ?>
@@ -89,7 +89,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image3" name="image3" accept=".png, .jpg, .jpeg">
+        <input class="files__input visually-hidden" type="file" id="image3" name="file_3" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__brands" v-show="brand && activeTab !== 3">
@@ -104,7 +104,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image4" name="image4" accept=".png, .jpg, .jpeg">
+        <input class="files__input visually-hidden" type="file" id="image4" name="file_4" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__brands" v-show="brand && activeTab !== 3">
@@ -119,7 +119,7 @@
             <?php _e( 'Выбрать цвет фона страницы', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="color" id="colorpicker" name="color">
+        <input class="files__input visually-hidden" type="color" id="colorpicker" name="bg_color">
       </div>
     </div>
 
@@ -132,7 +132,7 @@
         <textarea v-model="description" class="form__field form__field--message-create" name="description" placeholder="Описание турнира"></textarea>
       </div>
     </div>
-    <div class="form__right form__right--create-info">
+    <div v-if="activeTab !== 3" class="form__right form__right--create-info">
       <div class="form__row">
         <input v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
       </div>
@@ -159,8 +159,21 @@
         </label>
       </div>
       <div class="form__row">
-        <input v-model="password" class="form__field form__field--popup" id="password" type="password" name="password" required disabled placeholder="<?= __( 'Пароль', 'earena_2' ); ?>">
+        <input v-model="password" class="form__field form__field--create" id="password" type="password" name="pass" required disabled placeholder="<?= __( 'Пароль', 'earena_2' ); ?>">
       </div>
+    </div>
+    <div v-if="activeTab === 3" class="form__right form__right--create-info">
+      <h3 class="form__title form__title--lucky">
+        <?php _e( 'Гарантия', 'earena_2' ); ?>
+      </h3>
+
+      <h3 class="form__subtitle form__subtitle--lucky">
+        <?php _e( 'Рандомно до $10,000', 'earena_2' ); ?>
+      </h3>
+
+      <p class="form__text form__text--lucky">
+        <?php _e( 'Распределение призового фонда происходит после регистрации на турнир, на этапе жеребьевки.', 'earena_2' ); ?>
+      </p>
     </div>
 
     <div class="form__section">
@@ -214,7 +227,7 @@
         <div class="form__row">
           <input v-model="max_players" class="form__field form__field--create" id="max_players" type="number" name="max_players" required
             placeholder="<?php _e( 'Количество участников', 'earena_2' ); ?>"
-            :disabled="activeTab === 3">
+            :class="{'disabled':activeTab === 3}">
         </div>
       </div>
     </div>
@@ -233,8 +246,8 @@
 
             <ul class="select__list">
               <li v-for="item in currentGame.game_modes" class="select__item">
-                <input v-model="game_mode" :value="item" :id="'select-game_mode-' + item" class="visually-hidden" type="radio" name="game_mode" required>
-                <label class="select__label" :for="'select-game_mode-' + item">
+                <input v-model="game_mode" :value="item" :id="'select-game_modes-' + item" class="visually-hidden" type="radio" name="game_mode" required>
+                <label class="select__label" :for="'select-game_modes-' + item">
                   {{ item }} vs {{ item }}
                 </label>
               </li>
@@ -269,7 +282,7 @@
             </button>
 
             <ul class="select__list">
-              <li v-for="item in this.randomArr" class="select__item">
+              <li v-for="item in randomArr" class="select__item">
                 <input v-model="random" :id="'select-random-' + item.value" class="visually-hidden" type="radio" name="random" :value="item.value" required>
                 <label class="select__label" :for="'select-random-' + item.value">
                   {{ item.label }}
@@ -287,7 +300,7 @@
             </button>
 
             <ul class="select__list">
-              <li v-for="item in this.fastArr" class="select__item">
+              <li v-for="item in fastArr" class="select__item">
                 <input v-model="fast" :id="'select-fast-' + item.value" class="visually-hidden" type="radio" name="fast" :value="item.value" required>
                 <label class="select__label" :for="'select-fast-' + item.value">
                   {{ item.label }}
@@ -299,33 +312,223 @@
       </div>
     </div>
 
-    <div class="form__section">
+    <div v-show="activeTab !== 3" class="form__section">
       <h2 class="form__section-title">
         <?php _e( 'Регистрация турнира', 'earena_2' ); ?>
       </h2>
 
       <div class="form__section-item form__section-item--4-small">
         <div class="form__row">
-
-        </div>
-        <span class="form__error form__error--create"><?php _e( 'Выберите игру', 'earena_2' ); ?></span>
-      </div>
-      <div class="form__section-item form__section-item--4-small">
-        <div class="form__row">
-
-        </div>
-      </div>
-      <div class="form__section-item form__section-item--4-small">
-        <div class="form__row">
-
+          <input v-model="start_reg_date" class="form__field form__field--create" id="start_reg_date" type="text" name="start_reg_date"
+            onclick="(this.type='date')"
+            onfocus="(this.type='date')"
+            placeholder="<?php _e( 'Начало', 'earena_2' ); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
         </div>
       </div>
       <div class="form__section-item form__section-item--4-small">
         <div class="form__row">
-
+          <input v-model="start_reg_time" class="form__field form__field--create" type="text" name="start_reg_time"
+            onclick="(this.type='time')"
+            onfocus="(this.type='time')"
+            placeholder="<?php _e('Время', 'earena'); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+          <input v-model="end_reg_date" class="form__field form__field--create" id="end_reg_date" type="text" name="end_reg_date"
+            onclick="(this.type='date')"
+            onfocus="(this.type='date')"
+            placeholder="<?php _e( 'Конец', 'earena_2' ); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--4-small">
+        <div class="form__row">
+          <input v-model="end_reg_time" class="form__field form__field--create" type="text" name="end_reg_time"
+            onclick="(this.type='time')"
+            onfocus="(this.type='time')"
+            placeholder="<?php _e('Время', 'earena'); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
         </div>
       </div>
     </div>
+
+    <div v-show="activeTab !== 3" class="form__section">
+      <h2 class="form__section-title">
+        <?php _e( 'Дата начала турнира', 'earena_2' ); ?>
+      </h2>
+
+      <div class="form__section-item form__section-item--3">
+        <div class="form__row">
+          <input v-model="start_date" class="form__field form__field--create" id="start_date" type="text" name="start_date"
+            onclick="(this.type='date')"
+            onfocus="(this.type='date')"
+            placeholder="<?php _e( 'Дата', 'earena_2' ); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--3">
+        <div class="form__row">
+          <input v-model="start_time" class="form__field form__field--create" type="text" name="start_time"
+            onclick="(this.type='time')"
+            onfocus="(this.type='time')"
+            placeholder="<?php _e('Время', 'earena'); ?>"
+            :required="activeTab!==3">
+          <span class="form__arrow"></span>
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--3">
+        <div class="form__row">
+          <div class="select select--period" data-type="period">
+            <button class="select__button select__button--period" data-text="<?php _e( 'Периодичность', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Периодичность', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list">
+              <li v-for="item in periodArr" class="select__item">
+                <input v-model="period"
+                  :value="item.value"
+                  :id="'select-period-' + item.value" class="visually-hidden" type="radio" name="period"
+                  :required="activeTab!==3">
+                <label class="select__label" :for="'select-period-' + item.value">
+                  {{ item.label }}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-show="activeTab !== 3" class="form__section">
+      <div :class="{'form__section-item--2-small':activeTab===2}" class="form__section-item">
+        <h2 class="form__section-title form__section-title--round">
+          <?php _e( 'Длительность раунда', 'earena_2' ); ?>
+        </h2>
+      </div>
+      <div v-show="activeTab===2" class="form__section-item form__section-item--2-big form__section-item--universal">
+        <div v-show="activeSubTab===2" class="form__row form__row--universal">
+          <div class="select select--universal" data-type="universal">
+            <button class="select__button select__button--universal" data-text="<?php _e( 'Количество раундов', 'earena_2' ); ?>" type="button" name="button">
+              <?php _e( 'Количество раундов', 'earena_2' ); ?>
+            </button>
+
+            <ul class="select__list select__list--universal">
+              <li v-for="item in universalArr" class="select__item">
+                <input v-model="universal"
+                  :value="item" :id="'select-universal-' + item"
+                  :required="activeTab===2 && activeSubTab===2"
+                  class="visually-hidden" type="radio" name="universal">
+                <label class="select__label" :for="'select-universal-' + item">
+                  {{ item }}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <?php
+          // Табы типов дат
+          get_template_part( 'template-parts/tabs/admin-tournaments', 'date' );
+        ?>
+      </div>
+      <div class="form__section-item form__section-item--3-big form__section-item--round">
+        <h3 class="form__subtitle form__subtitle--round">
+          <?php _e( 'Время на матч для игрока', 'earena_2' ); ?>
+        </h3>
+
+        <div class="form__row">
+          <input v-model="match_time_d" class="form__field form__field--create js_day1" id="match_time_d" type="number" name="match_time_d"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Дни', 'earena_2' ); ?>"
+            step="1" min="0" max="365">
+        </div>
+        <div class="form__row">
+          <input v-model="match_time_h" class="form__field form__field--create js_hour1" id="match_time_h" type="number" name="match_time_h"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Часы', 'earena_2' ); ?>"
+            step="1" min="0" max="23">
+        </div>
+        <div class="form__row">
+          <input v-model="match_time_m" class="form__field form__field--create js_minutes1" id="match_time_m" type="number" name="match_time_m"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Минуты', 'earena_2' ); ?>"
+            step="1" min="0" max="59">
+        </div>
+      </div>
+      <div class="form__section-item form__section-item--3-big form__section-item--round">
+        <h3 class="form__subtitle form__subtitle--round">
+          <?php _e( 'Время админу на подтверждение', 'earena_2' ); ?>
+        </h3>
+
+        <div class="form__row">
+          <input v-model="moderation_time_d" class="form__field form__field--create js_day1" id="moderation_time_d" type="number" name="moderation_time_d"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Дни', 'earena_2' ); ?>"
+            step="1" min="0" max="365">
+        </div>
+        <div class="form__row">
+          <input v-model="moderation_time_h" class="form__field form__field--create js_hour1" id="moderation_time_h" type="number" name="moderation_time_h"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Часы', 'earena_2' ); ?>"
+            step="1" min="0" max="23">
+        </div>
+        <div class="form__row">
+          <input v-model="moderation_time_m" class="form__field form__field--create js_minutes1" id="moderation_time_m" type="number" name="moderation_time_m"
+          :required="activeTab!==3"
+            placeholder="<?php _e( 'Минуты', 'earena_2' ); ?>"
+            step="1" min="0" max="59">
+        </div>
+      </div>
+
+      <div class="form__section-item form__section-item--3-small">
+        <h3 class="form__subtitle form__subtitle--round">
+          <?php _e( 'Время тура', 'earena_2' ); ?>
+        </h3>
+
+        <div class="form__result">
+          <?php _e( 'Дни', 'earena_2' ); ?> <span class="form__output form__output--days js_day1_main"></span>
+        </div>
+        <div class="form__result">
+          <?php _e( 'Часы', 'earena_2' ); ?> <span class="form__output form__output--hours js_hour1_main"></span>
+        </div>
+        <div class="form__result">
+          <?php _e( 'Минуты', 'earena_2' ); ?> <span class="form__output form__output--minutes js_minutes1_main"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form__section">
+      <h2 class="form__section-title">
+        <span v-if="activeTab === 1"><?php _e('Регламент кубка', 'earena'); ?></span>
+        <span v-if="activeTab === 2"><?php _e('Регламент турнира', 'earena'); ?></span>
+        <span v-if="activeTab === 3"><?php _e('Регламент Lucky CUP', 'earena'); ?></span>
+      </h2>
+
+      <div class="form__checkbox form__checkbox--left">
+        <div v-for="item in reglamentArr" class="checkbox checkbox--create-left">
+          <input v-model="reglament" :value="item.value" class="visually-hidden" type="radio" name="reglament" :id="'reglament-' + item.value">
+          <label class="checkbox__label checkbox__label--radio checkbox__label--left" :for="'reglament-' + item.value">
+            {{ item.label }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Дополнительные поля для заполнения new FormData() в form.js -->
+    <input type="hidden" name="nonce" value="<?= wp_create_nonce( 'new_tourn' ); ?>">
+    <input type="hidden" name="tab_id" :value="this.activeTab">
+    <input type="hidden" name="start_reg_time" :value="this.start_reg_date + 'T' + this.start_reg_time">
+    <input type="hidden" name="end_reg_time" :value="this.end_reg_date + 'T' + this.end_reg_time">
+    <input type="hidden" name="start_time" :value="this.start_date + 'T' + this.start_time">
+    <input type="hidden" name="round_time" :value="this.match_time_d + '-' + this.match_time_h + '-' + this.match_time_m">
+    <input type="hidden" name="moderation_time" :value="this.moderation_time_d + '-' + this.moderation_time_h + '-' + this.moderation_time_m">
 
     <button class="form__submit form__submit--create button button--blue disabled" type="submit" name="create-submit">
       <span>

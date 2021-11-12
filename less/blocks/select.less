@@ -37,10 +37,6 @@
   box-sizing: border-box;
   border-radius: 5px;
 
-  &:disabled {
-    pointer-events: none;
-  }
-
   &::after {
     content: '';
 
@@ -69,12 +65,18 @@
     background: #colors[dark_light];
   }
 
-  &--country {
-    color: #colors[text_black];
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.7;
   }
 
   &.selected {
     color: #colors[text];
+  }
+
+  &--country {
+    color: #colors[text_black];
   }
 }
 

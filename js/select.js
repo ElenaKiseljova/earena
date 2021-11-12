@@ -54,20 +54,15 @@
         // Вызов ф-и переключения активного класса для каждого Селекта
         window.toggleActive.single(button, [list]);
 
-        window.select.activateInputs(button, select, flagCreateGame);
+        let radioInputs = select.querySelectorAll('input[type="radio"]');
+        if (radioInputs.length > 0) {
+          window.select.activateInputs(button, radioInputs, flagCreateGame);
+        }
       }
     },
-    activateInputs : function (button, select, flagCreateGame = false) {
-      let radioInputs = select.querySelectorAll('input[type="radio"]');
-
-      // Перебираю инауты и навешиваю на них событие изменения
+    activateInputs : function (button, radioInputs, flagCreateGame = false) {
+      // Перебираю инпуты и навешиваю на них событие изменения
       radioInputs.forEach((radioInput, i) => {
-        // if (radioInput.checked) {
-        //   button.classList.add('selected');
-        //   button.textContent = radioInput.nextElementSibling.textContent;
-        //
-        //   console.log(radioInput);
-        // }
         radioInput.addEventListener('change', function () {
           if (radioInput.checked) {
             button.classList.add('selected');
@@ -116,7 +111,7 @@
           }
 
           if (isAdminTournamentsCreate && radioInput.name === 'game') {
-            window.select.reActivateInputs(select.dataset.resetSelects);
+            window.select.reActivateInputs(radioInput.closest('.select').dataset.resetSelects);
           }
           //console.log(radioInput.checked, button.textContent, radioInput.value);
         });
@@ -126,14 +121,21 @@
       container = container ? container : document;
       selectResetTypes.split(',').forEach((selectResetType, i) => {
         let selectItem = document.querySelector(`.select[data-type="${selectResetType}"]`);
-        console.log('reActivateInputs', selectItem);
+        // console.log('reActivateInputs', selectResetType);
         let button = selectItem.querySelector('.select__button');
-        window.select.resetButton(button);
-        window.select.activateInputs(button, selectItem);
+        let radioInputs = selectItem.querySelectorAll('input[type="radio"]');
+
+        window.select.unSelected(button, radioInputs);
+        window.select.activateInputs(button, radioInputs);
       });
     },
-    resetButton : function (button) {
-      if (button.classList.contains('selected')) {
+    unSelected : function (button, radioInputs) {
+      if (button.classList.contains('selected') || button.classList.contains('disabled')) {
+        // console.log('unSelected');
+        radioInputs.forEach((radioInput, i) => {
+          radioInput.checked = false;
+        });
+
         button.textContent = button.dataset.text ? button.dataset.text : '';
 
         button.classList.remove('selected');

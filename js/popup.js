@@ -335,7 +335,7 @@
 
           // Проверка на то, что форма не находится на странице.
           // Чтобы избежать дублей событий
-          if ((prefix !== 'contact') && (prefix !== 'chat')) {
+          if ((prefix !== 'contact') && (prefix !== 'chat') && (prefix !== 'create')) {
             // Инициализация формы
             let attrForm = {
               idForm: `form-${prefix}`,

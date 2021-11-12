@@ -190,7 +190,7 @@
       <div class="form__section-item form__section-item--4">
         <div class="form__row">
           <div class="select select--platforms" data-type="platforms">
-            <button class="select__button select__button--platforms" data-text="<?php _e( 'Платформа', 'earena_2' ); ?>" type="button" name="button">
+            <button :class="{'disabled':game === ''}" class="select__button select__button--platforms" data-text="<?php _e( 'Платформа', 'earena_2' ); ?>" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
             </button>
 
@@ -227,7 +227,7 @@
       <div class="form__section-item form__section-item--4">
         <div class="form__row">
           <div class="select select--game_modes" data-type="game_modes">
-            <button class="select__button select__button--game_modes" data-text="<?php _e( 'Режим игры', 'earena_2' ); ?>" type="button" name="button">
+            <button :class="{'disabled':game === ''}" class="select__button select__button--game_modes" data-text="<?php _e( 'Режим игры', 'earena_2' ); ?>" type="button" name="button">
               <?php _e( 'Режим игры', 'earena_2' ); ?>
             </button>
 
@@ -245,7 +245,7 @@
       <div class="form__section-item form__section-item--4">
         <div class="form__row">
           <div class="select select--team_mode" data-type="team_modes">
-            <button class="select__button select__button--team_mode" data-text="<?php _e( 'Режим команды', 'earena_2' ); ?>" type="button" name="button">
+            <button :class="{'disabled':(game === '' || currentGame.team_modes.includes(0))}" class="select__button select__button--team_mode" data-text="<?php _e( 'Режим команды', 'earena_2' ); ?>" type="button" name="button">
               <?php _e( 'Режим команды', 'earena_2' ); ?>
             </button>
 

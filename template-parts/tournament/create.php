@@ -439,7 +439,7 @@
           get_template_part( 'template-parts/tabs/admin-tournaments', 'date' );
         ?>
       </div>
-      <div class="form__section-item form__section-item--3-big form__section-item--round">
+      <div class="form__section-item form__section-item--3-big form__section-item--round form__section-item--plus">
         <h3 class="form__subtitle form__subtitle--round">
           <?php _e( 'Время на матч для игрока', 'earena_2' ); ?>
         </h3>
@@ -463,7 +463,7 @@
             step="1" min="0" max="59">
         </div>
       </div>
-      <div class="form__section-item form__section-item--3-big form__section-item--round">
+      <div class="form__section-item form__section-item--3-big form__section-item--round form__section-item--equal">
         <h3 class="form__subtitle form__subtitle--round">
           <?php _e( 'Время админу на подтверждение', 'earena_2' ); ?>
         </h3>
@@ -522,12 +522,113 @@
       </div>
     </div>
 
+    <div class="form__section">
+      <div class="form__checkbox form__checkbox--left">
+        <div class="checkbox checkbox--create-left">
+          <input v-model="testoptions" value="1" class="visually-hidden" type="checkbox" name="testoptions" id="testoptions">
+          <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="testoptions">
+            <?php _e('Показать тестовые поля?', 'earena'); ?>
+          </label>
+        </div>
+      </div>
+      <div v-show="testoptions" class="form__section-item form__section-item--testoptions">
+        <h2 class="form__section-title">
+          <?php _e('TEST OPTIONS', 'earena'); ?>
+        </h2>
+
+        <div class="form__checkbox form__checkbox--left form__checkbox--testoptions">
+          <div class="checkbox checkbox--create-left checkbox--testoptions">
+            <input v-model="bots_play" value="1" class="visually-hidden" type="checkbox" name="bots_play" id="bots_play">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="bots_play">
+              <?php _e('Участники', 'earena'); ?>
+            </label>
+          </div>
+          <div class="checkbox checkbox--create-left checkbox--testoptions">
+            <input v-model="no_private" value="1" class="visually-hidden" type="checkbox" name="no_private" id="no_private">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="no_private">
+              <?php _e('Не приватный турнир', 'earena'); ?>
+            </label>
+          </div>
+          <div class="checkbox checkbox--create-left checkbox--testoptions">
+            <input v-model="add_now" value="1" class="visually-hidden" type="checkbox" name="add_now" id="add_now">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="add_now">
+              <?php _e('Участники добавляются сразу', 'earena'); ?>
+            </label>
+          </div>
+          <div class="checkbox checkbox--create-left checkbox--testoptions">
+            <input v-model="all_games" value="1" class="visually-hidden" type="checkbox" name="all_games" id="all_games">
+            <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="all_games">
+              <?php _e('Все игры', 'earena'); ?>
+            </label>
+          </div>
+        </div>
+
+        <div v-if="bots_play" class="form__section-item">
+          <h3 class="form__subtitle form__subtitle--testoptions">
+            <?php _e( 'Количество', 'earena_2' ); ?>
+          </h3>
+          <div class="form__checkbox form__checkbox--left form__checkbox--testoptions">
+            <div class="checkbox checkbox--create-left checkbox--testoptions">
+              <input v-model="qty" value="max" class="visually-hidden" type="radio" name="qty" id="qty-1" required>
+              <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="qty-1">
+                <?php _e('Максимум участников', 'earena'); ?>
+              </label>
+            </div>
+            <div class="checkbox checkbox--create-left checkbox--testoptions">
+              <input v-model="qty" value="rand" class="visually-hidden" type="radio" name="qty" id="qty-2" required>
+              <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="qty-2">
+                <?php _e('Рандом', 'earena'); ?>
+              </label>
+            </div>
+            <div class="checkbox checkbox--create-left checkbox--testoptions">
+              <input v-model="qty" value="half" class="visually-hidden" type="radio" name="qty" id="qty-3" required>
+              <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="qty-3">
+                <?php _e('Половина ± 2', 'earena'); ?>
+              </label>
+            </div>
+            <div class="checkbox checkbox--create-left checkbox--testoptions">
+              <input v-model="qty" value="" class="visually-hidden" type="radio" name="qty" id="qty-4" required>
+              <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="qty-4">
+                <?php _e('Число', 'earena'); ?>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="qty==='' && bots_play" class="form__section-item form__section-item--3">
+        <h4 class="form__subtitle form__subtitle--testoptions">
+          <small><?php _e( 'Число', 'earena_2' ); ?></small>
+        </h4>
+        <div class="form__row">
+          <input v-model="qtyVal" class="form__field form__field--create" id="qtyVal" type="number" name="qtyVal" placeholder="<?php _e( 'Число участников', 'earena_2' ); ?>">
+        </div>
+      </div>
+      <div v-if="qty==='' && bots_play" class="form__section-item form__section-item--3">
+        <h4 class="form__subtitle form__subtitle--testoptions">
+          <small><?php _e( '-', 'earena_2' ); ?></small>
+        </h4>
+        <div class="form__row">
+          <input v-model="qtyValMin" class="form__field form__field--create" id="qtyValMin" type="number" name="qtyValMin" value="0" placeholder="<?php _e( 'Минимум', 'earena_2' ); ?>">
+        </div>
+      </div>
+      <div v-if="qty==='' && bots_play" class="form__section-item form__section-item--3">
+        <h4 class="form__subtitle form__subtitle--testoptions">
+          <small><?php _e( '+', 'earena_2' ); ?></small>
+        </h4>
+        <div class="form__row">
+          <input v-model="qtyValMax" class="form__field form__field--create" id="qtyValMax" type="number" name="qtyValMax" value="0" placeholder="<?php _e( 'Максимум', 'earena_2' ); ?>">
+        </div>
+      </div>
+    </div>
+
     <button @click="sendHandler" class="form__submit form__submit--create button button--blue disabled" type="submit" name="create-submit">
       <span>
         <?php _e( 'Создать Турнир', 'earena_2' ); ?>
       </span>
     </button>
   </form>
+
   <!-- Кнопки для открытия информационного попапа после отправки формы -->
   <button class="visually-hidden openpopup" data-popup="create" type="button" name="success">
     <span>

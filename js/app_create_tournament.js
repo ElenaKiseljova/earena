@@ -23,6 +23,7 @@ const app_create_tournament = new Vue({
   data: {
     formId: 'form-create',
     bots_play: '',
+    testoptions: false,
     no_private: '',
     add_now: '',
     all_games: '',

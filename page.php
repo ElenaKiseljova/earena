@@ -85,6 +85,7 @@
             </button>
           </div>
         </form>
+
         <!-- Кнопки для открытия информационного попапа после отправки формы -->
         <button class="visually-hidden openpopup" data-popup="contact" type="button" name="success">
           <span>

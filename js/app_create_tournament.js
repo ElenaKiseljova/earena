@@ -21,6 +21,7 @@ const { __, _x, _n, _nx } = wp.i18n;
 const app_create_tournament = new Vue({
   el: '#app_create_tournament',
   data: {
+    formId: 'form-create',
     bots_play: '',
     no_private: '',
     add_now: '',
@@ -85,8 +86,8 @@ const app_create_tournament = new Vue({
       { value: 'bo3', label: __('ВО 3', 'earena') },
     ],
     universal: 0,
-    // ajaxUrl: earena_2_ajax.url,
-    // nonce: earena_2_ajax.nonce_create_tournament,
+    ajaxUrl: earena_2_ajax.url,
+    nonce: earena_2_ajax.nonce_create_tournament,
     gamesArr: dataGames,
     directory: siteThemeFolderURL,
     platformsArr: platformsArr,
@@ -174,69 +175,70 @@ const app_create_tournament = new Vue({
         }
 
         setTimeout(function () {
+          window.form.validate('form-create');
           window.select.reActivateInputs('random,fast');
         }, 500)
       }
     },
-    activeSubTab : {
-      deep: true,
-      handler: function (v) {
-        // let selectUniversalTournamentContainer = document.querySelector('.form__section-tabs--universal');
-        // if (this.activeSubTab === 2 && this.universalSelectActive === '' && selectUniversalTournamentContainer) {
-        //   window.select.search(selectUniversalTournamentContainer);
-        //   this.universalSelectActive = 1;
-        // }
-      }
-    }
+    // activeSubTab : {
+    //   deep: true,
+    //   handler: function (v) {
+    //     let selectUniversalTournamentContainer = document.querySelector('.form__section-tabs--universal');
+    //     if (this.activeSubTab === 2 && this.universalSelectActive === '' && selectUniversalTournamentContainer) {
+    //       window.select.search(selectUniversalTournamentContainer);
+    //       this.universalSelectActive = 1;
+    //     }
+    //   }
+    // }
   },
   methods: {
-    sendHandler (event) {
-      event.stopPropagation()
-      event.preventDefault()
+    sendHandler (evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
 
       let data = new FormData()
-      // data.append('file_1', this.$refs.filePhoto1.files[0])
-      // data.append('file_2', this.$refs.filePhoto2.files[0])
-      // if (this.activeTab !== 3) {
-      //
-      //   data.append('file_3', this.$refs.filePhoto3.files[0])
-      //   data.append('file_4', this.$refs.filePhoto4.files[0])
-      //   data.append('bg_color', this.color)
-      //
-      // }
-      // data.append('action', 'ajax_new_tournament')
-      // data.append('nonce', this.nonce)
-      // data.append('tab_id', this.activeTab)
-      // data.append('vip', this.vip)
-      // data.append('t_name', this.name)
-      // data.append('description', this.description)
-      // data.append('our_percent', this.our_percent)
-      // data.append('garant', this.garant)
-      // data.append('private', this.private)
-      // if (this.private) {
-      //   data.append('pass', this.password)
-      // }
-      // data.append('game', parseInt(this.game))
-      // data.append('platform', parseInt(this.platform))
-      // data.append('price', this.price)
-      // data.append('max_players', this.max_players)
-      // data.append('game_mode', this.game_mode)
-      // data.append('team_mode', this.team_mode)
-      // data.append('random', this.random)
-      // data.append('fast', this.fast)
+      data.append('file_1', this.$refs.image1.files[0])
+      data.append('file_2', this.$refs.image2.files[0])
+      if (this.activeTab !== 3) {
 
-      // data.append('start_reg_time', this.start_reg_date + 'T' + this.start_reg_time)
-      // data.append('end_reg_time', this.end_reg_date + 'T' + this.end_reg_time)
-      // data.append('start_time', this.start_date + 'T' + this.start_time)
-      // data.append('period', this.period)
-      // data.append('universal', this.universal)
-      // data.append('round_time', this.match_time_d + '-' + this.match_time_h + '-' + this.match_time_m)
-      // data.append('moderation_time', this.moderation_time_d + '-' + this.moderation_time_h + '-' + this.moderation_time_m)
-      // data.append('reglament', this.reglament)
-      //
-      // data.append('top', this.top ? 1 : 0)
+        data.append('file_3', this.$refs.image3.files[0])
+        data.append('file_4', this.$refs.image4.files[0])
+        data.append('bg_color', this.color)
 
-      // data.append('verification', this.verification ? 1 : 0)
+      }
+      data.append('action', 'ajax_new_tournament')
+      data.append('nonce', this.nonce)
+      data.append('tab_id', this.activeTab)
+      data.append('vip', this.vip)
+      data.append('t_name', this.name)
+      data.append('description', this.description)
+      data.append('our_percent', this.our_percent)
+      data.append('garant', this.garant)
+      data.append('private', this.private)
+      if (this.private) {
+        data.append('pass', this.password)
+      }
+      data.append('game', parseInt(this.game))
+      data.append('platform', parseInt(this.platform))
+      data.append('price', this.price)
+      data.append('max_players', this.max_players)
+      data.append('game_mode', this.game_mode)
+      data.append('team_mode', this.team_mode)
+      data.append('random', this.random)
+      data.append('fast', this.fast)
+
+      data.append('start_reg_time', this.start_reg_date + 'T' + this.start_reg_time)
+      data.append('end_reg_time', this.end_reg_date + 'T' + this.end_reg_time)
+      data.append('start_time', this.start_date + 'T' + this.start_time)
+      data.append('period', this.period)
+      data.append('universal', this.universal)
+      data.append('round_time', this.match_time_d + '-' + this.match_time_h + '-' + this.match_time_m)
+      data.append('moderation_time', this.moderation_time_d + '-' + this.moderation_time_h + '-' + this.moderation_time_m)
+      data.append('reglament', this.reglament)
+
+      data.append('top', this.top ? 1 : 0)
+
+      data.append('verification', this.verification ? 1 : 0)
 
       data.append('qty', this.qty)
       data.append('qtyVal', this.qtyVal)
@@ -247,31 +249,7 @@ const app_create_tournament = new Vue({
       data.append('add_now', this.add_now)
       data.append('all_games', this.all_games)
 
-      let $reply = $('div.ajax-reply')
-      //
-      $reply.text('Загружаю...')
-      $.ajax({
-        // url: this.ajaxUrl,
-        type: 'POST',
-        data: data,
-        cache: false,
-        dataType: 'json',
-        processData: false,
-        contentType: false,
-        success: function (respond, status, jqXHR) {
-          if (respond.success) {
-            $reply.text('УСПЕШНО: ')
-            $.each(respond.data, function (key, val) {
-              $reply.append('<center><p>' + val + '</p></center>')
-            })
-          } else {
-            $reply.text('ОШИБКА: ' + respond.data)
-          }
-        },
-        error: function (jqXHR, status, errorThrown) {
-          $reply.text('ОШИБКА AJAX запроса: ' + status)
-        }
-      })
+      window.form.submitFunction('form-create', data);
     }
   },
   mounted () {

@@ -25,7 +25,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image1" name="file_1" accept=".png, .jpg, .jpeg">
+        <input ref="image1" class="files__input visually-hidden" type="file" id="image1" name="file_1" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__right form__right--create-image">
@@ -40,7 +40,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image2" name="file_2" accept=".png, .jpg, .jpeg">
+        <input ref="image2" class="files__input visually-hidden" type="file" id="image2" name="file_2" accept=".png, .jpg, .jpeg">
       </div>
     </div>
 
@@ -89,7 +89,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image3" name="file_3" accept=".png, .jpg, .jpeg">
+        <input ref="image3" class="files__input visually-hidden" type="file" id="image3" name="file_3" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__brands" v-show="brand && activeTab !== 3">
@@ -104,7 +104,7 @@
             <?php _e( 'Нажмите для загрузки <br>или просто перетащите сюда файл', 'earena_2' ); ?>
           </p>
         </div>
-        <input class="files__input visually-hidden" type="file" id="image4" name="file_4" accept=".png, .jpg, .jpeg">
+        <input ref="image4" class="files__input visually-hidden" type="file" id="image4" name="file_4" accept=".png, .jpg, .jpeg">
       </div>
     </div>
     <div class="form__brands" v-show="brand && activeTab !== 3">
@@ -148,7 +148,7 @@
       </p>
 
       <div class="form__checkbox form__checkbox--private checkbox checkbox--left">
-        <input v-model="private" class="visually-hidden" data-control-field-id="password" data-control-toggle="on" type="checkbox" name="private-match-create" value="1" id="private-match-create">
+        <input v-model="private" class="visually-hidden" type="checkbox" name="private-match-create" value="1" id="private-match-create">
         <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="private-match-create">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
             <path d="M17.875 7.5625H4.125C3.7453 7.5625 3.4375 7.8703 3.4375 8.25V17.875C3.4375 18.2547 3.7453 18.5625 4.125 18.5625H17.875C18.2547 18.5625 18.5625 18.2547 18.5625 17.875V8.25C18.5625 7.8703 18.2547 7.5625 17.875 7.5625Z" stroke="#7B8899" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -159,7 +159,9 @@
         </label>
       </div>
       <div class="form__row">
-        <input v-model="password" class="form__field form__field--create" id="password" type="password" name="pass" required disabled placeholder="<?= __( 'Пароль', 'earena_2' ); ?>">
+        <input v-model="password"
+              :disabled="!private"
+              class="form__field form__field--create" id="password" type="password" name="pass" required placeholder="<?= __( 'Пароль', 'earena_2' ); ?>">
       </div>
     </div>
     <div v-if="activeTab === 3" class="form__right form__right--create-info">
@@ -395,8 +397,7 @@
               <li v-for="item in periodArr" class="select__item">
                 <input v-model="period"
                   :value="item.value"
-                  :id="'select-period-' + item.value" class="visually-hidden" type="radio" name="period"
-                  :required="activeTab!==3">
+                  :id="'select-period-' + item.value" class="visually-hidden" type="radio" name="period">
                 <label class="select__label" :for="'select-period-' + item.value">
                   {{ item.label }}
                 </label>
@@ -521,19 +522,21 @@
       </div>
     </div>
 
-    <!-- Дополнительные поля для заполнения new FormData() в form.js -->
-    <input type="hidden" name="nonce" value="<?= wp_create_nonce( 'new_tourn' ); ?>">
-    <input type="hidden" name="tab_id" :value="this.activeTab">
-    <input type="hidden" name="start_reg_time" :value="this.start_reg_date + 'T' + this.start_reg_time">
-    <input type="hidden" name="end_reg_time" :value="this.end_reg_date + 'T' + this.end_reg_time">
-    <input type="hidden" name="start_time" :value="this.start_date + 'T' + this.start_time">
-    <input type="hidden" name="round_time" :value="this.match_time_d + '-' + this.match_time_h + '-' + this.match_time_m">
-    <input type="hidden" name="moderation_time" :value="this.moderation_time_d + '-' + this.moderation_time_h + '-' + this.moderation_time_m">
-
-    <button class="form__submit form__submit--create button button--blue disabled" type="submit" name="create-submit">
+    <button @click="sendHandler" class="form__submit form__submit--create button button--blue disabled" type="submit" name="create-submit">
       <span>
         <?php _e( 'Создать Турнир', 'earena_2' ); ?>
       </span>
     </button>
   </form>
+  <!-- Кнопки для открытия информационного попапа после отправки формы -->
+  <button class="visually-hidden openpopup" data-popup="create" type="button" name="success">
+    <span>
+      <?php _e( 'Открыть попап успешного создания турнира.', 'earena_2' ); ?>
+    </span>
+  </button>
+  <button class="visually-hidden openpopup" data-popup="create" type="button" name="error">
+    <span>
+      <?php _e( 'Открыть попап не успешного создания турнира.', 'earena_2' ); ?>
+    </span>
+  </button>
 </section>

@@ -75,7 +75,7 @@
             // Запуск валидации по клику на форму
             attrForms[attr.idForm].FORM.addEventListener('click', (evt) => {
               if (evt.target.tagName !== 'A') {
-                window.form.validateForm(attr.idForm);
+                window.form.validate(attr.idForm);
               }
             });
 
@@ -85,31 +85,31 @@
           }
         },
         // Ф-я отправки формы
-        formSubmitFunction : (formId) => {
+        submitFunction : (formId, ajaxData = false) => {
           let form = attrForms[formId].FORM;
           let formPrefix = attrForms[formId].prefixForm;
           let buttonSubmit = attrForms[formId].buttonSubmit;
           let wrapperFormNode = attrForms[formId].wrapperFormNode;
 
-          form.addEventListener('submit', (evt) => {
-            // Прерываем стандартное действие кнопки для XMLHttpRequest
-            evt.preventDefault();
+          /*
+            *** Префиксы (prefix) ***
+            *************************
 
-            /*
-              *** Префиксы (prefix) ***
-              *************************
+            --- data-prefix="" в тегах <form>
+          */
+          let prefix = '';
+          if (formPrefix !== '' && formPrefix && formPrefix !== undefined) {
+            prefix = `-${formPrefix}`;
+          }
 
-              --- data-prefix="" в тегах <form>
-            */
-            let prefix = '';
-            if (formPrefix !== '' && formPrefix && formPrefix !== undefined) {
-              prefix = `-${formPrefix}`;
-            }
+          // Объекты для отправки на сервер :
+          // (без файлов)
+          let formData = {};
+          // (с файлами)
+          let dataForm = new FormData(form);
 
-            // Объект для отправки на сервер
-            let formData = {};
-            let dataForm = new FormData(form);
-
+          // Если DATA не передана
+          if (!ajaxData) {
             // Получение всех инпутов
             let inputs = form.querySelectorAll('input');
             // Собираем значения из инпутов
@@ -387,628 +387,11 @@
             }
 
             // CREATE [tournament] (ADMIN)
-            if ( formId.indexOf('create') > -1 ) {
-              dataForm.append('action', 'ajax_new_tournament');
-            }
+            // if ( formId.indexOf('create') > -1 ) {
+            //   dataForm.append('action', 'ajax_new_tournament');
+            // }
 
             /***** END Actions AJAX *****/
-
-            // Popup
-            let popup = form.closest('.popup');
-
-            // Обработчик старта отправки
-            var onBeforeSend = (status) => {
-              buttonSubmit.classList.add('sending');
-
-              // Обрываю стандартное сообщение об старте отправки формы если :
-              if (
-                  (formId.indexOf('login') > -1 && (prefix.indexOf('signin') > -1 ||
-                  prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  ||
-                  (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  ||
-                  (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1) ||
-                  (formId.indexOf('stream') > -1 && prefix.indexOf('add') > -1) ||
-                  (formId.indexOf('tournament') > -1 && prefix.indexOf('join') > -1)
-                ) {
-                window.form.showAJAXMessage(popup);
-
-                return;
-              }
-
-              let templateBeforeSend = document.querySelector(`#${formId}-beforesend`);
-
-              if (wrapperFormNode && templateBeforeSend) {
-                wrapperFormNode.innerHTML = '';
-
-                let templateContentBeforeSend = templateBeforeSend.content;
-                let cloneTemplate = templateContentBeforeSend.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-
-                // Проверяю - надо ли добавлять активный класс родителю
-                if (attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM) {
-                  // Добавляю указанный класс
-                  // Если надо как-то родителя при отправке формы изменять
-                  wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add(attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM);
-                }
-              }
-
-              console.log('Старт: ', status);
-            };
-
-            // Обработчик успешной отправки
-            var onSuccess = (response) => {
-              buttonSubmit.classList.remove('sending');
-
-              // ЛОГИРОВАНИЕ
-              if ( formId.indexOf('login') > -1 ) {
-                // Логин
-                if (prefix.indexOf('signin') > -1) {
-                  if (response.data.loggedin === true) {
-                    document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&login-status=success') : (earena_2_ajax.redirecturl + '?login-status=success');
-                  } else {
-                    window.form.showAJAXMessage(popup, response.data.message, 2000);
-
-                    return;
-                  }
-                }
-
-                // Регистрация
-                if (prefix.indexOf('signup') > -1) {
-                  if (response.data.registered) {
-                    document.location.href = 'profile?after_registration=1';
-                  } else {
-                    let message = '';
-
-                    $.each(response.data.errors, function (key, val) {
-                      console.log(key + ' : '+ val);
-                      message += val + '<br>';
-                    });
-
-                    window.form.showAJAXMessage(popup, message);
-
-                    return;
-                  }
-                }
-
-                // Сброс
-                if (prefix.indexOf('reset') > -1) {
-                  if (response.data.error) {
-                    window.form.showAJAXMessage(popup, response.data.error);
-
-                    return;
-                  }
-
-                  console.log(response);
-                }
-              }
-
-              // ВЕРИФИКАЦИЯ
-              if ( formId.indexOf('verification') > -1 ) {
-                if (prefix.indexOf('request') > -1) {
-                  if (response.success === false) {
-                    window.form.showAJAXMessage(popup, response.data, 2000);
-
-                    return;
-                  }
-                }
-              }
-
-              // MATCH
-              if ( formId.indexOf('match') > -1 ) {
-                // После успешного создания / удаления / присоединения - обновляем все матчи по клику на таб платформы
-                let resetShowResult = function () {
-                  let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
-
-                  if (tabAllPlatform) {
-                    tabAllPlatform.click();
-                  }
-                };
-
-                response = JSON.parse(response);
-
-                // Создание шаг 1
-                if ((prefix.indexOf('create') > -1)) {
-                  if (response.success === 1 && wrapperFormNode) {
-                    // Переписываю
-                    wrapperFormNode.innerHTML = response.data;
-
-                    // Повторная инициализация формы
-                    window.form.init(attrForms[formId]._SETTINGS);
-
-                    if (attrForms[formId].SELECTOR_WRAPPER_FORM) {
-                      // Регулировка высоты попапа
-                      if (wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).offsetHeight >= deviceHeight) {
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('scroll-content');
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('sending');
-                      } else {
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('scroll-content');
-                        wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('sending');
-                      }
-                    }
-
-                    console.log(response);
-
-                    return;
-                  } else {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-
-                // Создание шаг 2 / Удалить / Присоединиться
-                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
-                  if (response.success === 1) {
-                    // После успешного создания / удаления - обновляем все матчи по клику на таб платформы
-                    resetShowResult();
-                  } else {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-
-                if (prefix.indexOf('accept') > -1) {
-                  /*
-                 		ACCEPT return value :
-                 		0 - показывает текст сообщения над полем пароля
-                 		1 - УСПЕХ
-                 		2 - показывает окно ОШИБКИ (матч не доступен)
-                 		3 - окно ошибки со ссылкой на Профиль
-                 		4 - замена формы попапа на форму с пополнением
-                 	*/
-
-                  if (response.status !== 0) {
-                    // После успешного (или статуса 2,3,4) присоединения - обновляем все матчи по клику на таб платформы
-                    resetShowResult();
-                  }
-
-                  if (response.status === 0) {
-                    window.form.showAJAXMessage(popup, response.content, 2000);
-
-                    console.log(response);
-
-                    return;
-                  } else if (response.status === 2) {
-                    onError(response, prefix);
-
-                    return;
-                  } else if (response.status === 3) {
-                    onError(response, 'no-game-or-platform');
-
-                    return;
-                  } else if (response.status === 4) {
-                    let pay = popup.querySelector('.pay');
-
-                    if (pay) {
-                      let payBalance = pay.querySelector('.pay__column--balance');
-                        payBalance.textContent = '$' + response.balance;
-                        payBalance.classList.add('pay__column--red');
-
-                      buttonSubmit.classList.add('hidden');
-
-                      let paySmallBalance = pay.querySelector('.pay__button');
-                      if (!paySmallBalance) {
-                        let smallBalanceHTML = `
-                          <p class="pay__text pay__text--red">
-                            ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
-                          </p>
-
-                          <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
-                            <span>
-                              ${__( 'Пополнить счет', 'earena_2' )}
-                            </span>
-                          </a>
-                        `;
-
-                        pay.insertAdjacentHTML('beforeend', smallBalanceHTML);
-                      }
-                    }
-
-                    return;
-                  }
-                }
-              }
-
-              // TOURNAMENT
-              if ( formId.indexOf('tournament') > -1 ) {
-                if ((prefix.indexOf('add-player') > -1) || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1) {
-                  if (response.success === false && !response.data.error_pass) {
-                    onError(response, prefix);
-
-                    return;
-                  } else if (response.success === false && response.data.error_pass) {
-                    window.form.showAJAXMessage(popup, response.data.message, 2000);
-
-                    console.log(response);
-                    return;
-                  }
-                }
-
-                if ((prefix.indexOf('delete-cron') > -1) || (prefix.indexOf('delete-tournament') > -1) || (prefix.indexOf('cancel') > -1)) {
-                  response = JSON.parse(response);
-
-                  if (response.success === 0) {
-                    onError(response, prefix);
-
-                    return;
-                  }
-                }
-              }
-
-              // CHAT
-              if ( formId.indexOf('chat') > -1 ) {
-                if (response.success === true) {
-                  window.form.reloadPage();
-
-                  return;
-                }
-              }
-
-              // CONTACT
-              if ( formId.indexOf('contact') > -1 ) {
-                let openPopupButtonsSuccessContactForm = document.querySelector('button[name="success"].openpopup');
-                let openPopupButtonsErrorContactForm = document.querySelector('button[name="error"].openpopup');
-
-                if (openPopupButtonsSuccessContactForm && openPopupButtonsErrorContactForm) {
-                  if (response.success === true) {
-                    let filesPreviewList = form.querySelector('.files__preview');
-                    if (filesPreviewList) {
-                      filesPreviewList.innerHTML = '';
-                    }
-
-                    form.reset();
-
-                    openPopupButtonsSuccessContactForm.click();
-                  } else {
-                    openPopupButtonsErrorContactForm.click();
-
-                    let showErrorMessage = document.querySelector('.popup__information--contact-error');
-
-                    if (showErrorMessage) {
-                      showErrorMessage.textContent = response.data;
-                    }
-                  }
-                }
-              }
-
-              // COMPLAINT
-              if ( formId.indexOf('complaint') > -1) {
-                // Создать
-                if (prefix.indexOf('create') > -1) {
-                  response = JSON.parse(response);
-                }
-
-                // Удалить
-                if (prefix.indexOf('delete') > -1) {
-                  response = JSON.parse(response);
-
-                  if (response.success === 1) {
-                    if (wrapperFormNode) {
-                      wrapperFormNode.innerHTML = response.content;
-
-                      // ADMIN complait forms
-                      let complaintAdminChatForms = wrapperFormNode.querySelectorAll('form[id*="form-complaint-"]');
-
-                      if (complaintAdminChatForms.length > 0) {
-                        complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
-                          // Инициализация полученных форм
-                          let attrFormComplaint = {
-                            idForm: complaintAdminChatForm.id,
-                            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
-                            selectorForTemplateReplace: '#complaint-container',
-                          };
-                          window.form.init(attrFormComplaint);
-                        });
-                      }
-                    }
-
-                    console.log(response);
-
-                    return;
-                  } else {
-                    onError(response, prefix);
-
-                    return;
-                  }
-                }
-              }
-
-              // WARNING
-              if ( formId.indexOf('warning') > -1 ) {
-                response = JSON.parse(response);
-
-                // Добавление
-                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
-                  if (response.success !== 1) {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-              }
-
-              // STREAM
-              if ( formId.indexOf('stream') > -1 ) {
-                if (prefix.indexOf('add') > -1) {
-                  response = JSON.parse(response);
-
-                  if (response.success === 0) {
-                    window.form.showAJAXMessage(popup, response.message, 2000);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-              }
-
-              // VIP
-              if ( formId.indexOf('vip') > -1 ) {
-                response = JSON.parse(response);
-
-                if (prefix.indexOf('buy') > -1) {
-                  window.form.showResponseText(attrForms[formId].wrapperFormNode.closest('.popup'), response.message);
-
-                  console.log(response);
-
-                  // globalThrottlingg
-                  $('body').trigger('vip-update');
-
-                  return;
-                }
-
-                if (prefix.indexOf('gift') > -1) {
-                  if (response.success !== 1) {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-              }
-
-              // BLOCK
-              if ( formId.indexOf('block') > -1 ) {
-                response = JSON.parse(response);
-
-                // Добавление
-                if ((prefix.indexOf('add') > -1)) {
-                  if (response.success !== 1) {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-              }
-
-              // BALANCE
-              if ( formId.indexOf('balance') > -1 ) {
-                response = JSON.parse(response);
-
-                if (prefix.indexOf('add') > -1) {
-                  if (response.success !== 1) {
-                    onError(response, prefix);
-
-                    console.log(response);
-
-                    return;
-                  }
-                }
-              }
-
-              // Получаю шаблон
-              let templateSuccess = document.querySelector(`#${formId}-success${prefix}`);
-
-              if (!templateSuccess) {
-                templateSuccess = document.querySelector(`#${formId}-success`);
-              }
-
-              if (wrapperFormNode && templateSuccess) {
-                wrapperFormNode.innerHTML = '';
-
-                let templateContentSuccess = templateSuccess.content;
-                let cloneTemplate = templateContentSuccess.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-              }
-
-              // LOGIN
-              if ( formId.indexOf('login') > -1 ) {
-                // Восстановление
-                if (prefix.indexOf('forgot') > -1) {
-                  if (response.data.retrieve_password == true) {
-                    window.form.showResponseText(popup, response.data.message);
-
-                    console.log('Успех', response.data.message);
-                  } else {
-                    window.form.showResponseText(popup, response.data.message);
-
-                    console.log('Ошибка', response.data.message);
-                  }
-                }
-
-                // Сброс
-                if (prefix.indexOf('reset') > -1 && response.data.message) {
-                  window.form.showResponseText(popup, response.data.message);
-                }
-              }
-
-              // VERIFICATION (принять/отклонить)
-              // FRIENDS (принять/отклонить/удалить)
-              if ( (formId.indexOf('verification') > -1 ) || formId.indexOf('friends') > -1) {
-                if (
-                    (prefix.indexOf('apply') > -1) ||
-                    (prefix.indexOf('reject') > -1) ||
-                    (prefix.indexOf('delete') > -1)
-                  ) {
-                  response = JSON.parse(response);
-
-                  if (response.success === 1) {
-                    window.popup.userInfo(false, popup);
-
-                    window.form.reloadPage(200, true);
-                  } else {
-                    window.form.showResponseText(popup, response.content);
-                  }
-                }
-              }
-
-              // GAME
-              if ( formId.indexOf('game') > -1) {
-                response = JSON.parse(response);
-
-                let sectionUpdateArea = document.querySelector('#sections-games-profile-update');
-
-                if (sectionUpdateArea && response.success === 1) {
-                  sectionUpdateArea.innerHTML = response.data;
-
-                  // Получаем кнопки открытия попапов
-                  let openPopupButtons = sectionUpdateArea.querySelectorAll('.openpopup');
-                  if (openPopupButtons.length > 0) {
-                    openPopupButtons.forEach((openPopupButton, i) => {
-                      // Активация кнопки открытия попапа
-                      window.popup.activatePopup(openPopupButton);
-                    });
-                  }
-                }
-              }
-
-              // MATCH
-              if ( formId.indexOf('match') > -1 ) {
-                // Присоединиться
-                if (prefix.indexOf('accept') > -1) {
-                  let matchId = response.match_id;
-                  let goToMatchLink = wrapperFormNode.querySelector('#go-to-math-link');
-
-                  if (matchId && goToMatchLink) {
-                    goToMatchLink.href = goToMatchLink.href + matchId;
-                  }
-                }
-              }
-
-              // TOURNAMENT
-              if ( formId.indexOf('tournament') > -1 ) {
-                if (prefix.indexOf('add-player') > -1 ||
-                    prefix.indexOf('leave') > -1 ||
-                    prefix.indexOf('join') > -1 ||
-                    prefix.indexOf('delete-cron') > -1 ||
-                    prefix.indexOf('delete-tournament') > -1 ||
-                    prefix.indexOf('cancel') > -1
-                  ) {
-                  window.form.reloadPage(200, true);
-                }
-              }
-
-              // WARNING
-              if ( formId.indexOf('warning') > -1 ) {
-                // Добавление/Удаление
-                if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
-                  window.form.showResponseText(popup, response.content);
-
-                  if (isProfile) {
-                    window.form.reloadPage(false, true);
-                  }
-                }
-              }
-
-              // STREAM
-              if ( formId.indexOf('stream') > -1 ) {
-                if (prefix.indexOf('add') > -1) {
-                  // Отображаю новую ссылку
-                  let streamLink = document.querySelector('.stream__link');
-                  if (streamLink && formData['url']) {
-                    streamLink.href = formData['url'];
-                    streamLink.textContent = formData['url'];
-                  }
-                }
-              }
-
-              // BLOCK
-              if ( formId.indexOf('block') > -1 ) {
-                window.form.reloadPage(false, true);
-              }
-
-              // BALANCE
-              if ( formId.indexOf('balance') > -1 ) {
-                window.form.reloadPage(false, true);
-              }
-
-              // VIP
-              if ( formId.indexOf('vip') > -1 ) {
-                if (prefix.indexOf('gift') > -1) {
-                  window.form.showResponseText(popup, response.content);
-
-                  window.form.reloadPage(false, true);
-                }
-              }
-
-              if (popup) {
-                // Ф-я поиска дополнительных кнопок закрытия попапов
-                window.form.additionButtonClosePopup(popup);
-              }
-
-              console.log('Успех: ', response);
-            };
-
-            // Обработчик не успешной отправки
-            var onError = (response, prefix='') => {
-              buttonSubmit.classList.remove('sending');
-
-              if ( formId.indexOf('contact') > -1 ) {
-                let openPopupButtonsErrorContactForm = form.querySelector('button[name="error"].openpopup');
-
-                if (openPopupButtonsErrorContactForm) {
-                  openPopupButtonsErrorContactForm.click();
-
-                  console.log('Error:', response);
-
-                  return;
-                }
-              }
-
-              let templateError = document.querySelector(`#${formId}-error${prefix}`);
-
-              if (!templateError) {
-                templateError = document.querySelector(`#${formId}-error`);
-              }
-
-              if (wrapperFormNode && templateError) {
-                wrapperFormNode.innerHTML = '';
-
-                let templateContentError = templateError.content;
-                let cloneTemplate = templateContentError.cloneNode(true);
-
-                wrapperFormNode.appendChild(cloneTemplate);
-
-                // MATCH // WARNING // TOURNAMENT
-                if (
-                    ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
-                    ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1 || prefix.indexOf('delete') > -1)) ||
-                    ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1))
-                ) {
-                  let text = response.content ? response.content : (response.data ? response.data : false);
-
-                  window.form.showResponseText(popup, text);
-                }
-              }
-
-              console.log('Ошибка: ', response);
-
-              if (popup) {
-                // Ф-я поиска дополнительных кнопок закрытия попапов
-                window.form.additionButtonClosePopup(popup);
-              }
-            };
 
             // Nonce
             if (!formData['security']) {
@@ -1019,62 +402,687 @@
             if (dataForm.has('files')) {
               dataForm.delete('files');
             }
+          } else {
+            // Если задан DATA-атрибут при вызове ф-и
+            formData = ajaxData;
+            dataForm = ajaxData;
+          }
 
-            if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) ||
-                ( formId.indexOf('contact') > -1) ||
-                ( formId.indexOf('chat') > -1) ||
-                ( formId.indexOf('create') > -1)
+          // Popup
+          let popup = form.closest('.popup');
+
+          // Обработчик старта отправки
+          var onBeforeSend = (status) => {
+            buttonSubmit.classList.add('sending');
+
+            // Обрываю стандартное сообщение об старте отправки формы если :
+            if (
+                (formId.indexOf('login') > -1 && (prefix.indexOf('signin') > -1 ||
+                prefix.indexOf('signup') > -1  || prefix.indexOf('reset') > -1))  ||
+                (formId.indexOf('verification') > -1 && prefix.indexOf('request') > -1)  ||
+                (formId.indexOf('match') > -1 && prefix.indexOf('accept') > -1) ||
+                (formId.indexOf('stream') > -1 && prefix.indexOf('add') > -1) ||
+                (formId.indexOf('tournament') > -1 && prefix.indexOf('join') > -1)
               ) {
-              // dataForm - потомок FormData() [для передачи файлов]
-              for(var pair of dataForm.entries()) {
-                 console.log(pair[0]+ ', '+ pair[1]);
+              window.form.showAJAXMessage(popup);
+
+              return;
+            }
+
+            let templateBeforeSend = document.querySelector(`#${formId}-beforesend`);
+
+            if (wrapperFormNode && templateBeforeSend) {
+              wrapperFormNode.innerHTML = '';
+
+              let templateContentBeforeSend = templateBeforeSend.content;
+              let cloneTemplate = templateContentBeforeSend.cloneNode(true);
+
+              wrapperFormNode.appendChild(cloneTemplate);
+
+              // Проверяю - надо ли добавлять активный класс родителю
+              if (attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM) {
+                // Добавляю указанный класс
+                // Если надо как-то родителя при отправке формы изменять
+                wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add(attrForms[formId].CLASS_FOR_ADD_WRAPPER_FORM);
+              }
+            }
+
+            console.log('Старт: ', status);
+          };
+
+          // Обработчик успешной отправки
+          var onSuccess = (response) => {
+            buttonSubmit.classList.remove('sending');
+
+            // ЛОГИРОВАНИЕ
+            if ( formId.indexOf('login') > -1 ) {
+              // Логин
+              if (prefix.indexOf('signin') > -1) {
+                if (response.data.loggedin === true) {
+                  document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&login-status=success') : (earena_2_ajax.redirecturl + '?login-status=success');
+                } else {
+                  window.form.showAJAXMessage(popup, response.data.message, 2000);
+
+                  return;
+                }
               }
 
-              // Для передачи файлов
-              $.ajax({
-                url: earena_2_ajax.url,
-                type: 'POST',
-                data: dataForm,
-                cache: false,
-                dataType: 'json',
-                // отключаем обработку передаваемых данных, пусть передаются как есть
-                processData: false,
-                // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-                contentType: false,
-                beforeSend: (response) => {
-                  onBeforeSend(response.readyState);
-                },
-                success: (response) => {
-                  onSuccess(response);
-                },
-                error: (response) => {
-                  onError(response);
-                }
-              });
-            } else {
-              // formData - обычный объект
-              console.log(formData);
+              // Регистрация
+              if (prefix.indexOf('signup') > -1) {
+                if (response.data.registered) {
+                  document.location.href = 'profile?after_registration=1';
+                } else {
+                  let message = '';
 
-              // Обычный запрос (без передачи файлов)
-              $.ajax({
-                url: earena_2_ajax.url,
-                data: formData,
-                type: 'POST',
-                beforeSend: (response) => {
-                  onBeforeSend(response.readyState);
-                },
-                success: (response) => {
-                  onSuccess(response);
-                },
-                error: (response) => {
-                  onError(response);
+                  $.each(response.data.errors, function (key, val) {
+                    console.log(key + ' : '+ val);
+                    message += val + '<br>';
+                  });
+
+                  window.form.showAJAXMessage(popup, message);
+
+                  return;
                 }
-              });
+              }
+
+              // Сброс
+              if (prefix.indexOf('reset') > -1) {
+                if (response.data.error) {
+                  window.form.showAJAXMessage(popup, response.data.error);
+
+                  return;
+                }
+
+                console.log(response);
+              }
             }
-          });
+
+            // ВЕРИФИКАЦИЯ
+            if ( formId.indexOf('verification') > -1 ) {
+              if (prefix.indexOf('request') > -1) {
+                if (response.success === false) {
+                  window.form.showAJAXMessage(popup, response.data, 2000);
+
+                  return;
+                }
+              }
+            }
+
+            // MATCH
+            if ( formId.indexOf('match') > -1 ) {
+              // После успешного создания / удаления / присоединения - обновляем все матчи по клику на таб платформы
+              let resetShowResult = function () {
+                let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
+
+                if (tabAllPlatform) {
+                  tabAllPlatform.click();
+                }
+              };
+
+              response = JSON.parse(response);
+
+              // Создание шаг 1
+              if ((prefix.indexOf('create') > -1)) {
+                if (response.success === 1 && wrapperFormNode) {
+                  // Переписываю
+                  wrapperFormNode.innerHTML = response.data;
+
+                  // Повторная инициализация формы
+                  window.form.init(attrForms[formId]._SETTINGS);
+
+                  if (attrForms[formId].SELECTOR_WRAPPER_FORM) {
+                    // Регулировка высоты попапа
+                    if (wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).offsetHeight >= deviceHeight) {
+                      wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('scroll-content');
+                      wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('sending');
+                    } else {
+                      wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.remove('scroll-content');
+                      wrapperFormNode.closest(attrForms[formId].SELECTOR_WRAPPER_FORM).classList.add('sending');
+                    }
+                  }
+
+                  console.log(response);
+
+                  return;
+                } else {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+
+              // Создание шаг 2 / Удалить / Присоединиться
+              if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
+                if (response.success === 1) {
+                  // После успешного создания / удаления - обновляем все матчи по клику на таб платформы
+                  resetShowResult();
+                } else {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+
+              if (prefix.indexOf('accept') > -1) {
+                /*
+                  ACCEPT return value :
+                  0 - показывает текст сообщения над полем пароля
+                  1 - УСПЕХ
+                  2 - показывает окно ОШИБКИ (матч не доступен)
+                  3 - окно ошибки со ссылкой на Профиль
+                  4 - замена формы попапа на форму с пополнением
+                */
+
+                if (response.status !== 0) {
+                  // После успешного (или статуса 2,3,4) присоединения - обновляем все матчи по клику на таб платформы
+                  resetShowResult();
+                }
+
+                if (response.status === 0) {
+                  window.form.showAJAXMessage(popup, response.content, 2000);
+
+                  console.log(response);
+
+                  return;
+                } else if (response.status === 2) {
+                  onError(response, prefix);
+
+                  return;
+                } else if (response.status === 3) {
+                  onError(response, 'no-game-or-platform');
+
+                  return;
+                } else if (response.status === 4) {
+                  let pay = popup.querySelector('.pay');
+
+                  if (pay) {
+                    let payBalance = pay.querySelector('.pay__column--balance');
+                      payBalance.textContent = '$' + response.balance;
+                      payBalance.classList.add('pay__column--red');
+
+                    buttonSubmit.classList.add('hidden');
+
+                    let paySmallBalance = pay.querySelector('.pay__button');
+                    if (!paySmallBalance) {
+                      let smallBalanceHTML = `
+                        <p class="pay__text pay__text--red">
+                          ${__( 'На вашем счете недостаточно средств', 'earena_2' )}
+                        </p>
+
+                        <a class="pay__button button button--blue" href="${siteURL}/wallet/?wallet_action=add">
+                          <span>
+                            ${__( 'Пополнить счет', 'earena_2' )}
+                          </span>
+                        </a>
+                      `;
+
+                      pay.insertAdjacentHTML('beforeend', smallBalanceHTML);
+                    }
+                  }
+
+                  return;
+                }
+              }
+            }
+
+            // TOURNAMENT
+            if ( formId.indexOf('tournament') > -1 ) {
+              if ((prefix.indexOf('add-player') > -1) || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1) {
+                if (response.success === false && !response.data.error_pass) {
+                  onError(response, prefix);
+
+                  return;
+                } else if (response.success === false && response.data.error_pass) {
+                  window.form.showAJAXMessage(popup, response.data.message, 2000);
+
+                  console.log(response);
+                  return;
+                }
+              }
+
+              if ((prefix.indexOf('delete-cron') > -1) || (prefix.indexOf('delete-tournament') > -1) || (prefix.indexOf('cancel') > -1)) {
+                response = JSON.parse(response);
+
+                if (response.success === 0) {
+                  onError(response, prefix);
+
+                  return;
+                }
+              }
+            }
+
+            // CHAT
+            if ( formId.indexOf('chat') > -1 ) {
+              if (response.success === true) {
+                window.form.reloadPage();
+
+                return;
+              }
+            }
+
+            // CONTACT // CREATE
+            if ( formId.indexOf('contact') > -1 || formId.indexOf('create') > -1 ) {
+              let popup = attrForms[formId].wrapperFormNode;
+              console.log(popup);
+
+              let openPopupButtonsSuccessForm = document.querySelector('button[name="success"].openpopup');
+              let openPopupButtonsErrorForm = document.querySelector('button[name="error"].openpopup');
+
+              if (openPopupButtonsSuccessForm && openPopupButtonsErrorForm) {
+                if (response.success === true) {
+                  // Список файлов в форме Контакта
+                  let filesPreviewList = form.querySelector('.files__preview');
+                  if (filesPreviewList) {
+                    filesPreviewList.innerHTML = '';
+                  }
+
+                  form.reset();
+
+                  openPopupButtonsSuccessForm.click();
+
+                  if (formId.indexOf('create') > -1) {
+                    window.form.showResponseText(popup, response.data);
+                  }
+                } else {
+                  openPopupButtonsErrorForm.click();
+
+                  window.form.showResponseText(popup, response.data);
+                }
+              }
+            }
+
+            // COMPLAINT
+            if ( formId.indexOf('complaint') > -1) {
+              // Создать
+              if (prefix.indexOf('create') > -1) {
+                response = JSON.parse(response);
+              }
+
+              // Удалить
+              if (prefix.indexOf('delete') > -1) {
+                response = JSON.parse(response);
+
+                if (response.success === 1) {
+                  if (wrapperFormNode) {
+                    wrapperFormNode.innerHTML = response.content;
+
+                    // ADMIN complait forms
+                    let complaintAdminChatForms = wrapperFormNode.querySelectorAll('form[id*="form-complaint-"]');
+
+                    if (complaintAdminChatForms.length > 0) {
+                      complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
+                        // Инициализация полученных форм
+                        let attrFormComplaint = {
+                          idForm: complaintAdminChatForm.id,
+                          // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+                          selectorForTemplateReplace: '#complaint-container',
+                        };
+                        window.form.init(attrFormComplaint);
+                      });
+                    }
+                  }
+
+                  console.log(response);
+
+                  return;
+                } else {
+                  onError(response, prefix);
+
+                  return;
+                }
+              }
+            }
+
+            // WARNING
+            if ( formId.indexOf('warning') > -1 ) {
+              response = JSON.parse(response);
+
+              // Добавление
+              if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
+                if (response.success !== 1) {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+            }
+
+            // STREAM
+            if ( formId.indexOf('stream') > -1 ) {
+              if (prefix.indexOf('add') > -1) {
+                response = JSON.parse(response);
+
+                if (response.success === 0) {
+                  window.form.showAJAXMessage(popup, response.message, 2000);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+            }
+
+            // VIP
+            if ( formId.indexOf('vip') > -1 ) {
+              response = JSON.parse(response);
+
+              if (prefix.indexOf('buy') > -1) {
+                window.form.showResponseText(attrForms[formId].wrapperFormNode.closest('.popup'), response.message);
+
+                console.log(response);
+
+                // globalThrottlingg
+                $('body').trigger('vip-update');
+
+                return;
+              }
+
+              if (prefix.indexOf('gift') > -1) {
+                if (response.success !== 1) {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+            }
+
+            // BLOCK
+            if ( formId.indexOf('block') > -1 ) {
+              response = JSON.parse(response);
+
+              // Добавление
+              if ((prefix.indexOf('add') > -1)) {
+                if (response.success !== 1) {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+            }
+
+            // BALANCE
+            if ( formId.indexOf('balance') > -1 ) {
+              response = JSON.parse(response);
+
+              if (prefix.indexOf('add') > -1) {
+                if (response.success !== 1) {
+                  onError(response, prefix);
+
+                  console.log(response);
+
+                  return;
+                }
+              }
+            }
+
+            // Получаю шаблон
+            let templateSuccess = document.querySelector(`#${formId}-success${prefix}`);
+
+            if (!templateSuccess) {
+              templateSuccess = document.querySelector(`#${formId}-success`);
+            }
+
+            if (wrapperFormNode && templateSuccess) {
+              wrapperFormNode.innerHTML = '';
+
+              let templateContentSuccess = templateSuccess.content;
+              let cloneTemplate = templateContentSuccess.cloneNode(true);
+
+              wrapperFormNode.appendChild(cloneTemplate);
+            }
+
+            // LOGIN
+            if ( formId.indexOf('login') > -1 ) {
+              // Восстановление
+              if (prefix.indexOf('forgot') > -1) {
+                if (response.data.retrieve_password == true) {
+                  window.form.showResponseText(popup, response.data.message);
+
+                  console.log('Успех', response.data.message);
+                } else {
+                  window.form.showResponseText(popup, response.data.message);
+
+                  console.log('Ошибка', response.data.message);
+                }
+              }
+
+              // Сброс
+              if (prefix.indexOf('reset') > -1 && response.data.message) {
+                window.form.showResponseText(popup, response.data.message);
+              }
+            }
+
+            // VERIFICATION (принять/отклонить)
+            // FRIENDS (принять/отклонить/удалить)
+            if ( (formId.indexOf('verification') > -1 ) || formId.indexOf('friends') > -1) {
+              if (
+                  (prefix.indexOf('apply') > -1) ||
+                  (prefix.indexOf('reject') > -1) ||
+                  (prefix.indexOf('delete') > -1)
+                ) {
+                response = JSON.parse(response);
+
+                if (response.success === 1) {
+                  window.popup.userInfo(false, popup);
+
+                  window.form.reloadPage(200, true);
+                } else {
+                  window.form.showResponseText(popup, response.content);
+                }
+              }
+            }
+
+            // GAME
+            if ( formId.indexOf('game') > -1) {
+              response = JSON.parse(response);
+
+              let sectionUpdateArea = document.querySelector('#sections-games-profile-update');
+
+              if (sectionUpdateArea && response.success === 1) {
+                sectionUpdateArea.innerHTML = response.data;
+
+                // Получаем кнопки открытия попапов
+                let openPopupButtons = sectionUpdateArea.querySelectorAll('.openpopup');
+                if (openPopupButtons.length > 0) {
+                  openPopupButtons.forEach((openPopupButton, i) => {
+                    // Активация кнопки открытия попапа
+                    window.popup.activatePopup(openPopupButton);
+                  });
+                }
+              }
+            }
+
+            // MATCH
+            if ( formId.indexOf('match') > -1 ) {
+              // Присоединиться
+              if (prefix.indexOf('accept') > -1) {
+                let matchId = response.match_id;
+                let goToMatchLink = wrapperFormNode.querySelector('#go-to-math-link');
+
+                if (matchId && goToMatchLink) {
+                  goToMatchLink.href = goToMatchLink.href + matchId;
+                }
+              }
+            }
+
+            // TOURNAMENT
+            if ( formId.indexOf('tournament') > -1 ) {
+              if (prefix.indexOf('add-player') > -1 ||
+                  prefix.indexOf('leave') > -1 ||
+                  prefix.indexOf('join') > -1 ||
+                  prefix.indexOf('delete-cron') > -1 ||
+                  prefix.indexOf('delete-tournament') > -1 ||
+                  prefix.indexOf('cancel') > -1
+                ) {
+                window.form.reloadPage(200, true);
+              }
+            }
+
+            // WARNING
+            if ( formId.indexOf('warning') > -1 ) {
+              // Добавление/Удаление
+              if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
+                window.form.showResponseText(popup, response.content);
+
+                if (isProfile) {
+                  window.form.reloadPage(false, true);
+                }
+              }
+            }
+
+            // STREAM
+            if ( formId.indexOf('stream') > -1 ) {
+              if (prefix.indexOf('add') > -1) {
+                // Отображаю новую ссылку
+                let streamLink = document.querySelector('.stream__link');
+                if (streamLink && formData['url']) {
+                  streamLink.href = formData['url'];
+                  streamLink.textContent = formData['url'];
+                }
+              }
+            }
+
+            // BLOCK
+            if ( formId.indexOf('block') > -1 ) {
+              window.form.reloadPage(false, true);
+            }
+
+            // BALANCE
+            if ( formId.indexOf('balance') > -1 ) {
+              window.form.reloadPage(false, true);
+            }
+
+            // VIP
+            if ( formId.indexOf('vip') > -1 ) {
+              if (prefix.indexOf('gift') > -1) {
+                window.form.showResponseText(popup, response.content);
+
+                window.form.reloadPage(false, true);
+              }
+            }
+
+            if (popup) {
+              // Ф-я поиска дополнительных кнопок закрытия попапов
+              window.form.additionButtonClosePopup(popup);
+            }
+
+            console.log('Успех: ', response);
+          };
+
+          // Обработчик не успешной отправки
+          var onError = (response, prefix='') => {
+            buttonSubmit.classList.remove('sending');
+
+            if ( formId.indexOf('contact') > -1 ) {
+              let openPopupButtonsErrorForm = form.querySelector('button[name="error"].openpopup');
+
+              if (openPopupButtonsErrorForm) {
+                openPopupButtonsErrorForm.click();
+
+                console.log('Error:', response);
+
+                return;
+              }
+            }
+
+            let templateError = document.querySelector(`#${formId}-error${prefix}`);
+
+            if (!templateError) {
+              templateError = document.querySelector(`#${formId}-error`);
+            }
+
+            if (wrapperFormNode && templateError) {
+              wrapperFormNode.innerHTML = '';
+
+              let templateContentError = templateError.content;
+              let cloneTemplate = templateContentError.cloneNode(true);
+
+              wrapperFormNode.appendChild(cloneTemplate);
+
+              // MATCH // WARNING // TOURNAMENT
+              if (
+                  ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
+                  ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1 || prefix.indexOf('delete') > -1)) ||
+                  ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1))
+              ) {
+                let text = response.content ? response.content : (response.data ? response.data : false);
+
+                window.form.showResponseText(popup, text);
+              }
+            }
+
+            console.log('Ошибка: ', response);
+
+            if (popup) {
+              // Ф-я поиска дополнительных кнопок закрытия попапов
+              window.form.additionButtonClosePopup(popup);
+            }
+          };
+
+          if (((formId.indexOf('verification') > -1) && (prefix.indexOf('request') > -1)) ||
+              ( formId.indexOf('contact') > -1) ||
+              ( formId.indexOf('chat') > -1) ||
+              ( formId.indexOf('create') > -1)
+            ) {
+            // dataForm - потомок FormData() [для передачи файлов]
+            // for(var pair of dataForm.entries()) {
+            //    console.log(pair[0]+ ', '+ pair[1]);
+            // }
+
+            // Для передачи файлов
+            $.ajax({
+              url: earena_2_ajax.url,
+              type: 'POST',
+              data: dataForm,
+              cache: false,
+              dataType: 'json',
+              // отключаем обработку передаваемых данных, пусть передаются как есть
+              processData: false,
+              // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+              contentType: false,
+              beforeSend: (response) => {
+                onBeforeSend(response.readyState);
+              },
+              success: (response) => {
+                onSuccess(response);
+              },
+              error: (response) => {
+                onError(response);
+              }
+            });
+          } else {
+            // formData - обычный объект
+            // console.log(formData);
+
+            // Обычный запрос (без передачи файлов)
+            $.ajax({
+              url: earena_2_ajax.url,
+              data: formData,
+              type: 'POST',
+              beforeSend: (response) => {
+                onBeforeSend(response.readyState);
+              },
+              success: (response) => {
+                onSuccess(response);
+              },
+              error: (response) => {
+                onError(response);
+              }
+            });
+          }
         },
         // Ф-я валидации формы
-        validateForm : (formId) => {
+        validate : (formId) => {
           let form = attrForms[formId].FORM;
           let buttonSubmit = attrForms[formId].buttonSubmit;
 
@@ -1146,7 +1154,7 @@
                 if (inputEventListenerFlag[formId] === false) {
                   // Перезапуск при вводе значений
                   item.addEventListener('input', () => {
-                    window.form.validateForm(formId);
+                    window.form.validate(formId);
                   });
                 }
               }
@@ -1176,7 +1184,7 @@
 
               if (inputEventListenerFlag[formId] === false) {
                 item.addEventListener('input', () => {
-                  window.form.validateForm(formId);
+                  window.form.validate(formId);
                 });
               }
             });
@@ -1198,7 +1206,11 @@
             if (inputEventListenerFlag[formId] === false) {
 
               // Если - нет - тогда вешаем
-              window.form.formSubmitFunction(formId);
+              form.addEventListener('submit', (evt) => {
+                evt.preventDefault();
+
+                window.form.submitFunction(formId);
+              });
             }
           }
 
@@ -1297,7 +1309,7 @@
 
             fieldChange.value = '';
 
-            window.form.validateForm(formId);
+            window.form.validate(formId);
           });
         },
         // Ф-я поиска дополнительных кнопок закрытия попапов
@@ -1417,11 +1429,11 @@
         });
       }
 
-      // CREATE (Create Tournament - ADMIN)
+      // CREATE [tournament] (ADMIN)
       let attrFormCreate = {
         idForm: 'form-create',
         // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
-        // selectorForTemplateReplace: '#create-popup',
+        selectorForTemplateReplace: '#create-popup',
       };
       window.form.init(attrFormCreate);
     } catch (e) {

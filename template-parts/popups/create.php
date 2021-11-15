@@ -1,42 +1,42 @@
 
-<div class="popup popup--contact">
-  <div class="popup__template popup__template--contact" id="contact-popup">
+<div class="popup popup--create">
+  <div class="popup__template popup__template--create" id="create-popup">
     <!-- Шаблон подставляется по открытию попапа -->
   </div>
 
   <?php
     if ( function_exists( 'earena_2_get_popup_close_button_html' ) ) {
-      earena_2_get_popup_close_button_html( 'contact' );
+      earena_2_get_popup_close_button_html( 'create' );
     }
   ?>
 
   <!-- Шаблоны попапа -->
-  <template id="popup-contact-success">
+  <template id="popup-create-success">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Отправлено', 'earena_2' ); ?>
+        <?php _e( 'Создание турнира', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
-        <?php _e( 'Спасибо за то, что помогаете делать нашу платформу лучше.<br>Наши специалисты ответят на ваш запрос как можно скорее.', 'earena_2' ); ?>
+        <?php _e( '', 'earena_2' ); ?>
       </div>
 
-      <button class="popup__go-to-button popup__go-to-button--contact button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--create button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>
   </template>
-  <template id="popup-contact-error">
+  <template id="popup-create-error">
     <div class="popup__content popup__content--match">
       <h2 class="popup__title popup__title--template">
-        <?php _e( 'Не отправлено', 'earena_2' ); ?>
+        <?php _e( 'Создание турнира', 'earena_2' ); ?>
       </h2>
 
       <div class="popup__information popup__information--template">
         <?php _e( 'Что-то пошло не так. Пожалуйста, повторите попытку позже...', 'earena_2' ); ?>
       </div>
 
-      <button class="popup__go-to-button popup__go-to-button--contact button button--gray button--popup-close">
+      <button class="popup__go-to-button popup__go-to-button--create button button--gray button--popup-close">
         <?php _e( 'Закрыть', 'earena_2' ); ?>
       </button>
     </div>

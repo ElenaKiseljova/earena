@@ -35,7 +35,8 @@
   // Styles theme
   function earena_2_styles () {
     wp_enqueue_style('earena_2-style', get_stylesheet_uri());
-    wp_enqueue_style('swiper-style', 'https://unpkg.com/swiper/swiper-bundle.min.css');
+    // wp_enqueue_style('swiper-style', 'https://unpkg.com/swiper/swiper-bundle.min.css');
+    wp_enqueue_style('swiper-style', get_template_directory_uri() . '/assets/libs/swiper.min.css');
   }
 
   // Scripts theme
@@ -51,7 +52,8 @@
 
     wp_enqueue_script('cookie-edit-script', get_template_directory_uri() . '/assets/js/cookie-edit.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
+    // wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/libs/swiper.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
 
@@ -98,6 +100,7 @@
     $args = array(
       'url' => admin_url('admin-ajax.php'),
       'nonce' => wp_create_nonce('form.js_nonce'),
+      'nonce_create_tournament' => wp_create_nonce('new_tourn'),
       'user_id' => get_current_user_id(),
       'redirecturl' => $_SERVER['REQUEST_URI'],
       'redirecturl_rp' => add_query_arg('action', 'forgot', $_SERVER['REQUEST_URI']),

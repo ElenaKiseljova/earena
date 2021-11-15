@@ -127,6 +127,11 @@
             // Попап Предупреждения
             earena_2_get_popup( 'warning' );
           }
+
+          if ( is_page( 552 ) && is_ea_admin() ) {
+            // Попап Создания турнира
+            earena_2_get_popup( 'create' );
+          }
         }
       ?>
 

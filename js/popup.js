@@ -118,11 +118,12 @@
                   sufixPopupName === 'verification' ||
                   sufixPopupName === 'friends' ||
                   sufixPopupName === 'purse' ||
-                  sufixPopupName === 'contact' ||
                   sufixPopupName === 'warning' ||
                   sufixPopupName === 'block' ||
                   sufixPopupName === 'balance' ||
-                  sufixPopupName === 'vip'
+                  sufixPopupName === 'vip' ||
+                  sufixPopupName === 'contact' ||
+                  sufixPopupName === 'create'
                 ) {
 
                 window.popup.contentCreator(sufixPopupName, popupItem, popupButton);
@@ -350,7 +351,7 @@
               // если формы нет в шаблоне
               window.form.additionButtonClosePopup(popup);
             }
-          } else if (prefix === 'contact' || prefix === 'chat') {
+          } else if (prefix === 'contact' || prefix === 'chat' || prefix === 'create') {
             // Вызов ф-и для активации дополнительных кнопок закрытия попапа,
             // если формы нет в шаблоне
             window.form.additionButtonClosePopup(popup);

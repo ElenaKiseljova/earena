@@ -84,7 +84,7 @@ if (!is_user_logged_in()) {
  //		$errors = $user;
          $errors->add('invalid_key', sprintf(
              __('Некорректные данные для смены пароля. Проверьте, правильно ли вы скопировали ссылку из письма или отправьте <a href="%s">ещё одно</a>.'),
-             add_query_arg('action', 'forgot', home_url())
+             add_query_arg('action', 'fp', home_url())
          ));
      }
      /*else {
@@ -969,9 +969,12 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                       <?php endif; ?>
 
                       <div class="user__rating user__rating--friends">
-                        <span>
+                        <span class="user__rating-text">
                           <?php _e( 'Рейтинг', 'earena_2' ); ?>
-                        </span>: <?= earena_2_rating($user_id); ?>
+                        </span>:
+                        <span class="user__rating-value">
+                          <?= earena_2_rating($user_id); ?>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1041,9 +1044,12 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                       <?php endif; ?>
 
                       <div class="user__rating user__rating--friends">
-                        <span>
+                        <span class="user__rating-text">
                           <?php _e( 'Рейтинг', 'earena_2' ); ?>
-                        </span>: <?= earena_2_rating($user_id); ?>
+                        </span>:
+                        <span class="user__rating-value">
+                          <?= earena_2_rating($user_id); ?>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1120,9 +1126,12 @@ function earena_2_page_profile_public_friends_data($user_id = 0, $length = 0, $o
                     <?php endif; ?>
 
                     <div class="user__rating user__rating--friends">
-                      <span>
+                      <span class="user__rating-text">
                         <?php _e( 'Рейтинг', 'earena_2' ); ?>
-                      </span>: <?= earena_2_rating($user_id); ?>
+                      </span>:
+                      <span class="user__rating-value">
+                        <?= earena_2_rating($user_id); ?>
+                      </span>
                     </div>
                   </div>
                 </div>

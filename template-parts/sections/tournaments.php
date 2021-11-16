@@ -1,7 +1,7 @@
 <?php
   $is_games = is_page( 4953 );
 
-  $is_tournaments = (earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' )) ? true : false;
+  $is_tournaments = (earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' ));
 
   $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
   $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
@@ -50,12 +50,6 @@
     global $games, $game_id, $ea_icons, $tournaments;
 
     $count_tournaments = count($tournaments ?? []);
-
-    if (isset($_GET['login-status'])) {
-      unset($_GET['login-status']);
-    } else if (isset($_GET['action'])) {
-      unset($_GET['action']);
-    }
   ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
@@ -165,7 +159,7 @@
       </div>
     <?php else: ?>
       <header class="section__header">
-        <h2 class="section__title section__title--tournaments">
+        <h2 class="section__title section__title--tournaments section__title--page">
           <?php _e('Турниры', 'earena_2'); ?>
           <span class="section__amount">
             0

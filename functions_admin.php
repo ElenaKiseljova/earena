@@ -230,9 +230,12 @@
                     <?php endif; ?>
 
                     <div class="user__rating user__rating--friends">
-                      <span>
+                      <span class="user__rating-text">
                         <?php _e( 'Рейтинг', 'earena_2' ); ?>
-                      </span>: <?= earena_2_rating($user_id); ?>
+                      </span>:
+                      <span class="user__rating-value">
+                        <?= earena_2_rating($user_id); ?>
+                      </span>
                     </div>
                   </div>
                 </div>

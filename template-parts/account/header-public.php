@@ -64,15 +64,21 @@
           </div>
 
           <div class="user__rating user__rating--account">
-            <span>
+            <span class="user__rating-text">
               <?php _e( 'Рейтинг', 'earena_2' ); ?>
-            </span>: <?= earena_2_rating($ea_user->ID); ?>
+            </span>:
+            <span class="user__rating-value">
+              <?= earena_2_rating($ea_user->ID); ?>
+            </span>
           </div>
         <?php else: ?>
           <div class="user__rating user__rating--account user__rating--account-public">
-            <span>
+            <span class="user__rating-text">
               <?php _e( 'Рейтинг', 'earena_2' ); ?>
-            </span>: <?= earena_2_rating($ea_user->ID); ?>
+            </span>:
+            <span class="user__rating-value">
+              <?= earena_2_rating($ea_user->ID); ?>
+            </span>
           </div>
         <?php endif; ?>
         <?php if ( is_ea_admin() ): ?>

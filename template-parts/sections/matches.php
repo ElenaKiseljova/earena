@@ -1,7 +1,7 @@
 <?php
   $is_games = is_page( 4953 );
 
-  $is_matches = is_page( 271 );
+  $is_matches = is_page( 271 ) || earena_2_current_page( 'matches' );
 
   $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
   $is_profile_matches = ($is_matches || (isset($_GET['toggles']) && $_GET['toggles'] === 'matches')) && $is_profile;
@@ -48,12 +48,6 @@
     global $games, $game_id, $ea_icons, $matches;
 
     $count_matches = count($matches ?? []);
-
-    if (isset($_GET['login-status'])) {
-      unset($_GET['login-status']);
-    } else if (isset($_GET['action'])) {
-      unset($_GET['action']);
-    }
   ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">

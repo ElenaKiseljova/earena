@@ -2,12 +2,7 @@
   $countries = get_site_option( 'countries' );
 ?>
 
-<?php if (!isset($_GET['login-status'])): ?>
-  <?php
-    /**
-      * Вид попапа с логированием для незалогиненного пользователя
-    */
-  ?>
+<?php if (!is_user_logged_in()): ?>
   <div class="popup popup--login">
     <div class="popup__template popup__template--login" id="login-popup">
       <!-- Шаблон подставляется по открытию попапа -->
@@ -261,7 +256,7 @@
         <div class="popup__information popup__information--template">
           <?php _e( 'Пароль успешно изменён! Закройте окно и войдите в свой аккаунт используя новый пароль.', 'earena_2' ); ?>
         </div>
-        <button class="form__popup-close button button--gray" name="close" type="button">
+        <button class="form__popup-close button button--gray button--popup-close" name="close" type="button">
           <?php _e( 'Закрыть', 'earena_2' ); ?>
         </button>
       </div>
@@ -279,33 +274,8 @@
       </div>
     </template>
   </div>
-
-  <?php if (!is_user_logged_in() && isset($_GET['action'])): ?>
-    <?php
-      // После загрузки стр - отработать клик открытия попапа
-      $type_action = 'forgot';
-
-      if ($_GET['action'] === 'rp') {
-        $type_action = 'reset';
-      }
-    ?>
-    <button class="openpopup" id="<?= $type_action; ?>-button" data-popup="login" type="button" name="<?= $type_action; ?>">
-      <span><?= _e('Открыть попап', 'earena_2'); ?> <?= $type_action; ?></span>
-    </button>
-    <script type="text/javascript">
-      window.addEventListener('load', function () {
-        document.querySelector('#<?= $type_action; ?>-button').click();
-      });
-    </script>
-  <?php endif; ?>
-<?php elseif (is_user_logged_in() && isset($_GET['login-status']) && $_GET['login-status'] === 'success'): ?>
+<?php elseif (is_user_logged_in() && isset($_GET['action'])): ?>
   <?php
-    /**
-      * Попап появляется после успешного логирования
-    */
-  ?>
-  <?php
-    // После загрузки стр - отработать клик открытия попапа
     $earana_2_user = wp_get_current_user();
   ?>
   <div class="popup popup--login">
@@ -337,12 +307,48 @@
       </div>
     </template>
   </div>
-  <button class="openpopup" id="login-success-button" data-popup="login" type="button" name="success">
-    <span><?= _e('Открыть попап с успешным логированием', 'earena_2'); ?></span>
+<?php endif; ?>
+
+<?php if (isset($_GET['action'])): ?>
+  <?php
+    // После загрузки стр - отработать клик открытия попапа
+    $type_action = '';
+    if ($_GET['action'] === 'fp' || $_GET['action'] === 'forgot') {
+      $type_action = 'forgot';
+    } else if ($_GET['action'] === 'rp' || $_GET['action'] === 'reset') {
+      $type_action = 'reset';
+    } else if ($_GET['action'] === 'success' ) {
+      $type_action = 'success';
+    } else if ($_GET['action'] === 'register' ) {
+      $type_action = 'signup';
+    } else if ($_GET['action'] === 'login' ) {
+      $type_action = 'signin';
+    }
+  ?>
+  <button class="openpopup" id="login-<?= $type_action; ?>-button" data-popup="login" type="button" name="<?= $type_action; ?>">
+    <span><?= _e('Открыть попап', 'earena_2'); ?> <?= $type_action; ?></span>
   </button>
   <script type="text/javascript">
     window.addEventListener('load', function () {
-      document.querySelector('#login-success-button').click();
+      try {
+        document.querySelector('#login-<?= $type_action; ?>-button').click();
+
+        let url = window.location.href;
+        let urlArr = url.split('?');
+        let urlGetArr = urlArr[1] ? urlArr[1].split('&') : [];
+
+        urlGetArr.forEach((urlGet, i) => {
+          if (urlGet.includes('action')) {
+            urlGetArr.splice(i, 1);
+          }
+        });
+
+        let newURL= (urlGetArr.length > 0) ? urlArr[0] + '?' + urlGetArr.join('&') : urlArr[0];
+
+        window.history.pushState({}, '', newURL);
+      } catch (e) {
+        console.log(e);
+      }
     });
   </script>
 <?php endif; ?>

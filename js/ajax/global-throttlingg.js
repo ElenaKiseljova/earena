@@ -8,27 +8,27 @@ jQuery(document).ready(function ($) {
     const initObj = {
         0: ['.page-header .time span'],
         1: [],
-        2: ['.user__money-amount--header span'],
-        3: ['.header-main .nums .num-green', '.mobile-menu-wrap .nums .num-green', '.dropdown-menu .num-green', '.logged-in-menu-bottom .num-green', '.menu-profile .num-green'],
-        4: ['.header-main .nums .num-red', '.mobile-menu-wrap .nums .num-red'],
-        5: ['.header-main .nums .num-blue', '.mobile-menu-wrap .nums .num-blue', '.dropdown-menu .num-blue', '.logged-in-menu-bottom .num-blue', '.menu-profile .num-blue'],
-        6: ['.header-main .login-menu-top .score span', '.mobile-menu-wrap .login-menu-top .score span', '.about-user .score span'],
-        7: ['.dropdown-menu .matches .num-red', '.logged-in-menu-bottom .matches .num-red', '.menu-profile .matches .num-red'],
-        8: ['.dropdown-menu .tournaments .num-red', '.logged-in-menu-bottom .tournaments .num-red', '.menu-profile .tournaments .num-red'],
-        9: ['.dropdown-menu .admin .num-red', '.logged-in-menu-bottom .admin .num-red', '.menu-profile .admin .num-red'],
-        10: ['.num-default', 'div.friend'],
+        2: ['.user__money-amount--header span', '.user__money-amount--account-private span'],
+        3: ['.personal__link-count--messages', '.toggles__counter--messages'],
+        4: [],
+        5: ['.personal__link-count--friends'],
+        6: ['.user__rating-value--account-private'],
+        7: ['.personal__link-count--matches', '.toggles__counter--matches'],
+        8: ['.personal__link-count--tournaments', '.toggles__counter--tournaments'],
+        9: ['.personal__link-count--administration', '.toggles__counter--administration'],
+        10: ['.toggles__counter--friends'],
     }
     // 0 curTime
     // 1 balanceTopCur
     // 2 balanceTopValue
-    // 3 numGreen
-    // 4 numRed
-    // 5 numBlue
+    // 3 message
+    // 4 numRed [matches + tournaments + administrations]
+    // 5 friends (request)
     // 6 rating
     // 7 matches
     // 8 tournaments
     // 9 admin
-    // 10 friends
+    // 10 friends (total)
 
     const initData = {
         0: initing(0),
@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
                     run = setInterval(getDataFunction, baseInterval)
                 }
                 if (resp) {
-                  //console.log(resp);
+                  console.log(resp);
                     if (0 in resp) {
                         const respData = resp[0]
                         for (const [key, value] of Object.entries(respData)) {

@@ -60,15 +60,18 @@
         <?php endif; ?>
 
         <div class="user__money user__money--account">
-          <span class="user__money-amount user__money-amount--account">
+          <span class="user__money-amount user__money-amount--account user__money-amount--account-private">
             $<span><?= earena_2_nice_money(balance()); ?></span>
           </span>
         </div>
 
         <div class="user__rating user__rating--account">
-          <span>
+          <span class="user__rating-text">
             <?php _e( 'Рейтинг', 'earena_2' ); ?>
-          </span>: <?= rating(); ?>
+          </span>:
+          <span class="user__rating-value user__rating-value--account-private">
+            <?= rating(); ?>
+          </span>
         </div>
       </div>
     </div>

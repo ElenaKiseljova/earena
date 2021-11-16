@@ -47,13 +47,11 @@
       // Турниры
       earena_2_get_section( 'tournaments' );
     } else {
-      if ( function_exists( 'earena_2_get_section' ) ) {
-        // Матчи
-        earena_2_get_section( 'matches' );
+      // Матчи
+      earena_2_get_section( 'matches' );
 
-        // Турниры
-        earena_2_get_section( 'tournaments' );
-      }
+      // Турниры
+      earena_2_get_section( 'tournaments' );
 
       // Партнеры
       get_template_part( 'template-parts/partners' );

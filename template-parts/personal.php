@@ -24,7 +24,7 @@
             <?php _e( 'Матчи', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--matches-admin">
             <?= count_admin_matches_moderate() + count_admin_matches_not_confirmed(); ?>
           </span>
         </a>
@@ -43,7 +43,7 @@
             <?php _e( 'Турниры', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--tournaments-admin">
             <?= count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3); ?>
           </span>
         </a>
@@ -61,7 +61,7 @@
             <?php _e( 'Сообщения', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--messages-admin">
             <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
           </span>
         </a>
@@ -77,7 +77,7 @@
             <?php _e( 'Верификация', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--verification-admin">
             <?=ea_count_verification_requests();?>
           </span>
         </a>
@@ -110,7 +110,7 @@
             <?php _e( 'Матчи', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--matches">
             <?= counter_matches($ea_user->ID); ?>
           </span>
         </a>
@@ -129,7 +129,7 @@
             <?php _e( 'Турниры', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--tournaments">
             <?= counter_tournaments($ea_user->ID); ?>
           </span>
         </a>
@@ -147,7 +147,7 @@
             <?php _e( 'Сообщения', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--messages">
             <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
           </span>
         </a>
@@ -166,7 +166,7 @@
             <?php _e( 'Друзья', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--friends">
             <?= !empty($new_friends = count(friends_get_friendship_request_user_ids(get_current_user_id()))) ? $new_friends : '0' ?>
           </span>
         </a>
@@ -182,7 +182,7 @@
             <?php _e( 'Уведомления', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count">
+          <span class="personal__link-count personal__link-count--administration">
             <?= counter_admin(); ?>
           </span>
         </a>

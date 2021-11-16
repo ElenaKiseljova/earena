@@ -459,7 +459,7 @@
               // Логин
               if (prefix.indexOf('signin') > -1) {
                 if (response.data.loggedin === true) {
-                  document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&login-status=success') : (earena_2_ajax.redirecturl + '?login-status=success');
+                  document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&action=success') : (earena_2_ajax.redirecturl + '?action=success');
                 } else {
                   window.form.showAJAXMessage(popup, response.data.message, 2000);
 
@@ -470,7 +470,7 @@
               // Регистрация
               if (prefix.indexOf('signup') > -1) {
                 if (response.data.registered) {
-                  document.location.href = 'profile?after_registration=1';
+                  document.location.href = siteURL  + '/profile?after_registration=1';
                 } else {
                   let message = '';
 

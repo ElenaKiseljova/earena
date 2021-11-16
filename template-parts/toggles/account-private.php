@@ -19,22 +19,22 @@
         <?php _e( 'Профиль', 'earena_2' ); ?>
       </a>
       <a href="<?php echo get_page_link(518); ?>" class="toggles__item toggles__item--account <?php if(is_page(518)) echo 'active'; ?>">
-        <?php _e( 'Матчи', 'earena_2' ); ?> (<?= counter_matches($ea_user->ID); ?>)
+        <?php _e( 'Матчи', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--matches"><?= counter_matches($ea_user->ID); ?></span>)
       </a>
       <a href="<?php echo get_page_link(521); ?>" class="toggles__item toggles__item--account <?php if(is_page(521)) echo 'active'; ?>">
-        <?php _e( 'Турниры', 'earena_2' ); ?> (<?= counter_tournaments($ea_user->ID); ?>)
+        <?php _e( 'Турниры', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--tournaments"><?= counter_tournaments($ea_user->ID); ?></span>)
       </a>
       <a href="<?php echo get_page_link(510); ?>" class="toggles__item toggles__item--account <?php if(is_page(510)) echo 'active'; ?>">
-        <?php _e( 'Сообщения', 'earena_2' ); ?> (<?=!empty(messages_get_unread_count())?messages_get_unread_count():'0';?>)
+        <?php _e( 'Сообщения', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--messages"><?=!empty(messages_get_unread_count())?messages_get_unread_count():'0';?></span>)
       </a>
       <a href="<?php echo get_page_link(515); ?>" class="toggles__item toggles__item--account <?php if(is_page(515)) echo 'active'; ?>">
-        <?php _e( 'Друзья', 'earena_2' ); ?> (<?= bp_get_total_friend_count(get_current_user_id())>0?bp_get_total_friend_count(get_current_user_id()):'0'; ?>)
+        <?php _e( 'Друзья', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--friends"><?= bp_get_total_friend_count(get_current_user_id())>0?bp_get_total_friend_count(get_current_user_id()):'0'; ?></span>)
       </a>
       <a href="<?php echo get_page_link(527); ?>" class="toggles__item toggles__item--account <?php if(is_page(527)) echo 'active'; ?>">
-        <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?>)
+        <?php _e( 'Приглашенные', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--referrals"><?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?></span>)
       </a>
       <a href="<?php echo get_page_link(654); ?>" class="toggles__item toggles__item--account <?php if(is_page(654)) echo 'active'; ?>">
-        <?php _e( 'Уведомления', 'earena_2' ); ?> (<?=counter_admin();?>)
+        <?php _e( 'Уведомления', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--administration"><?=counter_admin();?></span>)
       </a>
     </div>
   </header>

@@ -4,8 +4,8 @@
   */
 ?>
 <?php
-  global $promo_matches;
-  global $promo_payed;
+  $promo_matches = get_field('promo_matches', $front_page_id);
+  $promo_payed = get_field('promo_payed', $front_page_id);
 ?>
 <div class="statistics statistics--front">
   <ul class="statistics__variation">

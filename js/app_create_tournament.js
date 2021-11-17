@@ -31,6 +31,9 @@ const app_create_tournament = new Vue({
     qtyVal: '',
     qtyValMin: '',
     qtyValMax: '',
+    prize_type: 'money',
+    counterPrizes: 0,
+    dynamic_prize: [''],
     top: 0,
     vip: 0,
     verification: 0,
@@ -181,16 +184,6 @@ const app_create_tournament = new Vue({
         }, 500)
       }
     },
-    // activeSubTab : {
-    //   deep: true,
-    //   handler: function (v) {
-    //     let selectUniversalTournamentContainer = document.querySelector('.form__section-tabs--universal');
-    //     if (this.activeSubTab === 2 && this.universalSelectActive === '' && selectUniversalTournamentContainer) {
-    //       window.select.search(selectUniversalTournamentContainer);
-    //       this.universalSelectActive = 1;
-    //     }
-    //   }
-    // }
   },
   methods: {
     sendHandler (evt) {
@@ -250,7 +243,20 @@ const app_create_tournament = new Vue({
       data.append('add_now', this.add_now)
       data.append('all_games', this.all_games)
 
+      data.append('prize_type', this.prize_type)
+
+      if (this.prize_type === 'prize') {
+        data.append('dynamic_prize', this.dynamic_prize)
+      }
+
+
       window.form.submitFunction('form-create', data);
+    },
+    addPrize() {
+      this.dynamic_prize.push('');
+    },
+    removePrize(index) {
+      this.dynamic_prize.splice(index, 1);
     }
   },
   mounted () {

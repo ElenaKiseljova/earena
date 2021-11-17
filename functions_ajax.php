@@ -307,7 +307,7 @@ function globalHeader()
         $counterTournaments = counter_tournaments($id) ?? 0;
         $counterAdmin = counter_admin() ?? 0;
 
-        $red = $counterMatches + $counterTournaments + $counterAdmin;
+        // $red = $counterMatches + $counterTournaments + $counterAdmin;
         // 0 curTime
         // 1 balanceTopCur -
         // 2 balanceTopValue

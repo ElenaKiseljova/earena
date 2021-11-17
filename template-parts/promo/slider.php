@@ -15,21 +15,13 @@
         $promo_banner = get_field('promo_banner_' . $i, $front_page_id);
         $promo_link = get_field('promo_link_' . $i, $front_page_id);
 
-        if ($i == 1) {
-          global $promo_matches;
-          global $promo_payed;
-
-          $promo_matches = get_field('promo_matches', $front_page_id);
-          $promo_payed = get_field('promo_payed', $front_page_id);
-        }
         if (! empty($promo_banner) && is_array($promo_banner) ) {
           ?>
             <div class="promo__slider-item swiper-slide">
               <?php if ($i == 1): ?>
-                <!-- Слайд со статистикой -->
                 <div class="promo__content promo__content--front">
-                  <!-- Статистика -->
                   <?php
+                    // Статистика
                     get_template_part( 'template-parts/statistics/slider' );
                   ?>
                 </div>

@@ -133,20 +133,6 @@
       </div>
     </div>
     <div v-if="activeTab !== 3" class="form__right form__right--create-info">
-      <div class="form__row">
-        <input v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
-      </div>
-      <p class="form__text form__text--create">
-        <?php _e( 'Комиссия, которая будет взиматься с каждого игрока за участие', 'earena_2' ); ?>
-      </p>
-
-      <div class="form__row">
-        <input v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
-      </div>
-      <p class="form__text form__text--create">
-        <?php _e( 'Гарантированный призовой фонд турнира', 'earena_2' ); ?>
-      </p>
-
       <div class="form__checkbox form__checkbox--private checkbox checkbox--left">
         <input v-model="private" class="visually-hidden" type="checkbox" name="private-match-create" value="1" id="private-match-create">
         <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="private-match-create">
@@ -162,6 +148,62 @@
         <input v-model="password"
               :disabled="!private"
               class="form__field form__field--create" id="password" type="password" name="pass" required placeholder="<?= __( 'Пароль', 'earena_2' ); ?>">
+      </div>
+
+      <div class="form__checkbox form__checkbox--left form__checkbox--prizes">
+        <div class="checkbox checkbox--create-left">
+          <input v-model="prize_type" value="money" class="visually-hidden" type="radio" name="prize_type" id="prize_type-money">
+          <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="prize_type-money">
+            <?php _e( 'Деньги', 'earena_2' ); ?>
+          </label>
+        </div>
+        <div class="checkbox checkbox--create-left">
+          <input v-model="prize_type" value="prize" class="visually-hidden" type="radio" name="prize_type" id="prize_type-prize">
+          <label class="checkbox__label checkbox__label--radio checkbox__label--left" for="prize_type-prize">
+            <?php _e( 'Призы', 'earena_2' ); ?>
+          </label>
+        </div>
+      </div>
+
+      <div v-if="prize_type==='money'" class="form__prizes">
+        <div class="form__row">
+          <input v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
+        </div>
+        <p class="form__text form__text--create">
+          <?php _e( 'Комиссия, которая будет взиматься с каждого игрока за участие', 'earena_2' ); ?>
+        </p>
+
+        <div class="form__row">
+          <input v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
+        </div>
+        <p class="form__text form__text--create">
+          <?php _e( 'Гарантированный призовой фонд турнира', 'earena_2' ); ?>
+        </p>
+      </div>
+      <div v-if="prize_type==='prize'" class="form__prizes prizes">
+        <ul class="prizes__list">
+          <li v-for="prize_value, i in dynamic_prize" class="prizes__item">
+            <div :class="{'prizes__additional':i>0}" class="form__row">
+              <input v-model="dynamic_prize[i]" @input="window.form.validate('form-create')" class="form__field form__field--create" :id="'prize-' + i" type="text" :name="'dynamic_prize[' + i + ']'" required placeholder="<?php _e( 'Название приза', 'earena_2' ); ?>">
+
+              <button v-if="i>0" @click="removePrize(i)" class="prizes__button prizes__button--remove button button--red" type="button" name="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-label="<?php _e( 'Удалить приз', 'earena_2' ); ?>">
+                  <path d="M18.5625 4.8125L3.4375 4.81251" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8.9375 8.9375V14.4375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M13.0625 8.9375V14.4375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M17.1875 4.8125V17.875C17.1875 18.0573 17.1151 18.2322 16.9861 18.3611C16.8572 18.4901 16.6823 18.5625 16.5 18.5625H5.5C5.31766 18.5625 5.1428 18.4901 5.01386 18.3611C4.88493 18.2322 4.8125 18.0573 4.8125 17.875V4.8125" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14.4375 4.8125V3.4375C14.4375 3.07283 14.2926 2.72309 14.0348 2.46523C13.7769 2.20737 13.4272 2.0625 13.0625 2.0625H8.9375C8.57283 2.0625 8.22309 2.20737 7.96523 2.46523C7.70737 2.72309 7.5625 3.07283 7.5625 3.4375V4.8125" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <p class="form__text form__text--create">
+              {{ i + 1 }} <?php _e( 'место', 'earena_2' ); ?>
+            </p>
+          </li>
+        </ul>
+        <button @click="addPrize" class="prizes__button prizes__button--add button button--blue" type="button" name="button">
+          <?php _e( 'Добавить приз', 'earena_2' ); ?>
+        </button>
       </div>
     </div>
     <div v-if="activeTab === 3" class="form__right form__right--create-info">

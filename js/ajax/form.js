@@ -667,7 +667,6 @@
             // CONTACT // CREATE
             if ( formId.indexOf('contact') > -1 || formId.indexOf('create') > -1 ) {
               let popup = attrForms[formId].wrapperFormNode;
-              console.log(popup);
 
               let openPopupButtonsSuccessForm = document.querySelector('button[name="success"].openpopup');
               let openPopupButtonsErrorForm = document.querySelector('button[name="error"].openpopup');
@@ -1152,10 +1151,7 @@
                 }
 
                 if (inputEventListenerFlag[formId] === false) {
-                  // Перезапуск при вводе значений
-                  item.addEventListener('input', () => {
-                    window.form.validate(formId);
-                  });
+                  window.form.inputFieldValidateActivate(item, formId);
                 }
               }
             });
@@ -1183,9 +1179,7 @@
               }
 
               if (inputEventListenerFlag[formId] === false) {
-                item.addEventListener('input', () => {
-                  window.form.validate(formId);
-                });
+                window.form.inputFieldValidateActivate(item, formId);
               }
             });
           }
@@ -1215,6 +1209,12 @@
           }
 
           inputEventListenerFlag[formId] = true;
+        },
+        // Перезапуск валидации при вводе значений в поля
+        inputFieldValidateActivate : (field, formId) => {
+          field.addEventListener('input', () => {
+            window.form.validate(formId);
+          });
         },
         // Перебор чекбоксов
         parseCheckboxes : (formId) => {

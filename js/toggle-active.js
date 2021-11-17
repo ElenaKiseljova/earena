@@ -164,7 +164,7 @@
           let userFormOpenPopupButtons = userFormContainer.querySelectorAll('.openpopup');
           if (userFormOpenPopupButtons.length > 0) {
             userFormOpenPopupButtons.forEach((userFormOpenPopupButton, i) => {
-              window.popup.activatePopup(userFormOpenPopupButton);
+              window.popup.activateOpenPopupButton(userFormOpenPopupButton);
             });
           }
         }

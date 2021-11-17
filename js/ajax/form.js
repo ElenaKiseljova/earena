@@ -2,6 +2,7 @@
 
 (function ($) {
   /*
+    currentUserId
     is_user_logged_in,
     is_ea_admin,
 
@@ -510,15 +511,6 @@
 
             // MATCH
             if ( formId.indexOf('match') > -1 ) {
-              // После успешного создания / удаления / присоединения - обновляем все матчи по клику на таб платформы
-              let resetShowResult = function () {
-                let tabAllPlatform = document.querySelector('.tabs button[data-tab-type="-1"]');
-
-                if (tabAllPlatform) {
-                  tabAllPlatform.click();
-                }
-              };
-
               response = JSON.parse(response);
 
               // Создание шаг 1
@@ -556,8 +548,8 @@
               // Создание шаг 2 / Удалить / Присоединиться
               if ((prefix.indexOf('add') > -1) || (prefix.indexOf('delete') > -1)) {
                 if (response.success === 1) {
-                  // После успешного создания / удаления - обновляем все матчи по клику на таб платформы
-                  resetShowResult();
+                  // После успешного создания / удаления - обновляем все матчи
+                  $('body').trigger('matches-list-updated');
                 } else {
                   onError(response, prefix);
 
@@ -578,8 +570,8 @@
                 */
 
                 if (response.status !== 0) {
-                  // После успешного (или статуса 2,3,4) присоединения - обновляем все матчи по клику на таб платформы
-                  resetShowResult();
+                  // После успешного (или статуса 2,3,4) присоединения - обновляем все матчи
+                  $('body').trigger('matches-list-updated');
                 }
 
                 if (response.status === 0) {
@@ -776,7 +768,6 @@
 
                 console.log(response);
 
-                // globalThrottlingg
                 $('body').trigger('vip-update');
 
                 return;
@@ -874,7 +865,9 @@
                 if (response.success === 1) {
                   window.popup.userInfo(false, popup);
 
-                  window.form.reloadPage(200, true);
+                  if ((formId.indexOf('verification') > -1 )) {
+                    window.form.reloadPage(200, true);
+                  }
                 } else {
                   window.form.showResponseText(popup, response.content);
                 }
@@ -895,7 +888,7 @@
                 if (openPopupButtons.length > 0) {
                   openPopupButtons.forEach((openPopupButton, i) => {
                     // Активация кнопки открытия попапа
-                    window.popup.activatePopup(openPopupButton);
+                    window.popup.activateOpenPopupButton(openPopupButton);
                   });
                 }
               }
@@ -1034,9 +1027,9 @@
               ( formId.indexOf('create') > -1)
             ) {
             // dataForm - потомок FormData() [для передачи файлов]
-            // for(var pair of dataForm.entries()) {
-            //    console.log(pair[0]+ ', '+ pair[1]);
-            // }
+            for(var pair of dataForm.entries()) {
+               console.log(pair[0]+ ', '+ pair[1]);
+            }
 
             // Для передачи файлов
             $.ajax({

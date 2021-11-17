@@ -139,7 +139,7 @@
         if (popupOpenButtons.length > 0) {
           popupOpenButtons.forEach((popupOpenButton, i) => {
             // Активация попапа по клику на указанную кнопку
-            window.popup.activatePopup(popupOpenButton);
+            window.popup.activateOpenPopupButton(popupOpenButton);
           });
         }
 

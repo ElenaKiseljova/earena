@@ -26,7 +26,7 @@
         <?php _e( 'Турниры', 'earena_2' ); ?> (<?= counter_tournaments($ea_user->ID); ?>)
       </a>
       <a href="<?= ea_user_link($ea_user->ID) . '/?toggles=friends'; ?>" class="toggles__item toggles__item--account <?= $is_profile_friends ? 'active' : ''; ?>">
-        <?php _e( 'Друзья', 'earena_2' ); ?> (<?= bp_get_total_friend_count($ea_user->ID)>0?bp_get_total_friend_count($ea_user->ID):'0'; ?>)
+        <?php _e( 'Друзья', 'earena_2' ); ?> (<span class="toggles__counter toggles__counter--friends-public"><?= bp_get_total_friend_count($ea_user->ID)>0?bp_get_total_friend_count($ea_user->ID):'0'; ?></span>)
       </a>
     </div>
   </header>

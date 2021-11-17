@@ -88,6 +88,8 @@
       wp_enqueue_script('statistics-script', get_template_directory_uri() . '/assets/js/statistics.min.js', $deps = array(), $ver = null, $in_footer = true );
     }
 
+      wp_enqueue_script('triggers-script', get_template_directory_uri() . '/assets/js/triggers.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+
     // С переводами
     wp_set_script_translations('platforms-script', 'earena_2');
     wp_set_script_translations('filter-script', 'earena_2');

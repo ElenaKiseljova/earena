@@ -92,8 +92,19 @@
 
           document.addEventListener('keydown', onPopupEscPress, true);
         },
-        // Ф-я активации попапа по клику на указанную кнопку
-        activatePopup : function (popupButton) {
+        // Поиск всех кнопок открытия попапов, что есть в указанном контейнере
+        searchOpenPopupButton : function (container) {
+          let popupButtons = container.querySelectorAll('.openpopup');
+          if (popupButtons.length > 0) {
+            // Перебираем все кнопки, которые открывают попапы
+            popupButtons.forEach(function (popupButton) {
+              // Активация кнопки открытия попапа
+              window.popup.activateOpenPopupButton(popupButton);
+            });
+          }
+        },
+        // Активация кнопки открытия попапа
+        activateOpenPopupButton : function (popupButton) {
           let sufixPopupName = popupButton.dataset.popup;
           let popupName = '.popup--' + sufixPopupName;
 
@@ -513,15 +524,7 @@
         }
       };
 
-      // Активация всех кнопок, что есть в DOM при загрузке страницы
-      let popupButtons = document.querySelectorAll('.openpopup');
-      if (popupButtons.length > 0) {
-        // Перебираем все кнопки, которые открывают попапы
-        popupButtons.forEach(function (popupButton) {
-          // Активация кнопки открытия попапа
-          window.popup.activatePopup(popupButton);
-        });
-      }
+      window.popup.searchOpenPopupButton(document);
 
       if (OVERLAY_POPUP) {
         OVERLAY_POPUP.addEventListener('click', window.popup.closePopup);

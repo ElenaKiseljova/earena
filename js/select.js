@@ -46,7 +46,7 @@
 
         let radioInputs = select.querySelectorAll('input[type="radio"]');
         if (radioInputs.length > 0) {
-          window.select.activateInputs(button, radioInputs, flagCreateGame);
+          window.select.activateInputs(button, radioInputs, flagCreateGame, containerForSelectGames);
         }
       }
     },
@@ -57,7 +57,7 @@
         window.select.init(select, container);
       });
     },
-    activateInputs : function (button, radioInputs, flagCreateGame = false) {
+    activateInputs : function (button, radioInputs, flagCreateGame = false, containerForSelectGames = false) {
       // Перебираю инпуты и навешиваю на них событие изменения
       radioInputs.forEach((radioInput, i) => {
         radioInput.addEventListener('change', function () {
@@ -94,7 +94,7 @@
               containerForSelectGames.innerHTML = selectGamesHTML;
 
               // Вызов ф-и активации селекта
-              window.select(containerForSelectGames);
+              window.select.search(containerForSelectGames);
             }
 
             if (radioInput.name === 'game-statistics') {

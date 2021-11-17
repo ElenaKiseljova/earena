@@ -221,21 +221,28 @@ function setPlafromsAction()
 }
 
 //
-// add_action('wp_ajax_getFriendsList', 'getFriendsListAction');
-// add_action('wp_ajax_nopriv_getFriendsList', 'getFriendsListAction');
-//
-// function getFriendsListAction()
-// {
-//     $userNickname = isset($_POST['user']) ? $_POST['user'] : false;
-//     if (!$userNickname) {
-//         return false;
-//     }
-//     $id = getUserBySlug($userNickname);
-//     if ($id) {
-//         echo ea_page_profile_public_friends_data($id, 6, 0);
-//     }
-//     die();
-// }
+add_action('wp_ajax_getFriendsList', 'getFriendsListAction');
+add_action('wp_ajax_nopriv_getFriendsList', 'getFriendsListAction');
+
+function getFriendsListAction()
+{
+    $userNickname = isset($_POST['user']) ? $_POST['user'] : false;
+    if (!$userNickname) {
+        return false;
+    }
+    $id = getUserBySlug($userNickname);
+    if ($id) {
+      $response = [];
+      ob_start();
+      earena_2_page_profile_public_friends_data($id, 8, 0);
+      $response['content'] = ob_get_clean();
+      $response['total'] = bp_get_total_friend_count($id)>0?bp_get_total_friend_count($id):'0';
+
+      wp_send_json_success( $response );
+    }
+
+    die();
+}
 //
 // add_action('wp_ajax_getFriendsListMobile', 'getFriendsListMobileAction');
 // add_action('wp_ajax_nopriv_getFriendsListMobile', 'getFriendsListMobileAction');
@@ -266,19 +273,19 @@ function setPlafromsAction()
 //     die();
 // }
 //
-// add_action('wp_ajax_getUserButtons', 'getUserButtonsAction');
-// add_action('wp_ajax_nopriv_getUserButtons', 'getUserButtonsAction');
-//
-// function getUserButtonsAction()
-// {
-//     $userNickname = isset($_POST['user']) ? $_POST['user'] : false;
-//     if (!$userNickname) {
-//         return false;
-//     }
-//     echo ea_page_profile_public_friends_buttons(getUserBySlug($userNickname));
-//     die();
-// }
-//
+add_action('wp_ajax_getUserButtons', 'getUserButtonsAction');
+add_action('wp_ajax_nopriv_getUserButtons', 'getUserButtonsAction');
+
+function getUserButtonsAction()
+{
+    $userNickname = isset($_POST['user']) ? $_POST['user'] : false;
+    if (!$userNickname) {
+        return false;
+    }
+    echo earena_2_page_profile_public_friends_buttons(getUserBySlug($userNickname));
+    die();
+}
+
 
 add_action('wp_ajax_globalHeader', 'globalHeader');
 add_action('wp_ajax_nopriv_globalHeader', 'globalHeader');
@@ -299,7 +306,7 @@ function globalHeader()
     $dataTournament = [];
     $dataTournament[0] = 0;
     $dataTournament[3] = 0;
-    $dataTournament[4] = 0;
+    // $dataTournament[4] = 0;
 
     if (is_user_logged_in()) {
         $id = get_current_user_id();
@@ -429,16 +436,25 @@ function globalHeader()
                     ob_start();
                     earena_2_page_profile_friends_data($user_id, 'private');
                     $dataTournament[1] = ob_get_clean();
+                    $dataTournament[4] = true;
+                }
+            } else if (isset($_POST['time']) && $parts['path'] == '/profile/') {
+                $time = $_POST['time'];
+                $user_id = get_current_user_id();
+                if (intval(get_user_meta($user_id, 'friend_update', true)) > strtotime($time)) {
+                    $dataTournament[4] = true;
                 }
             }
+
             if (isset($_POST['time']) && strpos($parts['path'], 'user') !== false) {
                 $slug = str_replace('/', '', str_replace('/user/', '', $parts['path']));
 
                 $time = $_POST['time'];
                 $user_id = getUserBySlug($slug);
                 if (intval(get_user_meta($user_id, 'friend_update', true)) > strtotime($time)) {
-                    $dataTournament[3] = true;
-                    $dataTournament[4] = true;
+                    ob_start();
+                    earena_2_page_profile_friends_data($user_id, 'public');
+                    $dataTournament[3] = ob_get_clean();
                 }
             } elseif (substr_replace($_SERVER['HTTP_REFERER'], "", -1) === get_site_url()) {
                 $dataTournament[5][] = counter1_value();
@@ -456,14 +472,14 @@ function globalHeader()
     ]);
     die();
 }
-//
-//
-// function getUserBySlug($slug)
-// {
-//     $user = '';
-//     $user = get_user_by('slug', $slug);
-//     return $user ? $user->ID : null;
-// }
+
+
+function getUserBySlug($slug)
+{
+    $user = '';
+    $user = get_user_by('slug', $slug);
+    return $user ? $user->ID : null;
+}
 
 /* ==============================================
 ********  //Матчи (фильтр)

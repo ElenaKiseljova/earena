@@ -246,7 +246,7 @@ const app_create_tournament = new Vue({
       data.append('prize_type', this.prize_type)
 
       if (this.prize_type === 'prize') {
-        data.append('dynamic_prize', this.dynamic_prize)
+        data.append('dynamic_prize', JSON.stringify(this.dynamic_prize))
       }
 
 

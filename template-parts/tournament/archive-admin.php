@@ -182,7 +182,7 @@
               data-popup="tournament"
               data-parentid="<?= $id; ?>"
               data-crontime="<?= $cron_time; ?>"
-              data-cron="<?= serialize((array)$tournament); ?>"
+              data-cron='<?= serialize((array)$tournament); ?>'
               type="button" name="delete-cron" title="<?php _e( 'Удалить CRON', 'earena_2' ); ?>">
               <span class="visually-hidden">
                 <?php _e( 'Удалить CRON', 'earena_2' ); ?>

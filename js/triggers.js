@@ -29,9 +29,37 @@
     });
 
     // TOURNAMENTS
-    $('body').on('tournaments-list-updated', function () {
-      console.log('tournaments-list-updated');
-      window.platforms.drawSelected('tournaments');
+    // $('body').on('tournaments-list-updated', function () {
+    //   console.log('tournaments-list-updated');
+    //   window.platforms.drawSelected('tournaments');
+    // });
+
+    // TOURNAMENT
+    $('body').on('tournament-page-updated', function () {
+      console.log('tournament-page-updated');
+      window.popup.searchOpenPopupButton($('#ajax-container-tournament')[0]);
+      /* Переключатели на стр Турнира (Кубка / Лаки Кубка) */
+      let attrTabTournament = {
+        container : $('#ajax-container-tournament')[0],
+        buttonSelector : '.toggles__item--tournament',
+        callback : window.toggleActive.methods.toggleTournamentContent,
+        unActiveAnother : true,
+      };
+      window.toggleActive.multiple(attrTabTournament);
+      /* Аккордеон */
+      let attrAcordeon = {
+        container : $('#ajax-container-tournament')[0],
+        buttonSelector : '.accordeon__button',
+        toggleNextElement : true,
+      };
+      window.toggleActive.multiple(attrAcordeon);
+      // Вызов ф-и
+      window.progress('.players__progress-bar', $('#ajax-container-tournament')[0]);
+    });
+
+    // MATCH
+    $('body').on('match-page-updated', function () {
+      console.log('match-page-updated');
     });
 
     // FRIENDS

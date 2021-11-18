@@ -8,6 +8,7 @@
         *** Ф-я переключения активного класса по клику
         * Экспортируется в select.js
         */
+
       window.toggleActive = {
         // Для переключения одного/нескольких элементов по клику на один
         single: function (button, elements = [], overlay = false) {
@@ -49,24 +50,38 @@
         },
 
         // Для переключения следующего эл-та по клику на предыдущий
-        multiple: function (buttonSelector, callback = false, toggleNextElement = false, unActiveAnother = false, selectorContent = false, setCookie = {}) {
-          let buttons = document.querySelectorAll(buttonSelector);
+        multiple: function (attr = {}) {
+          /*let attr = {
+            container : document,
+            buttonSelector : false,
+            callback : false,
+            toggleNextElement : false,
+            unActiveAnother : false,
+            selectorContent : false,
+            setCookie : false,
+          };*/
+          let container = document;
+          if (attr.container) {
+            container = attr.container;
+          }
 
-          if (buttons.length > 0) {
+          if (attr.buttonSelector) {
+            let buttons = container.querySelectorAll(attr.buttonSelector);
+
             buttons.forEach((button, i) => {
               button.addEventListener('click', function () {
-                if (unActiveAnother) {
+                if (attr.unActiveAnother) {
                   // Удаляю активные классы других кнопок/контента
                   window.removeActiveClassElements(buttons);
                 }
 
                 button.classList.toggle('active');
 
-                if (callback) {
-                  callback(i, selectorContent, setCookie);
+                if (attr.callback) {
+                  attr.callback(i, attr.selectorContent, attr.setCookie);
                 }
 
-                if (toggleNextElement) {
+                if (attr.toggleNextElement) {
                   button.nextElementSibling.classList.toggle('active');
                 }
               });
@@ -135,71 +150,69 @@
               });
             });
           }
-        }
-      };
+        },
+        //                       //
+        //    --- КОЛЛБЕКИ ---   //
+        //                       //
+        methods : {
+          /* Табы ( пользователи ) - Чат (Админ) */
+          toggleUserContent : function (index) {
+            let userFormContainer = document.querySelector('#container-current-user');
+            let userFormTemplate = document.querySelector(`#user-${index}`);
 
-      //                       //
-      //    --- КОЛЛБЕКИ ---   //
-      //                       //
+            if (userFormTemplate && userFormContainer) {
+              userFormContainer.innerHTML = '';
 
-      /* Табы ( пользователи ) - Чат (Админ) */
-      let toggleUserContent = function (index) {
-        let userFormContainer = document.querySelector('#container-current-user');
-        let userFormTemplate = document.querySelector(`#user-${index}`);
+              userFormContainer.appendChild(userFormTemplate.content.cloneNode(true));
 
-        if (userFormTemplate && userFormContainer) {
-          userFormContainer.innerHTML = '';
+              window.files(userFormContainer);
 
-          userFormContainer.appendChild(userFormTemplate.content.cloneNode(true));
+              let attrFormChat = {
+                idForm: 'form-chat',
+                // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+                selectorForTemplateReplace: '#chat-page-form',
+              };
+              window.form.init(attrFormChat);
 
-          window.files(userFormContainer);
+              let userFormOpenPopupButtons = userFormContainer.querySelectorAll('.openpopup');
+              if (userFormOpenPopupButtons.length > 0) {
+                userFormOpenPopupButtons.forEach((userFormOpenPopupButton, i) => {
+                  window.popup.activateOpenPopupButton(userFormOpenPopupButton);
+                });
+              }
+            }
+          },
+          /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
+          toggleTournamentContent : function (index) {
+            let tournamentTabContents = document.querySelectorAll('.toggles__content--tournament');
 
-          let attrFormChat = {
-            idForm: 'form-chat',
-            // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
-            selectorForTemplateReplace: '#chat-page-form',
-          };
-          window.form.init(attrFormChat);
+            if (tournamentTabContents[index]) {
+              removeActiveClassElements(tournamentTabContents);
 
-          let userFormOpenPopupButtons = userFormContainer.querySelectorAll('.openpopup');
-          if (userFormOpenPopupButtons.length > 0) {
-            userFormOpenPopupButtons.forEach((userFormOpenPopupButton, i) => {
-              window.popup.activateOpenPopupButton(userFormOpenPopupButton);
-            });
+              tournamentTabContents[index].classList.add('active');
+            }
+          },
+          /* Переключатели на стр Матчей/Турниров Админа */
+          toggleAdminContent : function (index, selectorContent, setCookie) {
+            if (selectorContent) {
+              let adminTabContents = document.querySelectorAll(selectorContent);
+
+              if (adminTabContents[index]) {
+                removeActiveClassElements(adminTabContents);
+
+                adminTabContents[index].classList.add('active');
+              }
+            }
+
+            if (setCookie.name) {
+              window.cookieEdit.set(setCookie.name, index);
+            }
           }
         }
       };
 
       // Вызов при загрузке страницы
-      toggleUserContent(0);
-
-      /* Переключатели на стр Турнира (Кубка / Лаки Кубка)*/
-      let toggleTournamentContent = function (index) {
-        let tournamentTabContents = document.querySelectorAll('.toggles__content--tournament');
-
-        if (tournamentTabContents[index]) {
-          removeActiveClassElements(tournamentTabContents);
-
-          tournamentTabContents[index].classList.add('active');
-        }
-      };
-
-      /* Переключатели на стр Матчей/Турниров Админа */
-      let toggleAdminContent = function (index, selectorContent, setCookie) {
-        if (selectorContent) {
-          let adminTabContents = document.querySelectorAll(selectorContent);
-
-          if (adminTabContents[index]) {
-            removeActiveClassElements(adminTabContents);
-
-            adminTabContents[index].classList.add('active');
-          }
-        }
-
-        if (setCookie.name) {
-          window.cookieEdit.set(setCookie.name, index);
-        }
-      };
+      window.toggleActive.methods.toggleUserContent(0);
 
       //                       //
       // --- ИНИЦИАЛИЗАЦИЯ --- //
@@ -209,22 +222,54 @@
       window.toggleActive.several('.tabs__button--platform');
 
       /* Фильтры */
-      window.toggleActive.multiple('.filters__field--select', false, true);
+      let attrFilter = {
+        buttonSelector : '.filters__field--select',
+        toggleNextElement : true,
+      };
+      window.toggleActive.multiple(attrFilter);
 
       /* Аккордеон */
-      window.toggleActive.multiple('.accordeon__button', false, true);
-
-      /* Табы ( пользователи ) - Чат (Админ) */
-      window.toggleActive.multiple('.tabs__button--users', toggleUserContent, false, true);
+      let attrAcordeon = {
+        buttonSelector : '.accordeon__button',
+        toggleNextElement : true,
+      };
+      window.toggleActive.multiple(attrAcordeon);
 
       /* Переключатели на стр Турнира (Кубка / Лаки Кубка) */
-      window.toggleActive.multiple('.toggles__item--tournament', toggleTournamentContent, false, true);
+      let attrTabTournament = {
+        buttonSelector : '.toggles__item--tournament',
+        callback : window.toggleActive.methods.toggleTournamentContent,
+        unActiveAnother : true,
+      };
+      window.toggleActive.multiple(attrTabTournament);
 
-      /* Переключатели на стр Матчей Админа */
-      window.toggleActive.multiple('.tabs__button--matches-admin', toggleAdminContent, false, true, '.section__content--matches-admin', {name: 'admin_tab_active_index'});
+      /* Табы ( пользователи ) - Чат (Админ) */
+      let attrTabMatchAdmin = {
+        buttonSelector : '.tabs__button--users',
+        callback : window.toggleActive.methods.toggleUserContent,
+        unActiveAnother : true,
+      };
+      window.toggleActive.multiple(attrTabMatchAdmin);
 
-      /* Переключатели на стр Турниров Админа */
-      window.toggleActive.multiple('.tabs__button--tournaments-admin', toggleAdminContent, false, true, '.section__content--tournaments-admin', {name: 'admin_tab_active_index'});
+      /* Переключатели Матчей на стр Профиля Админа */
+      let attrTabMatchesProfileAdmin = {
+        buttonSelector : '.tabs__button--matches-admin',
+        callback : window.toggleActive.methods.toggleAdminContent,
+        unActiveAnother : true,
+        selectorContent : '.section__content--matches-admin',
+        setCookie : {name: 'admin_tab_active_index'},
+      };
+      window.toggleActive.multiple(attrTabMatchesProfileAdmin);
+
+      /* Переключатели Турниров на стр Профиля Админа */
+      let attrTabTournamentsProfileAdmin = {
+        buttonSelector : '.tabs__button--tournaments-admin',
+        callback : window.toggleActive.methods.toggleAdminContent,
+        unActiveAnother : true,
+        selectorContent : '.section__content--tournaments-adminn',
+        setCookie : {name: 'admin_tab_active_index'},
+      };
+      window.toggleActive.multiple(attrTabTournamentsProfileAdmin);
 
       /* Языки */
       let languages = document.querySelectorAll('.languages');

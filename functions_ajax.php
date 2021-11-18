@@ -320,12 +320,12 @@ function globalHeader()
         // 2 balanceTopValue
         // 3 message
         // 4 numRed -
-        // 5 numBlue -
+        // 5 friends (request)
         // 6 rating
         // 7 matches
         // 8 tournaments
         // 9 admin
-        // 10 friends
+        // 10 friends (total)
 
         $data[1] = '';//earena_2_nice_money(money_in_games());
         $data[2] = earena_2_nice_money(balance());
@@ -374,9 +374,11 @@ function globalHeader()
                             'status_time')) > strtotime($time)) {
                         $ea_user = wp_get_current_user();
                         $dataTournament[0] = 1;
+
                         ob_start();
                         earena_2_tournament_page_data($ea_user, $tournament_id);
                         $dataTournament[1] = ob_get_clean();
+                        $dataTournament[15] = strtotime(EArena_DB:: get_ea_tournament_field($tournament_id, 'status_time')) . '------------' . strtotime($time);
                     }
                 }
 

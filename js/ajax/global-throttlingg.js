@@ -86,20 +86,10 @@ jQuery(document).ready(function ($) {
                       }
                       if (1 in resp && 0 in resp[1] && resp[1][0] == 1) {
                           data.time = getLastUpdt()
-                          if ($('#ajax-tour-single').length) {
-                              const activetab = $('li[aria-selected=true]').index()
-                              $('#ajax-tour-single').html(resp[1][1])
-                              $('body').trigger('tournament-updated')
-                              if ($('.tour-tab').length) {
-                                  $('.tour-tab').tabs({
-                                      active: activetab
-                                  })
-                              }
-                              if ($('.create-tour-tab').length) {
-                                  $('.create-tour-tab').tabs({
-                                      active: activetab
-                                  })
-                              }
+                          if ($('#ajax-container-tournament').length) {
+                              $('#ajax-container-tournament').html(resp[1][1])
+                              console.log(resp[1][15]);
+                              $('body').trigger('tournament-page-updated')
                           }
                           if ($('#ajax-tournament-match-single').length) {
                               const activetab = $('li[aria-selected=true]').index()
@@ -138,8 +128,6 @@ jQuery(document).ready(function ($) {
                               $('#private-friend-list').html(resp[1][1])
                               $('body').trigger('private-friend-list-updated')
                           }
-
-                          $('body').trigger('tournaments-list-updated');
                       }
                       if (resp[1][3]) {
                           data.time = getLastUpdt()

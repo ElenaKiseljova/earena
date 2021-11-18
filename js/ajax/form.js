@@ -913,8 +913,12 @@
             if ( formId.indexOf('tournament') > -1 ) {
               if (prefix.indexOf('add-player') > -1 ||
                   prefix.indexOf('leave') > -1 ||
-                  prefix.indexOf('join') > -1 ||
-                  prefix.indexOf('delete-cron') > -1 ||
+                  prefix.indexOf('join') > -1
+                ) {
+                $('body').trigger('tournament-update');
+              }
+
+              if (prefix.indexOf('delete-cron') > -1 ||
                   prefix.indexOf('delete-tournament') > -1 ||
                   prefix.indexOf('cancel') > -1
                 ) {

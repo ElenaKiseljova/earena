@@ -64,7 +64,7 @@ const app_create_tournament = new Vue({
       { value: 1, label: __('Fast', 'earena') },
     ],
     periodArr: [
-      { value: '0', label: __('Не повторяется', 'earena') },
+      { value: '', label: __('Не повторяется', 'earena') },
       { value: 'daily', label: __('Каждый день', 'earena') },
       { value: 'weekly', label: __('Каждую неделю', 'earena') },
       { value: 'monthly', label: __('Каждый месяц', 'earena') },

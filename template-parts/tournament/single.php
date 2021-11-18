@@ -281,7 +281,7 @@
                   data-popup="tournament"
                   data-id="<?= $tournament->ID; ?>"
                   data-price="<?= $tournament->price; ?>"
-                  type="button" name="cancel">
+                  type="button" name="leave">
                   <span>
                     <?php _e( 'Отменить регистрацию', 'earena_2' ); ?>
                   </span>

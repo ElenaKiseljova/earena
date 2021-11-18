@@ -665,15 +665,17 @@
 
               if (openPopupButtonsSuccessForm && openPopupButtonsErrorForm) {
                 if (response.success === true) {
-                  // Список файлов в форме Контакта
-                  let filesPreviewList = form.querySelector('.files__preview');
-                  if (filesPreviewList) {
-                    filesPreviewList.innerHTML = '';
-                  }
-
-                  form.reset();
-
                   openPopupButtonsSuccessForm.click();
+
+                  if (formId.indexOf('contact') > -1) {
+                    // Список файлов в форме Контакта
+                    let filesPreviewList = form.querySelector('.files__preview');
+                    if (filesPreviewList) {
+                      filesPreviewList.innerHTML = '';
+                    }
+
+                    form.reset();
+                  }
 
                   if (formId.indexOf('create') > -1) {
                     window.form.showResponseText(popup, response.data);

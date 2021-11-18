@@ -15,7 +15,7 @@
   </head>
   <body>
     <script type="text/javascript">
-      var currentUserId = <?= (is_user_logged_in()) ? get_current_user_id() : false; ?>;
+      var currentUserId = <?= (is_user_logged_in()) ? get_current_user_id() : 'false'; ?>;
       var is_user_logged_in = <?= is_user_logged_in() ? 'true' : 'false'; ?>;
       var is_ea_admin = <?= is_ea_admin() ? 'true' : 'false'; ?>;
 

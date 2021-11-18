@@ -28,17 +28,17 @@
               $user_id = $user->ID;
               ?>
                 <li class="search__item">
-                  <a class="user user--search" href="<?= ea_user_link($user_id); ?>">
-                    <div class="user__avatar user__avatar--search">
+                  <div class="user user--search" tabindex="0">
+                    <a class="user__avatar user__avatar--search" href="<?= ea_user_link($user_id); ?>">
                       <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
-                    </div>
+                    </a>
 
                     <div class="user__info user__info--search">
-                      <div class="user__name user__name--search">
+                      <a class="user__name user__name--search" href="<?= ea_user_link($user_id); ?>">
                         <h5>
                           <?= get_user_meta($user_id, 'nickname', true); ?>
                         </h5>
-                      </div>
+                      </a>
                       <p class="user__email user__email--search">
                         <?= $user->user_email; ?>
                       </p>
@@ -57,7 +57,7 @@
                         </span>
                       </span>
                     <?php endif; ?>
-                  </a>
+                  </div>
                 </li>
               <?php
           }

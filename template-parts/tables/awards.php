@@ -63,7 +63,11 @@
           </td>
           <td class="table__column table__column--td table__column--award">
             <?php if (isset($prizes[$award_index])): ?>
-              $<?= earena_2_nice_money( round(($prizes[$award_index] * $tournament->prize / 100), 2) ); ?>
+              <?php if ($tournament->prize_type == 'prize'): ?>
+                <?= $prizes[$award_index]; ?>
+              <?php else: ?>
+                $<?= earena_2_nice_money( round(($prizes[$award_index] * $tournament->prize / 100), 2) ); ?>
+              <?php endif; ?>
             <?php endif; ?>
           </td>
         </tr>
@@ -98,7 +102,11 @@
           </td>
           <td class="table__column table__column--td table__column--award">
             <?php if (isset($prizes[$award_index])): ?>
-              $<?= earena_2_nice_money( round(($prizes[$award_index] * $tournament->prize / 100), 2) ); ?>
+              <?php if ($tournament->prize_type == 'prize'): ?>
+                <?= $prizes[$award_index]; ?>
+              <?php else: ?>
+                $<?= earena_2_nice_money( round(($prizes[$award_index] * $tournament->prize / 100), 2) ); ?>
+              <?php endif; ?>
             <?php endif; ?>
           </td>
         </tr>

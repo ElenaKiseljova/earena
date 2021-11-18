@@ -164,17 +164,18 @@
           </label>
         </div>
       </div>
-
       <div v-if="prize_type==='money'" class="form__prizes">
         <div class="form__row">
-          <input v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
+          <input v-if="activePrize===''" v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
+          <input v-if="activePrize===1" @input="window.form.validate('form-create')" v-model="our_percent" class="form__field form__field--create" id="our_percent" type="number" name="our_percent" required placeholder="<?php _e( 'Комиссия (%)', 'earena_2' ); ?>">
         </div>
         <p class="form__text form__text--create">
           <?php _e( 'Комиссия, которая будет взиматься с каждого игрока за участие', 'earena_2' ); ?>
         </p>
 
         <div class="form__row">
-          <input v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
+          <input v-if="activePrize===''" v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
+          <input v-if="activePrize===1" @input="window.form.validate('form-create')" v-model="garant" class="form__field form__field--create" id="garant" type="number" name="garant" required placeholder="<?php _e( 'Гарантийная сумма', 'earena_2' ); ?>">
         </div>
         <p class="form__text form__text--create">
           <?php _e( 'Гарантированный призовой фонд турнира', 'earena_2' ); ?>

@@ -28,9 +28,14 @@
       window.platforms.drawSelected('matches');
     });
 
+    // TOURNAMENTS
+    $('body').on('tournaments-list-updated', function () {
+      console.log('tournaments-list-updated');
+      window.platforms.drawSelected('tournaments');
+    });
+
     // FRIENDS
     $('body').on('edit-public-user-button', function () {
-      console.log('edit-public-user-button');
       const user = window.location.pathname.replace('/user/', '').replace('/', '')
       $.ajax({
         url: earena_2_ajax.url,
@@ -49,7 +54,6 @@
     });
 
     $('body').on('edit-public-user-list', function () {
-      console.log('edit-public-user-list');
       const user = window.location.pathname.replace('/user/', '').replace('/', '')
 
       $.ajax({
@@ -78,7 +82,6 @@
     });
 
     $('body').on('edit-private-user-list', function () {
-      console.log('edit-private-user-list');
       if (currentUserId) {
         $.ajax({
           url: earena_2_ajax.url,
@@ -99,18 +102,15 @@
     });
 
     $('body').on('private-friend-list-updated', function () {
-      console.log('private-friend-list-updated');
       window.popup.searchOpenPopupButton($('#private-friend-list')[0]);
     });
 
     $('body').on('public-friend-list-updated', function () {
-      console.log('public-friend-list-updated');
       window.popup.searchOpenPopupButton($('#public-friend-list')[0]);
     });
 
     // GLOBAL THROTTLINGG
     $('body').on('vip-update tournament-update match-update', function () {
-      console.log('globalThrottlingg');
       window.globalThrottlingg.getDataFunction();
     });
   } catch (e) {

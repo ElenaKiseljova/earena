@@ -138,6 +138,8 @@ jQuery(document).ready(function ($) {
                               $('#private-friend-list').html(resp[1][1])
                               $('body').trigger('private-friend-list-updated')
                           }
+
+                          $('body').trigger('tournaments-list-updated');
                       }
                       if (resp[1][3]) {
                           data.time = getLastUpdt()

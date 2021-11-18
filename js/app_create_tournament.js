@@ -34,6 +34,7 @@ const app_create_tournament = new Vue({
     prize_type: 'money',
     counterPrizes: 0,
     dynamic_prize: [''],
+    activePrize: '',
     top: 0,
     vip: 0,
     verification: 0,
@@ -63,6 +64,7 @@ const app_create_tournament = new Vue({
       { value: 1, label: __('Fast', 'earena') },
     ],
     periodArr: [
+      { value: '0', label: __('Не повторяется', 'earena') },
       { value: 'daily', label: __('Каждый день', 'earena') },
       { value: 'weekly', label: __('Каждую неделю', 'earena') },
       { value: 'monthly', label: __('Каждый месяц', 'earena') },
@@ -184,6 +186,21 @@ const app_create_tournament = new Vue({
         }, 500)
       }
     },
+    prize_type: {
+      deep: true,
+      handler: function (v) {
+        switch (this.prize_type) {
+          case 'money':
+            this.activePrize = 1;
+
+            break;
+          case 'prize':
+            this.activePrize = '';
+
+          break;
+        }
+      }
+    }
   },
   methods: {
     sendHandler (evt) {

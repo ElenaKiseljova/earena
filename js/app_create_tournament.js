@@ -32,7 +32,6 @@ const app_create_tournament = new Vue({
     qtyValMin: '',
     qtyValMax: '',
     prize_type: 'money',
-    counterPrizes: 0,
     dynamic_prize: [''],
     activePrize: '',
     top: 0,

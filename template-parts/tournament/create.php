@@ -184,7 +184,7 @@
       <div v-if="prize_type==='prize'" class="form__prizes prizes">
         <ul class="prizes__list">
           <li v-for="prize_value, i in dynamic_prize" class="prizes__item">
-            <div :class="{'prizes__additional':i>0}" class="form__row">
+            <div class="form__row">
               <input v-model="dynamic_prize[i]" @input="window.form.validate('form-create')" class="form__field form__field--create" :id="'prize-' + i" type="text" :name="'dynamic_prize[' + i + ']'" required placeholder="<?php _e( 'Название приза', 'earena_2' ); ?>">
 
               <button v-if="i>0" @click="removePrize(i)" class="prizes__button prizes__button--remove button button--red" type="button" name="button">

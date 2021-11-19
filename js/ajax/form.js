@@ -60,11 +60,6 @@
 
             window.form.parseCheckboxes(attr.idForm);
 
-
-            if (attrForms[attr.idForm].FORM.closest('.popup')) {
-
-            }
-
             if (attrForms[attr.idForm].FORM.closest('.popup')) {
               // Поиск Селектов (если форма в Попапе)
               window.select.search(attrForms[attr.idForm].FORM);

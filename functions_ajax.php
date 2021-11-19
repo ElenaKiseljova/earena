@@ -986,6 +986,7 @@ function earena_2_del_moderate_callback()
 {
     check_ajax_referer('ea_functions_nonce', 'security');
     $match_id = $_POST['match_id'];
+    $match_type = $_POST['match_type'];
     $tid = $_POST['match_thread_id'];
     $tournament = $_POST['tournament'];
     $complaint_index = (int)$_POST['complaint_index'];
@@ -1034,7 +1035,7 @@ function earena_2_del_moderate_callback()
         $arr_response['complaint'] = $complaint;
         $arr_response['complaint_index'] = $complaint_index;
 
-        earena_2_complaint_html($complaint, $match_id);
+        earena_2_complaint_html($complaint, $match_id, $match_type);
 
         $arr_response['content'] = ob_get_contents();
         ob_end_clean();

@@ -1,5 +1,5 @@
 <?php
-  global $match, $match_id, $ea_user;
+  global $match, $match_id, $match_type, $ea_user;
 
   $is_matches_chat = is_page(274);
   $is_tournaments_chat = is_page(907);
@@ -53,12 +53,12 @@
 
   <template id="user-0">
     <?php
-      earena_2_chat_form_users_html( $match_id, $match->player1 );
+      earena_2_chat_form_users_html( $match_id, $match->player1, $match_type );
     ?>
   </template>
   <template id="user-1">
     <?php
-      earena_2_chat_form_users_html( $match_id, $match->player2 );
+      earena_2_chat_form_users_html( $match_id, $match->player2, $match_type );
     ?>
   </template>
 
@@ -73,7 +73,7 @@
       ?>
         <div class="chat-page__complaint-container" id="complaint-container">
           <?php
-            earena_2_complaint_html($complaint, $match_id);
+            earena_2_complaint_html($complaint, $match_id, $match_type);
           ?>
         </div>
       <?php
@@ -81,6 +81,6 @@
   ?>
 <?php else: ?>
   <?php
-    earena_2_chat_form_users_html( $match_id, $ea_user->ID );
+    earena_2_chat_form_users_html( $match_id, $ea_user->ID, $match_type );
   ?>
 <?php endif; ?>

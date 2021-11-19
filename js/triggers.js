@@ -60,6 +60,24 @@
     // MATCH
     $('body').on('match-page-updated', function () {
       console.log('match-page-updated');
+      // CHAT
+      let attrFormChat = {
+        idForm: 'form-chat',
+        // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+        selectorForTemplateReplace: '#chat-page-form',
+      };
+      window.form.init(attrFormChat);
+
+      window.files($('#chat-page-form')[0]);
+
+      window.toggleActive.methods.toggleUserContent(0);
+      /* Табы ( пользователи ) - Чат (Админ) */
+      let attrTabMatchAdmin = {
+        buttonSelector : '.tabs__button--users',
+        callback : window.toggleActive.methods.toggleUserContent,
+        unActiveAnother : true,
+      };
+      window.toggleActive.multiple(attrTabMatchAdmin);
     });
 
     // FRIENDS
@@ -139,6 +157,7 @@
 
     // GLOBAL THROTTLINGG
     $('body').on('vip-update tournament-update match-update', function () {
+      console.log('globalThrottlingg');
       window.globalThrottlingg.getDataFunction();
     });
   } catch (e) {

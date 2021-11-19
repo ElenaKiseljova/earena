@@ -650,7 +650,8 @@
             // CHAT
             if ( formId.indexOf('chat') > -1 ) {
               if (response.success === true) {
-                window.form.reloadPage();
+                // window.form.reloadPage();
+                $('body').trigger('match-update');
 
                 return;
               }
@@ -1239,7 +1240,8 @@
                 let data = {
                   'action' : 'toggleTranslation',
                   'match_id' : checkboxItem.dataset.matchId,
-                  'user_id' : checkboxItem.dataset.userId
+                  'user_id' : checkboxItem.dataset.userId,
+                  'match_type' : checkboxItem.dataset.matchType
                 };
 
                 checkboxItem.addEventListener('change', function () {
@@ -1259,19 +1261,7 @@
                         response = JSON.parse(response);
 
                         if (response.success === 1) {
-                          let wrapperFormNode = attrForms[formId].wrapperFormNode;
-
-                          if (wrapperFormNode && is_ea_admin === false) {
-                            wrapperFormNode.innerHTML = response.content;
-
-                            // Загрузка файлов
-                            window.files(wrapperFormNode);
-
-                            // Повторная инициализация формы
-                            window.form.init(attrForms[formId]._SETTINGS);
-                          } else {
-                            window.form.reloadPage();
-                          }
+                          $('body').trigger('match-update');
                         }
 
                         console.log(response);

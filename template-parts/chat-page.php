@@ -6,6 +6,8 @@
   $is_matches_chat = earena_2_current_page( 'matches' );
   $is_tournaments_chat = earena_2_current_page( 'tournaments');
 
+  $match_type = 0;
+
   $tournament = false;
   $tournament_id = ($match->tid) ?? false;
   if ($tournament_id) {
@@ -16,6 +18,8 @@
       $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
       $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
       $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
+
+      $match_type = (int)$tournament->type;
     }
   }
 ?>
@@ -130,7 +134,7 @@
       <?php endif; ?>
 
       <div id="chat-page-form">
-        <?php earena_2_match_page_data($ea_user, $match_id); ?>
+        <?php earena_2_match_page_data($ea_user, $match_id, $match_type); ?>
       </div>
     </div>
     <div class="chat-page__right">

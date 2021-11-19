@@ -42,7 +42,7 @@
                 <?php if (isset($awards[$i])): ?>
                   <img src="<?php echo get_template_directory_uri(); ?>/assets/img/medal-<?= $awards[$i]; ?>.svg" alt="Medal">
                 <?php elseif ($is_tournament_simple): ?>
-                  -
+                  <span>-</span>
                 <?php endif; ?>
               </td>
               <td class="table__column table__column--td table__column--user">

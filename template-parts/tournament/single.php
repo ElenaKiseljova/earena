@@ -25,7 +25,7 @@
   $tournament_waiting = ($tournament->status < 2) ? true : false;
   $tournament_registration = ($tournament->status >= 2 && $tournament->status < 4) ? true : false;
   $tournament_present = ($tournament->status >= 4 && $tournament->status <= 101) ? true : false;
-  $tournament_ended = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
+  $tournament_end = ($tournament->status > 101 && $tournament->status < 103) ? true : false;
   $tournament_cancel = ($tournament->status == 103) ? true : false;
 
   /* TYPE */
@@ -48,6 +48,22 @@
           </span>
         <?php endif; ?>
       </div>
+
+      <?php if ( $tournament_end && !empty($tournament->winner ) ): ?>
+        <div class="tournament__winner tournament__winner--page">
+          <div class="tournament__winner-image-wrapper">
+            <div class="tournament__winner-image">
+              <?= bp_core_fetch_avatar('item_id=' . json_decode($tournament->winner)[0]); ?>
+            </div>
+          </div>
+
+          <h5 class="tournament__winner-name">
+            <?php
+              earena_2_get_nickname_by_id(json_decode($tournament->winner)[0]);
+            ?>
+          </h5>
+        </div>
+      <?php endif; ?>
 
       <div class="tournament__image tournament__image--page" itemscope itemtype="http://schema.org/ImageObject">
         <picture class="tournament__picture">
@@ -112,7 +128,7 @@
             <time><?= date('d.m.Y \в H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> (UTC<?= utc_value(); ?>)</time>
           <?php endif; ?>
         </div>
-      <?php elseif ($tournament_ended) : ?>
+      <?php elseif ($tournament_end) : ?>
         <div class="tournament__status tournament__status--page tournament__status--past">
           <?php _e( 'Завершился', 'earena_2' ); ?>
           <?php if (!empty($tournament->end_time)): ?>
@@ -295,7 +311,7 @@
                   </span>
                 </button>
               <?php
-            } elseif ($tournament_ended) {
+            } elseif ($tournament_end) {
               ?>
                 <button class="tournament__button button button--gray openpopup" data-popup="tournament" type="button" name="registration" disabled>
                   <span>

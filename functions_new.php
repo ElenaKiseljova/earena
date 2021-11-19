@@ -773,11 +773,12 @@
   ********  //Вывод информации о матче на стр Матча
   =============================================== */
 
-  function earena_2_match_page_data($user, $id_match)
+  function earena_2_match_page_data($user, $id_match, $type_match)
   {
-    global $match_id, $ea_user;
+    global $match_id, $match_type, $ea_user;
 
     $match_id = $id_match;
+    $match_type = $type_match;
     $ea_user = $user;
 
     get_template_part( 'template-parts/match/single' );
@@ -788,8 +789,17 @@
   ********  //Формы на странице Матча
   =============================================== */
 
-  function earena_2_chat_form_users_html($match_id, $user_id) {
-    $match = EArena_DB::get_ea_match($match_id);
+  function earena_2_chat_form_users_html($match_id, $user_id, $match_type) {
+    $bo3 = false;
+    $match_tournament = false;
+
+    if ($match_type === 0) {
+      $match = EArena_DB::get_ea_match($match_id);
+    } else { // 1, 2, 3
+      $match = EArena_DB::get_ea_tournament_match($match_id);
+      $match_tournament = $match->tid ?? false;
+      $bo3 = EArena_DB::get_ea_tournament_field($match->tid, 'reglament') == 'bo3';
+    }
 
     $player_1 = get_user_by( 'id', $match->player1 );
     $player_2 = get_user_by( 'id', $match->player2 );
@@ -799,12 +809,6 @@
 
     $is_reporter = (isset($match->reporter) && $user_id == (int)$match->reporter) ? true : false;
     $is_result = (isset($match->score1) && isset($match->score2)) ? true : false;
-
-    $bo3 = false;
-    $match_tournament = $match->tid ?? false;
-    if ($match_tournament) {
-      $bo3 = EArena_DB::get_ea_tournament_field($match->tid, 'reglament') == 'bo3';
-    }
     ?>
       <div class="chat-page__inner">
         <form class="form form--chat" data-prefix="" id="form-chat" action="index.html" method="post">
@@ -838,7 +842,7 @@
 
             <?php if ($stream_player_1 && ($match->player1 == $user_id)): ?>
               <div class="chat-page__stream chat-page__stream--left checkbox checkbox--left">
-                <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player1; ?>" type="checkbox" name="stream1" id="stream1" <?= $match->stream1 ? 'checked' : ''; ?>>
+                <input class="visually-hidden" data-match-type="<?= $match_type; ?>" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player1; ?>" type="checkbox" name="stream1" id="stream1" <?= $match->stream1 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--left" for="stream1">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>
                 </label>
@@ -926,7 +930,7 @@
 
             <?php if ($stream_player_2 && ($match->player2 == $user_id)): ?>
               <div class="chat-page__stream chat-page__stream--right checkbox checkbox--right">
-                <input class="visually-hidden" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player2; ?>" type="checkbox" name="stream2" id="stream2" <?= $match->stream2 ? 'checked' : ''; ?>>
+                <input class="visually-hidden" data-match-type="<?= $match_type; ?>" data-match-id="<?= $match_id; ?>" data-user-id="<?= $match->player2; ?>" type="checkbox" name="stream2" id="stream2" <?= $match->stream2 ? 'checked' : ''; ?>>
                 <label class="checkbox__label checkbox__label--checkbox checkbox__label--right" for="stream2">
                   <?php _e( 'Трансляция', 'earena_2' ); ?>
                 </label>
@@ -1007,9 +1011,13 @@
   ********  //Получение Жалоб на стр Матча
   =============================================== */
 
-  function earena_2_complaint_html($complaint, $match_id) {
-    $match = EArena_DB::get_ea_match($match_id);
-    $match_tournament = $match->tid ?? false;
+  function earena_2_complaint_html($complaint, $match_id, $match_type) {
+    if ($match_type === 0) {
+      $match = EArena_DB::get_ea_match($match_id);
+    } else { // 1, 2, 3
+      $match = EArena_DB::get_ea_tournament_match($match_id);
+      $match_tournament = $match->tid ?? false;
+    }
     ?>
       <ul class="chat-page__complaint">
         <?php $complaint_index = 0; ?>

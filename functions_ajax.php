@@ -139,20 +139,21 @@ add_action('wp_ajax_nopriv_toggleTranslation', 'toggleTranslationAction');
 function toggleTranslationAction()
 {
     if (is_user_logged_in()) {
+      $match_type = $_POST['match_type'] ?? 0;
       $match_id =  $_POST['match_id'] ?? false;
       $user_id =  $_POST['user_id'] ?? false;
 
       $response = [];
       if ($match_id && $user_id) {
-        ob_start();
-        $response['success'] = add_match_stream_function($match_id, $user_id);
+        // ob_start();
+        $response['success'] = add_match_stream_function($match_id, $user_id, $match_type);
         $response['message'] = __('Успешно удален/добавлен стрим матча', 'earena_2');
 
-        earena_2_chat_form_users_html($match_id, $user_id);
+        // earena_2_chat_form_users_html($match_id, $user_id);
 
-        $response['content'] = ob_get_contents();
-
-        ob_end_clean();
+        // $response['content'] = ob_get_contents();
+        //
+        // ob_end_clean();
 
         wp_send_json( json_encode( $response ) );
 
@@ -306,7 +307,7 @@ function globalHeader()
     $dataTournament = [];
     $dataTournament[0] = 0;
     $dataTournament[3] = 0;
-    // $dataTournament[4] = 0;
+    $dataTournament[4] = 0;
 
     if (is_user_logged_in()) {
         $id = get_current_user_id();
@@ -340,7 +341,7 @@ function globalHeader()
     } else {
         echo json_encode([
             0 => $data,
-            1 => $dataTournament,
+            1 => $dataTournament
         ]);
         die();
     }
@@ -370,65 +371,56 @@ function globalHeader()
                       $tournament_id = $query['cup'];
                     }
                     $time = $_POST['time'];
-                    if (strtotime(EArena_DB:: get_ea_tournament_field($tournament_id,
-                            'status_time')) > strtotime($time)) {
+                    if (strtotime(EArena_DB::get_ea_tournament_field($tournament_id, 'status_time')) > strtotime($time)) {
                         $ea_user = wp_get_current_user();
                         $dataTournament[0] = 1;
 
                         ob_start();
                         earena_2_tournament_page_data($ea_user, $tournament_id);
                         $dataTournament[1] = ob_get_clean();
-                        $dataTournament[15] = strtotime(EArena_DB:: get_ea_tournament_field($tournament_id, 'status_time')) . '------------' . strtotime($time);
+                        // 15 - Тестовая штука
+                        $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_field($tournament_id, 'status_time')) . '------------' . strtotime($time);
                     }
                 }
 
-                // if (isset($query['lc']) && $query['lc'] > 0 && isset($_POST['time'])) {
-                //     $lc_id = $query['lc'];
-                //     $time = $_POST['time'];
-                //     if (strtotime(EArena_DB:: get_ea_tournament_field($lc_id, 'status_time')) > strtotime($time)) {
-                //         $ea_user = wp_get_current_user();
-                //         $dataTournament[0] = 1;
-                //         ob_start();
-                //         ea_lc_page_data($ea_user, $lc_id);
-                //         $dataTournament[1] = ob_get_clean();
-                //     }
-                // }
-
-                if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time'])) { // && $parts['path'] == '/tournaments/tournament/match/'
+                if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/tournaments/tournament/match/') {
                     $match_id = $query['match'];
+                    $type_match = 0;
+
+                    $tournament = EArena_DB::get_ea_tournament($match_id->tid) ?? [];
+                    if (!empty($tournament)) {
+                      /* TYPE */
+                      $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
+                      $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
+                      $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
+
+                      $match_type = (int)$tournament->type;
+                    }
+
                     $time = $_POST['time'];
-                    if (strtotime(EArena_DB:: get_ea_tournament_match_field($match_id,
-                            'status_time')) > strtotime($time)) {
+                    if (strtotime(EArena_DB::get_ea_tournament_match_field($match_id, 'status_time')) > strtotime($time)) {
                         $ea_user = wp_get_current_user();
                         $dataTournament[0] = 1;
                         ob_start();
-                        earena_2_match_page_data($ea_user, $match_id);
+                        earena_2_match_page_data($ea_user, $match_id, $match_type);
                         $dataTournament[1] = ob_get_clean();
+                        // 15 - Тестовая штука
+                        $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
                     }
+                } else if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/matches/match/') {
+                  $match_id = $query['match'];
+                  $match_type = 0;
+                  $time = $_POST['time'];
+                  if (strtotime(EArena_DB::get_ea_match_field($match_id, 'status_time')) > strtotime($time)) {
+                      $ea_user = wp_get_current_user();
+                      $dataTournament[0] = 1;
+                      ob_start();
+                      earena_2_match_page_data($ea_user, $match_id, $match_type);
+                      $dataTournament[1] = ob_get_clean();
+                      // 15 - Тестовая штука
+                      $dataTournament[15] = strtotime(EArena_DB::get_ea_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
+                  }
                 }
-
-                // if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/matches/match/') {
-                //     $match_id = $query['match'];
-                //     $time = $_POST['time'];
-                //     if (strtotime(EArena_DB:: get_ea_match_field($match_id, 'status_time')) > strtotime($time)) {
-                //         $ea_user = wp_get_current_user();
-                //         $dataTournament[0] = 1;
-                //         ob_start();
-                //         ea_match_page_data($ea_user, $match_id);
-                //         $dataTournament[1] = ob_get_clean();
-                //     }
-                // } elseif (isset($query['cup']) && $query['cup'] > 0 && isset($_POST['time'])) {
-                //     $tournament_id = $query['cup'];
-                //     $time = $_POST['time'];
-                //     if (strtotime(EArena_DB:: get_ea_tournament_field($tournament_id,
-                //             'status_time')) > strtotime($time)) {
-                //         $ea_user = wp_get_current_user();
-                //         $dataTournament[0] = 1;
-                //         ob_start();
-                //         ea_cup_page_data($ea_user, $tournament_id);
-                //         $dataTournament[1] = ob_get_clean();
-                //     }
-                // }
             }
             if (isset($_POST['time']) && $parts['path'] == '/profile/friends/') {
                 $time = $_POST['time'];

@@ -88,12 +88,12 @@ jQuery(document).ready(function ($) {
                           data.time = getLastUpdt()
                           if ($('#ajax-container-tournament').length) {
                               $('#ajax-container-tournament').html(resp[1][1])
-                              console.log(resp[1][15]);
+                              // console.log(resp[1][15]);
                               $('body').trigger('tournament-page-updated')
                           }
                           if ($('#chat-page-form').length) {
                               $('#chat-page-form').html(resp[1][1])
-                              console.log(resp[1][15]);
+                              // console.log(resp[1][15]);
                               $('body').trigger('match-page-updated')
                           }
                           // Список друзей во вкладке Друзья в Профиле

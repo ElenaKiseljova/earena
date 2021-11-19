@@ -379,7 +379,7 @@ function globalHeader()
                         earena_2_tournament_page_data($ea_user, $tournament_id);
                         $dataTournament[1] = ob_get_clean();
                         // 15 - Тестовая штука
-                        $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_field($tournament_id, 'status_time')) . '------------' . strtotime($time);
+                        // $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_field($tournament_id, 'status_time')) . '------------' . strtotime($time);
                     }
                 }
 
@@ -405,7 +405,7 @@ function globalHeader()
                         earena_2_match_page_data($ea_user, $match_id, $match_type);
                         $dataTournament[1] = ob_get_clean();
                         // 15 - Тестовая штука
-                        $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
+                        // $dataTournament[15] = strtotime(EArena_DB::get_ea_tournament_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
                     }
                 } else if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/matches/match/') {
                   $match_id = $query['match'];
@@ -418,7 +418,7 @@ function globalHeader()
                       earena_2_match_page_data($ea_user, $match_id, $match_type);
                       $dataTournament[1] = ob_get_clean();
                       // 15 - Тестовая штука
-                      $dataTournament[15] = strtotime(EArena_DB::get_ea_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
+                      // $dataTournament[15] = strtotime(EArena_DB::get_ea_match_field($match_id, 'status_time')) . '------------' . strtotime($time);
                   }
                 }
             }

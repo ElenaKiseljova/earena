@@ -10,7 +10,8 @@
     $is_profile = (earena_2_current_page( 'profile' )) ? true : false;
   }
 
-  $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
+  $is_profile_admin = is_page(646) || is_page(640) || is_page(643);
+
   if (!isset($games)) {
     $games = get_site_option('games');
   }
@@ -38,7 +39,7 @@
       $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
     } elseif ($is_profile && !is_ea_admin()) {
       $tournament_url = '/profile/tours/tour/?tournament=' . $tournament->ID;
-    } elseif ($is_profile && is_ea_admin()) {
+    } elseif ($is_profile_admin) {
       $tournament_url = '/admin/tours/tour/?tournament=' . $tournament->ID;
     } else {
       $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;

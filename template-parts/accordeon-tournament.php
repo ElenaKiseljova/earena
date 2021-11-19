@@ -94,7 +94,7 @@
                         </a>
 
                         <div class="accordeon__result">
-                          <?php if (isset($match->score1) && isset($match->score2) && ($tournament_ended || $tournament_cancel)): ?>
+                          <?php if (isset($match->score1) && isset($match->score2)): ?>
                             <span class="accordeon__result-text">
                               <?= $match->score1; ?> : <?= $match->score2; ?>
                             </span>
@@ -224,7 +224,7 @@
                     </a>
 
                     <div class="accordeon__result">
-                      <?php if (isset($match->score1) && isset($match->score2) && ($tournament_ended || $tournament_cancel)): ?>
+                      <?php if (isset($match->score1) && isset($match->score2)): ?>
                         <span class="accordeon__result-text">
                           <?= $match->score1; ?> : <?= $match->score2; ?>
                         </span>
@@ -299,7 +299,7 @@
                     </a>
 
                     <div class="accordeon__result">
-                      <?php if (isset($match->score1) && isset($match->score2) && ($tournament_ended || $tournament_cancel)): ?>
+                      <?php if (isset($match->score1) && isset($match->score2)): ?>
                         <span class="accordeon__result-text">
                           <?= $match->score1; ?> : <?= $match->score2; ?>
                         </span>

@@ -249,9 +249,7 @@
         // Проверяем наличие слага в URI
         $is_current = strpos($actual_link, $page_slug);
 
-        if ($is_current !== false) {
-          return true;
-        }
+        return $is_current;
       }
     }
   }

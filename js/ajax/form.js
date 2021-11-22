@@ -649,7 +649,6 @@
             // CHAT
             if ( formId.indexOf('chat') > -1 ) {
               if (response.success === true) {
-                // window.form.reloadPage();
                 $('body').trigger('match-update');
 
                 return;
@@ -700,24 +699,7 @@
                 response = JSON.parse(response);
 
                 if (response.success === 1) {
-                  if (wrapperFormNode) {
-                    wrapperFormNode.innerHTML = response.content;
-
-                    // ADMIN complait forms
-                    let complaintAdminChatForms = wrapperFormNode.querySelectorAll('form[id*="form-complaint-"]');
-
-                    if (complaintAdminChatForms.length > 0) {
-                      complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
-                        // Инициализация полученных форм
-                        let attrFormComplaint = {
-                          idForm: complaintAdminChatForm.id,
-                          // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
-                          selectorForTemplateReplace: '#complaint-container',
-                        };
-                        window.form.init(attrFormComplaint);
-                      });
-                    }
-                  }
+                  $('body').trigger('match-update');
 
                   console.log(response);
 
@@ -1060,7 +1042,7 @@
             });
           } else {
             // formData - обычный объект
-            // console.log(formData);
+            console.log(formData);
 
             // Обычный запрос (без передачи файлов)
             $.ajax({

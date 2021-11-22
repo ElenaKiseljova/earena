@@ -1036,7 +1036,6 @@
               <input type="hidden" name="tournament" value="<?= $match_tournament ? 1 : 0; ?>">
               <input type="hidden" name="match_thread_id" value="<?= $match->thread_id; ?>">
               <input type="hidden" name="match_id" value="<?= $match->ID; ?>">
-              <input type="hidden" name="match_type" value="<?= $match_type; ?>">
               <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
 
               <button class="form__submit form__submit--complaint button button--blue" type="submit" name="delete">

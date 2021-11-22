@@ -1,5 +1,5 @@
 <?php
-  global $match_id, $ea_user;
+  global $match, $match_id, $ea_user;
 ?>
 
 <div class="popup popup--complaint">
@@ -13,7 +13,7 @@
     }
   ?>
 
-  <template id="popup-complaint-complaint">
+  <template id="popup-complaint-create">
     <div class="popup__content popup__content--complaint">
       <h2 class="popup__title popup__title--template">
         <?php _e( 'Жалоба судье', 'earena_2' ); ?>
@@ -27,7 +27,7 @@
         <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
         <input type="hidden" name="user_id" value="<?= $ea_user->ID; ?>">
         <input type="hidden" name="id" value="<?= $match_id; ?>">
-        <input type="hidden" name="type" value="0">
+        <input type="hidden" name="type" value="<?= $match->type; ?>">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="complaint-close">

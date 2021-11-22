@@ -953,7 +953,7 @@ function join_match_callback()
 }
 
 /* ==============================================
-********  //Модерация матча
+********  //Модерация матча (жалоба)
 =============================================== */
 
 add_action('wp_ajax_moderate_match', 'moderate_match_callback');
@@ -978,17 +978,16 @@ function earena_2_del_moderate_callback()
 {
     check_ajax_referer('ea_functions_nonce', 'security');
     $match_id = $_POST['match_id'];
-    $match_type = $_POST['match_type'];
     $tid = $_POST['match_thread_id'];
     $tournament = $_POST['tournament'];
     $complaint_index = (int)$_POST['complaint_index'];
 
-    if (empty($match_id) || empty($match_id)) {
+    if (empty($match_id)) {
         return;
     }
     $where = array("ID" => $match_id);
 
-    $complaint = EArena_DB:: get_ea_match_field($match_id, 'complaint') ?? [];
+    $complaint = $tournament == 1 ? EArena_DB:: get_ea_tournament_match_field($match_id, 'complaint') : (EArena_DB:: get_ea_match_field($match_id, 'complaint') ?? []);
     $complaint = json_decode( $complaint, true );
 
     $message = __('Ваша жалоба: "', 'earena_2') .
@@ -1022,15 +1021,9 @@ function earena_2_del_moderate_callback()
             'content' => $message,
         ));
 
-        ob_start();
         $arr_response['success'] = 1;
         $arr_response['complaint'] = $complaint;
         $arr_response['complaint_index'] = $complaint_index;
-
-        earena_2_complaint_html($complaint, $match_id, $match_type);
-
-        $arr_response['content'] = ob_get_contents();
-        ob_end_clean();
 
         wp_send_json(json_encode($arr_response));
 

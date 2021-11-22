@@ -68,6 +68,22 @@
       };
       window.form.init(attrFormChat);
 
+      if (is_ea_admin) {
+        // COMPLAINT (ADMIN) forms
+        let complaintAdminChatForms = document.querySelectorAll('form[id*="form-complaint-"]');
+
+        if (complaintAdminChatForms.length > 0) {
+          complaintAdminChatForms.forEach((complaintAdminChatForm, i) => {
+            let attrFormComplaint = {
+              idForm: complaintAdminChatForm.id,
+              // Содержимое элемента может очищаться при отправке формы и заменяться содержимым шаблона
+              selectorForTemplateReplace: '#complaint-container',
+            };
+            window.form.init(attrFormComplaint);
+          });
+        }
+      }
+
       window.files($('#chat-page-form')[0]);
 
       window.toggleActive.methods.toggleUserContent(0);

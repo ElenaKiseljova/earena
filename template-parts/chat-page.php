@@ -65,11 +65,11 @@
               </span>
             <?php endif; ?>
 
-            <?php if ((int)$tournament->type == 2): ?>
+            <?php if ($is_tournament_lucky_cup): ?>
               <a class="chat-page__rules" href="<?= get_page_link(1835); ?>">
                 <?php _e( 'Правила Lucky CUP', 'earena_2' ); ?>
               </a>
-            <?php elseif ((int)$tournament->type == 3) : ?>
+            <?php elseif ($is_tournament_cup) : ?>
               <a class="chat-page__rules" href="<?= get_page_link(2214); ?>">
                 <?php _e( 'Правила Кубка', 'earena_2' ); ?>
               </a>
@@ -86,9 +86,9 @@
           <h2 class="chat-page__name">
             <?php
               $tournament_url = '';
-              if (((int)$tournament->type == 2)) {
+              if ($is_tournament_lucky_cup) {
                 $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
-              } elseif (((int)$tournament->type == 3)) {
+              } elseif ($is_tournament_cup) {
                 $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
               } else {
                 $tournament_url = '/tournaments/tournament/?tournament=' . $tournament->ID;
@@ -109,9 +109,9 @@
             <?php endif; ?>
           </div>
           <div class="chat-page__type">
-            <?php if ((int)$tournament->type == 2): ?>
+            <?php if ($is_tournament_lucky_cup): ?>
               Lucky CUP
-            <?php elseif ((int)$tournament->type == 3) : ?>
+            <?php elseif ($is_tournament_cup) : ?>
               <?php _e( 'Кубок', 'earena_2' ); ?>
             <?php else: ?>
               <?php _e( 'Турнир', 'earena_2' ); ?>
@@ -144,7 +144,7 @@
         </h1>
 
         <?php if (!is_ea_admin()): ?>
-          <button class="chat-page__complaint-openpopup button button--red openpopup" data-popup="complaint" type="button" name="complaint">
+          <button class="chat-page__complaint-openpopup button button--red openpopup" data-popup="complaint" type="button" name="create">
             <span>
               <?php _e( 'Жалоба судье', 'earena_2' ); ?>
             </span>

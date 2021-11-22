@@ -30,12 +30,17 @@
   $tournament_cancel = ($tournament->status == 103) ? true : false;
 
   $tournament_my = in_array($ea_user_id, json_decode($tournament->players, true) ?: []) ? true : false;
+
+  /* TYPE */
+  $is_tournament_simple = ((int)$tournament->type === 1);
+  $is_tournament_lucky_cup = ((int)$tournament->type === 2);
+  $is_tournament_cup = ((int)$tournament->type === 3);
 ?>
 <div class="tournament">
   <?php
-    if (((int)$tournament->type == 2) && !$is_profile) {
+    if ($is_tournament_lucky_cup && !$is_profile) {
       $tournament_url = '/tournaments/lucky-cup/?lc=' . $tournament->ID;
-    } elseif (((int)$tournament->type == 3) && !$is_profile) {
+    } elseif ($is_tournament_cup && !$is_profile) {
       $tournament_url = '/tournaments/cup/?cup=' . $tournament->ID;
     } elseif ($is_profile && !is_ea_admin()) {
       $tournament_url = '/profile/tours/tour/?tournament=' . $tournament->ID;
@@ -118,20 +123,26 @@
       </h4>
 
       <?php if ( $tournament_registration ): ?>
-        <div class="tournament__status tournament__status--future">
-          <?php _e( 'Регистрация до', 'earena_2' ); ?>
-          <time>
-            <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->end_reg_time))); ?>
-            (<?= date('H:i', utc_to_usertime(strtotime($tournament->end_reg_time))); ?> UTC<?= utc_value(); ?>)
-          </time>
-        </div>
-        <div class="tournament__info">
-          <?php _e( 'Начало', 'earena_2' ); ?>
-          <time>
-            <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
-            (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
-          </time>
-        </div>
+        <?php if (!$is_tournament_lucky_cup): ?>
+          <div class="tournament__status tournament__status--future">
+            <?php _e( 'Регистрация до', 'earena_2' ); ?>
+            <time>
+              <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->end_reg_time))); ?>
+              (<?= date('H:i', utc_to_usertime(strtotime($tournament->end_reg_time))); ?> UTC<?= utc_value(); ?>)
+            </time>
+          </div>
+          <div class="tournament__info">
+            <?php _e( 'Начало', 'earena_2' ); ?>
+            <time>
+              <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
+              (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
+            </time>
+          </div>
+        <?php else: ?>
+          <div class="tournament__status tournament__status--future">
+            <?php _e( 'Регистрация', 'earena_2' ); ?>
+          </div>
+        <?php endif; ?>
       <?php elseif ( $tournament_waiting ) : ?>
         <div class="tournament__status tournament__status--future">
           <?php _e( 'Ожидает публикации', 'earena_2' ); ?>
@@ -140,28 +151,34 @@
         <div class="tournament__status tournament__status--present">
           <?php _e( 'Проходит', 'earena_2' ); ?>
         </div>
-        <div class="tournament__info">
-          <?php _e( 'Начался', 'earena_2' ); ?>
-          <time>
-            <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
-            (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
-          </time>
-        </div>
+        <?php if (!$is_tournament_lucky_cup): ?>
+          <div class="tournament__info">
+            <?php _e( 'Начался', 'earena_2' ); ?>
+            <time>
+              <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
+              (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
+            </time>
+          </div>
+        <?php endif; ?>
       <?php elseif ( $tournament_end ): ?>
         <div class="tournament__status tournament__status--past">
           <?php _e( 'Завершился', 'earena_2' ); ?>
-          <time>
-            <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->end_time))); ?>
-            (<?= date('H:i', utc_to_usertime(strtotime($tournament->end_time))); ?> UTC<?= utc_value(); ?>)
-          </time>
+          <?php if (!$is_tournament_lucky_cup): ?>
+            <time>
+              <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->end_time))); ?>
+              (<?= date('H:i', utc_to_usertime(strtotime($tournament->end_time))); ?> UTC<?= utc_value(); ?>)
+            </time>
+          <?php endif; ?>
         </div>
-        <div class="tournament__info">
-          <?php _e( 'Начался', 'earena_2' ); ?>
-          <time>
-            <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
-            (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
-          </time>
-        </div>
+        <?php if (!$is_tournament_lucky_cup): ?>
+          <div class="tournament__info">
+            <?php _e( 'Начался', 'earena_2' ); ?>
+            <time>
+              <?= date('d.m.Y', utc_to_usertime(strtotime($tournament->start_time))); ?>
+              (<?= date('H:i', utc_to_usertime(strtotime($tournament->start_time))); ?> UTC<?= utc_value(); ?>)
+            </time>
+          </div>
+        <?php endif; ?>
       <?php elseif ( $tournament_cancel ): ?>
         <div class="tournament__status tournament__status--past">
           <?php _e( 'Отменён', 'earena_2' ); ?>

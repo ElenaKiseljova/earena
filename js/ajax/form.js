@@ -280,7 +280,11 @@
 
             // CHAT
             if ( formId.indexOf('chat') > -1 ) {
-              dataForm.append('action', 'ajax_match_results_and_fileload');
+              if (prefix.indexOf('tournament') > -1) {
+                dataForm.append('action', 'ajax_tournament_match_results_and_fileload');
+              } else if (prefix.indexOf('match') > -1) {
+                dataForm.append('action', 'ajax_match_results_and_fileload');
+              }
             }
 
             // COMPLAINT

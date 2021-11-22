@@ -385,17 +385,8 @@ function globalHeader()
 
                 if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/tournaments/tournament/match/') {
                     $match_id = $query['match'];
-                    $type_match = 0;
-
-                    $tournament = EArena_DB::get_ea_tournament($match_id->tid) ?? [];
-                    if (!empty($tournament)) {
-                      /* TYPE */
-                      $is_tournament_simple = ((int)$tournament->type === 1) ? true : false;
-                      $is_tournament_lucky_cup = ((int)$tournament->type === 2) ? true : false;
-                      $is_tournament_cup = ((int)$tournament->type === 3) ? true : false;
-
-                      $match_type = (int)$tournament->type;
-                    }
+                    $match = EArena_DB::get_ea_tournament_match($match_id);
+                    $match_type = EArena_DB::get_ea_tournament_field($match->tid, 'type');
 
                     $time = $_POST['time'];
                     if (strtotime(EArena_DB::get_ea_tournament_match_field($match_id, 'status_time')) > strtotime($time)) {
@@ -410,6 +401,7 @@ function globalHeader()
                 } else if (isset($query['match']) && $query['match'] > 0 && isset($_POST['time']) && $parts['path'] == '/matches/match/') {
                   $match_id = $query['match'];
                   $match_type = 0;
+
                   $time = $_POST['time'];
                   if (strtotime(EArena_DB::get_ea_match_field($match_id, 'status_time')) > strtotime($time)) {
                       $ea_user = wp_get_current_user();

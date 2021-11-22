@@ -35,8 +35,8 @@
   // Styles theme
   function earena_2_styles () {
     wp_enqueue_style('earena_2-style', get_stylesheet_uri());
-    // wp_enqueue_style('swiper-style', 'https://unpkg.com/swiper/swiper-bundle.min.css');
-    wp_enqueue_style('swiper-style', get_template_directory_uri() . '/assets/libs/swiper.min.css');
+    wp_enqueue_style('swiper-style', 'https://unpkg.com/swiper/swiper-bundle.min.css');
+    // wp_enqueue_style('swiper-style', get_template_directory_uri() . '/assets/libs/swiper.min.css');
   }
 
   // Scripts theme
@@ -46,22 +46,22 @@
 
     $is_tournaments_create = is_page( 552 );
 
-    if ( is_ea_admin() ) {
-      wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
-    }
-
     wp_enqueue_script('cookie-edit-script', get_template_directory_uri() . '/assets/js/cookie-edit.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    // wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
-    wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/libs/swiper.min.js', $deps = array(), $ver = null, $in_footer = true );
+    wp_enqueue_script('swiper-script', 'https://unpkg.com/swiper/swiper-bundle.min.js', $deps = array(), $ver = null, $in_footer = true );
+    // wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/libs/swiper.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
 
     /* Ajax start */
+      if ( is_ea_admin() ) {
+        wp_enqueue_script('earena_2_admin_functions-script', get_template_directory_uri() . '/assets/js/ajax/earena_2_admin_functions.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+      }
       wp_enqueue_script('global-throttlingg-script', get_template_directory_uri() . '/assets/js/ajax/global-throttlingg.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
       wp_enqueue_script('form-script', get_template_directory_uri() . '/assets/js/ajax/form.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
       wp_enqueue_script('filter-script', get_template_directory_uri() . '/assets/js/ajax/filter.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
       wp_enqueue_script('platforms-script', get_template_directory_uri() . '/assets/js/ajax/platforms.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+      wp_enqueue_script('triggers-script', get_template_directory_uri() . '/assets/js/ajax/triggers.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
     /* Ajax end */
 
     if (is_ea_admin() && $is_tournaments_create) {
@@ -88,7 +88,7 @@
       wp_enqueue_script('statistics-script', get_template_directory_uri() . '/assets/js/statistics.min.js', $deps = array(), $ver = null, $in_footer = true );
     }
 
-      wp_enqueue_script('triggers-script', get_template_directory_uri() . '/assets/js/triggers.min.js', $deps = array('jquery'), $ver = null, $in_footer = true );
+
 
     // С переводами
     wp_set_script_translations('platforms-script', 'earena_2');
@@ -778,7 +778,7 @@
     global $match_id, $match_type, $ea_user;
 
     $match_id = $id_match;
-    $match_type = $type_match;
+    $match_type = (int)$type_match;
     $ea_user = $user;
 
     get_template_part( 'template-parts/match/single' );
@@ -809,9 +809,10 @@
 
     $is_reporter = (isset($match->reporter) && $user_id == (int)$match->reporter) ? true : false;
     $is_result = (isset($match->score1) && isset($match->score2)) ? true : false;
+
     ?>
       <div class="chat-page__inner">
-        <form class="form form--chat" data-prefix="" id="form-chat" action="index.html" method="post">
+        <form class="form form--chat" data-prefix="<?= ($match_type > 0) ? 'tournament' : 'match'; ?>" id="form-chat" action="index.html" method="post">
           <div class="form__left form__left--chat">
             <div class="user user--form">
               <?php if ( $match->stream1 != '' ): ?>

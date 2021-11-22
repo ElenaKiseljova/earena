@@ -114,8 +114,9 @@
     transition: border-color 0.3s, background-color 0.3s;
   }
 
-  &:active,
   &.active {
+    pointer-events: none;
+
     color: #colors[white];
     background-color: #colors[accent];
     border-color: #colors[accent];

@@ -66,7 +66,7 @@
                 ?>
               </div>
 
-              <div class="time">
+              <div class="time time--header">
                 <span><?= ea_header_time(); ?></span>
               </div>
             </div>

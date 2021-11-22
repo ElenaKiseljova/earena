@@ -1206,19 +1206,21 @@
         }
       }
 
-      @media (max-width: @mobile) {
-        padding-right: 10px;
-        padding-left: 10px;
-
+      @media (max-width: @tablet) {
         form {
-          align-items: flex-start;
-
           width: 100%;
+
+          justify-content: space-between;
 
           .message {
             width: calc(100% - 68px);
           }
         }
+      }
+
+      @media (max-width: @mobile) {
+        padding-right: 10px;
+        padding-left: 10px;
       }
     }
   }

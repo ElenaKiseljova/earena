@@ -110,6 +110,16 @@
     }
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--header {
+      padding-left: 0;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
   @media (max-width: @mobile) {
     &--header {
       justify-content: flex-end;

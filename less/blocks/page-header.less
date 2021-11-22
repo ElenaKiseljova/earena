@@ -12,6 +12,14 @@
   justify-content: flex-start;
   align-items: center;
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--top {
+      flex-wrap: wrap;
+
+      justify-content: space-between;
+    }
+  }
+
   @media (max-width: @mobile) {
     &--top {
       flex-wrap: wrap;
@@ -137,6 +145,14 @@
     justify-content: flex-end;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--logged {
+      flex-direction: row-reverse;
+
+      margin-top: 10px;
+    }
+  }
+
   @media (max-width: @mobile) {
     &--logged {
       justify-content: flex-end;
@@ -194,6 +210,8 @@
 }
 
 .page-header__signout {
+  flex-shrink: 0;
+
   &--desktop {
     .blue_hover();
   }

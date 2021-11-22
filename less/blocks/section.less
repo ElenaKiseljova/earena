@@ -93,6 +93,12 @@
     justify-content: flex-start;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--wallet {
+      width: auto;
+    }
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
 
@@ -234,6 +240,10 @@
 
   color: #colors[text];
 
+  @media (max-width: @tablet) {
+    margin-left: 15px;
+  }
+
   @media (max-width: @mobile) {
     margin-left: 10px;
   }
@@ -344,6 +354,20 @@
 
   &--chat {
     display: block;
+  }
+
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--col-2 {
+      width: calc(( 100% ) - 20px);
+    }
+
+    &--col-4 {
+      width: calc(( 100% / 2 ) - 20px);
+    }
+
+    &--col-6 {
+      width: calc(( 100% / 4 ) - 20px);
+    }
   }
 
   @media (max-width: @mobile) {

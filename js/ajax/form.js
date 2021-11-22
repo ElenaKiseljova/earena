@@ -689,15 +689,19 @@
 
             // COMPLAINT
             if ( formId.indexOf('complaint') > -1) {
+              response = JSON.parse(response);
+
               // Создать
               if (prefix.indexOf('create') > -1) {
-                response = JSON.parse(response);
+                if (response.success !== true) {
+                  onError(response, prefix);
+
+                  return;
+                }
               }
 
               // Удалить
               if (prefix.indexOf('delete') > -1) {
-                response = JSON.parse(response);
-
                 if (response.success === 1) {
                   $('body').trigger('match-update');
 
@@ -951,6 +955,15 @@
               }
             }
 
+            // COMPLAINT
+            if ( formId.indexOf('complaint') > -1 ) {
+              if (prefix.indexOf('create') > -1) {
+                window.form.showResponseText(popup, response.content);
+
+                $('body').trigger('match-update');
+              }
+            }
+
             if (popup) {
               // Ф-я поиска дополнительных кнопок закрытия попапов
               window.form.additionButtonClosePopup(popup);
@@ -989,11 +1002,12 @@
 
               wrapperFormNode.appendChild(cloneTemplate);
 
-              // MATCH // WARNING // TOURNAMENT
+              // MATCH // WARNING // TOURNAMENT // COMPLAINT
               if (
                   ((formId.indexOf('match') > -1) && (prefix.indexOf('accept') > -1)) ||
                   ((formId.indexOf('warning') > -1) && (prefix.indexOf('add') > -1 || prefix.indexOf('delete') > -1)) ||
-                  ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1))
+                  ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1)) ||
+                  (formId.indexOf('complaint') > -1)
               ) {
                 let text = response.content ? response.content : (response.data ? response.data : false);
 
@@ -1371,7 +1385,7 @@
       };
       window.form.init(attrFormChat);
 
-      // COMPLAINT (ADMIN) forms
+      // COMPLAINT (ADMIN)
       let complaintAdminChatForms = document.querySelectorAll('form[id*="form-complaint-"]');
 
       if (complaintAdminChatForms.length > 0) {

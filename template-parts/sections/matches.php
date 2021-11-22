@@ -118,7 +118,7 @@
   <section class="section section--matches section--matches-profile" id="matches">
     <header class="section__header">
       <h2 class="section__title section__title--matches section__title--page">
-        <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+        <?php _e( 'Матчи', 'earena_2' ); ?>
         <span class="section__amount">
           0
         </span>

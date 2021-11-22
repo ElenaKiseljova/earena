@@ -76,6 +76,12 @@
 
   margin-right: -20px;
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    width: calc(100% + 10px);
+
+    margin-right: -10px;
+  }
+
   @media (max-width: @mobile) {
     width: calc(100% + 18px);
 
@@ -120,6 +126,11 @@
   &--team {
     background-position: center bottom, center 25px;
     background-image: url('../img/statistics-rect.svg'), url('../img/statistics-team.svg');
+  }
+
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    width: calc(33.33% - 10px);
+    margin-right: 10px;
   }
 
   @media (max-width: @mobile) {
@@ -241,7 +252,7 @@
   margin-right: 30px;
   margin-bottom: 26px;
 
-  @media (max-width: @mobile) {
+  @media (max-width: @tablet) {
     width: calc(100% - 30px);
   }
 }

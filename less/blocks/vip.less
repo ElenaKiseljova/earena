@@ -66,6 +66,10 @@
   margin: 0;
 
   .h2();
+
+  @media (max-width: @tablet) {
+    .h2_mobile();
+  }
 }
 
 .vip__price {
@@ -76,4 +80,9 @@
   width: 100%;
 
   margin-top: 30px;
+
+  @media (max-width: @tablet) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }

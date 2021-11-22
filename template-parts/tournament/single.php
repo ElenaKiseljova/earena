@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="tournament__right">
-      <header class="tournament__header">
+      <header class="tournament__header tournament__header--page">
         <div class="platform platform--page">
           <svg class="platform__icon" width="40" height="40">
             <use xlink:href="#icon-platform-<?= $ea_icons['platform'][(int)$tournament->platform]; ?>"></use>
@@ -85,7 +85,7 @@
             <?= $games[$tournament->game]['name']; ?>
           </h3>
 
-          <ul class="variations <?= ($tournament->private) ? 'variations--lock' : '';?>">
+          <ul class="variations variations--page-tournament <?= ($tournament->private) ? 'variations--lock' : '';?>">
             <li class="variations__item">
               <?= $tournament->game_mode; ?> vs <?= $tournament->game_mode; ?>
             </li>
@@ -98,6 +98,7 @@
         </div>
 
         <div class="tournament__trophy tournament__trophy--page">
+          <?= $is_tournament_lucky_cup ? __('до ', 'earena_2') : '';?>
           $<?= earena_2_nice_money( max($tournament->prize, $tournament->garant) ); ?>
         </div>
       </header>

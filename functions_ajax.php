@@ -962,10 +962,7 @@ function moderate_match_callback()
 {
     check_ajax_referer('ea_functions_nonce', 'security');
 //	$args = array('id' => $_POST['id'],);
-    ob_start();
-    $arr_response['title'] = moderate_match_function();
-    $arr_response['content'] = ob_get_contents();
-    ob_end_clean();
+    $arr_response = moderate_match_function();
     wp_send_json(json_encode($arr_response));
     wp_die();
 }

@@ -28,13 +28,15 @@
     overflow: hidden;
   }
 
+  @media (max-width: @tablet) {
+    overflow: auto;
+  }
+
   @media (max-width: @mobile) {
     flex-direction: column;
 
     justify-content: flex-start;
     align-items: flex-start;
-
-    overflow-x: scroll;
   }
 }
 
@@ -49,7 +51,7 @@
 
   list-style: none;
 
-  @media (max-width: @mobile) {
+  @media (max-width: @tablet) {
     min-width: max-content;
   }
 }
@@ -173,14 +175,16 @@
     margin-bottom: 0;
   }
 
+  @media (max-width: @tablet) {
+    &--rating {
+      // Минимальный размер таблицы рейтинга - 768px
+      overflow: auto;
+    }
+  }
+
   @media (max-width: @mobile) {
     &--col-2 {
       width: calc(100% - 20px);
-    }
-
-    &--rating {
-      // Минимальный размер таблицы рейтинга - 768px
-      overflow-x: scroll;
     }
   }
 }

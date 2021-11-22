@@ -107,6 +107,12 @@
     width: calc(20% - 10px);
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--col-5 {
+      width: calc(33.33% - 10px);
+    }
+  }
+
   @media (max-width: @mobile) {
     &--search,
     &--checkboxes,

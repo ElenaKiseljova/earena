@@ -20,6 +20,13 @@
   try {
     const { __, _x, _n, _nx } = wp.i18n;
 
+    // Более точная ширина экрана
+    let deviceWidth = window.innerWidth && document.documentElement.clientWidth ?
+                      Math.min(window.innerWidth, document.documentElement.clientWidth) :
+                      window.innerWidth ||
+                      document.documentElement.clientWidth ||
+                      document.getElementsByTagName('body')[0].clientWidth;
+
     // Смещение для пагинации/скролла-подгрузки
     let offset = {
       'games' : 0,
@@ -77,6 +84,13 @@
 
         // Количество колонок
         let column = 4;
+        if (deviceWidth < 1200 && deviceWidth > 767) {
+          // Tablet
+          column = 2;
+        } else if (deviceWidth < 768) {
+          // Mobile
+          column = 1;
+        }
 
         if (what === 'games') {
           // Получаем кол-во отфильтрованных элементов и выводим его в заголовок
@@ -84,10 +98,17 @@
           total[what] = dataFiltered.length;
 
           column = 6;
+          if (deviceWidth < 1200 && deviceWidth > 767) {
+            // Tablet
+            column = 4;
+          } else if (deviceWidth < 768) {
+            // Mobile
+            column = 2;
+          }
 
           dataTemplate = dataFiltered.map(function(dataFilteredItem) {
             return `
-                    <li class="section__item section__item--col-${column}">
+                    <li class="section__item section__item--col-6">
                       ${templates[what](dataFilteredItem)}
                     </li>
                    `;
@@ -115,7 +136,7 @@
 
           while ((itemsCount % column) !== 0) {
             dataTemplate += `
-                    <li class="section__item section__item--col-${column}">
+                    <li class="section__item section__item--col-${what === 'games' ? 6 : 4}">
                       ${templateEmpty}
                     </li>
                    `;
@@ -159,7 +180,7 @@
           let matchHTMLTemplate = function () {
             if (is_ea_admin === false && is_user_logged_in === true) {
               return `
-                <li class="section__item section__item--col-${column}">
+                <li class="section__item section__item--col-${what === 'games' ? 6 : 4}">
                   <div class="match match--create">
                     <div class="match__image">
                       <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
@@ -173,7 +194,7 @@
                 `;
             } else if (is_ea_admin === true) {
               return `
-                <li class="section__item section__item--col-${column}">
+                <li class="section__item section__item--col-${what === 'games' ? 6 : 4}">
                   <div class="match match--create">
                     <div class="match__image">
                       <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">
@@ -187,7 +208,7 @@
                 `;
             } else {
               return `
-                <li class="section__item section__item--col-${column}">
+                <li class="section__item section__item--col-${what === 'games' ? 6 : 4}">
                   <div class="match match--create">
                     <div class="match__image">
                       <img src="${siteThemeFolderURL}/assets/img/games/matches/create.jpg" alt="Game create">

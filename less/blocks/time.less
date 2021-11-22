@@ -1,7 +1,15 @@
 .time {
-  margin-right: 30px;
-
   letter-spacing: 0.01em;
 
   color: #colors[text_black];
+
+  &--header {
+    margin-right: 30px;
+  }
+
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--header {
+      margin-right: 0;
+    }
+  }
 }

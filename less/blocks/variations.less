@@ -52,6 +52,12 @@
     margin: 0;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--page-tournament {
+      justify-content: flex-end;
+    }
+  }
+
   @media (max-width: @mobile) {
     width: calc(100% + 1.53px);
 

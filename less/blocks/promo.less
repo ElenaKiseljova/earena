@@ -58,6 +58,12 @@
     pointer-events: none;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--front {
+      min-width: 450px;
+    }
+  }
+
   @media (max-width: @mobile) {
     position: relative;
 

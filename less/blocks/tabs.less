@@ -40,6 +40,12 @@
     margin-left: auto;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--wallet {
+      width: auto;
+    }
+  }
+
   @media (max-width: @mobile) {
     margin-top: 20px;
 
@@ -168,6 +174,12 @@
     width: 20%;
   }
 
+  @media (max-width: @tablet) and (min-width: @tablet_min) {
+    &--wallet {
+      min-width: max-content;
+    }
+  }
+
   @media (max-width: @mobile) {
     padding: 5px 14px;
 
@@ -236,7 +248,11 @@
 .tabs__text {
   margin-left: 10px;
 
-  @media (max-width: @mobile) {
+  @media (max-width: @tablet) {
     display: none;
+  }
+
+  @media (max-width: @mobile) {
+
   }
 }

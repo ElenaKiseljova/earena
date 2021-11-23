@@ -22,6 +22,8 @@
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 
+      var timeoutComplaint;
+
       // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
       var userVerificationId,
         userVerificationName;
@@ -480,6 +482,19 @@
             if (typePopup === 'delete-tournament' || typePopup === 'cancel') {
               window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
             }
+          }
+
+          if (prefix === 'complaint') {
+            button.disabled = true;
+
+            if (timeoutComplaint) {
+              clearTimeout(timeoutComplaint);
+            }
+
+            let timeoutTime = 1000 * 60; // 1m
+            timeoutComplaint = setTimeout(function () {
+              button.disabled = false;
+            }, timeoutTime);
           }
 
           // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)

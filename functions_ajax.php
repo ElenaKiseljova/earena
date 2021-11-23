@@ -1107,3 +1107,174 @@ function earena_2_leave_tournament_callback()
 
     wp_die();
 }
+
+/* ==============================================
+********  //Статистика
+=============================================== */
+add_action('wp_ajax_nopriv_getStatisticMarketing', 'getStatisticMarketing');
+add_action('wp_ajax_getStatisticMarketing', 'getStatisticMarketing');
+
+function getStatisticMarketing()
+{
+    getStat('marketing');
+}
+
+add_action('wp_ajax_nopriv_getStatistic', 'getStatistic');
+add_action('wp_ajax_getStatistic', 'getStatistic');
+
+function getStatistic()
+{
+    getStat('admin');
+}
+
+function getStat($mode)
+{
+    if (is_user_logged_in()) {
+
+        $per_page = 100;
+
+        $filters['type'] = $_POST['type'] ?? 0;
+
+        if (isset($_POST['nickname']) && $_POST['nickname'] !== "") {
+            $filters['nickname'] = $_POST['nickname'];
+        }
+        if (isset($_POST['country']) && $_POST['country'] !== "") {
+            $filters['country'] = $_POST['country'];
+        }
+        if (isset($_POST['online']) && $_POST['online'] !== "") {
+            $filters['online'] = $_POST['online'];
+        }
+
+        if (isset($_POST['vip']) && $_POST['vip'] !== "") {
+            $filters['vip'] = $_POST['vip'];
+        }
+        if (isset($_POST['verification']) && $_POST['verification'] !== "") {
+            $filters['verification'] = $_POST['verification'];
+        }
+        if (isset($_POST['blocked']) && $_POST['blocked'] !== "") {
+            $filters['blocked'] = $_POST['blocked'];
+        }
+        if (isset($_POST['yellow_card_1']) && $_POST['yellow_card_1'] !== "") {
+            $filters['yellow_card_1'] = $_POST['yellow_card_1'];
+        }
+        if (isset($_POST['yellow_card_2']) && $_POST['yellow_card_2'] !== "") {
+            $filters['yellow_card_2'] = $_POST['yellow_card_2'];
+        }
+
+
+        if (isset($_POST['balancefrom']) && $_POST['balancefrom'] != "undefined" && $_POST['balancefrom'] != "") {
+            $filters['balance']['from'] = $_POST['balancefrom'];
+        }
+        if (isset($_POST['balanceto']) && $_POST['balanceto'] != "undefined" && $_POST['balanceto'] != "") {
+            $filters['balance']['to'] = $_POST['balanceto'];
+        }
+        if (isset($_POST['balance_addfrom']) && $_POST['balance_addfrom'] != "undefined" && $_POST['balance_addfrom'] != "") {
+            $filters['balance_add']['from'] = $_POST['balance_addfrom'];
+        }
+        if (isset($_POST['balance_addto']) && $_POST['balance_addto'] != "undefined" && $_POST['balance_addto'] != "") {
+            $filters['balance_add']['to'] = $_POST['balance_addto'];
+        }
+
+        if (isset($_POST['balance_withdrawfrom']) && $_POST['balance_withdrawfrom'] != "undefined" && $_POST['balance_withdrawfrom'] != "") {
+            $filters['balance_withdraw']['from'] = $_POST['balance_withdrawfrom'];
+        }
+        if (isset($_POST['balance_withdrawto']) && $_POST['balance_withdrawto'] != "undefined" && $_POST['balance_withdrawto'] != "") {
+            $filters['balance_withdraw']['to'] = $_POST['balance_withdrawto'];
+        }
+
+        if (isset($_POST['user_registeredfrom']) && $_POST['user_registeredfrom'] != '' && $_POST['user_registeredfrom'] != 'undefined') {
+            $filters['user_registered']['from'] = $_POST['user_registeredfrom'];
+        }
+        if (isset($_POST['user_registeredto']) && $_POST['user_registeredto'] != '' && $_POST['user_registeredto'] != 'undefined') {
+            $filters['user_registered']['to'] = $_POST['user_registeredto'];
+        }
+
+        if (isset($_POST['last_activityfrom']) && $_POST['last_activityfrom'] != '' && $_POST['last_activityfrom'] != 'undefined') {
+            $filters['last_activity']['from'] = $_POST['last_activityfrom'];
+        }
+        if (isset($_POST['last_activityto']) && $_POST['last_activityto'] != '' && $_POST['last_activityto'] != 'undefined') {
+            $filters['last_activity']['to'] = $_POST['last_activityto'];
+        }
+
+        $sort = [
+            'country',
+            'nickname',
+            'balance',
+            'money_in_game',
+            'balance_add',
+            'balance_withdraw',
+            'rating',
+            'registered',
+            'last_activity'
+        ];
+
+        if (isset($_POST['orderby']) && $_POST['orderby']  && $_POST['orderby'] != "false") {
+            $order['orderby'] = $sort[$_POST['orderby']];
+        }
+        $order['order'] = $_POST['order'] ?? 'ASC';
+
+        $page = $_POST['page'] ?? 1;
+
+        echo json_encode(ea_get_users_statistics($filters, $order, $per_page, $page, $mode));
+    }
+    die();
+}
+
+
+add_action('wp_ajax_nopriv_getFinansist', 'getFinansist');
+add_action('wp_ajax_getFinansist', 'getFinansist');
+
+function getFinansist()
+
+{
+    if (is_user_logged_in()) {
+        $per_page = 100;
+        $filters['type'] = $_POST['type'] ?? 0;
+        if (isset($_POST['id']) && $_POST['id'] !== "") {
+            $filters['ID'] = $_POST['id'];
+        }
+        if (isset($_POST['cup']) && $_POST['cup'] !== "" && $_POST['cup'] && $_POST['cup'] !== "false") {
+            $filters['cup'] = $_POST['cup'];
+        }
+        if (isset($_POST['lc']) && $_POST['lc'] !== "" && $_POST['lc'] && $_POST['lc'] !== "false") {
+            $filters['lc'] = $_POST['lc'];
+        }
+        if (isset($_POST['tournament']) && $_POST['tournament'] !== "" && $_POST['tournament'] && $_POST['tournament'] !== "false") {
+            $filters['tournament'] = $_POST['tournament'];
+        }
+
+        if (isset($_POST['profitfrom']) && $_POST['profitfrom'] != "undefined" && $_POST['profitfrom'] != "") {
+            $filters['profit']['from'] = $_POST['profitfrom'];
+        }
+        if (isset($_POST['profitto']) && $_POST['profitto'] != "undefined" && $_POST['profitto'] != "") {
+            $filters['profit']['to'] = $_POST['profitto'];
+        }
+
+        if (isset($_POST['periodto']) && $_POST['periodto'] != '' && $_POST['periodto'] != 'undefined') {
+            $filters['date']['to'] = $_POST['periodto'];
+        }
+
+        if (isset($_POST['periodfrom']) && $_POST['periodfrom'] != '' && $_POST['periodfrom'] != 'undefined') {
+            $filters['date']['from'] = $_POST['periodfrom'];
+        }
+
+
+        $sort = [
+            'ID',
+            'type',
+            'profit',
+            'date',
+        ];
+
+        if (isset($_POST['orderby']) && $_POST['orderby']  && $_POST['orderby'] != "false") {
+            $order['orderby'] = $sort[$_POST['orderby']];
+        }
+
+        $order['order'] = $_POST['order'] ?? 'ASC';
+
+        $page = $_POST['page'] ?? 1;
+
+        echo json_encode(ea_get_financial_table($filters, $order, $per_page, $page));
+    }
+    die();
+}

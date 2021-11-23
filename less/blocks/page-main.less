@@ -12,4 +12,26 @@
 
 .page-main__wrapper {
   .wrapper();
+
+  &--statistic {
+    padding-top: 40px;
+    padding-bottom: 50px;
+  }
+}
+
+.page-main__header {
+  &--statistic {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: @mobile) {
+    &--statistic {
+      flex-wrap: wrap;
+    }
+  }
 }

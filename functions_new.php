@@ -66,7 +66,9 @@
 
     if (is_ea_admin() && $is_tournaments_create) {
       wp_enqueue_script('vue-script', 'https://cdn.jsdelivr.net/npm/vue@2.6.14', $deps = array(), $ver = null, $in_footer = true );
+      // wp_enqueue_style('vue-script', get_template_directory_uri() . '/assets/libs/Vue_v2.6.14.js', $deps = array(), $ver = null, $in_footer = true);
       wp_enqueue_script('axios-script', 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js', $deps = array(), $ver = null, $in_footer = true );
+      // wp_enqueue_style('axios-script', get_template_directory_uri() . '/assets/libs/axios_0.18.0.min.js', $deps = array(), $ver = null, $in_footer = true);
 
       wp_enqueue_script('app_create_tournament-script',get_template_directory_uri() . '/assets/js/app_create_tournament.min.js', $deps = array(), $ver = null, $in_footer = true );
     }

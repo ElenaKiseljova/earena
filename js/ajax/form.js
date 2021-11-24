@@ -697,6 +697,11 @@
                   onError(response, prefix);
 
                   return;
+                } else {
+                  let buttonOpenPopup = document.querySelector('.openpopup[name="create"][data-popup="complaint"]')
+                  let timeoutTime = 1000 * 60; // 1m
+
+                  window.popup.blockOpenPopupButton(buttonOpenPopup, timeoutTime);
                 }
               }
 

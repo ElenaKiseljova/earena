@@ -22,7 +22,7 @@
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 
-      var timeoutComplaint;
+      var timeoutBlockOpenPopupButton;
 
       // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
       var userVerificationId,
@@ -195,6 +195,20 @@
           closeButton.addEventListener('blur', function () {
             document.removeEventListener('keydown', onEnterPressClose);
           });
+        },
+        // Отключение кнопки открытия попапа (на какое-то время или совсем)
+        blockOpenPopupButton: function (button, timeoutTime = false) {
+          button.disabled = true;
+
+          if (timeoutTime) {
+            if (timeoutBlockOpenPopupButton) {
+              clearTimeout(timeoutBlockOpenPopupButton);
+            }
+
+            timeoutBlockOpenPopupButton = setTimeout(function () {
+              button.disabled = false;
+            }, timeoutTime);
+          }
         },
         // Ф-я подстановки содержимого попапа
         contentCreator : function (prefix, popup, button, innerPopupButtonSelector = false) {
@@ -482,19 +496,6 @@
             if (typePopup === 'delete-tournament' || typePopup === 'cancel') {
               window.popup.setInputValue(popupTemplateContainer, ['id'], [button.dataset.id]);
             }
-          }
-
-          if (prefix === 'complaint') {
-            button.disabled = true;
-
-            if (timeoutComplaint) {
-              clearTimeout(timeoutComplaint);
-            }
-
-            let timeoutTime = 1000 * 60; // 1m
-            timeoutComplaint = setTimeout(function () {
-              button.disabled = false;
-            }, timeoutTime);
           }
 
           // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)

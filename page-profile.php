@@ -6,8 +6,8 @@
 <?php
   global $wpdb, $icons;
   $ref = $wpdb->get_var($wpdb->prepare(
-      "SELECT COUNT(*) FROM `ef_usermeta` WHERE meta_key='ref' and meta_value=%s", $ea_user->ID
-  ));
+      "SELECT COUNT(*) FROM `{$wpdb->base_prefix}usermeta` WHERE meta_key='ref' and meta_value=%s", $ea_user->ID
+  )); /* TODO: перенести пониже, тут еще не определен $ea_user. или удалить, если не используется */
 
   $username = get_query_var('username');
   if (empty($username) && is_user_logged_in()) {

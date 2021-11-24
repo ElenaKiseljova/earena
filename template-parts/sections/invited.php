@@ -35,8 +35,8 @@
         <ul class="section__list section__list--friends">
           <?php
             foreach ($referrals as $ref) {
-              // $money - чо-т не работает... Заменила на earena_2_balance();
-              $money = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM `ef_woo_wallet_transactions` WHERE details LIKE %s AND type = 'credit' AND user_id = %d", '%(ref_id='.$ref->ID.')%', $earena_2_user_private->ID ) )?:0;
+              // $money - чо-т не работает... Заменила на earena_2_balance(); /* TODO: Разобраться */
+              $money = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM `{$wpdb->base_prefix}woo_wallet_transactions` WHERE details LIKE %s AND type = 'credit' AND user_id = %d", '%(ref_id='.$ref->ID.')%', $earena_2_user_private->ID ) )?:0;
               ?>
                 <li class="section__item section__item--col-2 section__item--friends">
                   <div class="user user--invited">
@@ -50,7 +50,7 @@
                     ?>
                     <div class="user__left">
                       <div class="user__image-wrapper user__image-wrapper--friends <?php if ($verified_invited_user) echo 'user__image-wrapper--verified'; ?>">
-                        <?php earena_2_verification_html($verified, 'public'); ?>
+                        <?php earena_2_verification_html($verified_invited_user, 'public'); ?>
 
                         <a class="user__avatar user__avatar--friends" href="<?=(ea_user_link($ref->ID)?:'#');?>">
                           <?=bp_core_fetch_avatar('item_id='.$ref->ID);?>

@@ -9,10 +9,20 @@
     function after_setup_theme_function () {
       load_theme_textdomain('earena_2', get_template_directory() . '/languages');
 
-      // WooCommerce support
-      add_theme_support('woocommerce');
+      /* ==============================================
+      ********  //WooCommerce support
+      =============================================== */
+      add_theme_support( 'woocommerce' );
 
+      /* ==============================================
+      ********  //Миниатюрки
+      =============================================== */
       add_theme_support( 'post-thumbnails' );
+
+      /* ==============================================
+      ********  //Title
+      =============================================== */
+      add_theme_support('title-tag'); //Добавляем тайтл к постам;
     }
   endif;
 
@@ -189,6 +199,39 @@
         'section'  => 'footer_logo',
         'settings' => 'footer_logo_settings',
     )));
+  }
+
+  /* ==============================================
+  ********  //Тайтлы
+  =============================================== */
+  add_action( 'earena_2_page_game_hook', 'earena_2_page_game_function', $priority = 10, $accepted_args = 1 );
+  function earena_2_page_game_function () {
+    add_filter('document_title_parts', 'earena_2_page_game_document_title_parts');
+    function earena_2_page_game_document_title_parts($title_parts)
+    {
+    	  $games = get_site_option('games');
+        $game_key = $_GET['game'] ?? false;
+        if ($game_key) {
+            $title_parts['title'] = $games[$game_key]['name'] .' - '. $games[$game_key]['details'];
+        }
+
+        return $title_parts;
+
+    }
+  }
+
+  add_action( 'earena_2_page_match_hook', 'earena_2_page_match_function', $priority = 10, $accepted_args = 1 );
+  function earena_2_page_match_function () {
+    add_filter( 'document_title_parts', 'earena_2_page_match_document_title_parts');
+    function earena_2_page_match_document_title_parts($title_parts)
+    {
+      $match_id = $_GET['match'] ?? false;
+      if ($match_id) {
+        $title_parts['title'] .= ' - ID' . $match_id;
+      }
+
+      return $title_parts;
+    }
   }
 
   // Section functions

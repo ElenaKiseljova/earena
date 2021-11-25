@@ -6,11 +6,14 @@
 <?php
   global $games, $game_id, $ea_icons;
 
-  $game_id = isset($_GET['game']) ? $_GET['game'] : false;
+  $game_id = !empty($_REQUEST['game']) ? sanitize_text_field($_REQUEST['game']) : false;
 
   if ($game_id === false) {
-    return;
+    wp_redirect( home_url() );
+    exit;
   }
+
+  do_action( 'earena_2_page_game_hook' );
 
   // $data = [
   //   'platform' => $games[$game_id]['platforms'] ? $games[$game_id]['platforms'] : [],

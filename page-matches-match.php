@@ -30,11 +30,9 @@
   	$player2 = get_userdata($match->player2);
 
   	$match_id = $match->ID;
-  	add_filter( 'document_title_parts', function ( $title ){
-  		global $match_id;
-  		$title['title'] .= ' ID'.$match_id;
-  		return $title;
-  	});
+
+    do_action( 'earena_2_page_match_hook' );
+
   	if (is_ea_admin()) {
   		global $wpdb;
   		$admin_id = (int)get_site_option( 'ea_admin_id', 27);

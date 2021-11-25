@@ -15,7 +15,7 @@
   	wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;
   } else {
   	$ea_user = wp_get_current_user();
-  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : 0;
+  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : null;
 
   	if ( empty($match_id) ) {
   		wp_redirect( home_url('tournaments') );exit;
@@ -35,11 +35,9 @@
   	$player2 = get_userdata($match->player2);
 
   	$match_id = $match->ID;
-  	add_filter( 'document_title_parts', function ( $title ){
-  		global $match_id;
-  		$title['title'] .= ' ID'.$match_id;
-  		return $title;
-  	});
+
+    do_action( 'earena_2_page_match_hook' );
+
   	if (is_ea_admin()) {
   		global $wpdb;
   		$admin_id = (int)get_site_option( 'ea_admin_id', 27);

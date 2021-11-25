@@ -47,7 +47,7 @@
                     <?php if ( (int)get_user_meta($user_id, 'bp_verified_member', true) !== 1 ): ?>
                       <span class="verify verify--false verify--search">
                         <span class="visually-hidden">
-                          <?php _e( 'Не верифицированный игрок', 'earena_2' ); ?>
+                          <?php _e( 'Неверифицированный игрок', 'earena_2' ); ?>
                         </span>
                       </span>
                     <?php else : ?>
@@ -107,14 +107,16 @@
   function earena_2_apply_verification_request_callback()
   {
       check_ajax_referer('form.js_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
       if (update_user_meta($ea_user, 'bp_verified_member', 1)) {
           update_user_meta($ea_user, 'verification_request', 0);
-          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          switch_to_locale(get_user_locale($ea_user));
           $message = $username . __(', ваш аккаунт верифицирован.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Пользователь верифицирован.', 'earena');
           wp_send_json(json_encode($arr_response));
@@ -135,14 +137,16 @@
   function earena_2_remove_verification_request_callback()
   {
       check_ajax_referer('form.js_nonce', __('security', 'earena'));
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
       if (update_user_meta($ea_user, 'verification_request', 0)) {
           update_user_meta($ea_user, 'bp_verified_member', 0);
-          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          switch_to_locale(get_user_locale($ea_user));
           $message = $username . __(', ваша заявка на верификацию отклонена.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Заявка на верификацию отклонена.', 'earena');
           wp_send_json(json_encode($arr_response));
@@ -278,29 +282,34 @@
   ********  //Начислить денег пользователю
   =============================================== */
   add_action('wp_ajax_ea_add_money_by_admin', 'ea_add_money_by_admin_callback');
-  function ea_add_money_by_admin_callback()
-  {
-      check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
-      $amount = (float)$_POST['amount'];
-      if ($amount > 0 && woo_wallet()->wallet->credit($ea_user, (float)$amount,
-              __('Зачисление от администрации', 'earena')) !== false) {
-          $admin_id = (int)get_site_option('ea_admin_id', 27);
-          $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
-          $thread_id = ea_get_thread_id($ea_user, $admin_id);
-          $message = $username . __(', вам зачислено $', 'earena') . $amount;
-          ea_admin_tech_msg($message, $thread_id);
-          $arr_response['success'] = 1;
-          $arr_response['content'] = __('Деньги зачислены.', 'earena');
-          wp_send_json(json_encode($arr_response));
-          wp_die();
-      } else {
-          $arr_response['success'] = 0;
-          $arr_response['content'] = __('Деньги не зачислены.', 'earena');
-          wp_send_json(json_encode($arr_response));
-          wp_die();
-      }
-  }
+function ea_add_money_by_admin_callback()
+{
+    check_ajax_referer('ea_functions_nonce', 'security');
+    $ea_user = (int)$_POST['user'];
+    $admin_id = (int)get_site_option('ea_admin_id', 27);
+    $amount = (float)$_POST['amount'];
+    switch_to_locale(get_user_locale($ea_user));
+    $result = woo_wallet()->wallet->credit($ea_user, (float)$amount, __('Зачисление от администрации', 'earena'));
+    if ($amount > 0 && $result !== false) {
+        ea_write_transaction(['user_id' => $ea_user, 'amount' => $amount, 'action' => 'add_to_user', 'transaction_id' => $result,]);
+
+        $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
+        $thread_id = ea_get_thread_id($ea_user, $admin_id);
+        $message = $username . __(', вам зачислено $', 'earena') . $amount;
+        ea_admin_tech_msg($message, $thread_id);
+        switch_to_locale(get_user_locale($admin_id));
+        $arr_response['success'] = 1;
+        $arr_response['content'] = __('Деньги зачислены.', 'earena');
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    } else {
+        switch_to_locale(get_user_locale($admin_id));
+        $arr_response['success'] = 0;
+        $arr_response['content'] = __('Деньги не зачислены.', 'earena');
+        wp_send_json(json_encode($arr_response));
+        wp_die();
+    }
+}
 
   /* ==============================================
   ********  //Желтые карточки -> Предупреждения (добавить)
@@ -309,15 +318,16 @@
   function ea_add_yc_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
+      $admin_id = (int)get_site_option('ea_admin_id', 27);
       $reason = $_POST['reason'];
+      switch_to_locale(get_user_locale($ea_user));
       $reason_text = $reason == 1 ? __('неуважение к сопернику', 'earena') : __('нарушение правил', 'earena');
       if (!empty($_POST['match_id'])) {
           $reason_text .= ( $_POST['tournament'] == 1 ? __('в турнирном матче', 'earena') : __('в матче', 'earena') ) . ' ID' . $_POST['match_id'];
       }
       $yc = get_user_meta($ea_user, 'yc', true) ?: 0;
       if ($reason > 0 && $yc < 3 && update_user_meta($ea_user, 'yc', ++$yc)) {
-          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = !empty($_POST['thread_id']) ? $_POST['thread_id'] : ea_get_thread_id($ea_user, $admin_id);
           $message = $username . __(', вы получили предупреждение за ',
@@ -343,11 +353,13 @@
               $message = $username . __(', ваш аккаунт заблокирован.', 'earena');
               ea_admin_tech_msg($message, $thread_id);
           }
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Предупреждение добавлено.', 'earena') . '(' . $yc . '/3)';
           wp_send_json(json_encode($arr_response));
           wp_die();
       } else {
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 0;
           $arr_response['content'] = __('Предупреждение не добавлено.', 'earena');
           wp_send_json(json_encode($arr_response));
@@ -361,13 +373,14 @@
   function ea_del_yc_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
       $yc = get_user_meta($ea_user, 'yc', true) ?: 0;
       $old_yc = $yc;
       if ($yc > 0 && update_user_meta($ea_user, 'yc', --$yc)) {
           $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = !empty($_POST['thread_id']) ? $_POST['thread_id'] : ea_get_thread_id($ea_user, $admin_id);
+          switch_to_locale(get_user_locale($ea_user));
           $message = $username . __(', мы удалили предупреждение.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
           if ($yc < 3) {
@@ -377,6 +390,7 @@
                   ea_admin_tech_msg($message, $thread_id);
               }
           }
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Предупреждение удалено.', 'earena') . '(' . $yc . '/3)';
           wp_send_json(json_encode($arr_response));
@@ -397,13 +411,15 @@
   function ea_add_blocked_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
       if (update_user_meta($ea_user, 'blocked', true)) {
           $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          switch_to_locale(get_user_locale($ea_user));
           $message = $username . __(', ваш аккаунт заблокирован.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Пользователь заблокирован.', 'earena');
           wp_send_json(json_encode($arr_response));
@@ -423,13 +439,15 @@
   function ea_del_blocked_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
       if (update_user_meta($ea_user, 'blocked', false)) {
           $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = ea_get_thread_id($ea_user, $admin_id);
+          switch_to_locale(get_user_locale($ea_user));
           $message = $username . __(', ваш аккаунт разблокирован.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = __('Пользователь разблокирован.', 'earena');
           wp_send_json(json_encode($arr_response));
@@ -454,7 +472,7 @@
           if (email_exists($player_email)) {
               $add_status = add_ea_tournament_player($_POST['tournament_id'], email_exists($player_email));
               if ($add_status == 1) {
-                wp_send_json_success( $add );
+                wp_send_json_success( $add ); /* TODO: Починить Undefined variable '$add' */
               } else {
                 wp_send_json_error( __('Такой адрес электронной почты уже добавлен!', 'earena_2') );
               }
@@ -504,23 +522,26 @@
   function ea_add_vip_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
-      $ea_user = $_POST['user'];
+      $ea_user = (int)$_POST['user'];
+      $admin_id = (int)get_site_option('ea_admin_id', 27);
       $time = (!empty(get_user_meta($ea_user, 'vt', true)) && get_user_meta($ea_user, 'vt',
               true) > time()) ? get_user_meta($ea_user, 'vt', true) : time();
+      switch_to_locale(get_user_locale($ea_user));
       $process = $time > time() ? __('продлен', 'earena') : __('добавлен', 'earena');
       $vt = mktime(23, 59, 59, date("m", $time) + 1, date("d", $time), date("Y", $time));
       if (update_user_meta($ea_user, 'vt', $vt)) {
           update_user_meta($ea_user, 'vip', true);
-          $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = ea_get_thread_id($ea_user, $admin_id);
           $message = $username . ', вам ' . $process . __(' VIP статус на 1 месяц.', 'earena');
           ea_admin_tech_msg($message, $thread_id);
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 1;
           $arr_response['content'] = 'VIP ' . $process . '. ' . __('До', 'earena') . ' ' . date('d-m-Y', $vt);
           wp_send_json(json_encode($arr_response));
           wp_die();
       } else {
+          switch_to_locale(get_user_locale($admin_id));
           $arr_response['success'] = 0;
           $arr_response['content'] = __('VIP не добавлен.', 'earena');
           wp_send_json(json_encode($arr_response));

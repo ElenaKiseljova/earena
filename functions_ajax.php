@@ -987,9 +987,15 @@ function earena_2_del_moderate_callback()
     $complaint = $tournament == 1 ? EArena_DB:: get_ea_tournament_match_field($match_id, 'complaint') : (EArena_DB:: get_ea_match_field($match_id, 'complaint') ?? []);
     $complaint = json_decode( $complaint, true );
 
-    $message = __('Ваша жалоба: "', 'earena_2') .
-              $complaint[$complaint_index]['content'] .'" - ' .
-              __('рассмотрена Администратором', 'earena_2');
+    $ea_user = $complaint[$complaint_index]['id'];
+    $match = $tournament == 1 ? EArena_DB::get_ea_tournament_match($match_id) : EArena_DB::get_ea_match($match_id);
+    $admin_id = (int)get_site_option('ea_admin_id', 27);
+//    $message = __('Ваша жалоба: "', 'earena_2') .
+//              $complaint[$complaint_index]['content'] .'" - ' .
+//              __('рассмотрена Администратором', 'earena_2');
+    switch_to_locale(get_user_locale($ea_user));
+    $message = sprintf( __( '%s, ваша жалоба: "%s" рассмотрена Администратором', 'earena_2' ), ea_game_nick($match->game, $match->platform, $ea_user), wp_trim_words( $complaint[$complaint_index]['content'], 20 ) );
+    switch_to_locale(get_user_locale($admin_id));
     if (isset($complaint[$complaint_index])) {
       unset($complaint[$complaint_index]);
     }
@@ -1005,7 +1011,6 @@ function earena_2_del_moderate_callback()
     $result = $tournament == 1 ? EArena_DB::upd_ea_tournament_match($match_data,
         $where) : EArena_DB::upd_ea_match($match_data, $where);
     if ($result) {
-        $admin_id = (int)get_site_option('ea_admin_id', 27);
         global $wpdb;
         $table_name = $wpdb->get_blog_prefix() . 'bp_messages_recipients';
         if ($wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE thread_id = %d AND user_id=%d", $tid,

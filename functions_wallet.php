@@ -128,6 +128,10 @@
           if (!empty($amount) && $amount <= $max_amount && $amount >= $min_amount && wp_verify_nonce($_POST['woo_wallet_withdraw'], 'ef-nonce-withdraw')) {
                       $ea_user = wp_get_current_user();
                       $withdraw = woo_wallet()->wallet->debit($ea_user->ID, (float)$amount, __('Вывод средств', 'earena_2'));
+
+                      ea_write_transaction(['user_id' => $ea_user->ID, 'amount' => $amount, 'action' => 'withdraw', 'transaction_id' => $withdraw,]);
+                      ea_on_balance_withdraw($amount, $ea_user->ID);
+
                       $headers = 'From: ' . $ea_user->nickname . ' <' . $ea_user->user_email . '>' . "\r\n";
   //                    $message = __('Пользователь', 'earena_2') . ' ' . $ea_user->nickname . ' ' . __('запросил вывод средств (транзакция #', 'earena_2') . ' ' . $withdraw . __('), на сумму $', 'earena_2') . $amount;
             $message = sprintf( __( 'Пользователь %s запросил вывод средств (транзакция #%d), на сумму', 'earena_2' ), $ea_user->nickname, $withdraw) . ' $'.$amount;
@@ -510,9 +514,9 @@
   // Покупка VIP
   function buy_vip($m = 0, $id = 0)
   {
-      if (!is_user_logged_in()) {
+/*      if (!is_user_logged_in()) {
           return ['success' => 0, 'message' => __('Пользователь не залогинился', 'earena_2')];
-      }
+      }*/
       $ea_user = $id == 0 ? wp_get_current_user() : get_user_by('id', $id);
       if (!($ea_user instanceof WP_User)) {
           return ['success' => 0, 'message' => __('Пользователь не определён', 'earena_2')];
@@ -547,6 +551,7 @@
       $vt = mktime(23, 59, 59, date("m", $time) + $m, date("d", $time), date("Y", $time));
       update_metadata('user', $ea_user->ID, 'vip', 1);
       update_metadata('user', $ea_user->ID, 'vt', $vt);
+      ea_write_transaction(['user_id' => $ea_user->ID, 'amount' => $price, 'action' => 'buy_vip', 'transaction_id' => $bet,]);
       if ($vt == $ea_user->get('vt')) {
           return [
               'date' => date('d.m.Y', $vt),

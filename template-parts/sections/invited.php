@@ -35,7 +35,6 @@
         <ul class="section__list section__list--friends">
           <?php
             foreach ($referrals as $ref) {
-              // $money - чо-т не работает... Заменила на earena_2_balance(); /* TODO: Разобраться */
               $money = $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM `{$wpdb->base_prefix}woo_wallet_transactions` WHERE details LIKE %s AND type = 'credit' AND user_id = %d", '%(ref_id='.$ref->ID.')%', $earena_2_user_private->ID ) )?:0;
               ?>
                 <li class="section__item section__item--col-2 section__item--friends">
@@ -89,7 +88,7 @@
                     </div>
                     <div class="user__right">
                       <div class="user__money user__money--invited">
-                        $<?= earena_2_nice_money(earena_2_balance($ref->ID)); ?>
+                        $<?= earena_2_nice_money($money); ?>
                       </div>
                     </div>
                   </div>

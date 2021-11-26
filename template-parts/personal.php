@@ -24,9 +24,16 @@
             <?php _e( 'Матчи', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--matches-admin">
-            <?= count_admin_matches_moderate() + count_admin_matches_not_confirmed(); ?>
-          </span>
+          <?php
+            $count_admin_matches = count_admin_matches_moderate() + count_admin_matches_not_confirmed();
+            if ($count_admin_matches > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--matches-admin">
+                  <?= $count_admin_matches; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -43,9 +50,16 @@
             <?php _e( 'Турниры', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--tournaments-admin">
-            <?= count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3); ?>
-          </span>
+          <?php
+            $count_admin_tournaments = count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3);
+            if ($count_admin_tournaments > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--tournaments-admin">
+                  <?= $count_admin_tournaments; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -61,9 +75,16 @@
             <?php _e( 'Сообщения', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--messages-admin">
-            <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
-          </span>
+          <?php
+            $count_admin_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
+            if ($count_admin_messages > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--messages-admin">
+                  <?= $count_admin_messages; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -77,9 +98,16 @@
             <?php _e( 'Верификация', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--verification-admin">
-            <?=ea_count_verification_requests();?>
-          </span>
+          <?php
+            $count_admin_verification_requests = ea_count_verification_requests();
+            if ($count_admin_verification_requests > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--verification-admin">
+                  <?= $count_admin_verification_requests;?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
     <?php else: ?>
@@ -110,9 +138,16 @@
             <?php _e( 'Матчи', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--matches">
-            <?= counter_matches($ea_user->ID); ?>
-          </span>
+          <?php
+            $count_matches = counter_matches($ea_user->ID);
+            if ($count_matches > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--matches">
+                  <?= $count_matches; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -129,9 +164,16 @@
             <?php _e( 'Турниры', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--tournaments">
-            <?= counter_tournaments($ea_user->ID); ?>
-          </span>
+          <?php
+            $count_tournaments = counter_tournaments($ea_user->ID);
+            if ($count_tournaments > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--tournaments">
+                  <?= $count_tournaments; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -147,9 +189,17 @@
             <?php _e( 'Сообщения', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--messages">
-            <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
-          </span>
+
+          <?php
+            $count_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
+            if ($count_messages > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--messages">
+                  <?= $count_messages; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -166,9 +216,16 @@
             <?php _e( 'Друзья', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--friends">
-            <?= !empty($new_friends = count(friends_get_friendship_request_user_ids(get_current_user_id()))) ? $new_friends : '0' ?>
-          </span>
+          <?php
+            $count_friends_requests = !empty(friends_get_friendship_request_user_ids(get_current_user_id())) ? count(friends_get_friendship_request_user_ids(get_current_user_id())) : 0;
+            if ($count_friends_requests > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--friends">
+                  <?= $count_friends_requests; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
       <li class="personal__item">
@@ -182,9 +239,16 @@
             <?php _e( 'Уведомления', 'earena_2' ); ?>
           </span>
 
-          <span class="personal__link-count personal__link-count--administration">
-            <?= counter_admin(); ?>
-          </span>
+          <?php
+            $count_administration = counter_admin();
+            if ($count_administration > 0) {
+              ?>
+                <span class="personal__link-count personal__link-count--administration">
+                  <?= $count_administration; ?>
+                </span>
+              <?php
+            }
+          ?>
         </a>
       </li>
     <?php endif; ?>

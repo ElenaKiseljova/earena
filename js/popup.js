@@ -41,15 +41,20 @@
 
       let onPopupEscPress = function (evt) {
         if (evt.keyCode === 27) {
-          window.popup.closePopup();
+          window.popup.close();
         }
+      };
+
+      let onClosePopup = function (evt) {
+        evt.preventDefault();
+
+        window.popup.close();
       };
 
       // Экспортируемый объект
       window.popup = {
         // Закрытие попапа
-        closePopup : function (evt) {
-          evt.preventDefault();
+        close : function () {
           // Все попапы
           let allPopup = document.querySelectorAll('.popup');
 
@@ -69,7 +74,7 @@
           document.removeEventListener('keydown', onPopupEscPress, true);
         },
         // Открытие попапа
-        openPopup : function (popup, sufix) {
+        open : function (popup, sufix) {
           // Все попапы
           let allPopup = document.querySelectorAll('.popup');
 
@@ -182,12 +187,12 @@
               }
 
               // Дефолтное поведение
-              window.popup.openPopup(popupItem, sufixPopupName);
+              window.popup.open(popupItem, sufixPopupName);
             });
 
             var onEnterPressOpen = function (evt) {
               if (evt.keyCode === 13) {
-                window.popup.openPopup(popupItem, sufixPopupName);
+                window.popup.open(popupItem, sufixPopupName);
 
                 document.removeEventListener('keydown', onEnterPressOpen);
               }
@@ -217,11 +222,11 @@
         },
         // Добавление св-ва закрытия попапа по клику на указанный элемент
         activateClosePopupButton : function (closeButton) {
-          closeButton.addEventListener('click', window.popup.closePopup);
+          closeButton.addEventListener('click', onClosePopup);
 
           var onEnterPressClose = function (evt) {
             if (evt.keyCode === 13) {
-              window.popup.closePopup();
+              window.popup.close();
 
               document.removeEventListener('keydown', onEnterPressClose);
             }
@@ -581,7 +586,7 @@
       window.popup.searchOpenPopupButton(document);
 
       if (OVERLAY_POPUP) {
-        OVERLAY_POPUP.addEventListener('click', window.popup.closePopup);
+        OVERLAY_POPUP.addEventListener('click', onClosePopup);
       }
     } catch (e) {
       console.log(e);

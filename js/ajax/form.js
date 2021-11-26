@@ -454,6 +454,30 @@
           var onSuccess = (response) => {
             buttonSubmit.classList.remove('sending');
 
+            // GAME
+            if ( formId.indexOf('game') > -1) {
+              response = JSON.parse(response);
+
+              let sectionUpdateArea = document.querySelector('#sections-games-profile-update');
+
+              if (sectionUpdateArea && response.success === 1) {
+                window.popup.close();
+
+                sectionUpdateArea.innerHTML = response.data;
+
+                // Получаем кнопки открытия попапов
+                let openPopupButtons = sectionUpdateArea.querySelectorAll('.openpopup');
+                if (openPopupButtons.length > 0) {
+                  openPopupButtons.forEach((openPopupButton, i) => {
+                    // Активация кнопки открытия попапа
+                    window.popup.activateOpenPopupButton(openPopupButton);
+                  });
+                }
+
+                return;
+              }
+            }
+
             // ЛОГИРОВАНИЕ
             if ( formId.indexOf('login') > -1 ) {
               // Логин
@@ -863,26 +887,6 @@
                   }
                 } else {
                   window.form.showResponseText(popup, response.content);
-                }
-              }
-            }
-
-            // GAME
-            if ( formId.indexOf('game') > -1) {
-              response = JSON.parse(response);
-
-              let sectionUpdateArea = document.querySelector('#sections-games-profile-update');
-
-              if (sectionUpdateArea && response.success === 1) {
-                sectionUpdateArea.innerHTML = response.data;
-
-                // Получаем кнопки открытия попапов
-                let openPopupButtons = sectionUpdateArea.querySelectorAll('.openpopup');
-                if (openPopupButtons.length > 0) {
-                  openPopupButtons.forEach((openPopupButton, i) => {
-                    // Активация кнопки открытия попапа
-                    window.popup.activateOpenPopupButton(openPopupButton);
-                  });
                 }
               }
             }

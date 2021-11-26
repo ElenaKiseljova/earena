@@ -134,7 +134,7 @@
           </button>
         <?php else: ?>
           <?php if ($yellow_cards>0): ?>
-            <button class="account__admin-button admin-button admin-button--warning-delete openpopup"
+            <!-- <button class="account__admin-button admin-button admin-button--warning-delete openpopup"
               data-popup="warning"
               data-user-id="<?= $ea_user->ID; ?>"
               data-user-name="<?= $ea_user->nickname; ?>"
@@ -142,7 +142,7 @@
               <span class="visually-hidden">
                 <?php _e( 'Удалить предупреждение', 'earena_2' ) ?>
               </span>
-            </button>
+            </button> -->
           <?php endif; ?>
 
           <button class="account__admin-button admin-button admin-button--block openpopup"

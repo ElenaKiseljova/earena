@@ -1174,10 +1174,9 @@
           // Выполнять, если есть кнопка сабмита
           if (buttonSubmit) {
             if (!notValid) {
-              // buttonSubmit.disabled = false;
+              buttonSubmit.disabled = false;
               buttonSubmit.classList.remove('disabled');
             } else {
-              // buttonSubmit.disabled = true;
               buttonSubmit.classList.add('disabled');
             }
           }
@@ -1185,6 +1184,7 @@
           return notValid;
         },
         fields: (formId, type, callback) => {
+          // console.log('fields');
           let form = attrForms[formId].FORM;
           let fields = form.querySelectorAll(type);
           fields.forEach((field, i) => {
@@ -1294,7 +1294,7 @@
 
             fieldChange.value = '';
 
-            // window.form.validate(formId);
+            window.form.validate(formId, checkboxControl);
           });
         },
         // Ф-я поиска дополнительных кнопок закрытия попапов

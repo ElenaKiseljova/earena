@@ -34,7 +34,7 @@
     init : function (select, container) {
       /* Создание селекта Игр по выбранной Платформе */
       let containerForSelectGames = container.querySelector('.form__row--games');
-      let flagCreateGame = (select.dataset.create === 'games' && containerForSelectGames) ? true : false;
+      let flagCreateGame = (select.dataset.create === 'games' && containerForSelectGames) || select.classList.contains('select--games');
       /* ------------------------- */
 
       let button = select.querySelector('.select__button');
@@ -58,8 +58,14 @@
       });
     },
     activateInputs : function (button, radioInputs, flagCreateGame = false, containerForSelectGames = false) {
+
       // Перебираю инпуты и навешиваю на них событие изменения
       radioInputs.forEach((radioInput, i) => {
+        if (radioInput.name === 'game' && flagCreateGame) {
+          let formId = radioInput.closest('form').id;
+          window.form.fieldActivate(radioInput, i, formId);
+        }
+
         radioInput.addEventListener('change', function () {
           if (radioInput.checked) {
             button.classList.add('selected');

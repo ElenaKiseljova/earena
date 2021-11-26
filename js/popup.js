@@ -374,7 +374,7 @@
                         </span>
                       </button>
 
-                      <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden' : ''}"" type="submit" name="match-submit ${(button.dataset.balance < button.dataset.bet) ? 'disabled' : ''}">
+                      <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden disabled' : ''}"" type="submit" name="match-submit">
                         <span>
                           ${__( 'Принять', 'earena_2' )}
                         </span>
@@ -535,7 +535,7 @@
         },
         // Регулировка высоты попапа
         scrollContorllFunction: function (popup, popupTemplateContainer, prefix = false) {
-          console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
+          // console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
           if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight > popup.offsetHeight ) {
             popup.classList.add('scroll-content');
           } else {

@@ -61,9 +61,11 @@
             </button>
           </div>
         </div>
-        <span class="form__error form__error--popup"><?php _e( 'Сначала выберите платформу', 'earena_2' ); ?></span>
+        <span class="form__error form__error--popup">
+          <?php _e( 'Error', 'earena_2' ); ?>
+        </span>
 
-        <button class="form__submit form__submit--match-next button button--blue" type="submit" name="match-submit-next">
+        <button class="form__submit form__submit--match-next button button--blue disabled" type="submit" name="match-submit-next">
           <span>
             <?php _e( 'Далее', 'earena_2' ); ?>
           </span>

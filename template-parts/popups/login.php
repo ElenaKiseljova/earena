@@ -1,4 +1,5 @@
 <?php
+  $is_profile = is_page(503);
   $countries = get_site_option( 'countries' );
 ?>
 
@@ -301,9 +302,15 @@
           <?php _e( 'Чтобы начать соревноваться <br> с другими игроками необходимо <br> добавить игры в свою учетную запись.', 'earena_2' ); ?>
         </div>
 
-        <a class="popup__go-to-button popup__go-to-button--login button button--blue" href="/profile">
-          <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
-        </a>
+        <?php if ($is_profile): ?>
+          <button class="popup__go-to-button popup__go-to-button--login button button--blue button--popup-close">
+            <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
+          </button>
+        <?php else: ?>
+          <a class="popup__go-to-button popup__go-to-button--login button button--blue" href="/profile">
+            <?php _e( 'Добавить сейчас', 'earena_2' ); ?>
+          </a>
+        <?php endif; ?>
       </div>
     </template>
   </div>
@@ -317,7 +324,7 @@
       $type_action = 'forgot';
     } else if ($_GET['action'] === 'rp' || $_GET['action'] === 'reset') {
       $type_action = 'reset';
-    } else if ($_GET['action'] === 'success' ) {
+    } else if ($_GET['action'] === 'success' || $_GET['action'] === 'after_registration' ) {
       $type_action = 'success';
     } else if ($_GET['action'] === 'register' ) {
       $type_action = 'signup';

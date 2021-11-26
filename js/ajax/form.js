@@ -478,9 +478,9 @@
               }
             }
 
-            // ЛОГИРОВАНИЕ
+            // LOGIN
             if ( formId.indexOf('login') > -1 ) {
-              // Логин
+              // Логирование
               if (prefix.indexOf('signin') > -1) {
                 if (response.data.loggedin === true) {
                   document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&action=success') : (earena_2_ajax.redirecturl + '?action=success');
@@ -494,7 +494,7 @@
               // Регистрация
               if (prefix.indexOf('signup') > -1) {
                 if (response.data.registered) {
-                  document.location.href = siteURL  + '/profile?after_registration=1';
+                  document.location.href = siteURL  + '/profile?action=after_registration';
                 } else {
                   let message = '';
 

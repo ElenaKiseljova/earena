@@ -17,7 +17,7 @@
         <?php _e( 'Создание турнира', 'earena_2' ); ?>
       </h2>
 
-      <div class="popup__information popup__information--template">
+      <div class="popup__information popup__information--template popup__information--create">
         <?php _e( '', 'earena_2' ); ?>
       </div>
 

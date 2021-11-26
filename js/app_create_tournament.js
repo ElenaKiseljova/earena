@@ -180,7 +180,7 @@ const app_create_tournament = new Vue({
         }
 
         setTimeout(function () {
-          window.form.validate('form-create');
+          window.form.validate(this.formId);
           window.select.reActivateInputs('random,fast');
         }, 500)
       }
@@ -219,12 +219,12 @@ const app_create_tournament = new Vue({
       data.append('action', 'ajax_new_tournament')
       data.append('nonce', this.nonce)
       data.append('tab_id', this.activeTab)
-      data.append('vip', this.vip)
+      data.append('vip', this.vip ? 1 : 0)
       data.append('t_name', this.name)
       data.append('description', this.description)
       data.append('our_percent', this.our_percent)
       data.append('garant', this.garant)
-      data.append('private', this.private)
+      data.append('private', this.private ? 1 : 0)
       if (this.private) {
         data.append('pass', this.password)
       }
@@ -254,10 +254,10 @@ const app_create_tournament = new Vue({
       data.append('qtyVal', this.qtyVal)
       data.append('qtyValMin', this.qtyValMin)
       data.append('qtyValMax', this.qtyValMax)
-      data.append('bots_play', this.bots_play)
-      data.append('no_private', this.no_private)
-      data.append('add_now', this.add_now)
-      data.append('all_games', this.all_games)
+      data.append('bots_play', this.bots_play ? 1 : 0)
+      data.append('no_private', this.no_private ? 1 : 0)
+      data.append('add_now', this.add_now ? 1 : 0)
+      data.append('all_games', this.all_games ? 1 : 0)
 
       data.append('prize_type', this.prize_type)
 
@@ -265,8 +265,10 @@ const app_create_tournament = new Vue({
         data.append('dynamic_prize', JSON.stringify(this.dynamic_prize))
       }
 
-
-      window.form.submitFunction('form-create', data);
+      let notValid = window.form.validate(this.formId);
+      if (!notValid) {
+        window.form.submitFunction(this.formId, data);
+      }
     },
     addPrize() {
       this.dynamic_prize.push('');

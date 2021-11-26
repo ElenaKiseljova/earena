@@ -66,16 +66,18 @@
             }
 
             // Клик по кнопке Отправки формы
-            attrForms[attr.idForm].buttonSubmit.addEventListener('click', (evt) => {
-              evt.preventDefault();
+            if (attr.idForm.indexOf('create') === - 1) {
+              attrForms[attr.idForm].buttonSubmit.addEventListener('click', (evt) => {
+                evt.preventDefault();
 
-              let notValid = window.form.validate(attr.idForm);
-              if (!notValid) {
-                window.form.submitFunction(attr.idForm);
-              } else {
-                console.log('Форма не валидна!');
-              }
-            });
+                let notValid = window.form.validate(attr.idForm);
+                if (!notValid) {
+                  window.form.submitFunction(attr.idForm);
+                } else {
+                  console.log('Форма не валидна!');
+                }
+              });
+            }
 
             window.form.fields(attr.idForm, 'input', window.form.fieldActivate);
             window.form.fields(attr.idForm, 'textarea', window.form.fieldActivate);
@@ -1036,9 +1038,9 @@
               ( formId.indexOf('create') > -1)
             ) {
             // dataForm - потомок FormData() [для передачи файлов]
-            for(var pair of dataForm.entries()) {
-               console.log(pair[0]+ ', '+ pair[1]);
-            }
+            // for(var pair of dataForm.entries()) {
+            //    console.log(pair[0]+ ', '+ pair[1]);
+            // }
 
             // Для передачи файлов
             $.ajax({
@@ -1063,7 +1065,7 @@
             });
           } else {
             // formData - обычный объект
-            console.log(formData);
+            // console.log(formData);
 
             // Обычный запрос (без передачи файлов)
             $.ajax({
@@ -1206,10 +1208,14 @@
 
           // Переключение класса .focus
           field.addEventListener('focus', () => {
-            field.closest('.form__row').classList.add('focus');
+            if (field.closest('.form__row')) {
+              field.closest('.form__row').classList.add('focus');
+            }
           });
           field.addEventListener('blur', () => {
-            field.closest('.form__row').classList.remove('focus');
+            if (field.closest('.form__row')) {
+              field.closest('.form__row').classList.remove('focus');
+            }
           });
         },
         // Перебор чекбоксов

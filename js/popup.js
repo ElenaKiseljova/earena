@@ -22,6 +22,7 @@
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 
+      let BPAvatarFlag = false;
       var timeoutBlockOpenPopupButton;
 
       // Данные о юзере, что запросил верификацию (получаются из кнопки открытия попапа)
@@ -91,6 +92,44 @@
 
           // Добавить активный класс
           popup.classList.add('active');
+
+          if (sufix === 'avatar') {
+            if (!BPAvatarFlag) {
+              // Получаем контейнер для шаблона
+              let popupTemplateContainer = popup.querySelector(`#${sufix}-popup`);
+              // Запуск проверки: нужен ли скролл
+              window.popup.scrollContorllFunction(popup, popupTemplateContainer);
+              // Получение объекта BP
+              window.bp = window.bp || {};
+              if (window.bp.Uploader) {
+                console.log(window.bp.Uploader);
+                // Отслеживаю событие начала загрузки файла, чтобы активировать скролл при необходимости
+                window.bp.Uploader.filesQueue.on("add", function () {
+                  // console.log(window.bp.Uploader.filesQueue.length);
+                  let intervalUpload = setInterval(function () {
+                    if (window.bp.Uploader.filesQueue.length === 0) {
+                      console.log('uploaded');
+                      clearInterval(intervalUpload);
+                      // Запуск проверки: нужен ли скролл
+                      window.popup.scrollContorllFunction(popup, popupTemplateContainer);
+                      // Кнопка Установить аватар
+                      let avatarCropSubmit = popup.querySelector('.button.avatar-crop-submit');
+                      if (avatarCropSubmit) {
+                        avatarCropSubmit.addEventListener('click', function () {
+                          // console.log('avatar-crop-submit click');
+                          // Запуск проверки: нужен ли скролл
+                          window.popup.scrollContorllFunction(popup, popupTemplateContainer);
+                        });
+                      }
+                    }
+                    // console.log(window.bp.Uploader.filesQueue.length);
+                  }, 500);
+                });
+              }
+
+              BPAvatarFlag = true;
+            }
+          }
 
           document.addEventListener('keydown', onPopupEscPress, true);
         },
@@ -384,19 +423,7 @@
             window.form.additionButtonClosePopup(popup);
           }
 
-          // Регулировка высоты попапа
-          let scrollContorllFunction = function () {
-            //console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
-            if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
-              popup.classList.add('scroll-content');
-            } else {
-              if (prefix !== 'game') {
-                popup.classList.remove('scroll-content');
-              }
-            }
-          };
-
-          scrollContorllFunction();
+          window.popup.scrollContorllFunction(popup, popupTemplateContainer, prefix);
 
           if (prefix === 'game') {
             let nicknamesTemplate = button.querySelector('[id*="nicknames"]');
@@ -500,6 +527,17 @@
 
           // Подстановка Имени и ИД в формы попапа (есди в кнопке есть дата атрибуты с именем и ИД)
           window.popup.userInfo(button, popup);
+        },
+        // Регулировка высоты попапа
+        scrollContorllFunction: function (popup, popupTemplateContainer, prefix = false) {
+          // console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
+          if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
+            popup.classList.add('scroll-content');
+          } else {
+            if (prefix !== 'game') {
+              popup.classList.remove('scroll-content');
+            }
+          }
         },
         // Подстановка информации о пользователе в попап по клику на кнопку
         userInfo : function (button = false, popup) {

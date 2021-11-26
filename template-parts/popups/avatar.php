@@ -8,7 +8,7 @@
 ?>
 
 
-<div class="popup popup--avatar scroll-content">
+<div class="popup popup--avatar">
   <div class="popup__template popup__template--avatar" id="avatar-popup">
     <div class="popup__header popup__header--avatar">
       <h2 class="popup__title popup__title--avatar">

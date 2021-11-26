@@ -82,9 +82,9 @@
           </div>
         <?php endif; ?>
         <?php if ( is_ea_admin() ): ?>
-          <a class="account__email" href="mailto:<?= $ea_user->user_email; ?>">
+          <span class="account__email">
             <?= $ea_user->user_email; ?>
-          </a>
+          </span>
         <?php endif; ?>
       </div>
     </div>

@@ -29,7 +29,6 @@
                         window.innerHeight ||
                         document.documentElement.clientHeight ||
                         document.getElementsByTagName('body')[0].clientHeight;
-      let inputEventListenerFlag = {};
 
       // Данные для форм при инициализации формы
       let attrForms = {};
@@ -56,8 +55,6 @@
             // Получение кнопки для отправки
             attrForms[attr.idForm].buttonSubmit = attrForms[attr.idForm].FORM.querySelector('button[type="submit"]');
 
-            inputEventListenerFlag[attr.idForm] = false;
-
             window.form.parseCheckboxes(attr.idForm);
 
             if (attrForms[attr.idForm].FORM.closest('.popup')) {
@@ -68,12 +65,20 @@
               window.form.additionButtonClosePopup(attrForms[attr.idForm].FORM.closest('.popup'));
             }
 
-            // Запуск валидации по клику на форму
-            attrForms[attr.idForm].FORM.addEventListener('click', (evt) => {
-              if (evt.target.tagName !== 'A') {
-                window.form.validate(attr.idForm);
+            // Клик по кнопке Отправки формы
+            attrForms[attr.idForm].buttonSubmit.addEventListener('click', (evt) => {
+              evt.preventDefault();
+
+              let notValid = window.form.validate(attr.idForm);
+              if (!notValid) {
+                window.form.submitFunction(attr.idForm);
+              } else {
+                console.log('Форма не валидна!');
               }
             });
+
+            window.form.fields(attr.idForm, 'input', window.form.fieldActivate);
+            window.form.fields(attr.idForm, 'textarea', window.form.fieldActivate);
 
             return true;
           } else {
@@ -106,54 +111,47 @@
 
           // Если DATA не передана
           if (!ajaxData) {
-            // Получение всех инпутов
-            let inputs = form.querySelectorAll('input');
-            // Собираем значения из инпутов
-            if (inputs.length > 0) {
-              inputs.forEach(inputField => {
-                let nameInput = inputField.name;
-                let valueInput = inputField.value;
+            let callbackSubmitInput = (inputField) => {
+              let nameInput = inputField.name;
+              let valueInput = inputField.value;
 
-                if (nameInput && valueInput) {
-                  if (inputField.type === 'radio') {
-                    if (inputField.checked) {
-                      formData[`${nameInput}`] = valueInput;
-                    }
-                  } else if (inputField.type === 'checkbox') {
-                    if (!formData[`${nameInput}`] && inputField.checked) {
-                      formData[`${nameInput}`] = valueInput;
-                    } else if (formData[`${nameInput}`] && !Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
-                      let previousValue = formData[`${nameInput}`];
-
-                      formData[`${nameInput}`] = [previousValue, valueInput];
-                    } else if (formData[`${nameInput}`] && Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
-                      formData[`${nameInput}`].push(valueInput);
-                    }
-                  } else if (inputField.type === 'file' && dataForm) {
-                    //console.log(inputField.files);
-                    $.each(inputField.files, function (key, value) {
-                      dataForm.append(key, value);
-                    });
-                  } else {
+              if (nameInput && valueInput) {
+                if (inputField.type === 'radio') {
+                  if (inputField.checked) {
                     formData[`${nameInput}`] = valueInput;
                   }
-                }
-              });
-            }
+                } else if (inputField.type === 'checkbox') {
+                  if (!formData[`${nameInput}`] && inputField.checked) {
+                    formData[`${nameInput}`] = valueInput;
+                  } else if (formData[`${nameInput}`] && !Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
+                    let previousValue = formData[`${nameInput}`];
 
-            // Полечение всех текстовых обрастей формы
-            let textareas = form.querySelectorAll('textarea');
-            // Собираем значения из  многострочных полей ввода
-            if (textareas.length > 0) {
-              textareas.forEach((textareaField, i) => {
-                let nameTextarea = textareaField.name;
-                let valueTextarea = textareaField.value;
-
-                if (nameTextarea && valueTextarea) {
-                  formData[`${nameTextarea}`] = valueTextarea;
+                    formData[`${nameInput}`] = [previousValue, valueInput];
+                  } else if (formData[`${nameInput}`] && Array.isArray(formData[`${nameInput}`]) && inputField.checked) {
+                    formData[`${nameInput}`].push(valueInput);
+                  }
+                } else if (inputField.type === 'file' && dataForm) {
+                  //console.log(inputField.files);
+                  $.each(inputField.files, function (key, value) {
+                    dataForm.append(key, value);
+                  });
+                } else {
+                  formData[`${nameInput}`] = valueInput;
                 }
-              });
-            }
+              }
+            };
+
+            let callbackSubmitTextarea = (textareaField) => {
+              let nameTextarea = textareaField.name;
+              let valueTextarea = textareaField.value;
+
+              if (nameTextarea && valueTextarea) {
+                formData[`${nameTextarea}`] = valueTextarea;
+              }
+            };
+
+            window.form.fields(formId, 'input', callbackSubmitInput);
+            window.form.fields(formId, 'textarea', callbackSubmitTextarea);
 
             /***** START Actions AJAX *****/
             // LOGIN
@@ -1085,92 +1083,56 @@
           }
         },
         // Ф-я валидации формы
-        validate : (formId) => {
+        validate : (formId, field = false) => {
           let form = attrForms[formId].FORM;
           let buttonSubmit = attrForms[formId].buttonSubmit;
 
           // Validate flag
           let notValid = false;
 
-          // Получение всех инпутов
-          let allInputs = form.querySelectorAll('input');
+          let callbackValidateInput = (item) => {
+            if (item.type !== 'submit') { // && item.type !== 'file'
+              item.autocomplete = 'off';
 
-          // Полечение всех текстовых обрастей формы
-          let allTextarea = form.querySelectorAll('textarea');
+              // Проверка по возрасту
+              if (item.type === 'date' && formId.indexOf('login') > -1) {
+                if (item.valueAsNumber) {
+                  var currentDate = new Date();
+                  var birthdayUser = new Date(item.valueAsNumber);
 
-          // Проверка инпутов
-          if (allInputs.length > 0) {
-            allInputs.forEach((item, i) => {
-              if (item.type !== 'submit') { // && item.type !== 'file'
-                item.autocomplete = 'off';
+                  var goodYear = (currentDate.getFullYear() - birthdayUser.getFullYear()) < 18;
+                  var goodMonth = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() < birthdayUser.getMonth();
+                  var goodDay = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() === birthdayUser.getMonth() && currentDate.getDate() < birthdayUser.getDate();
 
-                // Проверка по возрасту
-                if (item.type === 'date' && formId.indexOf('login') > -1) {
-                  if (item.valueAsNumber) {
-                    var currentDate = new Date();
-                    var birthdayUser = new Date(item.valueAsNumber);
+                  if ( goodYear || goodMonth || goodDay) {
+                    //console.log(birthdayUser.getFullYear(), 'Not old enough!');
 
-                    var goodYear = (currentDate.getFullYear() - birthdayUser.getFullYear()) < 18;
-                    var goodMonth = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() < birthdayUser.getMonth();
-                    var goodDay = (currentDate.getFullYear() - birthdayUser.getFullYear()) === 18 && currentDate.getMonth() === birthdayUser.getMonth() && currentDate.getDate() < birthdayUser.getDate();
-
-                    if ( goodYear || goodMonth || goodDay) {
-                      //console.log(birthdayUser.getFullYear(), 'Not old enough!');
-
-                      // Если проверка по возрасту не прошла
-                      item.parentNode.nextElementSibling.classList.add('no-old-enough');
-                    } else {
-                      // Если проверка по возрасту прошла
-                      item.parentNode.nextElementSibling.classList.remove('no-old-enough');
-                    }
-                  }
-                }
-
-                if (item.type === 'password' && item.name === 'pass_2') {
-                  if ( item.value !== form.querySelector('input[name="pass_1"]').value ) {
-                    notValid = true;
+                    // Если проверка по возрасту не прошла
+                    item.parentNode.nextElementSibling.classList.add('no-old-enough');
                   } else {
-                    notValid = false;
+                    // Если проверка по возрасту прошла
+                    item.parentNode.nextElementSibling.classList.remove('no-old-enough');
                   }
-                }
-
-                if (!item.validity.valid || (notValid === true && item.type === 'password' && item.name === 'pass_2')) {
-                  notValid = true;
-
-                  if (!item.closest('.invalid')) {
-                    // Проверка наличия обертки
-                    if (item.closest('.form__row')) {
-                      item.closest('.form__row').classList.add('invalid');
-                      item.closest('.form__row').classList.remove('valid');
-                    }
-                  }
-                } else {
-                  if (item.closest('.invalid')) {
-                    // Проверка наличия обертки
-                    if (item.closest('.form__row')) {
-                      item.closest('.form__row').classList.remove('invalid');
-                      item.closest('.form__row').classList.add('valid');
-                    }
-                  }
-                }
-
-                if (inputEventListenerFlag[formId] === false) {
-                  window.form.inputFieldValidateActivate(item, formId);
                 }
               }
-            });
-          }
 
-          //Проверка областей текста
-          if (allTextarea.length > 0) {
-            allTextarea.forEach((item, i) => {
-              if (!item.validity.valid) {
+              if (item.type === 'password' && item.name === 'pass_2') {
+                if ( item.value !== form.querySelector('input[name="pass_1"]').value ) {
+                  notValid = true;
+                } else {
+                  notValid = false;
+                }
+              }
+
+              if (!item.validity.valid || (notValid === true && item.type === 'password' && item.name === 'pass_2')) {
                 notValid = true;
 
-                // Проверка наличия обертки
-                if (item.closest('.form__row')) {
-                  item.closest('.form__row').classList.add('invalid');
-                  item.closest('.form__row').classList.remove('valid');
+                if (!item.closest('.invalid') && (!field || field === item)) {
+                  // Проверка наличия обертки
+                  if (item.closest('.form__row')) {
+                    item.closest('.form__row').classList.add('invalid');
+                    item.closest('.form__row').classList.remove('valid');
+                  }
                 }
               } else {
                 if (item.closest('.invalid')) {
@@ -1181,43 +1143,73 @@
                   }
                 }
               }
+            }
+          };
 
-              if (inputEventListenerFlag[formId] === false) {
-                window.form.inputFieldValidateActivate(item, formId);
+          let callbackValidateTextarea = (item) => {
+            if (!item.validity.valid) {
+              notValid = true;
+
+              // Проверка наличия обертки
+              if (item.closest('.form__row') && (!field || field === item)) {
+                item.closest('.form__row').classList.add('invalid');
+                item.closest('.form__row').classList.remove('valid');
               }
-            });
-          }
+            } else {
+              if (item.closest('.invalid')) {
+                // Проверка наличия обертки
+                if (item.closest('.form__row')) {
+                  item.closest('.form__row').classList.remove('invalid');
+                  item.closest('.form__row').classList.add('valid');
+                }
+              }
+            }
+          };
 
-          //console.log(notValid);
+          window.form.fields(formId, 'input', callbackValidateInput);
+          window.form.fields(formId, 'textarea', callbackValidateInput);
+
+          // console.log(notValid);
 
           // Выполнять, если есть кнопка сабмита
           if (buttonSubmit) {
             if (!notValid) {
-              buttonSubmit.disabled = false;
+              // buttonSubmit.disabled = false;
               buttonSubmit.classList.remove('disabled');
             } else {
-              buttonSubmit.disabled = true;
+              // buttonSubmit.disabled = true;
               buttonSubmit.classList.add('disabled');
-            }
-
-            // Проверка на то, был ли уже повешен обработчик клика на кнопку ранее
-            if (inputEventListenerFlag[formId] === false) {
-
-              // Если - нет - тогда вешаем
-              form.addEventListener('submit', (evt) => {
-                evt.preventDefault();
-
-                window.form.submitFunction(formId);
-              });
             }
           }
 
-          inputEventListenerFlag[formId] = true;
+          return notValid;
         },
-        // Перезапуск валидации при вводе значений в поля
-        inputFieldValidateActivate : (field, formId) => {
+        fields: (formId, type, callback) => {
+          let form = attrForms[formId].FORM;
+          let fields = form.querySelectorAll(type);
+          fields.forEach((field, i) => {
+            callback(field, i, formId);
+          });
+        },
+        fieldActivate : (field, i, formId) => {
+          let timeoutValidate;
+          // Перезапуск валидации при вводе значений в поле
           field.addEventListener('input', () => {
-            window.form.validate(formId);
+            if (timeoutValidate) {
+              clearTimeout(timeoutValidate);
+            }
+            timeoutValidate = setTimeout(function () {
+              // Если задан field - провалидируется вся форма, но подсветится только это поле
+              window.form.validate(formId, field);
+            }, 300);
+          });
+
+          // Переключение класса .focus
+          field.addEventListener('focus', () => {
+            field.closest('.form__row').classList.add('focus');
+          });
+          field.addEventListener('blur', () => {
+            field.closest('.form__row').classList.remove('focus');
           });
         },
         // Перебор чекбоксов
@@ -1302,7 +1294,7 @@
 
             fieldChange.value = '';
 
-            window.form.validate(formId);
+            // window.form.validate(formId);
           });
         },
         // Ф-я поиска дополнительных кнопок закрытия попапов

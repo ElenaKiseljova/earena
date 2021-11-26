@@ -37,7 +37,7 @@
   <div class="statistics__content statistics__content--account">
     <?php if ($user_stat): ?>
       <script>
-        window.curUserStat = '<?= json_encode($user_stat); ?>';
+        window.curUserStat = '<?= str_replace("'", "&apos;", json_encode($user_stat)); ?>';
       </script>
       <div class="select select--game-statistics">
         <button class="select__button" type="button" name="button">

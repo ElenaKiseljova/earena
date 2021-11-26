@@ -440,7 +440,8 @@ function ea_add_money_by_admin_callback()
   {
       check_ajax_referer('ea_functions_nonce', 'security');
       $ea_user = (int)$_POST['user'];
-      if (update_user_meta($ea_user, 'blocked', false)) {
+      $yc = get_user_meta($ea_user, 'yc', true) ?: 0;
+      if (update_user_meta($ea_user, 'blocked', false) && ( $yc < 3 || ( $yc == 3 && update_user_meta($ea_user, 'yc', --$yc ) ) )) {
           $admin_id = (int)get_site_option('ea_admin_id', 27);
           $username = !empty($_POST['username']) ? $_POST['username'] : get_user_by('id', $ea_user)->nickname;
           $thread_id = ea_get_thread_id($ea_user, $admin_id);

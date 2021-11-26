@@ -941,7 +941,7 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                       <?php earena_2_verification_html($verified_friend, 'public'); ?>
 
                       <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
-                        <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                        <?= bp_core_fetch_avatar(['item_id' => $user_id, 'type' => 'full', 'width' => 70, 'height' => 70]); ?>
                       </a>
                     </div>
 
@@ -1016,7 +1016,7 @@ function earena_2_page_profile_friends_data($user_id = 0, $type_profile_page = '
                       <?php earena_2_verification_html($verified_friend, 'public'); ?>
 
                       <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
-                        <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                        <?= bp_core_fetch_avatar(['item_id' => $user_id, 'type' => 'full', 'width' => 70, 'height' => 70]); ?>
                       </a>
                     </div>
 
@@ -1098,7 +1098,7 @@ function earena_2_page_profile_public_friends_data($user_id = 0, $length = 0, $o
                     <?php earena_2_verification_html($verified_friend, 'public'); ?>
 
                     <a class="user__avatar user__avatar--friends account__image--public" href="<?= ea_user_link($user_id); ?>">
-                      <?= bp_core_fetch_avatar('item_id=' . $user_id); ?>
+                      <?= bp_core_fetch_avatar(['item_id' => $user_id, 'type' => 'full', 'width' => 70, 'height' => 70]); ?>
                     </a>
                   </div>
 

@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- <title><?= bloginfo( 'name' ) . (get_the_title( ) ? (' - ' . get_the_title( )) : ''); ?></title> -->
     <?php
       wp_head();
     ?>
@@ -101,7 +100,7 @@
                 <?php else: ?>
                   <div class="user user--header">
                     <a class="user__avatar user__avatar--header" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                      <?= bp_core_fetch_avatar('item_id=' . $ea_user->ID); ?>
+                      <?= bp_core_fetch_avatar(['item_id' => $ea_user->ID, 'type' => 'full', 'width' => 60, 'height' => 60]); ?>
                     </a>
 
                     <div class="user__info user__info--header">

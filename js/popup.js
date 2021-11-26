@@ -535,8 +535,8 @@
         },
         // Регулировка высоты попапа
         scrollContorllFunction: function (popup, popupTemplateContainer, prefix = false) {
-          // console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
-          if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight ) {
+          console.log(popup.offsetHeight, popupTemplateContainer.offsetHeight, deviceHeight);
+          if ( popup.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight >= deviceHeight || popupTemplateContainer.offsetHeight > popup.offsetHeight ) {
             popup.classList.add('scroll-content');
           } else {
             if (prefix !== 'game') {

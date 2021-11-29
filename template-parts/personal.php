@@ -5,9 +5,10 @@
 ?>
 <?php
   $ea_user = wp_get_current_user();
+  $is_messages = earena_2_current_page( 'message' );
 ?>
 
-<div class="personal">
+<div class="personal <?= $is_messages ? 'personal--hide' : ''; ?>">
   <ul class="personal__list">
     <?php if ( is_ea_admin() ): ?>
       <li class="personal__item">
@@ -26,14 +27,10 @@
 
           <?php
             $count_admin_matches = count_admin_matches_moderate() + count_admin_matches_not_confirmed();
-            if ($count_admin_matches > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--matches-admin">
-                  <?= $count_admin_matches; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--matches-admin <?= $count_admin_matches === 0 ? 'zero' : ''; ?>">
+            <?= $count_admin_matches; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -52,14 +49,10 @@
 
           <?php
             $count_admin_tournaments = count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3);
-            if ($count_admin_tournaments > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--tournaments-admin">
-                  <?= $count_admin_tournaments; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--tournaments-admin <?= $count_admin_tournaments === 0 ? 'zero' : ''; ?>">
+            <?= $count_admin_tournaments; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -77,14 +70,10 @@
 
           <?php
             $count_admin_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
-            if ($count_admin_messages > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--messages-admin">
-                  <?= $count_admin_messages; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--messages-admin <?= $count_admin_messages === 0 ? 'zero' : ''; ?>">
+            <?= $count_admin_messages; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -100,14 +89,10 @@
 
           <?php
             $count_admin_verification_requests = ea_count_verification_requests();
-            if ($count_admin_verification_requests > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--verification-admin">
-                  <?= $count_admin_verification_requests;?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--verification-admin <?= $count_admin_verification_requests === 0 ? 'zero' : ''; ?>">
+            <?= $count_admin_verification_requests;?>
+          </span>
         </a>
       </li>
     <?php else: ?>
@@ -140,14 +125,10 @@
 
           <?php
             $count_matches = counter_matches($ea_user->ID);
-            if ($count_matches > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--matches">
-                  <?= $count_matches; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--matches <?= $count_matches === 0 ? 'zero' : ''; ?>">
+            <?= $count_matches; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -166,14 +147,10 @@
 
           <?php
             $count_tournaments = counter_tournaments($ea_user->ID);
-            if ($count_tournaments > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--tournaments">
-                  <?= $count_tournaments; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--tournaments <?= $count_tournaments === 0 ? 'zero' : ''; ?>">
+            <?= $count_tournaments; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -192,14 +169,10 @@
 
           <?php
             $count_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
-            if ($count_messages > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--messages">
-                  <?= $count_messages; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--messages <?= $count_messages === 0 ? 'zero' : ''; ?>">
+            <?= $count_messages; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -218,14 +191,10 @@
 
           <?php
             $count_friends_requests = !empty(friends_get_friendship_request_user_ids(get_current_user_id())) ? count(friends_get_friendship_request_user_ids(get_current_user_id())) : 0;
-            if ($count_friends_requests > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--friends">
-                  <?= $count_friends_requests; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--friends <?= $count_friends_requests === 0 ? 'zero' : ''; ?>">
+            <?= $count_friends_requests; ?>
+          </span>
         </a>
       </li>
       <li class="personal__item">
@@ -241,14 +210,10 @@
 
           <?php
             $count_administration = counter_admin();
-            if ($count_administration > 0) {
-              ?>
-                <span class="personal__link-count personal__link-count--administration">
-                  <?= $count_administration; ?>
-                </span>
-              <?php
-            }
           ?>
+          <span class="personal__link-count personal__link-count--administration <?= $count_administration === 0 ? 'zero' : ''; ?>">
+            <?= $count_administration; ?>
+          </span>
         </a>
       </li>
     <?php endif; ?>

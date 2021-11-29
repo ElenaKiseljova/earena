@@ -307,6 +307,9 @@
 
         background-color: #colors[accent];
 
+        border: none;
+        box-shadow: none;
+
         transition: background-color 0.3s;
 
         span {
@@ -403,7 +406,7 @@
 
       padding: 9px 15px;
 
-      background-color: #colors[bg];
+      background-color: #colors[dark];
       border: 1px solid #434D5A;
 
       border-radius: 5px;
@@ -477,6 +480,28 @@
       }
     }
 
+    .subject-input {
+      color: #colors[white];
+      background-color: #colors[dark];
+      border: 1px solid #434D5A!important;
+
+      border-radius: 5px;
+
+      &:focus {
+        border-color: #colors[accent]!important;
+        box-shadow: none!important;
+      }
+    }
+
+    .input {
+      &.active {
+        .taggle_list {
+          border-color: #colors[accent]!important;
+          box-shadow: none!important;
+        }
+      }
+    }
+
     .participants {
       display: none;
 
@@ -489,13 +514,6 @@
 
     .expandingButtons {
       display: none!important;
-    }
-
-    .bpbm-os-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: flex-start;
     }
 
     .scroller {
@@ -897,6 +915,31 @@
           }
         }
 
+        &.blocked {
+          .pic,
+          .info,
+          .time,
+          .loading {
+            display: none;
+          }
+
+          .deleted {
+            position: static;
+
+            max-width: 350px;
+
+            color: #colors[text];
+
+            background-color: #colors[bg]!important;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2)!important;
+            border-radius: 5px!important;
+
+            a {
+              color: #colors[link];
+            }
+          }
+        }
+
         @media (max-width: @mobile) {
           flex-direction: column;
 
@@ -1019,6 +1062,13 @@
     }
 
     .list {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+
+      min-height: 100%;
+
       padding-left: 20px;
       padding-right: 20px;
 
@@ -1167,6 +1217,12 @@
       border: none;
       background-color: #colors[bg];
 
+      form {
+        width: 100%;
+
+        justify-content: space-between;
+      }
+
       .bp-emoji-enabled {
         display: flex;
 
@@ -1217,10 +1273,6 @@
 
       @media (max-width: @tablet) {
         form {
-          width: 100%;
-
-          justify-content: space-between;
-
           .message {
             width: calc(100% - 68px);
           }
@@ -1235,6 +1287,13 @@
   }
 
   &.page-chat {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+
     .w100();
 
     .bp-messages-wrap,

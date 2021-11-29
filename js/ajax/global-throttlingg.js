@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
         0: ['.page-header .time span'],
         1: [],
         2: ['.user__money-amount--header span', '.user__money-amount--account-private span'],
-        3: ['.personal__link-count--messages', '.toggles__counter--messages'],
+        3: ['.personal__link-count--messages', '.toggles__counter--messages', '.section__title-count--message'],
         4: [],
         5: ['.personal__link-count--friends'],
         6: ['.user__rating-value--account-private'],
@@ -80,6 +80,9 @@ jQuery(document).ready(function ($) {
                                   initData[key] = value
                                   for (const elem of initObj[key]) {
                                       $(elem).html(value)
+                                      if (value == 0) {
+                                        $(elem).addClass('zero')
+                                      }
                                   }
                               }
                           }

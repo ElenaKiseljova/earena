@@ -9,7 +9,12 @@
 <div class="section section--invited" id="invited">
   <header class="section__header">
     <h2 class="section__title section__title--games-account">
-      <?php _e( 'Приглашенные', 'earena_2' ); ?> (<?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?>)
+      <?php _e( 'Приглашенные', 'earena_2' ); ?>
+      (
+      <span class="section__title-count section__title-count--invited">
+        <?php $referrals = my_referrals(); echo !empty($referrals) ? count($referrals) : '0'; ?>
+      </span>
+      )
     </h2>
 
     <div class="section__header-right">

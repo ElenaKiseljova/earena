@@ -14,23 +14,23 @@
   </head>
   <body>
     <script type="text/javascript">
-      var currentUserId = <?= (is_user_logged_in()) ? get_current_user_id() : 'false'; ?>;
-      var is_user_logged_in = <?= is_user_logged_in() ? 'true' : 'false'; ?>;
-      var is_ea_admin = <?= is_ea_admin() ? 'true' : 'false'; ?>;
+      const currentUserId = <?= (is_user_logged_in()) ? get_current_user_id() : 'false'; ?>;
+      const is_user_logged_in = <?= is_user_logged_in() ? 'true' : 'false'; ?>;
+      const is_ea_admin = <?= is_ea_admin() ? 'true' : 'false'; ?>;
 
-      var dataGames = <?= json_encode( $games ); ?>;
-      var currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;
-      var platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
+      const dataGames = <?= json_encode( $games ); ?>;
+      const currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;
+      const platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
 
-      var isProfile = <?= (earena_2_current_page( 'user' ) || earena_2_current_page( 'profile' )) ? 'true' : 'false'; ?>;
+      const isProfile = <?= (earena_2_current_page( 'user' ) || earena_2_current_page( 'profile' )) ? 'true' : 'false'; ?>;
 
-      var siteURL = '<?= bloginfo( 'url' ); ?>';
-      var siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
+      const siteURL = '<?= bloginfo( 'url' ); ?>';
+      const siteThemeFolderURL = '<?= get_template_directory_uri(); ?>';
 
-      var ea_icons = <?= json_encode( $ea_icons ) ?>;
+      const ea_icons = <?= json_encode( $ea_icons ) ?>;
 
-      var isAdminTournamentsList = <?= is_page(555) ? 'true' : 'false'; ?>;
-      var isAdminTournamentsCreate = <?= is_page(552) ? 'true' : 'false'; ?>;
+      const isAdminTournamentsList = <?= is_page(555) ? 'true' : 'false'; ?>;
+      const isAdminTournamentsCreate = <?= is_page(552) ? 'true' : 'false'; ?>;
     </script>
     <div class="container">
 

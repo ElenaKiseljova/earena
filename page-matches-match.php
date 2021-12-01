@@ -15,8 +15,8 @@
   	wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;
   } else {
   	$ea_user = wp_get_current_user();
-  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : null;
-    if ( empty($match_id) ) {
+  	$match_id = isset($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : false;
+    if ( $match_id === false ) {
   		wp_redirect( home_url('matches') );exit;
   	}
   	$match = EArena_DB::get_ea_match($match_id);

@@ -15,9 +15,9 @@
   	wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;
   } else {
   	$ea_user = wp_get_current_user();
-  	$match_id = !empty($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : null;
+  	$match_id = isset($_REQUEST['match']) ? sanitize_text_field($_REQUEST['match']) : false;
 
-  	if ( empty($match_id) ) {
+  	if ( $match_id === false ) {
   		wp_redirect( home_url('tournaments') );exit;
   	}
   	$match = EArena_DB::get_ea_tournament_match($match_id);

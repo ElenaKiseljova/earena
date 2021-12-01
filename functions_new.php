@@ -210,8 +210,8 @@
     function earena_2_page_game_document_title_parts($title_parts)
     {
     	  $games = get_site_option('games');
-        $game_key = $_GET['game'] ?? false;
-        if ($game_key) {
+        $game_key = isset($_REQUEST['game']) ? $_REQUEST['game'] : false;
+        if (isset($game_key)) {
             $title_parts['title'] = $games[$game_key]['name'] .' - '. $games[$game_key]['details'];
         }
 
@@ -225,13 +225,26 @@
     add_filter( 'document_title_parts', 'earena_2_page_match_document_title_parts');
     function earena_2_page_match_document_title_parts($title_parts)
     {
-      $match_id = $_GET['match'] ?? false;
-      if ($match_id) {
+      $match_id = isset($_REQUEST['match']) ? $_REQUEST['match'] : false;
+      if (isset($match_id)) {
         $title_parts['title'] .= ' - ID' . $match_id;
       }
 
       return $title_parts;
     }
+  }
+
+  add_action( 'earena_2_page_tournament_hook', 'earena_2_page_tournament_function', $priority = 10, $accepted_args = 1 );
+  function earena_2_page_tournament_function () {
+    add_filter('document_title_parts', function ($title) {
+      $tournament_id = isset($_REQUEST['tournament']) ? $_REQUEST['tournament'] : false;
+      if (isset($tournament_id)) {
+        $tournament_name = EArena_DB::get_ea_tournament_field( $tournament_id, 'name' );
+        $title['title'] .= ' ' . $tournament_name;
+      }
+
+      return $title;
+    });
   }
 
   // Section functions

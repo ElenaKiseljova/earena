@@ -6,25 +6,13 @@
 <?php
   global $games, $game_id, $ea_icons;
 
-  $game_id = !empty($_REQUEST['game']) ? sanitize_text_field($_REQUEST['game']) : false;
-
+  $game_id = isset($_REQUEST['game']) ? sanitize_text_field($_REQUEST['game']) : false;
   if ($game_id === false) {
     wp_redirect( home_url() );
     exit;
   }
 
   do_action( 'earena_2_page_game_hook' );
-
-  // $data = [
-  //   'platform' => $games[$game_id]['platforms'] ? $games[$game_id]['platforms'] : [],
-  //   'game' => [$game_id]
-  // ];
-
-  // $postslist = get_posts(array('posts_per_page' => 10, 'order' => 'DESC', 'orderby' => 'date', 'cat' => 199));
-  //
-  // $platforms = get_site_option('platforms');
-  // $team_modes = get_site_option('team_modes');
-  // $min = (float)get_site_option('ea_min_match_price', 1);
 ?>
 
 <?php

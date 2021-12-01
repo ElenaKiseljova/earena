@@ -5,8 +5,8 @@
 ?>
 <?php
   global $ea_user, $tournament, $tournament_id, $tournament_type;
-  $tournament_id = !empty($_REQUEST['tournament']) ? sanitize_text_field($_REQUEST['tournament']) : 0;
-  if ( empty($tournament_id) ) {
+  $tournament_id = isset($_REQUEST['tournament']) ? sanitize_text_field($_REQUEST['tournament']) : false;
+  if ( $tournament_id === false ) {
   	wp_redirect( home_url('admin/tours') );exit;
   }
   $tname = EArena_DB::get_ea_tournament_field( $tournament_id, 'name' );

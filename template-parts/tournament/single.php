@@ -9,12 +9,6 @@
   $description = get_ea_tournament_meta ($tournament_id, 'description');
 
   $games = get_site_option('games');
-  $tournament_name = $tournament->name;
-  add_filter('document_title_parts', function ($title) {
-      global $tournament_name;
-      $title['title'] .= ' ' . $tournament_name;
-      return $title;
-  });
 
   if (!isset($ea_user)) {
       $ea_user = new stdClass();

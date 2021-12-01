@@ -57,7 +57,7 @@
     <?= _e( 'Турниры - Lucky Cup', 'earena_2' ); ?>
   </h1>
 
-  <div id="ajax-container-tournament">
+  <div class="page-main__container" id="ajax-container-tournament">
     <?php
       earena_2_tournament_page_data($ea_user, $lc_id);
     ?>

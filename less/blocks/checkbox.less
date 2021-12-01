@@ -160,17 +160,6 @@
     }
   }
 
-  &--result {
-    width: 100%;
-
-    &::before {
-      width: 16px;
-      height: 16px;
-
-      .bg_icon('../img/close.svg');
-    }
-  }
-
   &--left {
     justify-content: flex-start;
 
@@ -203,6 +192,19 @@
 
     &::after {
       right: 3px;
+    }
+  }
+
+  &--result {
+    width: 100%;
+
+    justify-content: space-between;
+
+    &::before {
+      width: 16px;
+      height: 16px;
+
+      .bg_icon('../img/close.svg');
     }
   }
 }

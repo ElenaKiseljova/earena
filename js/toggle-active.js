@@ -59,6 +59,7 @@
             unActiveAnother : false,
             selectorContent : false,
             setCookie : false,
+            closeByDocumentClick : false
           };*/
           let container = document;
           if (attr.container) {
@@ -85,6 +86,19 @@
                   button.nextElementSibling.classList.toggle('active');
                 }
               });
+
+              if (attr.closeByDocumentClick) {
+                // Переключение по клику на document
+                document.addEventListener('click', function (evt) {
+                  if (button.classList.contains('active') && evt.target !== button) {
+                    button.classList.toggle('active');
+
+                    if (attr.toggleNextElement) {
+                      button.nextElementSibling.classList.toggle('active');
+                    }
+                  }
+                });
+              }
             });
           }
         },
@@ -225,6 +239,7 @@
       let attrFilter = {
         buttonSelector : '.filters__field--select',
         toggleNextElement : true,
+        closeByDocumentClick : true,
       };
       window.toggleActive.multiple(attrFilter);
 

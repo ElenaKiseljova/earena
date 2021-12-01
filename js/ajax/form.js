@@ -483,7 +483,7 @@
               // Логирование
               if (prefix.indexOf('signin') > -1) {
                 if (response.data.loggedin === true) {
-                  document.location.href = (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&action=success') : (earena_2_ajax.redirecturl + '?action=success');
+                  document.location.href = earena_2_ajax.redirecturl; // (earena_2_ajax.redirecturl.indexOf('?') > -1) ? (earena_2_ajax.redirecturl + '&action=success') : (earena_2_ajax.redirecturl + '?action=success');
                 } else {
                   window.form.showAJAXMessage(popup, response.data.message, 2000);
 

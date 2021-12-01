@@ -104,7 +104,7 @@
           switch (what) {
             case 'matches':
               action = 'earena_2_get_filtered_matches';
-              perPage = (currentGameId === false) ? (((window.platforms.getOffset(what) === 0) && isProfile === false) ? 23 : 24) : 8;
+              perPage = (currentGameId === false || isCurrentGameMatches === true) ? (((window.platforms.getOffset(what) === 0) && isProfile === false) ? 23 : 24) : 8;
               break;
             case 'tournaments':
               action = 'earena_2_get_filtered_tournaments';

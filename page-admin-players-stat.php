@@ -519,7 +519,7 @@ $profit_total = $profit_vip + $profit_matches + $profit_tournaments;
               <table class="table table--statistic table-rezult">
                   <thead>
                   <tr>
-                      <th @click="sortBy(0)" :clasbalances=" sort === 0 ? orderBy : ''"><?php _e('Страна',
+                      <th @click="sortBy(0)" :class=" sort === 0 ? orderBy : ''"><?php _e('Страна',
                               'earena'); ?></th>
                       <th></th>
                       <th @click="sortBy(1)" :class=" sort === 1 ? orderBy : ''"><?php _e('Никнейм',

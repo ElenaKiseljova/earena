@@ -1213,7 +1213,7 @@ function getStat($mode)
             'last_activity'
         ];
 
-        if (isset($_POST['orderby']) && $_POST['orderby']  && $_POST['orderby'] != "false") {
+        if (isset($_POST['orderby'])/* && $_POST['orderby']*/  && $_POST['orderby'] != "false") {
             $order['orderby'] = $sort[$_POST['orderby']];
         }
         $order['order'] = $_POST['order'] ?? 'ASC';

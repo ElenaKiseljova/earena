@@ -14,7 +14,7 @@
 
 <div class="toggles toggles--admin">
   <header class="toggles__header toggles__header--admin">
-    <div class="toggles__list">
+    <div class="toggles__list toggles__list--profile">
       <a href="<?php echo get_page_link(649); ?>" class="toggles__item toggles__item--account <?php if(is_page(649)) echo 'active'; ?>">
         <?php _e( 'Матчи', 'earena_2' ); ?> (<?= count_admin_matches_moderate() + count_admin_matches_not_confirmed(); ?>)
       </a>

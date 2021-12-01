@@ -29,7 +29,7 @@
             </button> -->
           </div>
         </div>
-        <div class="page-footer__bottom <?= (is_user_logged_in() && !$is_messages) ? 'page-footer__bottom--is-logged-in' : ''; ?>">
+        <div class="page-footer__bottom <?= (is_user_logged_in()) ? 'page-footer__bottom--is-logged-in' : ''; ?>"><!-- && !$is_messages -->
           <div class="page-footer__wrapper page-footer__wrapper--bottom">
             <p class="page-footer__copyright">
               <span>
@@ -48,7 +48,7 @@
                 'payoneer'
               ];
             ?>
-            <ul class="pay-methods <?= (is_user_logged_in() && !$is_messages) ? 'pay-methods--is-logged-in' : ''; ?>">
+            <ul class="pay-methods <?= (is_user_logged_in()) ? 'pay-methods--is-logged-in' : ''; ?>"><!-- && !$is_messages -->
               <?php foreach ($pay_methods as $pay_method): ?>
                 <li class="pay-methods__item">
                   <img width="90" height="40" src="<?php echo get_template_directory_uri(); ?>/assets/img/pay-methods-<?= $pay_method; ?>.svg" alt="<?= $pay_method; ?>">

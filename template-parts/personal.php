@@ -8,7 +8,7 @@
   $is_messages = earena_2_current_page( 'message' );
 ?>
 
-<div class="personal <?= $is_messages ? 'personal--hide' : ''; ?>">
+<div class="personal"><!-- <?= $is_messages ? 'personal--hide' : ''; ?> -->
   <ul class="personal__list">
     <?php if ( is_ea_admin() ): ?>
       <li class="personal__item">

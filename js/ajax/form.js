@@ -1110,10 +1110,14 @@
                     //console.log(birthdayUser.getFullYear(), 'Not old enough!');
 
                     // Если проверка по возрасту не прошла
-                    item.parentNode.nextElementSibling.classList.add('no-old-enough');
+                    item.classList.add('no-old-enough');
+
+                    window.form.setErrorMessage(item, item.validity);
                   } else {
                     // Если проверка по возрасту прошла
-                    item.parentNode.nextElementSibling.classList.remove('no-old-enough');
+                    item.classList.remove('no-old-enough');
+
+                    window.form.setErrorMessage(item, item.validity);
                   }
                 }
               }
@@ -1136,6 +1140,7 @@
                     item.closest('.form__row').classList.remove('valid');
                   }
                 }
+                window.form.setErrorMessage(item, item.validity);
               } else {
                 if (item.closest('.invalid')) {
                   // Проверка наличия обертки
@@ -1157,6 +1162,8 @@
                 item.closest('.form__row').classList.add('invalid');
                 item.closest('.form__row').classList.remove('valid');
               }
+
+              window.form.setErrorMessage(item, item.validity);
             } else {
               if (item.closest('.invalid')) {
                 // Проверка наличия обертки
@@ -1184,6 +1191,61 @@
           }
 
           return notValid;
+        },
+        setErrorMessage : (field, validity) => {
+          let error = field.closest('.form__row').nextElementSibling;
+          if (error.classList.contains('form__error')) {
+            let errorText = '';
+
+            if (validity.tooShort) {
+              errorText = __('Значение поля слишком короткое', 'earena_2');
+            }
+
+            if (validity.tooLong) {
+              errorText = __('Значение поля слишком длинное', 'earena_2');
+            }
+
+            if (validity.patternMismatch || validity.typeMismatch) {
+              errorText = __('Неправильное значение', 'earena_2');
+
+              if (field.type === 'email') {
+                errorText = __('Неправильное значение эл.почты', 'earena_2');
+              }
+
+              if (field.type === 'password') {
+                errorText = __('Неправильное значение пароля', 'earena_2');
+              }
+
+              if (field.type === 'tel') {
+                errorText = __('Неправильное значение телефона', 'earena_2');
+              }
+
+              if (field.name === 'name') {
+                errorText = __('Неправильное имя', 'earena_2');
+              }
+            }
+
+            if (validity.badInput) {
+              errorText = __('Поле содержит неправильное значение', 'earena_2');
+            }
+
+            if (field.classList.contains('no-old-enough')) {
+              errorText = __('Вам не будут доступны игры на деньги так, как вам не исполнилось 18 лет', 'earena_2');
+              error.classList.add('no-old-enough');
+            }
+
+            if (validity.valueMissing) {
+              // console.log('valueMissing');
+            }
+
+            if (errorText === '') {
+              error.classList.add('hide');
+            } else {
+              error.classList.remove('hide');
+            }
+
+            error.textContent = errorText;
+          }
         },
         fields: (formId, type, callback) => {
           // console.log('fields');

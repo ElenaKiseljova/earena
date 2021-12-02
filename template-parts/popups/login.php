@@ -76,7 +76,7 @@
         <div class="popup__ajax-message"></div>
         <form class="form form--popup" data-prefix="signup" id="form-login" action="/" method="post">
           <div class="form__row">
-            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>">
+            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" minlength="5" pattern="[A-Za-z ._-]{1,}">
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
@@ -95,8 +95,7 @@
             <span class="form__arrow"></span>
           </div>
           <span class="form__error form__error--popup">
-            <span class="form__error-old"><?php _e( 'Вам не будут доступны игры на деньги так, как вам не исполнилось 18 лет', 'earena_2' ); ?></span>
-            <span class="form__error-default"><?php _e( 'Error', 'earena_2' ); ?></span>
+            <?php _e( 'Error', 'earena_2' ); ?>
           </span>
 
           <div class="form__row">

@@ -7,7 +7,6 @@
 
     dataGames,
     currentGameId,
-    isCurrentGameMatches,
 
     isProfile,
     siteURL,
@@ -177,7 +176,7 @@
         console.log('Created: ', what);
       },
       createMatchHTMLTemplate : function (what, response, column) {
-        if (filtersSection && (currentGameId === false || isCurrentGameMatches === true) && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
+        if ((filtersSection || currentGameId) && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
           let matchHTMLTemplate = function () {
             if (is_ea_admin === false && is_user_logged_in === true) {
               return `
@@ -312,9 +311,11 @@
 
         if (!filtersSection) {
           let action = '';
+          let perPage = 8;
           switch (what) {
             case 'matches':
               action = 'earena_2_get_filtered_matches';
+              perPage = (currentGameId !== false) ? 7 : 8;
               break;
             case 'tournaments':
               action = 'earena_2_get_filtered_tournaments';
@@ -330,6 +331,7 @@
 
           if (currentGameId !== false) {
             data['game'] = currentGameId;
+            data['perpage'] = perPage;
           }
 
           if (isProfile === true) {

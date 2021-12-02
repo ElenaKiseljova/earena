@@ -320,7 +320,7 @@ function globalHeader()
         // 1 balanceTopCur -
         // 2 balanceTopValue
         // 3 message
-        // 4 numRed -
+        // 4 countGameMatches
         // 5 friends (request)
         // 6 rating
         // 7 matches
@@ -331,7 +331,7 @@ function globalHeader()
         $data[1] = '';//earena_2_nice_money(money_in_games());
         $data[2] = earena_2_nice_money(balance());
         $data[3] = messages_get_unread_count();
-        $data[4] =  '';//$red;
+
         $data[5] = count(friends_get_friendship_request_user_ids($id));
         $data[6] = rating();
         $data[7] = $counterMatches;
@@ -355,6 +355,18 @@ function globalHeader()
             if (isset($parts['query'])) {
 
                 parse_str($parts['query'], $query);
+
+                if (isset($query['game'])) {
+                  $game_id = (int) $query['game'];
+                  $dataFilter = [
+                    'game' => [$game_id]
+                  ];
+
+                  $matches_db_collection = EArena_DB::get_ea_matches_by_filters($dataFilter, 0, 0, 'DESC', 'ID', $mode = 'new');
+                  $count_matches = $matches_db_collection ['total'] ?? 0;
+
+                  $data[4] =  $count_matches;
+                }
 
                 if (
                     (isset($query['tournament']) && $query['tournament'] > 0) ||

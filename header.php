@@ -20,7 +20,6 @@
 
       const dataGames = <?= json_encode( $games ); ?>;
       const currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;
-      const isCurrentGameMatches = <?= (isset($_GET['game']) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches') ? 'true' : 'false'; ?>;
 
       const platformsArr = <?= json_encode( get_site_option( 'platforms' ) ) ?>;
 

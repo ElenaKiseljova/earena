@@ -3,6 +3,11 @@
 
   $platforms = get_site_option('platforms') ?? [];
   $games = $games ?? [];
+  $is_game_page = isset($_GET['game']);
+  if ($is_game_page) {
+    $game_key = $_GET['game'];
+    $platforms = array_intersect_key($platforms, $games[$game_key]['platforms']);
+  }
 ?>
 
 <div class="popup popup--match">
@@ -25,7 +30,11 @@
 
       <div class="popup__information">
         <span>
-          <?php _e( 'Выберите платформу и игру', 'earena_2' ); ?>
+          <?php if ($is_game_page): ?>
+            <?php _e( 'Выберите платформу', 'earena_2' ); ?>
+          <?php else: ?>
+            <?php _e( 'Выберите платформу и игру', 'earena_2' ); ?>
+          <?php endif; ?>
         </span>
       </div>
     </div>
@@ -33,8 +42,7 @@
     <div class="popup__content popup__content--match">
       <form class="form form--popup" data-prefix="create" id="form-match" action="/" method="post">
         <div class="form__row">
-          <div class="select select--platforms" data-create="games">
-
+          <div class="select select--platforms" <?= $is_game_page ? '' : 'data-create="games"'; ?>>
             <button class="select__button select__button--platforms" type="button" name="button">
               <?php _e( 'Платформа', 'earena_2' ); ?>
             </button>
@@ -53,17 +61,21 @@
         </div>
         <span class="form__error form__error--create"><?php _e( 'Выберите платформу', 'earena_2' ); ?></span>
 
-        <div class="form__row form__row--games">
-          <!-- Содержимое перепишется после выбора платформы -->
-          <div class="select select--games">
-            <button class="select__button select__button--games" type="button" name="button" disabled>
-              <?php _e( 'Игра', 'earena_2' ); ?>
-            </button>
+        <?php if ($is_game_page): ?>
+          <input type="hidden" name="game" value="<?= $game_key; ?>">
+        <?php else: ?>
+          <div class="form__row form__row--games">
+            <!-- Содержимое перепишется после выбора платформы -->
+            <div class="select select--games">
+              <button class="select__button select__button--games" type="button" name="button" disabled>
+                <?php _e( 'Игра', 'earena_2' ); ?>
+              </button>
+            </div>
           </div>
-        </div>
-        <span class="form__error form__error--popup">
-          <?php _e( 'Error', 'earena_2' ); ?>
-        </span>
+          <span class="form__error form__error--popup">
+            <?php _e( 'Error', 'earena_2' ); ?>
+          </span>
+        <?php endif; ?>
 
         <button class="form__submit form__submit--match-next button button--blue disabled" type="submit" name="match-submit-next">
           <span>

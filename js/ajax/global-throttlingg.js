@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
         1: [],
         2: ['.user__money-amount--header span', '.user__money-amount--account-private span'],
         3: ['.personal__link-count--messages', '.toggles__counter--messages', '.section__title-count--message'],
-        4: [],
+        4: ['.game-matches-count'],
         5: ['.personal__link-count--friends'],
         6: ['.user__rating-value--account-private'],
         7: ['.personal__link-count--matches', '.toggles__counter--matches'],
@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
     // 1 balanceTopCur
     // 2 balanceTopValue
     // 3 message
-    // 4 numRed [matches + tournaments + administrations]
+    // 4 countGameMatches
     // 5 friends (request)
     // 6 rating
     // 7 matches

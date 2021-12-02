@@ -26,7 +26,7 @@
           </span>
 
           <?php
-            $count_admin_matches = count_admin_matches_moderate() + count_admin_matches_not_confirmed();
+            $count_admin_matches = (int) count_admin_matches_moderate() + (int) count_admin_matches_not_confirmed();
           ?>
           <span class="personal__link-count personal__link-count--matches-admin <?= $count_admin_matches === 0 ? 'zero' : ''; ?>">
             <?= $count_admin_matches; ?>
@@ -48,7 +48,7 @@
           </span>
 
           <?php
-            $count_admin_tournaments = count_admin_tournaments(1) + count_admin_tournaments(2) + count_admin_tournaments(3);
+            $count_admin_tournaments = (int) count_admin_tournaments(1) + (int) count_admin_tournaments(2) + (int) count_admin_tournaments(3);
           ?>
           <span class="personal__link-count personal__link-count--tournaments-admin <?= $count_admin_tournaments === 0 ? 'zero' : ''; ?>">
             <?= $count_admin_tournaments; ?>
@@ -69,7 +69,7 @@
           </span>
 
           <?php
-            $count_admin_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
+            $count_admin_messages = !empty(messages_get_unread_count()) ? (int) messages_get_unread_count() : 0;
           ?>
           <span class="personal__link-count personal__link-count--messages-admin <?= $count_admin_messages === 0 ? 'zero' : ''; ?>">
             <?= $count_admin_messages; ?>
@@ -88,7 +88,7 @@
           </span>
 
           <?php
-            $count_admin_verification_requests = ea_count_verification_requests();
+            $count_admin_verification_requests = (int) ea_count_verification_requests();
           ?>
           <span class="personal__link-count personal__link-count--verification-admin <?= $count_admin_verification_requests === 0 ? 'zero' : ''; ?>">
             <?= $count_admin_verification_requests;?>
@@ -124,7 +124,7 @@
           </span>
 
           <?php
-            $count_matches = counter_matches($ea_user->ID);
+            $count_matches = (int) counter_matches($ea_user->ID);
           ?>
           <span class="personal__link-count personal__link-count--matches <?= $count_matches === 0 ? 'zero' : ''; ?>">
             <?= $count_matches; ?>
@@ -146,7 +146,7 @@
           </span>
 
           <?php
-            $count_tournaments = counter_tournaments($ea_user->ID);
+            $count_tournaments = (int) counter_tournaments($ea_user->ID);
           ?>
           <span class="personal__link-count personal__link-count--tournaments <?= $count_tournaments === 0 ? 'zero' : ''; ?>">
             <?= $count_tournaments; ?>
@@ -168,7 +168,7 @@
 
 
           <?php
-            $count_messages = !empty(messages_get_unread_count()) ? messages_get_unread_count() : 0;
+            $count_messages = !empty(messages_get_unread_count()) ? (int) messages_get_unread_count() : 0;
           ?>
           <span class="personal__link-count personal__link-count--messages <?= $count_messages === 0 ? 'zero' : ''; ?>">
             <?= $count_messages; ?>
@@ -209,7 +209,7 @@
           </span>
 
           <?php
-            $count_administration = counter_admin();
+            $count_administration = (int) counter_admin();
           ?>
           <span class="personal__link-count personal__link-count--administration <?= $count_administration === 0 ? 'zero' : ''; ?>">
             <?= $count_administration; ?>

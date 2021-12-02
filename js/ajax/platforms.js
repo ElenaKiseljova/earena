@@ -176,7 +176,7 @@
         console.log('Created: ', what);
       },
       createMatchHTMLTemplate : function (what, response, column) {
-        if ((filtersSection || currentGameId) && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
+        if ((filtersSection || currentGameId !== false) && what === 'matches' && isProfile === false && window.platforms.getOffset(what) === 0) {
           let matchHTMLTemplate = function () {
             if (is_ea_admin === false && is_user_logged_in === true) {
               return `

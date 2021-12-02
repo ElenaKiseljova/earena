@@ -1194,7 +1194,7 @@
         },
         setErrorMessage : (field, validity) => {
           let error = field.closest('.form__row').nextElementSibling;
-          if (error.classList.contains('form__error')) {
+          if (error && error.classList.contains('form__error')) {
             let errorText = '';
 
             if (validity.tooShort) {

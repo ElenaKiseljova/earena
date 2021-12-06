@@ -49,9 +49,9 @@ function earena_2_sendmail () {
       }
   }
 
-  $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '<p>') : '';
-  $contactEmail = isset($_POST['email']) ? ('<p>E-mail - ' . esc_html( $_POST['email'] ) . '') : '<p>';
-  $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '<p>') : '';
+  $contactName = isset($_POST['name']) ? ('<p>Имя - ' . esc_html( $_POST['name'] ) . '</p>') : '';
+  $contactEmail = isset($_POST['email']) ? ('<p>E-mail - ' . esc_html( $_POST['email'] ) . '</p>') : '';
+  $contactMessage = isset($_POST['message']) ? ('<p>Сообщение - ' . esc_html( $_POST['message'] ) . '</p>') : '';
   $contactSubject = isset($_POST['subject']) ? esc_html( $_POST['subject'] ) : 'Поддержка игроков';
 
   $contactMail = $contactName . $contactEmail . $contactMessage;

@@ -88,16 +88,23 @@
               });
 
               if (attr.closeByDocumentClick) {
-                // Переключение по клику на document
-                document.addEventListener('click', function (evt) {
-                  if (button.classList.contains('active') && evt.target !== button) {
-                    button.classList.toggle('active');
+                let onBodyClick = function (evt) {
+                 if (button.classList.contains('active') && evt.target !== button) {
+                   if (attr.toggleNextElement) {
+                     let classNextElement = '.' + button.nextElementSibling.className.split(' ')[1];
+                     if (!evt.target.closest(classNextElement)) {
+                       button.classList.toggle('active');
 
-                    if (attr.toggleNextElement) {
-                      button.nextElementSibling.classList.toggle('active');
-                    }
-                  }
-                });
+                       button.nextElementSibling.classList.toggle('active');
+                     }
+                   } else {
+                     button.classList.toggle('active');
+                   }
+                 }
+               };
+
+                // Переключение по клику на document
+                document.addEventListener('click', onBodyClick);
               }
             });
           }

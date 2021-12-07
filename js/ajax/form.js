@@ -1018,8 +1018,7 @@
                   ((formId.indexOf('tournament') > -1) && (prefix.indexOf('add-player') > -1 || prefix.indexOf('leave') > -1 || prefix.indexOf('join') > -1)) ||
                   (formId.indexOf('complaint') > -1)
               ) {
-                console.log(response);
-                let text = response.content ? response.content : (response.data ? response.data : false);
+                let text = response.content ? response.content : (response.data ? response.data : __('Что-то пошло не так...', 'earena_2'));
 
                 window.form.showResponseText(popup, text);
               }

@@ -1,5 +1,5 @@
 <?php
-  global $match, $match_id, $ea_user;
+  global $match, $match_type, $match_id, $ea_user;
 ?>
 
 <div class="popup popup--complaint">
@@ -27,7 +27,7 @@
         <input type="hidden" name="security" value="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>">
         <input type="hidden" name="user_id" value="<?= $ea_user->ID; ?>">
         <input type="hidden" name="id" value="<?= $match_id; ?>">
-        <input type="hidden" name="type" value="<?= $match->type; ?>">
+        <input type="hidden" name="type" value="<?= $match_type; ?>">
 
         <div class="form__buttons">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="complaint-close">

@@ -9,7 +9,9 @@
 ?>
 
 <?php
-  global $match, $match_id, $ea_user, $icons, $ea_icons;
+  global $match, $match_type, $match_id, $ea_user, $icons, $ea_icons;
+
+  $match_type = 0;
 
   if (!is_user_logged_in()) {
   	wp_redirect( add_query_arg('action', 'login', home_url() ) );exit;

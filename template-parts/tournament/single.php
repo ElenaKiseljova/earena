@@ -44,7 +44,7 @@
       </div>
 
       <?php if ( $tournament_end && !empty($tournament->winner ) ): ?>
-        <div class="tournament__winner tournament__winner--page">
+        <a class="tournament__winner tournament__winner--page" href="<?= ea_user_link(json_decode($tournament->winner)[0]); ?>">
           <div class="tournament__winner-image-wrapper">
             <div class="tournament__winner-image">
               <?= bp_core_fetch_avatar('item_id=' . json_decode($tournament->winner)[0]); ?>
@@ -56,7 +56,7 @@
               earena_2_get_nickname_by_id(json_decode($tournament->winner)[0]);
             ?>
           </h5>
-        </div>
+        </a>
       <?php endif; ?>
 
       <div class="tournament__image tournament__image--page" itemscope itemtype="http://schema.org/ImageObject">

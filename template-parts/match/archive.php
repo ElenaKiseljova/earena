@@ -121,7 +121,7 @@
         </div>
         <div class="user__name user__name--match">
           <h5>
-            NULL
+
           </h5>
         </div>
       <?php endif; ?>

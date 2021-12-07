@@ -86,8 +86,12 @@
       <?php
         $prizes = json_decode($tournament->prizes, true) ?: [];
         $winners = json_decode($tournament->winners, true) ?: [];
+        $counter_players = count( json_decode($tournament->players, true) ?: [] );
 
         for ($i=0; $i < count($prizes); $i++) {
+          if ($i >= $counter_players) {
+            break;
+          }
           ?>
             <tr class="table__row table__row--border">
               <td class="table__column table__column--td table__column--medal">

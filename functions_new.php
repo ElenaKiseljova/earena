@@ -925,7 +925,7 @@
                   <label class="files__label files__label--chat-page" for="files-chat-page">
                     <?php _e( 'Прикрепить фото', 'earena_2' ); ?>
                   </label>
-                  <input class="files__input visually-hidden" type="file" id="files-chat-page" name="files" <?= (!$is_reporter) ? '' : 'required'; ?> accept=".png, .jpg, .jpeg" value="">
+                  <input class="files__input visually-hidden" type="file" id="files-chat-page" name="files" accept=".png, .jpg, .jpeg" value="">
 
                   <div class="files__preview">
                   </div>

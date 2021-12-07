@@ -368,189 +368,177 @@ function ea_retrieve_password()
 
 if (!is_user_logged_in()) {
 
-if(isset($_GET['ref'])){
-	$ref_id=sanitize_text_field($_GET['ref']);
-	setcookie('ref_id', $ref_id, time()+60*60*24*30);
-}
+  if(isset($_GET['ref'])){
+  	$ref_id=sanitize_text_field($_GET['ref']);
+  	setcookie('ref_id', $ref_id, time()+60*60*24*30);
+  }
 
-// Signup
-function earena_2_ajax_register () {
-  check_ajax_referer( 'form.js_nonce', 'security' );
+  // Signup
+  function earena_2_ajax_register () {
+    check_ajax_referer( 'form.js_nonce', 'security' );
 
-	global $login, $password, $email, $country, $birth_date, $reg_errors;
-	$password   =   isset($_POST['password'])?esc_attr( $_POST['password'] ):null;
-	$email      =   isset($_POST['email'])?sanitize_email( $_POST['email'] ):null;
-	$login      =   isset($_POST['name'])?$_POST['name']:null;
-	$country	=   isset($_POST['country'])?sanitize_text_field( $_POST['country'] ):null;
-	$confirm_password = null;//isset($_POST['confirm_password'])?esc_attr( $_POST['confirm_password'] ):null;
-	$birth_date = isset($_POST['birthday']) ? date("Y-m-d",strtotime($_POST['birthday'])) : null;
+  	$password   =   isset($_POST['password'])?esc_attr( $_POST['password'] ):null;
+  	$email      =   isset($_POST['email'])?sanitize_email( $_POST['email'] ):null;
+  	$nickname      =   isset($_POST['name'])?$_POST['name']:null;
+  	$country	=   isset($_POST['country'])?sanitize_text_field( $_POST['country'] ):null;
+  	$confirm_password = null;//isset($_POST['confirm_password'])?esc_attr( $_POST['confirm_password'] ):null;
+  	$birth_date = isset($_POST['birthday']) ? date("Y-m-d",strtotime($_POST['birthday'])) : null;
 
-	registration_validation(
-		$login,
-		$email,
-		$password,
-		$confirm_password,
-		$country,
-		$birth_date
-	);
+    $valid = false;
+    foreach ($_POST as $key => $value) {
+      $valid = earena_2_register_check($key, $value);
+      if ( $valid !== 'valid' ) {
+        wp_send_json_error( $valid );
 
-	earena_2_complete_registration(
-		$login,
-		$email,
-		$password,
-		$country,
-		$birth_date
-	);
+        die();
+      }
+    }
 
-	if ( $reg_errors->has_errors() ){
-		wp_send_json_success( $reg_errors );
-	} else {
-		wp_send_json_success( ['registered'=>true, 'message'=> __( 'Вы зарегистрировались!', 'earena_plugin' )] );
-	}
+  	earena_2_complete_registration(
+  		$nickname,
+  		$email,
+  		$password,
+  		$country,
+  		$birth_date,
+      $valid
+  	);
 
-	die();
-}
+  	wp_send_json_success( ['message'=> __( 'Вы зарегистрировались!', 'earena_plugin' )] );
 
-function earena_2_complete_registration( $login, $email, $password, $country, $birth_date = null ) {
-	global $reg_errors, $wpdb;
-	if ( 1 > count( $reg_errors->get_error_messages() ) ) {
-		$userdata = array(
-		'user_login'   =>   sanitize_user( $login ),
-		'nickname'     =>   $login,
-		'display_name' =>   $login,
-		'user_email'   =>   $email,
-		'user_pass'	   =>   $password,
-		);
-		$user_id = wp_insert_user( $userdata );
-		if( !is_wp_error( $user_id ) ) {
+  	die();
+  }
 
-            $birth_date = $birth_date ?? date("Y-m-d", time());
-			update_user_meta( $user_id, 'birth_date', $birth_date );
-			update_user_meta( $user_id, 'country', $country );
-			update_user_meta( $user_id, 'rating', 500 );
-			update_user_meta( $user_id, 'mig', 0 );//money in games
-            update_user_meta( $user_id, 'notification_messages_new_message', 'no' );
-            if(isset($_COOKIE['ref_id'])){
-                $ref_id = sanitize_text_field($_COOKIE['ref_id']);
-                update_user_meta( $user_id, 'ref', $ref_id );
-            }
-			wp_new_user_notification( $user_id, null, 'user' );
-			$info = array();
-			$info['user_login'] = $email;
-			$info['user_password'] = $password;
-			$info['remember'] = true;
-			$user_signon = wp_signon( $info, false );
-			wp_set_current_user( $user_signon->ID, $user_signon->user_login );
+  function earena_2_complete_registration( $nickname, $email, $password, $country, $birth_date = null, $valid = null ) {
+  	global $wpdb;
+  	if ( $valid === 'valid' ) {
+  		$userdata = array(
+  		'user_login'   =>   sanitize_user( $nickname ),
+  		'nickname'     =>   $nickname,
+  		'display_name' =>   $nickname,
+  		'user_email'   =>   $email,
+  		'user_pass'	   =>   $password,
+  		);
+  		$user_id = wp_insert_user( $userdata );
+  		if( !is_wp_error( $user_id ) ) {
 
-			write_new_nicename($user_id);
-            ea_add_rand_ava($user_id);
-			return true;
-		} else {
-			return $user_id;
-		}
-	}
-}
+        $birth_date = $birth_date ?? date("Y-m-d", time());
+        update_user_meta( $user_id, 'birth_date', $birth_date );
+        update_user_meta( $user_id, 'country', $country );
+        update_user_meta( $user_id, 'rating', 500 );
+        update_user_meta( $user_id, 'mig', 0 );//money in games
+        update_user_meta( $user_id, 'notification_messages_new_message', 'no' );
+        if(isset($_COOKIE['ref_id'])){
+            $ref_id = sanitize_text_field($_COOKIE['ref_id']);
+            update_user_meta( $user_id, 'ref', $ref_id );
+        }
 
-add_action( 'wp_ajax_nopriv_register_check', 'register_check' );
-function register_check () {
-	check_ajax_referer( 'ea_register', 'reg_security' );
-	$key = $_POST['key'];
-	$value = $_POST['value'];
-	switch ( $key ) {
-		case 'email':
-			if ( is_email($value) ) {
-				if ( email_exists($value) ) {
-					wp_send_json_success( ['checked'=>false, 'message'=> __( 'Такой адрес электронной почты уже зарегистрирован', 'earena_plugin' ) ] );
-				}
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Некорректный емейл', 'earena_plugin' )] );
-			}
-		break;
-		case 'username':
-			if ( validate_username($value) ) {
-				if ( strlen($value) < 5 ) {
-					wp_send_json_success( ['checked'=>false, 'message'=> __( 'Никнейм должен быть не менее 5 символов', 'earena_plugin' )] );
-				}elseif ( strlen($value) > 25 ) {
-					wp_send_json_success( ['checked'=>false, 'message'=> __( 'Никнейм должен быть не более 25 символов', 'earena_plugin' )] );
-				}elseif ( username_exists($value) ) {
-					wp_send_json_success( ['checked'=>false, 'message'=> __( 'Такой никнейм уже зарегистрирован', 'earena_plugin' )] );
-				}
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Некорректный никнейм', 'earena_plugin' )] );
-			}
-		break;
-		case 'password':
-		case 'pass1':
-			if ( 8 <= strlen($value) ) {
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Пароль должен быть не менее 8 символов', 'earena_plugin' )] );
-			}
-		break;
-		case 'confirm_password':
-		case 'pass2':
-			if ( 8 >= strlen($value[0]) ||  8 >= strlen($value[1]) ) {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Пароль должен быть не менее 8 символов', 'earena_plugin' )] );
-			} elseif ( $value[0] ==  $value[1] ) {
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Пароли не совпадают', 'earena_plugin' )] );
-			}
-		break;
-		case 'country':
-			if ( !empty($value) ) {
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Выберите страну', 'earena_plugin' )] );
-			}
-		break;
-		case 'birth_date':
-			if ( !empty($value) && strtotime($value)<time() ) {
-				wp_send_json_success( ['checked'=>true] );
-			} else {
-				wp_send_json_success( ['checked'=>false, 'message'=> __( 'Некорректная дата', 'earena_plugin' )] );
-			}
-		break;
-	}
-}
+  			wp_new_user_notification( $user_id, null, 'user' );
+  			$info = array();
+  			$info['user_login'] = $email;
+  			$info['user_password'] = $password;
+  			$info['remember'] = true;
+  			$user_signon = wp_signon( $info, false );
+  			wp_set_current_user( $user_signon->ID, $user_signon->user_login );
 
-add_action( 'wp_ajax_nopriv_ajax_register', 'ajax_register' );
-function ajax_register () {
-	global $login, $password, $email, $country, $birth_date, $reg_errors;
-	$password   =   isset($_POST['password'])?esc_attr( $_POST['password'] ):null;
-	$email      =   isset($_POST['email'])?sanitize_email( $_POST['email'] ):null;
-	$login      =   isset($_POST['username'])?$_POST['username']:null;
-	$country	=   isset($_POST['country'])?sanitize_text_field( $_POST['country'] ):null;
-	$confirm_password = isset($_POST['confirm_password'])?esc_attr( $_POST['confirm_password'] ):null;
-	$birth_date = isset($_POST['birth_date']) ? date("Y-m-d",strtotime($_POST['birth_date'])) : null;
+  			write_new_nicename($user_id);
+              ea_add_rand_ava($user_id);
+  			return true;
+  		} else {
+  			return $user_id;
+  		}
+  	}
+  }
 
-	registration_validation(
-		$login,
-		$email,
-		$password,
-		$confirm_password,
-		$country,
-		$birth_date
-	);
+  function earena_2_register_check ($key, $value) {
+  	switch ( $key ) {
+  		case 'email':
+  			if ( is_email($value) ) {
+  				if ( email_exists($value) ) {
+  					return ['name' => $key, 'message'=> __( 'Такой адрес электронной почты уже зарегистрирован', 'earena_plugin' ) ];
+  				}
+  			} else {
+  				return [ 'name' => $key, 'message'=> __( 'Некорректный емейл', 'earena_plugin' )];
+  			}
+  		break;
+  		case 'name':
+  			if ( validate_username($value) ) {
+  				if ( strlen($value) < 5 ) {
+  					return [ 'name' => $key, 'message'=> __( 'Никнейм должен быть не менее 5 символов', 'earena_plugin' )];
+  				} elseif ( strlen($value) > 25 ) {
+  					return [ 'name' => $key, 'message'=> __( 'Никнейм должен быть не более 25 символов', 'earena_plugin' )];
+  				} elseif ( username_exists($value) ) {
+  					return [ 'name' => $key, 'message'=> __( 'Такой никнейм уже зарегистрирован', 'earena_plugin' )];
+  				}
+  			} else {
+  				return [ 'name' => $key, 'message'=> __( 'Некорректный никнейм', 'earena_plugin' )];
+  			}
+  		break;
+  		case 'password':
+  		case 'pass1':
+  			if ( strlen($value) < 8 ) {
+  				return [ 'name' => $key, 'message'=> __( 'Пароль должен быть не менее 8 символов', 'earena_plugin' )];
+  			}
+  		break;
+  		case 'confirm_password':
+  		case 'pass2':
+  			if ( 8 >= strlen($value[0]) ||  8 >= strlen($value[1]) ) {
+  				return [ 'name' => $key, 'message'=> __( 'Пароль должен быть не менее 8 символов', 'earena_plugin' )];
+  			} else {
+  				return [ 'name' => $key, 'message'=> __( 'Пароли не совпадают', 'earena_plugin' )];
+  			}
+  		break;
+  		case 'country':
+  			if ( empty($value) ) {
+  				return [ 'name' => $key, 'message'=> __( 'Выберите страну', 'earena_plugin' )];
+  			}
+  		break;
+  		case 'birth_date':
+  			if ( !empty($value) && strtotime($value)<time() ) {
 
-	complete_registration(
-		$login,
-		$email,
-		$password,
-		$country,
-		$birth_date
-	);
+  			} else {
+  				return [ 'name' => $key, 'message'=> __( 'Некорректная дата', 'earena_plugin' )];
+  			}
+  		break;
+  	}
 
-	if ( $reg_errors->has_errors() ){
-		wp_send_json_success( $reg_errors );
-	} else {
-		wp_send_json_success( ['registered'=>true, 'message'=> __( 'Вы зарегистрировались!', 'earena_plugin' )] );
-	}
+    return 'valid';
+  }
+  /*
+  add_action( 'wp_ajax_nopriv_ajax_register', 'ajax_register' );
+  function ajax_register () {
+  	global $nickname, $password, $email, $country, $birth_date, $reg_errors;
+  	$password   =   isset($_POST['password'])?esc_attr( $_POST['password'] ):null;
+  	$email      =   isset($_POST['email'])?sanitize_email( $_POST['email'] ):null;
+  	$nickname      =   isset($_POST['username'])?$_POST['username']:null;
+  	$country	=   isset($_POST['country'])?sanitize_text_field( $_POST['country'] ):null;
+  	$confirm_password = isset($_POST['confirm_password'])?esc_attr( $_POST['confirm_password'] ):null;
+  	$birth_date = isset($_POST['birth_date']) ? date("Y-m-d",strtotime($_POST['birth_date'])) : null;
 
-	die();
-}
+  	registration_validation(
+  		$nickname,
+  		$email,
+  		$password,
+  		$confirm_password,
+  		$country,
+  		$birth_date
+  	);
+
+  	complete_registration(
+  		$nickname,
+  		$email,
+  		$password,
+  		$country,
+  		$birth_date
+  	);
+
+  	if ( $reg_errors->has_errors() ){
+  		wp_send_json_success( $reg_errors );
+  	} else {
+  		wp_send_json_success( ['registered'=>true, 'message'=> __( 'Вы зарегистрировались!', 'earena_plugin' )] );
+  	}
+
+  	die();
+  } */
 
 } else {
 
@@ -612,19 +600,20 @@ function write_new_nicename($user_id){
     );
 }
 
-function registration_validation( $login, $email, $password, $confirm_password=null, $country, $birth_date = null )  {
-	global $reg_errors;
+function earena_2_registration_validation( $nickname, $email, $password, $confirm_password=null, $country, $birth_date = null )  {
+	/*
+  global $reg_errors;
 	$reg_errors = new WP_Error;
-	if ( empty( $login ) || empty( $email ) || empty( $password )/* || empty( $confirm_password ) */|| empty( $country ) ) {
+	if ( empty( $nickname ) || empty( $email ) || empty( $password ) || empty( $country ) ) { // || empty( $confirm_password )
 		$reg_errors->add('field', __( 'Все поля обязательные', 'earena_plugin'  ));
 	}
-	if ( 5 > strlen( $login ) ) {
+	if ( 5 > strlen( $nickname ) ) {
 		$reg_errors->add( 'short_username', __( 'Никнейм должен быть не менее 5 символов', 'earena_plugin'  ) );
 	}
-	if ( 25 < strlen( $login ) ) {
+	if ( 25 < strlen( $nickname ) ) {
 		$reg_errors->add( 'long_username', __( 'Никнейм должен быть не более 25 символов', 'earena_plugin'  ) );
 	}
-	if ( !validate_username( $login ) ) {
+	if ( !validate_username( $nickname ) ) {
 		$reg_errors->add( 'username_invalid', __( 'Некорректный никнейм', 'earena_plugin'  ));
 	}
 	if ( !is_email( $email ) ) {
@@ -636,19 +625,19 @@ function registration_validation( $login, $email, $password, $confirm_password=n
 	if ( 8 > strlen( $password ) ) {
 		$reg_errors->add( 'password', __( 'Пароль должен быть не менее 8 символов', 'earena_plugin'  ) );
 	}
-/*	if ( $password !== $confirm_password ) {
+	if ( $password !== $confirm_password ) {
 		$reg_errors->add( 'password_mismath', __( 'Пароли не совпадают', 'earena_plugin'  ) );
 	}
 */
 }
 
-function complete_registration( $login, $email, $password, $country, $birth_date = null ) {
+function complete_registration( $nickname, $email, $password, $country, $birth_date = null ) {
 	global $reg_errors, $wpdb;
 	if ( 1 > count( $reg_errors->get_error_messages() ) ) {
 		$userdata = array(
 		'user_login'   =>   sanitize_user( $email ),
-		'nickname'     =>   $login,
-		'display_name' =>   $login,
+		'nickname'     =>   $nickname,
+		'display_name' =>   $nickname,
 		'user_email'   =>   $email,
 		'user_pass'	   =>   $password,
 		);

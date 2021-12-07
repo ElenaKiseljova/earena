@@ -493,17 +493,14 @@
 
               // Регистрация
               if (prefix.indexOf('signup') > -1) {
-                if (response.data.registered) {
+                if (response.success === true) {
                   document.location.href = siteURL  + '/profile?action=after_registration';
                 } else {
-                  let message = '';
-
-                  $.each(response.data.errors, function (key, val) {
-                    console.log(key + ' : '+ val);
-                    message += val + '<br>';
-                  });
+                  let message = response.data.message;
 
                   window.form.showAJAXMessage(popup, message);
+
+                  console.log(response);
 
                   return;
                 }

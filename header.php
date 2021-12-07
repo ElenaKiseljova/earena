@@ -34,7 +34,6 @@
       const isAdminTournamentsCreate = <?= is_page(552) ? 'true' : 'false'; ?>;
     </script>
     <div class="container">
-
       <!-- SVG sprite -->
       <div class="visually-hidden">
         <?php

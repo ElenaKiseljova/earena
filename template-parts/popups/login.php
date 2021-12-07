@@ -76,7 +76,7 @@
         <div class="popup__ajax-message"></div>
         <form class="form form--popup" data-prefix="signup" id="form-login" action="/" method="post">
           <div class="form__row">
-            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" minlength="5" pattern="[A-Za-z ._-]{1,}">
+            <input class="form__field form__field--popup" id="name" type="text" name="name" required placeholder="<?php _e( 'Имя пользователя', 'earena_2' ); ?>" minlength="5" maxlength="25">
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 

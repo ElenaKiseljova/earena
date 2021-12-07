@@ -535,7 +535,7 @@
   // Время
   function ea_header_time()
   {
-      return date('H:i', utc_to_usertime(time())) . '(UTC' . utc_value() . ')';
+      return date('H:i', utc_to_usertime(time())) . ' (UTC' . utc_value() . ')';
   }
 
   function utc_to_usertime($time)

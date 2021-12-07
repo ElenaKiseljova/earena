@@ -133,11 +133,11 @@
         </div>
       <?php endif; ?>
 
-      <div id="chat-page-form">
+      <div class="chat-page__form" id="chat-page-form">
         <?php earena_2_match_page_data($ea_user, $match_id, $match_type); ?>
       </div>
     </div>
-    <div class="chat-page__right">
+    <div class="chat-page__right chat-page__right--column">
       <header class="chat-page__header chat-page__header--right">
         <h1 class="chat-page__chat">
           <?php _e( 'Чат матча ', 'earena_2' ); ?> ID<?= $match_id; ?>

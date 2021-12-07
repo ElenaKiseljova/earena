@@ -1032,7 +1032,7 @@
                   </span>
                 </button>
               <?php elseif ($is_reporter): ?>
-                <button class="form__submit form__submit--chat button button--gray" type="submit" name="chat-page-result-submit">
+                <button class="form__submit form__submit--chat button button--gray disabled" type="submit" name="chat-page-result-submit">
                   <span>
                     <?php _e( 'Изменить результат', 'earena_2' ); ?>
                   </span>

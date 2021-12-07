@@ -10,15 +10,31 @@
 .chat-page__complaint-item,
 .chat-page__complaint-title,
 .chat-page__complaint-content,
-.chat-page__stream  {
+.chat-page__stream,
+.chat-page__form  {
   .w100();
 }
 
 .chat-page {
+  flex-grow: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
   padding-bottom: 50px;
+
+  @media (max-width: @mobile) {
+    display: block;
+  }
 }
 
 .chat-page__wrapper {
+  flex-grow: 1;
+
   .wrapper();
 
   display: flex;
@@ -27,7 +43,7 @@
 
   justify-content: space-between;
   align-items: flex-start;
-  align-content: flex-start;
+  align-content: stretch;
 
   @media (max-width: @mobile) {
     flex-direction: column;
@@ -70,7 +86,6 @@
   align-items: flex-start;
 
   width: 568 / 1156 * 100%;
-  min-height: 100vh;
 
   background-color: #colors[dark_light];
 
@@ -94,14 +109,19 @@
     background: inherit;
   }
 
+  &--column {
+    align-self: stretch;
+  }
+
   @media (max-width: @mobile) {
     width: 100%;
 
-    min-height: 50vh;
+    &--column {
+      min-height: 50vh;
+    }
 
     &--header {
       margin-top: 10px;
-      min-height: unset;
     }
   }
 }
@@ -137,8 +157,11 @@
 
       width: 100%;
       height: (190 / 800) * 100vh;
+      max-height: 190px;
 
       background-image: linear-gradient(180deg, #262B32 0%, rgba(31, 35, 41, 0) 100%);
+
+      pointer-events: none;
     }
   }
 

@@ -29,7 +29,7 @@
 
     <div class="user__info user__info--admin">
       <h1 class="user__name user__name--admin">
-        <?= __('Administrator', 'earena_2'); ?>
+        <?= $ea_user->nickname; ?>
       </h1>
 
       <?php if (is_online($ea_user->ID)): ?>

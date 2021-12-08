@@ -78,13 +78,13 @@
                 <?php if ( is_ea_admin() ): ?>
                   <div class="user user--header">
                     <a class="user__avatar user__avatar--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
-                      <img width="60" height="60" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="Admin">
+                      <?= bp_core_fetch_avatar(['item_id' => $ea_user->ID, 'type' => 'full', 'width' => 60, 'height' => 60]); ?>
                     </a>
 
                     <div class="user__info user__info--header">
                       <a class="user__name user__name--header-admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
                         <h5>
-                          <?= __('Administrator', 'earena_2'); ?>
+                          <?= $ea_user->nickname; ?>
                         </h5>
                       </a>
                     </div>

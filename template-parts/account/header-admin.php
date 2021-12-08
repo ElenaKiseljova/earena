@@ -9,11 +9,6 @@
 
 <header class="account__header account__header--admin">
   <div class="user user--account">
-    <!-- <div class="user__image-wrapper user__image-wrapper--admin">
-      <div class="user__avatar user__avatar--account">
-        <img width="100" height="100" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="Admin">
-      </div>
-    </div> -->
     <div class="user__image-wrapper user__image-wrapper--account user__image-wrapper--admin <?= $verified ? 'user__image-wrapper--verified' : ''; ?>">
       <?php earena_2_verification_html($verified, 'private'); ?>
 
@@ -29,7 +24,7 @@
 
     <div class="user__info user__info--admin">
       <h1 class="user__name user__name--admin">
-        <?= __('Administrator', 'earena_2'); ?>
+        <?= $ea_user->nickname; ?>
       </h1>
 
       <?php if (is_online($ea_user->ID)): ?>

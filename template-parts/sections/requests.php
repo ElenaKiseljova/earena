@@ -20,17 +20,18 @@
       <div class="user user--friends">
         <div class="user__left user__left--friends">
           <div class="user__image-wrapper user__image-wrapper--friends user__image-wrapper--admin">
-            <a class="user__avatar user__avatar--friends" href="<?php echo bloginfo( 'url' ); ?>/profile">
-              <img width="70" height="70" src="<?php echo get_template_directory_uri(); ?>/assets/img/avatar-admin.svg" alt="Admin">
-            </a>
+            <div class="user__avatar user__avatar--friends">
+              <?php $admin_id = (int)get_site_option('ea_admin_id', 27); ?>
+              <?= bp_core_fetch_avatar(['item_id' => $admin_id, 'type' => 'full', 'width' => 70, 'height' => 70]); ?>
+            </div>
           </div>
 
           <div class="user__info user__info--friends">
-            <a class="user__name user__name--friends user__name--admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
+            <div class="user__name user__name--friends user__name--admin" href="<?php echo bloginfo( 'url' ); ?>/profile">
               <h5>
                 <?= __('Administrator', 'earena_2'); ?>
               </h5>
-            </a>
+            </div>
 
             <?php if (is_online($earena_2_user_private->ID)): ?>
               <div class="user__status user__status--friends user__status--online">

@@ -191,9 +191,9 @@ function setPlafromsAction()
         $data = $_POST;
         unset($data['action']);
         foreach ($data as $key => $val) {
-            $data[$key] = array_filter($val, function ($value) {
-                return !is_null($value) && $value !== '';
-            });
+          $data[$key] = array_filter($val, function ($value) {
+              return !is_null($value) && $value !== '';
+          });
         }
 
         if (ea_edit_nicknames($data['nicknames']) == 'Сохранено') {

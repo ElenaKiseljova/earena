@@ -74,42 +74,46 @@
           // Попап с формой управлеия Турниром
           earena_2_get_popup( 'tournament' );
 
-          // Попап с жалобой судье
-          earena_2_get_popup( 'complaint' );
-
           // Попап Матча
           earena_2_get_popup( 'match' );
 
-          if ( earena_2_current_page('purse') || earena_2_current_page('wallet') || (is_ea_admin() && earena_2_current_page('user')) ) {
-            // Попап Кошелёк
-            earena_2_get_popup( 'purse' );
+          if ( is_user_logged_in() ) {
+            if (isset($_GET['match'])) {
+              // Попап с жалобой судье
+              earena_2_get_popup( 'complaint' );
+            }
 
-            // Попап VIP
-            earena_2_get_popup( 'vip' );
-          }
+            if ( earena_2_current_page('purse') || earena_2_current_page('wallet') || (is_ea_admin() && earena_2_current_page('user')) ) {
+              // Попап Кошелёк
+              earena_2_get_popup( 'purse' );
 
-          if ( earena_2_current_page('profile') && is_user_logged_in() ) {
-            // Выбор Аватара
-            earena_2_get_popup( 'avatar' );
+              // Попап VIP
+              earena_2_get_popup( 'vip' );
+            }
 
-            // Попап Стрим
-            earena_2_get_popup( 'stream' );
+            if ( earena_2_current_page('profile') ) {
+              // Выбор Аватара
+              earena_2_get_popup( 'avatar' );
 
-            // Попап Удалить историю переписки
-            // earena_2_get_popup( 'history' );
+              // Попап Стрим
+              earena_2_get_popup( 'stream' );
 
-            // Попап Игры
-            earena_2_get_popup( 'game' );
-          }
+              // Попап Удалить историю переписки
+              // earena_2_get_popup( 'history' );
 
-          if ( (earena_2_current_page('profile') || earena_2_current_page('user')) && is_user_logged_in() && !is_ea_admin() ) {
-            // Попап управления Друзьями
-            earena_2_get_popup( 'friends' );
-          }
+              // Попап Игры
+              earena_2_get_popup( 'game' );
+            }
 
-          if ( (earena_2_current_page('profile') || earena_2_current_page('admin')) && is_user_logged_in() ) {
-            // Попап Верификация
-            earena_2_get_popup( 'verification' );
+            if ( (earena_2_current_page('profile') || earena_2_current_page('user')) && !is_ea_admin() ) {
+              // Попап управления Друзьями
+              earena_2_get_popup( 'friends' );
+            }
+
+            if ( earena_2_current_page('profile') || earena_2_current_page('admin') ) {
+              // Попап Верификация
+              earena_2_get_popup( 'verification' );
+            }
           }
 
           if ( earena_2_current_page('user') && is_ea_admin() ) {

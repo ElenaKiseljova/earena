@@ -68,14 +68,14 @@
         </h4>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-matches-win" data-width="<?= (($m_wins / ($m_wins + $m_loses)) * 100);?>"></span>
+          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-matches-win" data-width="<?= (($m_wins + $m_loses) > 0) ? (($m_wins / ($m_wins + $m_loses)) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-matches-win"><?= $m_wins; ?></span>
         </div>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-matches-loses" data-width="<?= (($m_loses / ($m_wins + $m_loses)) * 100);?>"></span>
+          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-matches-loses" data-width="<?= (($m_wins + $m_loses) > 0) ? (($m_loses / ($m_wins + $m_loses)) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-matches-loses"><?= $m_loses; ?></span>
@@ -94,21 +94,21 @@
         </h4>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-tournaments-win" data-width="<?= (($t_wins / ($t_wins + $t_loses + $t_draw)) * 100);?>"></span>
+          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-tournaments-win" data-width="<?= (($t_wins + $t_loses + $t_draw) > 0) ? (($t_wins / ($t_wins + $t_loses + $t_draw)) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-tournaments-win"><?= $t_wins; ?></span>
         </div>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--gray" id="statistics-progress-bar-tournaments-draw" data-width="<?= (($t_draw / ($t_wins + $t_loses + $t_draw)) * 100);?>"></span>
+          <span class="players__progress-bar players__progress-bar--gray" id="statistics-progress-bar-tournaments-draw" data-width="<?= (($t_wins + $t_loses + $t_draw) > 0) ? (($t_draw / ($t_wins + $t_loses + $t_draw)) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-tournaments-draw"><?= $t_draw; ?></span>
         </div>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-tournaments-loses" data-width="<?= (($t_loses / ($t_wins + $t_loses + $t_draw)) * 100);?>"></span>
+          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-tournaments-loses" data-width="<?= (($t_wins + $t_loses + $t_draw) > 0) ? (($t_loses / ($t_wins + $t_loses + $t_draw)) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-tournaments-loses"><?= $t_loses; ?></span>
@@ -127,14 +127,14 @@
         </h4>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-rounds-win" data-width="<?= ($gf / ($gf + $gt) * 100); ?>"></span>
+          <span class="players__progress-bar players__progress-bar--green" id="statistics-progress-bar-rounds-win" data-width="<?= (($gf + $gt) > 0) ? ($gf / ($gf + $gt) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-rounds-win"><?= $gf; ?></span>
         </div>
 
         <div class="players__progress players__progress--account">
-          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-rounds-loses" data-width="<?= ($gt / ($gf + $gt) * 100); ?>"></span>
+          <span class="players__progress-bar players__progress-bar--red" id="statistics-progress-bar-rounds-loses" data-width="<?= (($gf + $gt) > 0) ? ($gt / ($gf + $gt) * 100) : 0; ?>"></span>
         </div>
         <div class="players__text players__text--account">
           <span id="statistics-rounds-loses"><?= $gt; ?></span>

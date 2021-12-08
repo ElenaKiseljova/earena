@@ -1,8 +1,8 @@
 <?php
   global $games, $games_by_platforms, $nicknames_by_platforms;
 
-  $games_by_platforms ?? [];
-  $nicknames_by_platforms ?? [];
+  $games_by_platforms = $games_by_platforms ?? [];
+  $nicknames_by_platforms = $nicknames_by_platforms ?? [];
 
   $platforms = get_site_option( 'platforms' ) ?? [];
 ?>

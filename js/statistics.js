@@ -53,12 +53,12 @@
           winElement.textContent = win;
           losesElement.textContent = loses;
 
-          winElementPB.dataset.width = ((win / total) * 100) ? ((win / total) * 100) : 0;
-          losesElementPB.dataset.width = ((loses / total) * 100) ? ((loses / total) * 100) : 0;
+          winElementPB.dataset.width = (total > 0) ? ((win / total) * 100) : 0;
+          losesElementPB.dataset.width = (total > 0) ? ((loses / total) * 100) : 0;
 
           if (drawElement && drawElementPB) {
             drawElement.textContent = draw;
-            drawElementPB.dataset.width = ((draw / total) * 100) ? ((draw / total) * 100) : 0;
+            drawElementPB.dataset.width = (total > 0) ? ((draw / total) * 100) : 0;
           }
 
           window.progress('.players__progress-bar', container);

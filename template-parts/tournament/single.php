@@ -165,9 +165,14 @@
       <div class="players players--page">
         <?php
           $counter_players = count( json_decode($tournament->players, true) ?: [] );
+          if ($tournament->max_players > 0) {
+            $users_percent = round( $counter_players / $tournament->max_players * 100 );
+          } else {
+            $users_percent = 100;
+          }
         ?>
         <div class="players__progress">
-          <span class="players__progress-bar" data-width="<?= ($counter_players / (int)$tournament->max_players * 100); ?>"></span>
+          <span class="players__progress-bar" data-width="<?= $users_percent; ?>"></span>
         </div>
         <div class="players__text">
           <?= $counter_players; ?>

@@ -4,13 +4,13 @@
   $is_tournaments = (earena_2_current_page( 'tournaments' ) || earena_2_current_page( 'tours' ));
 
   $is_profile = earena_2_current_page( 'profile' ) || earena_2_current_page( 'user' );
-  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile) ? true : false;
+  $is_profile_tournaments = ((earena_2_current_page( 'tours') || (isset($_GET['toggles']) && $_GET['toggles'] === 'tournaments')) && $is_profile);
 
   $is_profile_admin = (earena_2_current_page( 'admin' ) && is_ea_admin()) ? true : false;
-  $is_profile_admin_tournaments = ((earena_2_current_page( 'tours' ) || earena_2_current_page( 'cup' ) || earena_2_current_page( 'lucky-cup' ) || is_page(640) || is_page(646) || is_page(643)) && $is_profile_admin) ? true : false;
+  $is_profile_admin_tournaments = ((earena_2_current_page( 'tours' ) || earena_2_current_page( 'cup' ) || earena_2_current_page( 'lucky-cup' ) || is_page(640) || is_page(646) || is_page(643)) && $is_profile_admin);
 
-  $is_admin_tournaments_list = is_page(555) ? true : false;
-  $is_admin_tournaments_create = is_page(552) ? true : false;
+  $is_admin_tournaments_list = is_page(555);
+  $is_admin_tournaments_create = is_page(552);
 ?>
 <?php if ($is_games && !isset($_GET['toggles'])): ?>
   <?php

@@ -196,7 +196,7 @@
           if ($tournament->max_players > 0) {
             $users_percent = round( $counter_players / $tournament->max_players * 100 );
           } else {
-            $users_percent = 100;
+            $users_percent = 0;
           }
         ?>
         <div class="players__progress">

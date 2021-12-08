@@ -5,6 +5,8 @@
   if (!is_ea_admin()) {
     return;
   }
+
+  $verified = $ea_user->get('bp_verified_member')==1?true:false;
 ?>
 
 <header class="account__header account__header--admin">

@@ -13,7 +13,7 @@
       earena_2_get_popup_close_button_html( 'tournament' );
     }
   ?>
-  <?php if (isset($tournament)): ?>
+  <?php if (isset($tournament) && isset($tournament_id)): ?>
     <!-- Шаблон подставляется по открытию попапа -->
     <template id="popup-tournament-join">
       <div class="popup__header popup__header--tournament">
@@ -363,7 +363,9 @@
         </button>
       </div>
     </template>
-  <?php elseif ($is_admin_tournaments_list): ?>
+  <?php endif; ?>
+
+  <?php if ($is_admin_tournaments_list): ?>
     <!-- Список Турниров (АДМИН) -->
     <template id="popup-tournament-cancel">
       <div class="popup__content popup__content--tournament">

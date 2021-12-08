@@ -130,6 +130,8 @@
   }
 
   &.active {
+    pointer-events: none;
+
     color: #colors[white];
     background-color: #colors[accent];
     border-color: #colors[accent];
@@ -179,6 +181,12 @@
 
   &--admin-tournaments-list {
     width: 20%;
+  }
+
+  &--platform {
+    &.active {
+      pointer-events: all;
+    }
   }
 
   @media (max-width: @tablet) and (min-width: @tablet_min) {

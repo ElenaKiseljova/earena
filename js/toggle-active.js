@@ -8,6 +8,7 @@
         *** Ф-я переключения активного класса по клику
         * Экспортируется в select.js
         */
+      let timeoutPlatform;
 
       window.toggleActive = {
         // Для переключения одного/нескольких элементов по клику на один
@@ -121,7 +122,7 @@
             let flagAllSelected = 0;
 
             buttons.forEach((button, i) => {
-              flagAllSelected = button.classList.contains('active') ? (flagAllSelected + 1) : flagAllSelected;
+              flagAllSelected = (button.classList.contains('active') && (button !== buttons[allButtonIndex])) ? (flagAllSelected + 1) : flagAllSelected;
 
               button.addEventListener('click', function () {
                 if (parseInt(button.dataset.tabType, 10) === -1 || button.dataset.tabType === -1) {
@@ -154,7 +155,7 @@
                   }
                 }
 
-                //console.log(flagAllSelected);
+                // console.log(flagAllSelected);
 
                 if (buttons[allButtonIndex].classList.contains('active') && (parseInt(button.dataset.tabType, 10) !== -1 && button.dataset.tabType !== -1)) {
                   buttons[allButtonIndex].classList.remove('active');
@@ -163,11 +164,17 @@
                 // Переключение класса тогла
                 button.classList.toggle('active');
 
-                // Импортируется из файла platforms.js
-                window.platforms.drawSelected('games');
-                window.platforms.drawSelected('matches');
-                window.platforms.drawSelected('tournaments');
-                window.platforms.drawSelected('admin-tournaments');
+                if (timeoutPlatform) {
+                  clearTimeout(timeoutPlatform);
+                }
+
+                timeoutPlatform = setTimeout(function () {
+                  // Импортируется из файла platforms.js
+                  window.platforms.drawSelected('games');
+                  window.platforms.drawSelected('matches');
+                  window.platforms.drawSelected('tournaments');
+                  window.platforms.drawSelected('admin-tournaments');
+                }, 500);
               });
             });
           }

@@ -673,6 +673,13 @@
                 $('body').trigger('match-update');
 
                 return;
+              } else {
+                for(var message of response.data.entries()) {
+                  window.form.showAJAXMessage(form, ('<br>' + message[1]));
+                }
+
+                console.log(response);
+                return;
               }
             }
 
@@ -1417,7 +1424,7 @@
           }
         },
         showAJAXMessage : function (container, message = '', timeoutClean = false) {
-          let popupAJAXMessageElement = container.querySelector('.popup__ajax-message');
+          let popupAJAXMessageElement = container.querySelector('.popup__ajax-message') ?? container.querySelector('.form__text--ajax-message');
 
           if (popupAJAXMessageElement) {
             popupAJAXMessageElement.innerHTML = message;

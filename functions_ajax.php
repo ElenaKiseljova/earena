@@ -999,7 +999,7 @@ function earena_2_del_moderate_callback()
     $complaint = $tournament == 1 ? EArena_DB:: get_ea_tournament_match_field($match_id, 'complaint') : (EArena_DB:: get_ea_match_field($match_id, 'complaint') ?? []);
     $complaint = json_decode( $complaint, true );
 
-    $ea_user = $complaint[$complaint_index]['id'];
+    $ea_user = (int)$complaint[$complaint_index]['user_id'];
     $match = $tournament == 1 ? EArena_DB::get_ea_tournament_match($match_id) : EArena_DB::get_ea_match($match_id);
     $admin_id = (int)get_site_option('ea_admin_id', 27);
 //    $message = __('Ваша жалоба: "', 'earena_2') .

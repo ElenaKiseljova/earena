@@ -1059,6 +1059,8 @@
                 </span>
               </button>
             <?php endif; ?>
+
+            <p class="form__text form__text--ajax-message"></p>
           </div>
         </form>
       </div>

@@ -65,8 +65,8 @@
               window.form.additionButtonClosePopup(attrForms[attr.idForm].FORM.closest('.popup'));
             }
 
-            // Клик по кнопке Отправки формы
-            if (attr.idForm.indexOf('create') === - 1) {
+            // Клик по кнопке Отправки формы (кроме формы создания Турнира)
+            if (attr.idForm.indexOf('create') === - 1 && attrForms[attr.idForm].buttonSubmit) {
               attrForms[attr.idForm].buttonSubmit.addEventListener('click', (evt) => {
                 evt.preventDefault();
 

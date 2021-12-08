@@ -129,8 +129,21 @@
         }
       }
 
+      .new-message,
+      .bpbm-search,
+      .starred-messages {
+        display: none!important;
+      }
+
       @media (max-width: @mobile) {
         padding-left: 10px;
+      }
+    }
+
+    .chat-footer {
+      .settings,
+      .bpbm-user-me {
+        display: none!important;
       }
     }
 
@@ -1326,22 +1339,22 @@
     }
   }
 
-  &.no-admin {
-    .chat-header {
-      .new-message,
-      .bpbm-search,
-      .starred-messages {
-        display: none!important;
-      }
-    }
-
-    .chat-footer {
-      .settings,
-      .bpbm-user-me {
-        display: none!important;
-      }
-    }
-  }
+  // &.no-admin {
+  //   .chat-header {
+  //     .new-message,
+  //     .bpbm-search,
+  //     .starred-messages {
+  //       display: none!important;
+  //     }
+  //   }
+  //
+  //   .chat-footer {
+  //     .settings,
+  //     .bpbm-user-me {
+  //       display: none!important;
+  //     }
+  //   }
+  // }
 }
 
 // .chat {

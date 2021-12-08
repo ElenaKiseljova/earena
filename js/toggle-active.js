@@ -295,7 +295,7 @@
         buttonSelector : '.tabs__button--tournaments-admin',
         callback : window.toggleActive.methods.toggleAdminContent,
         unActiveAnother : true,
-        selectorContent : '.section__content--tournaments-adminn',
+        selectorContent : '.section__content--tournaments-admin',
         setCookie : {name: 'admin_tab_active_index'},
       };
       window.toggleActive.multiple(attrTabTournamentsProfileAdmin);

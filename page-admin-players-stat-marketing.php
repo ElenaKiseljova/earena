@@ -50,7 +50,7 @@ $profit_total = $profit_vip + $profit_matches + $profit_tournaments;
           </div>
 
           <div class="form_filter--wrapper" :class="{'stop' : load}">
-              <form id="matches-filter" class="filters">
+              <form id="matches-filter" class="filters filters--statistics">
                   <div class="row">
                       <div class="col-lg-3 col-md-4 col-sm-12">
                           <div class="d-flex nick-search-wrapper">
@@ -802,34 +802,10 @@ $profit_total = $profit_vip + $profit_matches + $profit_tournaments;
         border-radius: 50px;
     }
 
-    .icons span.vip {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      text-transform: uppercase;
-      padding: 6px 10px;
-      background: #E37525;
-      border-radius: 5px;
-      /* button_text text style */
-      font-family: 'Roboto', 'Arial', sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: center;
-      color: #ffffff;
-
-      background-image: url( <?= get_template_directory_uri(); ?>/assets/img/tournaments-crown.svg);
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .icons span.block {
-        background-image: url(<?= bloginfo('template_url')?>/images/icons/block.svg);
-    }
-
-    .icons span.verified {
+    .icons span.vip,
+    .icons span.verified,
+    .icons span.block,
+    .icons span.test {
       position: static;
       padding: 0;
       margin: 0;
@@ -843,16 +819,33 @@ $profit_total = $profit_vip + $profit_matches + $profit_tournaments;
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background-color: #4890E4;
-      background-image: url( <?= get_template_directory_uri(); ?>/assets/img/check.svg);
+
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
       background-size: 58.33333333%;
     }
 
+    .icons span.vip {
+      background-color: #E37525;
+      background-image: url( <?= get_template_directory_uri(); ?>/assets/img/tournaments-crown.svg);
+    }
+
+    .icons span.verified {
+      background-color: #4890E4;
+
+      background-image: url( <?= get_template_directory_uri(); ?>/assets/img/check.svg);
+    }
+
+    .icons span.block {
+      background-color: #cf3939;
+
+      background-image: url( <?= get_template_directory_uri(); ?>/assets/img/block.svg);
+    }
+
     .icons span.test {
-        background-image: url(<?= bloginfo('template_url')?>/images/icons/test.svg);
+        background-color: #222d43;
+        background-image: url(<?= get_template_directory_uri(); ?>/assets/img/test.svg);
     }
 
     .select-box {

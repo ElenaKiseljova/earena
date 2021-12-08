@@ -171,8 +171,8 @@
                 data-team-mode="<?= $match->team_mode > 0 ? team_mode_to_string($match->team_mode) : ''; ?>"
                 data-game-mode="<?= $match->game_mode . ' vs ' . $match->game_mode ?>"
                 data-platform="<?= $ea_icons['platform'][$match->platform]; ?>"
-                data-balance="<?= balance(); ?>"
-                data-bet="<?= $match->bet; ?>"
+                data-balance="<?= (int) balance(); ?>"
+                data-bet="<?= (int) $match->bet; ?>"
                 data-security="<?= wp_create_nonce( 'ea_functions_nonce' ); ?>"
                 type="button"
                 name="<?= $join_name ;?>">

@@ -277,6 +277,8 @@
             popupTemplateContainer.appendChild(cloneCurrentTemplateContent);
           } else if (popupTemplateContainer && (prefix === 'match') && (typePopup === 'join')) {
             let getTemplateJoinMatchFormHTML = function () {
+              let isSmallBalance = parseInt(button.dataset.balance, 10) < parseInt(button.dataset.bet, 10);
+
               let hiddenInputsHTML = `
                 <input type="hidden" name="id" value="${button.dataset.id}">
                 <input type="hidden" name="security" value="${button.dataset.security}">
@@ -345,7 +347,7 @@
                           <td class="pay__column">
                             ${__( 'Доступный баланс:', 'earena_2' )}
                           </td>
-                          <td class="pay__column pay__column--balance pay__column--right ${(button.dataset.balance < button.dataset.bet) ? 'pay__column--red' : ''}">
+                          <td class="pay__column pay__column--balance pay__column--right ${isSmallBalance ? 'pay__column--red' : ''}">
                             ${('$' + button.dataset.balance)}
                           </td>
                         </tr>
@@ -360,7 +362,7 @@
                       </tbody>
                     </table>
 
-                    ${(button.dataset.balance < button.dataset.bet) ? smallBalanceHTML : ''}
+                    ${isSmallBalance ? smallBalanceHTML : ''}
                   </div>
                   <form class="form form--popup" data-prefix="accept" id="form-match" action="/" method="post">
                     ${(button.dataset.private == '1') ? privateMatchHTML : ''}
@@ -374,7 +376,7 @@
                         </span>
                       </button>
 
-                      <button class="form__submit form__submit--buttons button button--blue ${(button.dataset.balance < button.dataset.bet) ? 'hidden disabled' : ''}"" type="submit" name="match-submit">
+                      <button class="form__submit form__submit--buttons button button--blue ${isSmallBalance ? 'hidden disabled' : ''}"" type="submit" name="match-submit">
                         <span>
                           ${__( 'Принять', 'earena_2' )}
                         </span>

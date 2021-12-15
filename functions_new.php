@@ -51,6 +51,7 @@
 
   // Scripts theme
   function earena_2_scripts () {
+    $is_message = is_page(510);
     $is_profile = is_page(503) || is_page(1169);
     $is_profile_affiliate = is_page(527);
 
@@ -62,6 +63,10 @@
     // wp_enqueue_script('swiper-script', get_template_directory_uri() . '/assets/libs/swiper.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
+
+    if ( $is_message ) {
+      wp_enqueue_script('go-to-match-script', get_template_directory_uri() . '/assets/js/go-to-match.min.js', $deps = array(), $ver = null, $in_footer = true );
+    }
 
     /* Ajax start */
       if ( is_ea_admin() ) {

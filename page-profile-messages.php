@@ -22,6 +22,20 @@
 
   if ( !($ea_user instanceof WP_User) ) {wp_redirect( home_url('404') );exit;}
 
+  $thread_id = isset($_GET['thread_id']) ? $_GET['thread_id'] : null;
+
+  if(!empty($thread_id)){
+    $match_id = EArena_DB::get_ea_match_id_for_thread( $thread_id );
+    if ($match_id>0) {
+      wp_redirect(add_query_arg( 'match', $match_id, home_url('matches/match/') ));exit;
+    }
+
+    $tournament_match_id = EArena_DB::get_ea_tournament_match_id_for_thread( $thread_id );
+    if ($tournament_match_id>0) {
+      wp_redirect(add_query_arg( 'match', $tournament_match_id, home_url('tournaments/tournament/match/') ));exit;
+    }
+  }
+
   // Эта переменная используется в шаблонах 'private'
   global $earena_2_user_private;
   $earena_2_user_private = $ea_user;

@@ -20,9 +20,11 @@
   if (!$country) {
     $country = ICL_LANGUAGE_CODE;
   }
+
+  $is_profile = is_page(503);
 ?>
 
-<header class="account__header <?= ($vip && !$blocked) ? 'account__header--vip' : ($blocked ? 'account__header--blocked' : ''); ?>">
+<header class="account__header <?= ($vip && !$blocked) ? 'account__header--vip' : ($blocked ? 'account__header--blocked' : ''); ?> <?= $is_profile ? '' : 'account__header--mobile-hide'; ?>">
   <div class="account__left">
     <div class="user user--account">
       <div class="user__image-wrapper user__image-wrapper--account <?= $verified ? 'user__image-wrapper--verified' : ''; ?>">

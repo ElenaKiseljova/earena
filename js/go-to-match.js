@@ -7,11 +7,15 @@
       threads.forEach((thread, i) => {
         thread.classList.add('rewrited');
 
-        thread.addEventListener('click', function (evt) {
-          evt.stopPropagation();
-          evt.preventDefault();
+        let deleteButton = thread.querySelector('.delete');
 
-          document.location.href = thread.dataset.href;
+        thread.addEventListener('click', function (evt) {
+          if (evt.target !== deleteButton) {
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            document.location.href = thread.dataset.href;
+          }
         });
       });
     };

@@ -625,11 +625,11 @@
       return __('Перейти к оплате', 'earena');
   }
 
-  add_filter('wc_price', 'filter_function_name_928', 10, 5);
+/*  add_filter('wc_price', 'filter_function_name_928', 10, 5);
   function filter_function_name_928($return, $price, $args, $unformatted_price, $original_price)
   {
       return $return . ' <span class="ef-rub-price">(' . $price * (float)get_site_option('ea_dollar_value') . ' RUB)</span>';
-  }
+  }*/
 
   /*
     Смена иконок платежных систем

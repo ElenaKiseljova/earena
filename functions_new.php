@@ -463,6 +463,12 @@
       return current_user_can('edit_posts');
   }
 
+  // Проверка на админа (пользователя по ИД)
+  function user_is_ea_admin($user_id)
+  {
+      return user_can($user_id, 'edit_posts');
+  }
+
   // Рейтинг
   function rating()
   {

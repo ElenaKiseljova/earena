@@ -24,11 +24,13 @@
   <header class="section__header">
     <h2 class="section__title section__title--games-account">
       <?php _e( 'Сообщения', 'earena_2' ); ?>
-      (
-        <span class="section__title-count section__title-count--message">
-          <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
-        </span>
-      )
+      <?php if (!$thread_id): ?>
+        (
+          <span class="section__title-count section__title-count--message">
+            <?= !empty(messages_get_unread_count()) ? messages_get_unread_count() : '0'; ?>
+          </span>
+        )
+      <?php endif; ?>
     </h2>
 
     <div class="section__header-right">
@@ -43,8 +45,12 @@
       <li class="section__item section__item--col-2 section__item--messages">
         <div class="user user--friends">
           <div class="user__left user__left--friends">
-            <div class="user__image-wrapper user__image-wrapper--friends">
-              <?php earena_2_verification_html($verified, 'public'); ?>
+            <div class="user__image-wrapper user__image-wrapper--friends <?= ($verified && !user_is_ea_admin($recipient_id)) ? 'user__image-wrapper--verified' : ''; ?> <?= user_is_ea_admin($recipient_id) ? 'user__image-wrapper--admin' : ''; ?>">
+              <?php
+                if (!user_is_ea_admin($recipient_id)) {
+                  earena_2_verification_html($verified, 'public');
+                }
+              ?>
 
               <div class="user__avatar user__avatar--friends">
                 <?= bp_core_fetch_avatar(['item_id' => $recipient_id, 'type' => 'full', 'width' => 70, 'height' => 70]); ?>
@@ -52,7 +58,7 @@
             </div>
 
             <div class="user__info user__info--friends">
-              <a class="user__name user__name--friends" href="<?= bloginfo( 'url' ) . '/user/' . $recipient_id; ?>">
+              <a class="user__name user__name--friends  <?= user_is_ea_admin($recipient_id) ? 'user__name--admin' : ''; ?>" href="<?= bloginfo( 'url' ) . '/user/' . $recipient_id; ?>">
                 <h5>
                   <?=$recipient->nickname;?>
                 </h5>
@@ -70,14 +76,16 @@
                 </div>
               <?php endif; ?>
 
-              <div class="user__rating user__rating--account user__rating--account-message">
-                <span class="user__rating-text">
-                  <?php _e( 'Рейтинг', 'earena_2' ); ?>
-                </span>:
-                <span class="user__rating-value">
-                  <?= earena_2_rating($recipient->ID); ?>
-                </span>
-              </div>
+              <?php if (!user_is_ea_admin($recipient_id)): ?>
+                <div class="user__rating user__rating--account user__rating--account-message">
+                  <span class="user__rating-text">
+                    <?php _e( 'Рейтинг', 'earena_2' ); ?>
+                  </span>:
+                  <span class="user__rating-value">
+                    <?= earena_2_rating($recipient->ID); ?>
+                  </span>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
         </div>

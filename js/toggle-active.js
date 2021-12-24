@@ -8,6 +8,8 @@
         *** Ф-я переключения активного класса по клику
         * Экспортируется в select.js
         */
+      const ROOT_ELEMENT = document.documentElement;
+
       let timeoutPlatform;
 
       window.toggleActive = {
@@ -28,6 +30,7 @@
 
             if (overlay) {
               overlay.classList.toggle('active');
+              ROOT_ELEMENT.classList.toggle('active');
             }
           });
 
@@ -44,6 +47,7 @@
 
                 if (overlay) {
                   overlay.classList.toggle('active');
+                  ROOT_ELEMENT.classList.toggle('active');
                 }
               }
             });
@@ -319,11 +323,12 @@
       let menuMobile = document.querySelector('.page-header__burger');
       let menuMobileElement1 = document.querySelector('.page-header__bottom');
       let menuMobileElement2 = document.querySelector('.page-header__center');
+      let menuMobileElement3 = document.querySelector('.personal');
       let menuMobileOverlay = document.querySelector('.overlay--navigation');
 
       if (menuMobile && menuMobileElement1 && menuMobileElement2 && menuMobileOverlay) {
         // Вызов ф-и переключения активного класса для каждого связанного эл меню
-        window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2], menuMobileOverlay);
+        window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2, menuMobileElement3], menuMobileOverlay);
       }
     } catch (e) {
       console.log(e);

@@ -33,10 +33,12 @@
   }
 
   @media (max-width: @mobile) {
-    flex-direction: column;
+    flex-wrap: wrap;
 
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-content: flex-start;
+
+    padding: 0 20px;
   }
 }
 
@@ -56,6 +58,9 @@
   }
 
   @media (max-width: @mobile) {
+    margin-left: 0;
+    margin-right: auto;
+
     &--profile {
       display: none;
     }
@@ -65,12 +70,6 @@
 .toggles__right {
   padding: 0;
   margin: 0;
-
-  @media (max-width: @mobile) {
-    align-self: flex-end;
-
-    padding: 10px 0;
-  }
 }
 
 .toggles__item {

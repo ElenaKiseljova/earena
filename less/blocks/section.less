@@ -64,12 +64,23 @@
   }
 
   @media (max-width: @mobile) {
+    align-items: flex-end;
+  }
+
+  @media (max-width: @mobile_small) {
     flex-direction: column;
 
     justify-content: flex-start;
     align-items: flex-start;
 
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+
+    &--game {
+      &-matches,
+      &-tournements {
+        margin-bottom: 25px;
+      }
+    }
   }
 }
 
@@ -99,10 +110,10 @@
     }
   }
 
-  @media (max-width: @mobile) {
+  @media (max-width: @mobile_small) {
     width: 100%;
 
-    margin-top: 10px;
+    margin-top: 20px;
   }
 }
 
@@ -159,10 +170,6 @@
   }
 
   &--matches {
-    br {
-      display: contents;
-    }
-
     &::before {
       background-image: url('../img/blue-gamepad.svg');
     }
@@ -198,27 +205,35 @@
   @media (max-width: @mobile) {
     .h1_mobile();
 
+    &-text {
+      display: flex;
+
+      align-items: center;
+
+      min-height: 44px;
+    }
+
     &--matches,
     &--tournaments {
+      width: 50%;
+
+      align-items: flex-end;
+      justify-content: flex-start;
+
       &::before {
         display: none;
       }
     }
 
-    &--matches {
-      align-items: flex-end;
-
-      br {
-        display: inline;
-      }
-
-      &::before {
-        background-image: url('../img/blue-gamepad.svg');
-      }
-    }
-
     &--tournaments-account-chat {
       margin-left: 0;
+    }
+  }
+
+  @media (max-width: @mobile_small) {
+    &--matches,
+    &--tournaments {
+      width: 100%;
     }
   }
 }
@@ -245,7 +260,8 @@
   }
 
   @media (max-width: @mobile) {
-    margin-left: 10px;
+    font-size: 20px;
+    line-height: 140%;
   }
 }
 
@@ -406,6 +422,10 @@
 
     transform: rotate(45deg);
   }
+
+  @media (max-width: @mobile_small) {
+    width: 100%;
+  }
 }
 
 .section__copy {
@@ -521,4 +541,12 @@
 .section__tournaments-list {
   margin-left: 10px;
   margin-right: auto;
+}
+
+.section__more {
+  flex-shrink: 0;
+
+  @media (max-width: @mobile_small) {
+    width: 100%;
+  }
 }

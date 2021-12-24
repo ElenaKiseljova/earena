@@ -20,13 +20,13 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--tournaments <?php if (is_page() && !is_front_page()) {echo 'section__title--page';} ?>">
-          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__title-text"><?php _e( 'Турниры', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
         </h2>
         <div class="section__header-right">
-          <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
+          <a class="section__more button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0 ) . '&toggles=tournaments'; ?>">
             <span>
               <?php _e('Все турниры', 'earena_2'); ?>
             </span>
@@ -45,7 +45,7 @@
       </div>
     </div>
   </section>
-<?php elseif ($is_games && isset($_GET['toggles'])) : ?>
+<?php elseif ($is_games && isset($_GET['toggles']) && ($_GET['toggles'] === 'tournaments')) : ?>
   <?php
     global $games, $game_id, $ea_icons, $tournaments;
 
@@ -53,15 +53,15 @@
   ?>
   <section class="section section--tournaments" id="tournaments">
     <div class="section__wrapper">
-      <header class="section__header">
+      <header class="section__header section__header--game-tournaments">
         <h2 class="section__title section__title--tournaments section__title--page">
-          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__title-text"><?php _e( 'Турниры', 'earena_2' ); ?></span>
           <span class="section__amount">
             <?= $count_tournaments; ?>
           </span>
         </h2>
-        <div class="section__header-right">
-        </div>
+        <!-- <div class="section__header-right">
+        </div> -->
       </header>
 
       <?php
@@ -86,7 +86,7 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--tournaments section__title--page">
-          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__title-text"><?php _e( 'Турниры', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
@@ -160,7 +160,7 @@
     <?php else: ?>
       <header class="section__header">
         <h2 class="section__title section__title--tournaments section__title--page">
-          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__title-text"><?php _e( 'Турниры', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
@@ -267,7 +267,7 @@
         </h2>
 
         <div class="section__header-right">
-          <a class="button button--more" href="<?= get_permalink( 552 ); ?>">
+          <a class="section__more button button--more" href="<?= get_permalink( 552 ); ?>">
             <span>
               <?php _e('К созданию турниров', 'earena_2'); ?>
             </span>
@@ -301,7 +301,7 @@
         </h2>
 
         <div class="section__header-right">
-          <a class="button button--more" href="<?= get_permalink( 555 ); ?>">
+          <a class="section__more button button--more" href="<?= get_permalink( 555 ); ?>">
             <span>
               <?php _e('К списку турниров', 'earena_2'); ?>
             </span>
@@ -328,13 +328,13 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--tournaments">
-          <?php _e('Турниры', 'earena_2'); ?>
+          <span class="section__title-text"><?php _e( 'Турниры', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
         </h2>
         <div class="section__header-right">
-          <a class="button button--more" href="<?php echo bloginfo('url'); ?>/tournaments">
+          <a class="section__more button button--more" href="<?php echo bloginfo('url'); ?>/tournaments">
             <span>
               <?php _e('Все турниры', 'earena_2'); ?>
             </span>

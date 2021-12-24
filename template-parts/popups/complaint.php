@@ -29,7 +29,7 @@
         <input type="hidden" name="id" value="<?= $match_id; ?>">
         <input type="hidden" name="type" value="<?= $match_type; ?>">
 
-        <div class="form__buttons">
+        <div class="form__buttons form__buttons--complaint">
           <button class="form__popup-close form__popup-close--buttons button button--gray button--popup-close" type="button" name="complaint-close">
             <span>
               <?php _e( 'Отменить', 'earena_2' ); ?>

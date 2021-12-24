@@ -10,6 +10,14 @@
       color: #colors[link]!important;
     }
 
+    a * {
+      pointer-events: none;
+    }
+
+    .bp-verified-badge {
+      pointer-events: none;
+    }
+
     .bpbm-maximize {
       display: none;
     }
@@ -740,6 +748,26 @@
           }
         }
 
+        &.is-ea-admin {
+          .pic {
+            border: 3px solid #colors[red];
+
+            &::before {
+              display: none;
+            }
+          }
+
+          .info {
+            .name {
+              color: #colors[red];
+            }
+          }
+
+          .bp-verified-badge {
+            display: none;
+          }
+        }
+
         .info {
           flex-grow: 1;
 
@@ -966,6 +994,8 @@
         @media (max-width: @mobile) {
           flex-direction: column;
 
+          padding: 15px 15px 45px 15px;
+
           &::before {
             top: 14px;
 
@@ -978,18 +1008,30 @@
           }
 
           .time {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            z-index: 1;
+
             display: flex;
 
             flex-wrap: wrap;
 
             justify-content: space-between;
             align-items: center;
-            align-content: flex-start;
+            align-content: flex-end;
 
-            margin-top: 20px;
+            height: 100%;
+
+            padding: 15px;
+
+            background: transparent!important;
+
+            pointer-events: none;
 
             .time-wrapper,
-            .delete,
             .unread-count {
               position: static;
 
@@ -1009,9 +1051,16 @@
             .delete {
               order: 3;
 
-              width: 100%;
+              position: absolute;
 
-              background-position: right center;
+              top: 15px;
+              right: 15px;
+
+              z-index: 2;
+
+              width: 26px;
+
+              pointer-events: all;
             }
           }
 
@@ -1025,7 +1074,8 @@
               margin-bottom: 20px;
 
               .bp-verified-badge {
-                top: 21px;
+                top: 15px;
+                left: 15px;
 
                 transform: none;
               }
@@ -1043,15 +1093,23 @@
           }
 
           .pic {
-            &.group {
+            a {
               width: 100%;
+              height: 100%;
+
+              img {
+                width: 100%;
+                height: auto;
+              }
+            }
+            &.group {
+              width: calc(100% - 60px);
               height: auto;
               margin-bottom: 10px;
 
               & + .info {
                 h4 {
-                  margin-top: 10px;
-                  margin-bottom: 10px;
+                  margin: 10px auto 10px 0;
                 }
 
                 p {
@@ -1122,10 +1180,33 @@
         }
 
         .pic {
+          display: flex;
+
+          justify-content: center;
+          align-items: center;
+
+          border-radius: 50%;
+
+          overflow: hidden;
+
           span.avatar {
             border-radius: 50%!important;
 
             overflow: hidden!important;
+          }
+        }
+
+        &.is-ea-admin {
+          .pic {
+            border: 3px solid #colors[red];
+          }
+
+          .info {
+            .name {
+              a {
+                color: #colors[red]!important;
+              }
+            }
           }
         }
 

@@ -2,6 +2,10 @@
   .w100();
 
   padding-bottom: 50px;
+
+  @media (max-width: @mobile) {
+    padding-bottom: calc(50px / 100 * 70);
+  }
 }
 
 .promo__wrapper {
@@ -172,7 +176,7 @@
 
       text-align: center;
 
-      padding: 15px 0;
+      padding: calc(15px / 100 * 70) 0;
 
       .swiper-pagination-bullet {
         margin: 0 10px!important;

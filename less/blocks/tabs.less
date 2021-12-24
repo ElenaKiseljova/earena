@@ -52,7 +52,9 @@
   }
 
   @media (max-width: @mobile) {
-    margin-top: 20px;
+    &--platform {
+      width: 100%;
+    }
 
     &--users,
     &--wallet,
@@ -196,7 +198,11 @@
   }
 
   @media (max-width: @mobile) {
-    padding: 5px 14px;
+    padding: 5px 10px;
+
+    &--platform {
+      flex-grow: 1;
+    }
 
     &--wallet,
     &--users,

@@ -18,7 +18,7 @@
 
   $matches_page = earena_2_current_page( 'matches' ) || (earena_2_current_page( 'games' ) && isset($_GET['toggles']) && $_GET['toggles'] === 'matches');
 
-  $game_id = $game_id_platforms = $game_id_game_modes = $game_id_team_modes = false;
+  $game_id = $game_id_platforms = $game_id_game_modes = $game_id_team_modes = null;
   if (earena_2_current_page('games') && isset($_GET['game'])) {
     $game_id = $_GET['game'];
     $game_id_platforms = $games[$game_id]['platforms'];
@@ -27,8 +27,8 @@
   }
 ?>
 
-<div class="filters">
-  <form class="filters__form" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : ($is_admin_tournaments_list ? 'admin-tournaments' : 'main')); ?>">
+<div class="filters filters--roll">
+  <form class="filters__form filters__form--roll" action="" method="post" id="filters-<?= $tournaments_page ? 'tournaments' : ($matches_page ? 'matches' : ($is_admin_tournaments_list ? 'admin-tournaments' : 'main')); ?>">
     <div class="filters__container filters__container--top">
       <div class="filters__element filters__element--search">
         <input class="filters__field filters__field--input" type="text" name="id" placeholder="ID <?= ($tournaments_page || $is_admin_tournaments_list) ? _e( 'турнира', 'earena_2' ) : ($matches_page ? _e( 'матча', 'earena_2' ) : ''); ?>">
@@ -111,7 +111,7 @@
           <ul class="filters__list filters__list--checkbox">
             <?php
               foreach ($platforms as $platform_key => $platform) {
-                if ( $game_id && $game_id_platforms ) {
+                if ( isset($game_id) && isset($game_id_platforms) ) {
                   if (in_array($platform_key, $game_id_platforms)) {
                     ?>
                       <li class="filters__item filters__item--checkbox">
@@ -197,7 +197,7 @@
         <ul class="filters__list filters__list--checkbox">
           <?php
             foreach ($game_modes as $game_mode_key => $game_mode) {
-              if ( $game_id && $game_id_game_modes ) {
+              if ( isset($game_id) && isset($game_id_game_modes) ) {
                 if (in_array($game_mode, $game_id_game_modes)) {
                   ?>
                     <li class="filters__item filters__item--checkbox">
@@ -229,7 +229,7 @@
           <!-- Шаблон пунктов списка результатов строится в filter.js -->
         </ul>
       </div>
-      <?php if (($game_id_team_modes && !in_array(0, $game_id_team_modes)) || !$game_id_team_modes): ?>
+      <?php if ((isset($game_id_team_modes) && !in_array(0, $game_id_team_modes)) || !$game_id_team_modes): ?>
         <div class="filters__element filters__element--col-5">
           <button class="filters__field filters__field--select" type="button" name="button">
             <?php _e( 'Режим команды', 'earena_2' ); ?>
@@ -238,7 +238,7 @@
           <ul class="filters__list filters__list--checkbox">
             <?php
               foreach ($team_modes as $team_mode_key => $team_mode) {
-                if ( $game_id && $game_id_team_modes ) {
+                if ( isset($game_id) && isset($game_id_team_modes) ) {
                   if (in_array($team_mode_key, $game_id_team_modes)) {
                     ?>
                       <li class="filters__item filters__item--checkbox">
@@ -429,8 +429,11 @@
       <?php endif; ?>
     </div>
 
-    <button class="filters__reset" type="reset" name="reset-filters">
+    <button class="filters__reset filters__reset--roll" type="reset" name="reset-filters">
       <?php _e( 'Сбросить фильтр', 'earena_2' ); ?>
     </button>
   </form>
+  <button class="filters__roll" type="button" name="roll" data-count="3">
+    <span class="visually-hidden"><?php _e( 'Скрыть/Показать фильтры', 'earena_2' ); ?></span>
+  </button>
 </div>

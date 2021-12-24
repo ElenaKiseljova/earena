@@ -23,6 +23,8 @@
   @media (max-width: @mobile) {
     &--top {
       flex-wrap: wrap;
+
+      justify-content: flex-end;
     }
 
     &--bottom {
@@ -107,10 +109,13 @@
     z-index: 1000;
 
     width: 230 / 320 * 100%;
+    height: calc(100vh - 56px);
 
     padding: 3px 0 29px 24px;
 
     background-color: #colors[bg];
+
+    overflow: auto;
 
     transform: translateX(100%);
 

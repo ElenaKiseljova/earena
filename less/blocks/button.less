@@ -191,6 +191,12 @@
       background-color: #colors[bg];
     }
   }
+
+  @media (max-width: @mobile) {
+    &--more {
+      padding: calc(9 / 320 * 100vw) 20px;
+    }
+  }
 }
 
 .button__chat {

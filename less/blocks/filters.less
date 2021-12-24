@@ -1,5 +1,6 @@
 .filters,
-.filters__form {
+.filters__form,
+.filters__roll {
   .w100();
 }
 
@@ -29,9 +30,107 @@
   }
 
   @media (max-width: @mobile) {
+    &--roll {
+      position: relative;
+
+      padding-bottom: 30px;
+    }
+
     &--account-tabs {
       width: 100%;
       min-width: unset;
+    }
+  }
+}
+
+.filters__roll {
+  display: none;
+
+  @media (max-width: @mobile) {
+    .button_reset();
+
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    z-index: 1;
+
+    display: block;
+
+    height: 30px;
+
+    border-radius: 0px 0px 5px 5px;
+
+    background-color: #colors[dark_light_2];
+
+    &::before,
+    &::after {
+      position: absolute;
+
+      top: 50%;
+
+      z-index: 1;
+    }
+
+    &::before {
+      content: '';
+
+      left: 50%;
+
+      width: 26px;
+      height: 22px;
+
+      background-image: url('../img/icon-chevron-bottom.svg');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      transform: translate(-50%, -50%);
+    }
+
+    &::after {
+      content: attr(data-count);
+
+      right: 5px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      width: 20px;
+      height: 20px;
+
+      font-style: normal;
+      font-weight: bold;
+      font-size: 9px;
+      line-height: 150%;
+
+      text-align: center;
+      letter-spacing: 0.01em;
+
+      color: #colors[white];
+
+      opacity: 0;
+
+      border-radius: 50%;
+
+      background-color: #colors[red];
+
+      transform: translateY(-50%);
+    }
+
+    &.active {
+      &::before {
+        transform: translate(-50%, -50%) rotate(180deg);
+      }
+    }
+
+    &.selected {
+      &::after {
+        opacity: 1;
+      }
     }
   }
 }
@@ -43,6 +142,20 @@
 
   justify-content: flex-start;
   align-items: flex-start;
+
+  @media (max-width: @mobile) {
+    &--roll {
+      overflow: hidden;
+
+      transition: height 0.3s;
+
+      &.active {
+        height: auto;
+
+        overflow: visible;
+      }
+    }
+  }
 }
 
 .filters__container {
@@ -307,4 +420,10 @@
   .caption();
 
   color: #colors[link];
+
+  @media (max-width: @mobile) {
+    &--roll {
+      margin-bottom: 13px;
+    }
+  }
 }

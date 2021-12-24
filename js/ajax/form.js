@@ -82,6 +82,10 @@
             window.form.fields(attr.idForm, 'input', window.form.fieldActivate);
             window.form.fields(attr.idForm, 'textarea', window.form.fieldActivate);
 
+            if (attr.idForm.indexOf('complaint') > -1) {
+              window.form.fields(attr.idForm, 'textarea', window.form.textareaAutoHeight);
+            }
+
             return true;
           } else {
             return false;
@@ -1282,6 +1286,14 @@
             if (field.closest('.form__row')) {
               field.closest('.form__row').classList.remove('focus');
             }
+          });
+        },
+        textareaAutoHeight: (el) => {
+          el.style.height = el.setAttribute('style', 'height: ' + el.scrollHeight + 'px');
+          el.classList.add('auto');
+          el.addEventListener('input', e => {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
           });
         },
         // Перебор чекбоксов

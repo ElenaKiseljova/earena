@@ -23,6 +23,12 @@
     try {
       const { __, _x, _n, _nx } = wp.i18n;
 
+      const deviceWidthDefault = window.innerWidth && document.documentElement.clientWidth ?
+                        Math.min(window.innerWidth, document.documentElement.clientWidth) :
+                        window.innerWidth ||
+                        document.documentElement.clientWidth ||
+                        document.getElementsByTagName('body')[0].clientWidth;
+
       let scrollTimeoutLast;
       let filterTimeoutLast;
 
@@ -38,6 +44,13 @@
             let platformsSelected = window.platforms.getSelectedPlatforms();
             if (!platformsSelected) {
               platformsSelected = window.platforms.getCookiesPlatforms();
+            }
+
+            // Мобильная кнопка сворачивания фильтра
+            const roll = filterForm.closest('.filters').querySelector('.filters__roll');
+
+            if (deviceWidthDefault < 768 && roll) {
+              window.filter.roll(roll);
             }
 
             // Получаем контейнер для Игр/Матчей/Турниров
@@ -66,7 +79,12 @@
                   // Обнуление отступа
                   window.platforms.setOffset(what, 0);
 
-                  window.filter.inputChange(itemInput, filterForm, what, container, platformsSelected);
+                  window.filter.inputChange(itemInput, filterForm, what, container);
+
+                  // Мобильная кнопка сворачивания фильтра
+                  if (deviceWidthDefault < 768 && roll) {
+                    window.filter.roll(roll, true);
+                  }
                 });
 
                 if ( currentGameId !== false && itemInput.name === 'platform' && platformsSelected.includes(parseInt(itemInput.value, 10)) && itemInput.checked === false ) {
@@ -178,7 +196,10 @@
                   //console.log(response);
                   window.platforms.createList(what, response, container);
 
-                  window.platforms.setOffset(what, (window.platforms.getOffset(what) + perPage));
+                  const total = JSON.parse(response).total;
+                  const offset = (total > 0) ? window.platforms.getOffset(what) + perPage : 0;
+
+                  window.platforms.setOffset(what, offset);
 
                   if (preloader) {
                     preloader.classList.remove('active');
@@ -305,6 +326,59 @@
             window.addEventListener('scroll', onScroll);
           } else {
             console.log('Элемент для отслеживания положения прокрутки не задан.');
+          }
+        },
+        roll : function (roll, inputsChanged = false) {
+          const filter = roll.closest('.filters');
+          const filterForm = filter.querySelector('.filters__form');
+
+          if (inputsChanged) {
+            const inputsChecked = filter.querySelectorAll('.filters__element');
+            const countApliedFilters = [].filter.call(inputsChecked, function (inputChanged) {
+              return inputChanged.querySelectorAll('input:checked').length > 0;
+            }).length;
+
+            if (countApliedFilters > 0) {
+              roll.classList.add('selected');
+            } else {
+              roll.classList.remove('selected');
+            }
+
+            roll.dataset.count = countApliedFilters;
+
+            if (roll.classList.contains('active')) {
+              filterForm.style = '';
+            }
+          } else {
+            let filterFormHeight = filterForm.offsetHeight;
+
+            const filterTop = filter.querySelector('.filters__container--top');
+            const filterTopHeight = filterTop.offsetHeight;
+
+            filterForm.style.height = filterTopHeight + 'px';
+
+            roll.addEventListener('click', function () {
+              if (roll.classList.contains('active')) {
+                filterFormHeight = filterForm.offsetHeight;
+                filterForm.style.height = filterFormHeight + 'px';
+
+                filterForm.classList.remove('active');
+
+                setTimeout(function () {
+                  filterForm.style.height = filterTopHeight + 'px';
+
+                  roll.classList.remove('active');
+                }, 100);
+              } else {
+                filterForm.style.height = filterFormHeight + 'px';
+
+                roll.classList.add('active');
+
+                setTimeout(function () {
+                  filterForm.classList.add('active');
+                }, 500);
+              }
+            });
           }
         }
       };

@@ -715,11 +715,15 @@
   }
 
   &--message {
-    resize: vertical;
+    resize: none;
 
     height: 40px;
 
     line-height: 17px;
+
+    &.auto {
+      overflow-y: hidden;
+    }
   }
 
   &--message-contact {
@@ -832,7 +836,8 @@
   margin-top: 30px;
 
   &--add-player,
-  &--game {
+  &--game,
+  &--complaint {
     margin-top: 20px;
   }
 

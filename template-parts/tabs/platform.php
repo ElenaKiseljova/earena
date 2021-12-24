@@ -24,7 +24,7 @@
   $is_admin_tournaments_list = is_page(555) ? true : false;
 ?>
 
-<div class="tabs tabs--platforms <?= $is_admin_tournaments_list ? 'tabs--admin-tournaments-list' : ''; ?>">
+<div class="tabs tabs--platform <?= $is_admin_tournaments_list ? 'tabs--admin-tournaments-list' : ''; ?>">
   <button class="tabs__button tabs__button--platform <?= $is_admin_tournaments_list ? 'tabs__button--admin-tournaments-list' : ''; ?> <?= array_search(-1, $cookiePlatforms)!== false ? 'active' : '' ?>" data-tab-type="-1" type="button" name="tab-all">
     <?php _e( 'Все', 'earena_2' ); ?>
   </button>

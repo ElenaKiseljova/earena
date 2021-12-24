@@ -285,7 +285,7 @@
               `;
 
               let privateMatchHTML = `
-                <div class="popup__ajax-message"></div>
+                <div class="popup__ajax-message popup__ajax-message--red"></div>
                 <div class="form__row">
                   <input class="form__field form__field--popup" id="password" type="password" name="match_pass" required placeholder="${__( 'Пароль', 'earena_2' )}">
                 </div>

@@ -17,14 +17,14 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--matches section__title--page">
-          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+          <span class="section__title-text"><?php _e( 'Матчи на деньги', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
         </h2>
 
         <div class="section__header-right">
-          <a class="button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0) . '&toggles=matches'; ?>">
+          <a class="section__more button button--more" href="<?= bloginfo( 'url' ) . '/games?game=' . ($game_id ?? 0) . '&toggles=matches'; ?>">
             <span>
               <?php _e( 'Все матчи', 'earena_2' ); ?>
             </span>
@@ -51,16 +51,16 @@
   ?>
   <section class="section section--matches" id="matches">
     <div class="section__wrapper">
-      <header class="section__header">
+      <header class="section__header section__header--game-matches">
         <h2 class="section__title section__title--matches section__title--page">
-          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+          <span class="section__title-text"><?php _e( 'Матчи на деньги', 'earena_2' ); ?></span>
           <span class="section__amount">
             <?= $count_matches; ?>
           </span>
         </h2>
 
-        <div class="section__header-right">
-        </div>
+        <!-- <div class="section__header-right">
+        </div> -->
       </header>
 
       <?php
@@ -85,7 +85,7 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--matches">
-          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+          <span class="section__title-text"><?php _e( 'Матчи на деньги', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
@@ -118,7 +118,7 @@
   <section class="section section--matches section--matches-profile" id="matches">
     <header class="section__header">
       <h2 class="section__title section__title--matches section__title--page">
-        <?php _e( 'Матчи', 'earena_2' ); ?>
+        <span class="section__title-text"><?php _e( 'Матчи', 'earena_2' ); ?></span>
         <span class="section__amount">
           0
         </span>
@@ -173,14 +173,14 @@
     <div class="section__wrapper">
       <header class="section__header">
         <h2 class="section__title section__title--matches">
-          <?php _e( 'Матчи <br> на деньги', 'earena_2' ); ?>
+          <span class="section__title-text"><?php _e( 'Матчи на деньги', 'earena_2' ); ?></span>
           <span class="section__amount">
             0
           </span>
         </h2>
 
         <div class="section__header-right">
-          <a class="button button--more" href="<?= bloginfo( 'url' ) . '/matches' ?>">
+          <a class="section__more button button--more" href="<?= bloginfo( 'url' ) . '/matches' ?>">
             <span>
               <?php _e( 'Все матчи', 'earena_2' ); ?>
             </span>

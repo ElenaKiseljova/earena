@@ -327,8 +327,13 @@
       let menuMobileOverlay = document.querySelector('.overlay--navigation');
 
       if (menuMobile && menuMobileElement1 && menuMobileElement2 && menuMobileOverlay) {
-        // Вызов ф-и переключения активного класса для каждого связанного эл меню
-        window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2, menuMobileElement3], menuMobileOverlay);
+        if (menuMobileElement3) {
+          // Вызов ф-и переключения активного класса для каждого связанного эл меню
+          window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2, menuMobileElement3], menuMobileOverlay);
+        } else {
+          // Вызов ф-и переключения активного класса для каждого связанного эл меню
+          window.toggleActive.single(menuMobile, [menuMobileElement1, menuMobileElement2], menuMobileOverlay);
+        }
       }
     } catch (e) {
       console.log(e);

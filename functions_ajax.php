@@ -56,8 +56,8 @@ function earena_2_sendmail () {
 
   $contactMail = $contactName . $contactEmail . $contactMessage;
 
-  $to = (get_field( 'support_mail', 5724 ) && get_field( 'support_mail', 5724 ) !== '') ? get_field( 'support_mail', 5724 ) : 'e.a.kiseljova@gmail.com';
-  $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option('admin_email') . '>';
+  $to = (get_field( 'support_mail', 5724 ) && get_field( 'support_mail', 5724 ) !== '') ? get_field( 'support_mail', 5724 ) : get_option( 'admin_email' );
+  $site_name = 'From: ' . get_bloginfo( 'name' ) . ' <' . get_option( 'admin_email' ) . '>';
 
   // удалим фильтры, которые могут изменять заголовок $headers
   remove_all_filters( 'wp_mail_from' );
@@ -190,6 +190,8 @@ function setPlafromsAction()
     if (is_user_logged_in()) {
         $data = $_POST;
         unset($data['action']);
+        unset($data['security']);
+
         foreach ($data as $key => $val) {
           $data[$key] = array_filter($val, function ($value) {
               return !is_null($value) && $value !== '';

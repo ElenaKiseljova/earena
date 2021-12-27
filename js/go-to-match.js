@@ -1,10 +1,29 @@
 'use strict';
 
 (function ($) {
-  document.addEventListener('DOMContentLoaded', function () {
-    const ADMIN_ID = 1;
+  /*
+    currentUserId
+    is_user_logged_in,
+    is_ea_admin,
+    admin_ids
 
-    let rewriteThreadClickEvent = function () {
+    dataGames,
+    currentGameId,
+
+    isProfile,
+    siteURL,
+    siteThemeFolderURL,
+    ea_icons
+    platformsArr
+
+    isAdminTournamentsList
+
+    - глобальные переменные, которые используются для составления URI.
+      Задаются в header.php
+  */
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const rewriteThreadClickEvent = function () {
       let threads = document.querySelectorAll('.thread:not(.rewrited)');
       threads.forEach((thread, i) => {
         thread.classList.add('rewrited');
@@ -27,7 +46,7 @@
     const checkUser = function (userIdData, parent) {
       if (userIdData) {
         const userId = userIdData.dataset.userId;
-        if (parseInt(userId, 10) === ADMIN_ID) {
+        if (admin_ids.includes(parseInt(userId, 10))) {
           parent.classList.add('is-ea-admin');
         }
       }

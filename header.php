@@ -17,6 +17,7 @@
       const currentUserId = <?= (is_user_logged_in()) ? get_current_user_id() : 'false'; ?>;
       const is_user_logged_in = <?= is_user_logged_in() ? 'true' : 'false'; ?>;
       const is_ea_admin = <?= is_ea_admin() ? 'true' : 'false'; ?>;
+      const admin_ids = <?= json_encode( get_site_option( 'ea_admin_ids') ); ?>;
 
       const dataGames = <?= json_encode( $games ); ?>;
       const currentGameId = <?= isset($_GET['game']) ? $_GET['game'] : 'false'; ?>;

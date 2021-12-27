@@ -193,8 +193,8 @@
             <?php _e('Используйте латинские буквы A-z верхнего или нижнего регистра, а так же числа от 1 до 0. Минимальная длина пароля - 8 символов.', 'earena_2') ?>
           </p>
 
-          <input type="hidden" name="user_login" value="<?= $_GET['login']; ?>">
-          <input type="hidden" name="user_key" value="<?= $_GET['key']; ?>">
+          <input type="hidden" name="user_login" value="<?= $_GET['login'] ?? ''; ?>">
+          <input type="hidden" name="user_key" value="<?= $_GET['key'] ?? ''; ?>">
 
           <button class="form__submit form__submit--reset button button--blue disabled" type="submit" name="call-submit">
             <span>

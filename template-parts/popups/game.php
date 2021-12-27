@@ -47,15 +47,17 @@
           <?php
             global $game_id, $platform_id;
             $platform_id = $platform_key;
-            foreach ($games_by_platforms[$platform_key] as $game_key) {
-              $game_id = $game_key;
-              ?>
-                <li class="popup__item popup__item--col-2">
-                  <?php
-                    get_template_part( 'template-parts/game/archive', 'popup' );
-                  ?>
-                </li>
-              <?php
+            if (array_key_exists($platform_key, $games_by_platforms)) {
+              foreach ($games_by_platforms[$platform_key] as $game_key) {
+                $game_id = $game_key;
+                ?>
+                  <li class="popup__item popup__item--col-2">
+                    <?php
+                      get_template_part( 'template-parts/game/archive', 'popup' );
+                    ?>
+                  </li>
+                <?php
+              }
             }
           ?>
         </ul>

@@ -64,7 +64,7 @@
     wp_enqueue_script('swiper-init-script', get_template_directory_uri() . '/assets/js/swiper-init.min.js', $deps = array(), $ver = null, $in_footer = true );
     wp_enqueue_script('remove-active-class-elements-script', get_template_directory_uri() . '/assets/js/remove-active-class-elements.min.js', $deps = array(), $ver = null, $in_footer = true );
 
-    if ( $is_message ) {
+    if ( $is_message || earena_2_current_page( 'match' ) ) {
       wp_enqueue_script('go-to-match-script', get_template_directory_uri() . '/assets/js/go-to-match.min.js', $deps = array(), $ver = null, $in_footer = true );
     }
 

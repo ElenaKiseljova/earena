@@ -49,51 +49,56 @@
         WC()->session->__unset( 'transaction_user_id' );
     }
   ?>
+  <?php if (isset($transaction_user_id) && isset($transaction_amount)): ?>
+    <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
+    <template id="popup-purse-transaction">
+      <div class="popup__content popup__content--purse">
+        <h2 class="popup__title popup__title--template">
+          <?php _e( 'Перевод выполнен', 'earena_2' ); ?>
+        </h2>
 
-  <!-- Для корректной работы ajax - приставка в id template должна совпадать с id form -->
-  <template id="popup-purse-transaction">
-    <div class="popup__content popup__content--purse">
-      <h2 class="popup__title popup__title--template">
-        <?php _e( 'Перевод выполнен', 'earena_2' ); ?>
-      </h2>
+        <div class="popup__information popup__information--template">
+          <?php
+            $user_transaction = get_user_by( 'id', $transaction_user_id );
 
-      <div class="popup__information popup__information--template">
-        <?php
-          $user_transaction = get_user_by( 'id', $transaction_user_id );
+            $user_transaction_name  = '';
 
-          if ($user_transaction instanceof WP_User) {
-            $user_transaction_name = $user_transaction->nickname;
-          }
+            if ($user_transaction instanceof WP_User) {
+              $user_transaction_name = $user_transaction->nickname;
+            }
 
-          $user_transaction_amount = '$' . $transaction_amount;
+            $user_transaction_amount = '$' . $transaction_amount;
 
-          echo sprintf(
-            __( 'Средства, в размере %s успешно переведены на счет игрока %s.', 'earena_2' ),
-            $user_transaction_amount,
-            $user_transaction_name
-          );
-        ?>
+            echo sprintf(
+              __( 'Средства, в размере %s успешно переведены на счет игрока %s.', 'earena_2' ),
+              $user_transaction_amount,
+              $user_transaction_name
+            );
+          ?>
+        </div>
       </div>
-    </div>
-  </template>
-  <template id="popup-purse-withdrawal">
-    <div class="popup__content popup__content--purse">
-      <h2 class="popup__title popup__title--template">
-        <?php _e( 'Заявка принята', 'earena_2' ); ?>
-      </h2>
+    </template>
+  <?php endif; ?>
+  <?php if (isset($withdrawal_amount)): ?>
+    <template id="popup-purse-withdrawal">
+      <div class="popup__content popup__content--purse">
+        <h2 class="popup__title popup__title--template">
+          <?php _e( 'Заявка принята', 'earena_2' ); ?>
+        </h2>
 
-      <div class="popup__information popup__information--template">
-        <?php
-          echo sprintf(
-            __( 'Ваша заявка на вывод суммы в размере $%s успешно принята. Мы рассмотрим ее в течение 24-х часов и переведем средства на ваш счет. ', 'earena_2' ),
-            $withdrawal_amount
-          );
-        ?>
+        <div class="popup__information popup__information--template">
+          <?php
+            echo sprintf(
+              __( 'Ваша заявка на вывод суммы в размере $%s успешно принята. Мы рассмотрим ее в течение 24-х часов и переведем средства на ваш счет. ', 'earena_2' ),
+              $withdrawal_amount
+            );
+          ?>
+        </div>
+
+        <button class="popup__go-to-button popup__go-to-button--purse button button--gray" name="close" type="button">
+          <?php _e( 'Хорошо', 'earena_2' ); ?>
+        </button>
       </div>
-
-      <button class="popup__go-to-button popup__go-to-button--purse button button--gray" name="close" type="button">
-        <?php _e( 'Хорошо', 'earena_2' ); ?>
-      </button>
-    </div>
-  </template>
+    </template>
+  <?php endif; ?>
 </div>

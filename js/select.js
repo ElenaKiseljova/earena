@@ -146,8 +146,10 @@
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
-    // Вызов ф-и при загрузке стр
-    window.select.search(document);
+  document.addEventListener('readystatechange', function () {
+    if (document.readyState === 'interactive') {
+      // Вызов ф-и при загрузке стр
+      window.select.search(document);
+    }
   });
 })();

@@ -540,6 +540,56 @@
     margin-bottom: 0;
   }
 
+  &--date {
+    input {
+      color: transparent;
+    }
+
+    &::before {
+      content: attr(data-placeholder);
+
+      position: absolute;
+
+      top: 50%;
+      left: 15px;
+
+      z-index: 2;
+
+      font-family: #fonts[1];
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 14px;
+
+      color: #colors[text_black];
+
+      transform: translateY(-50%);
+
+      pointer-events: none;
+    }
+
+    &.focus,
+    &.filled {
+      input {
+        color: #colors[white];
+      }
+
+      &::before {
+        opacity: 0;
+      }
+    }
+
+    &.invalid {
+      input {
+        color: transparent!important;
+      }
+
+      &::before {
+        color: #colors[red];
+      }
+    }
+  }
+
   @media (max-width: @tablet) {
     &--chat {
       width: calc(100% - 10px);
@@ -767,7 +817,7 @@
   background-color: #colors[dark];
 
   width: 51px;
-  height: 38px;
+  height: calc(100% - 2px);
 
   .bg_icon('../img/icon-chevron-bottom.svg');
 

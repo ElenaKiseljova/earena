@@ -13,10 +13,14 @@
       }
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // Вызов ф-и
-      window.progress('.players__progress-bar');
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        // Вызов ф-и
+        window.progress('.players__progress-bar');
+      }
     });
+
+    // alert('progress worked');
   } catch (e) {
     console.log(e);
   }

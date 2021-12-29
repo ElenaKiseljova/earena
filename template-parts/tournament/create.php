@@ -363,11 +363,8 @@
       </h2>
 
       <div class="form__section-item form__section-item--4-small">
-        <div class="form__row">
-          <input v-model="start_reg_date" class="form__field form__field--create" id="start_reg_date" type="text" name="start_reg_date"
-            onclick="(this.type='date')"
-            onfocus="(this.type='date')"
-            placeholder="<?php _e( 'Начало', 'earena_2' ); ?>"
+        <div class="form__row form__row--date" data-placeholder="<?php _e( 'Начало', 'earena_2' ); ?>">
+          <input v-model="start_reg_date" class="form__field form__field--create" id="start_reg_date" type="date" name="start_reg_date"
             :required="activeTab!==3">
           <span class="form__arrow"></span>
         </div>
@@ -383,11 +380,8 @@
         </div>
       </div>
       <div class="form__section-item form__section-item--4-small">
-        <div class="form__row">
-          <input v-model="end_reg_date" class="form__field form__field--create" id="end_reg_date" type="text" name="end_reg_date"
-            onclick="(this.type='date')"
-            onfocus="(this.type='date')"
-            placeholder="<?php _e( 'Конец', 'earena_2' ); ?>"
+        <div class="form__row form__row--date" data-placeholder="<?php _e( 'Конец', 'earena_2' ); ?>">
+          <input v-model="end_reg_date" class="form__field form__field--create" id="end_reg_date" type="date" name="end_reg_date"
             :required="activeTab!==3">
           <span class="form__arrow"></span>
         </div>
@@ -410,11 +404,8 @@
       </h2>
 
       <div class="form__section-item form__section-item--3">
-        <div class="form__row">
-          <input v-model="start_date" class="form__field form__field--create" id="start_date" type="text" name="start_date"
-            onclick="(this.type='date')"
-            onfocus="(this.type='date')"
-            placeholder="<?php _e( 'Дата', 'earena_2' ); ?>"
+        <div class="form__row form__row--date" data-placeholder="<?php _e( 'Дата', 'earena_2' ); ?>">
+          <input v-model="start_date" class="form__field form__field--create" id="start_date" type="date" name="start_date"
             :required="activeTab!==3">
           <span class="form__arrow"></span>
         </div>

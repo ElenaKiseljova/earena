@@ -207,7 +207,9 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    window.files(document);
+  document.addEventListener('readystatechange', function () {
+    if (document.readyState === 'interactive') {
+      window.files(document);
+    }
   });
 })();

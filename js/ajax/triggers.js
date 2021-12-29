@@ -176,6 +176,8 @@
       console.log('globalThrottlingg');
       window.globalThrottlingg.getDataFunction();
     });
+
+    // alert('triggers worked');
   } catch (e) {
     console.log(e);
   } finally {

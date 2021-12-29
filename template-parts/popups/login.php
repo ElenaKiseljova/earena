@@ -90,8 +90,8 @@
           </div>
           <span class="form__error form__error--popup"><?php _e( 'Error', 'earena_2' ); ?></span>
 
-          <div class="form__row">
-            <input class="form__field form__field--popup" id="birthday" type="text" name="birthday" onclick="(this.type='date')" required placeholder="<?php _e( 'Дата рождения (дд/мм/гггг)', 'earena_2' ); ?>">
+          <div class="form__row form__row--date" data-placeholder="<?php _e( 'Дата рождения (дд/мм/гггг)', 'earena_2' ); ?>">
+            <input class="form__field form__field--popup" id="birthday" type="date" name="birthday" required placeholder="">
             <span class="form__arrow"></span>
           </div>
           <span class="form__error form__error--popup">

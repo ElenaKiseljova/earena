@@ -464,12 +464,18 @@
       },
     };
 
-    document.addEventListener('DOMContentLoaded', function () {
-      window.platforms.drawSelected('games');
-      window.platforms.drawSelected('matches');
-      window.platforms.drawSelected('tournaments');
+    document.addEventListener('readystatechange', function () {
+      if (document.readyState === 'interactive') {
+        window.platforms.drawSelected('games');
+        window.platforms.drawSelected('matches');
+        window.platforms.drawSelected('tournaments');
+
+        // alert('platforms worked');
+      }
     });
   } catch (e) {
+    // alert('platforms NOT worked', e);
+
     console.log(e);
   }
 })(jQuery);

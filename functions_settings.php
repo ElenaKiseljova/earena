@@ -6,7 +6,7 @@
       0 => [
           'key' => 0,
           'news-slug' => 'counter-strike-global-offensive',
-          'name' => 'Counter Strike',
+          'name' => 'Counter Strike GO',
           'details' => 'Global Offensive',
           'shortname' => 'CS:GO',
           'id' => 'cs-go',
@@ -78,7 +78,7 @@
       5 => [
           'key' => 5,
           'news-slug' => 'call-of-duty-war-zone',
-          'name' => 'Call Of Duty',
+          'name' => 'COD WAR ZONE',
           'details' => 'WAR ZONE',
           'shortname' => 'WARZONE',
           'id' => 'cod-wz',
@@ -101,11 +101,11 @@
       ],
       7 => [
           'key' => 7,
-          'news-slug' => 'fifa-21-ea-sports',
-          'name' => 'FIFA 21',
+          'news-slug' => 'fifa-22-ea-sports',
+          'name' => 'FIFA 22',
           'details' => 'EA SPORTS',
-          'shortname' => 'FIFA 21',
-          'id' => 'fifa-21',
+          'shortname' => 'FIFA 22',
+          'id' => 'fifa-22',
           'platforms' => [0, 1, 2, 3],
           'game_modes' => [1, 2],
           'team_modes' => [1, 3],
